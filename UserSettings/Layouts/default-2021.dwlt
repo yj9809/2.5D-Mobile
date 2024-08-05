@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 23
+  controlID: 155
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 136
+  controlID: 142
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 90
+  controlID: 93
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -682,9 +682,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -3.090438, y: 2.4774337, z: 1.9152145}
+    m_Target: {x: -2.11365, y: 4.055029, z: -0.13790967}
     speed: 2
-    m_Value: {x: -3.090438, y: 2.4774337, z: 1.9152145}
+    m_Value: {x: -2.11365, y: 4.055029, z: -0.13790967}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -731,13 +731,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.17783746, y: -0.6795582, z: 0.17519186, w: -0.68982494}
+    m_Target: {x: -0.15371092, y: -0.6266188, z: 0.12787694, w: -0.7532237}
     speed: 2
-    m_Value: {x: -0.17783958, y: -0.6795663, z: 0.17519395, w: -0.68983316}
+    m_Value: {x: -0.15371272, y: -0.62662613, z: 0.12787843, w: -0.75323254}
   m_Size:
-    m_Target: 0.71107316
+    m_Target: 1.0761621
     speed: 2
-    m_Value: 0.71107316
+    m_Value: 1.0761621
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -795,9 +795,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: de590000
-      m_LastClickedID: 23006
-      m_ExpandedIDs: 30fbffff
+      m_SelectedIDs: ea590000
+      m_LastClickedID: 23018
+      m_ExpandedIDs: cccbffff30fbffffcc590000de590000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -862,22 +862,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/1. Scripts/Player
+    - Assets/1. Scripts/Churu
     m_Globs: []
     m_OriginalText: 
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/1. Scripts/Player
+  - Assets/1. Scripts/Churu
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\dkrkt\OneDrive\Desktop\Unity\2.5D-Mobile
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 885a0000
-    m_LastClickedID: 23176
+    m_SelectedIDs: 7a5a0000
+    m_LastClickedID: 23162
     m_ExpandedIDs: 000000005e5a0000665a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
