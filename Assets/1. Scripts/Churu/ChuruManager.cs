@@ -34,7 +34,7 @@ public class ChuruManager : MonoBehaviour
             if (ingredients.Count < maxIngredient)
             {
                 GameObject ingredient = Instantiate(ingredientPrefab);
-                Vector3 pos = new Vector3(ingredientSpawnPoint.position.x, ingredientSpawnPoint.position.y + ObjectRendererCheck(ingredient) * ingredients.Count, ingredientSpawnPoint.position.z);
+                Vector3 pos = new Vector3(ingredientSpawnPoint.position.x, ingredientSpawnPoint.position.y + Utility.ObjRendererCheck(ingredient) * ingredients.Count, ingredientSpawnPoint.position.z);
                 ingredient.transform.position = pos;
                 Debug.Log("Spawn Ingredient !");
                 ingredients.Push(ingredient);
@@ -46,12 +46,5 @@ public class ChuruManager : MonoBehaviour
         {
             Debug.Log("Ingredient is Full !");
         }
-    }
-
-    private float ObjectRendererCheck(GameObject obj)
-    {
-        Renderer ren = obj.GetComponent<Renderer>();
-
-        return ren.bounds.size.y;
     }
 }
