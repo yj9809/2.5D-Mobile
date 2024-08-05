@@ -5,20 +5,21 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    private float speed = 5f;
+
     [SerializeField] private Joystick joystick;
     [SerializeField] private GameObject obj;
-    [SerializeField] private Transform testTrans;
-    [SerializeField] private ChuruManager churu;
-    private CharacterController cc;
+    [SerializeField] private CharacterController cc;
+    [SerializeField] private Transform cartTransform;
 
-    private Stack<GameObject> testList = new Stack<GameObject>();
-    private const float speed = 5f;
+    private Stack<GameObject> objStack = new Stack<GameObject>();
+    private int maxObjStackCount = 0;
 
-    [SerializeField] private GameObject chu;
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        maxObjStackCount = 4;
     }
 
     // Update is called once per frame
@@ -30,23 +31,6 @@ public class Player : MonoBehaviour
             return;
         }
         JoystickMove();
-        Vector3 pos = new Vector3(testTrans.position.x, testTrans.position.y + testList.Count * Utility.ObjRendererCheck(chu), testTrans.position.z);
-        if (chu != null)
-        {
-            chu.transform.DOMove(pos, 0.1f).SetEase(Ease.OutBack)
-                .OnComplete(() =>
-                {
-                    Vector3 setPos = new Vector3(0, pos.y, 0);
-                    GameObject newChu = Instantiate(chu);
-                    newChu.transform.position = setPos;
-                    newChu.transform.SetParent(testTrans);
-                    chu = null;
-                });
-        }
-    }
-    private void FixedUpdate()
-    {
-       
     }
     private void JoystickMove()
     {
@@ -60,11 +44,14 @@ public class Player : MonoBehaviour
         ChuruManager churu = other.GetComponent<ChuruManager>();
         if (churu != null)
         {
-            if (churu.Churu.Count > 0 && chu == null)
+            if (churu.Churu.Count > 0 && maxObjStackCount > objStack.Count)
             {
-                chu = churu.Churu.Pop();
-                chu.transform.parent = testTrans;
-                testList.Push(chu);
+                GameObject churuObj = churu.Churu.Pop();
+                churuObj.transform.SetParent(cartTransform);
+                churuObj.transform.DOLocalMove(new Vector3(0, 0 + (Utility.ObjRendererCheck(churuObj) * objStack.Count), 0), 1f)
+                    .SetEase(Ease.OutQuint);
+                objStack.Push(churuObj);
+                Debug.Log(Utility.ObjRendererCheck(churuObj) * objStack.Count);
             }
         }
     }
