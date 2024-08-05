@@ -337,3 +337,39 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 0}
     IsBackgroundRecursive: 0
     IsHidden: 0
+  - Type: 1
+    Key: Assets/1. Scripts
+    Ordinal: 27
+    Priority: 0
+    IconType: 2660
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 1
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/2.Scene
+    Ordinal: 28
+    Priority: 0
+    IconType: 2650
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 1
+    Key: Assets/3. Prefab
+    Ordinal: 29
+    Priority: 0
+    IconType: 2610
+    SmallIcon: {fileID: 0}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 1
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
