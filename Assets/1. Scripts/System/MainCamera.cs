@@ -6,10 +6,16 @@ public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Player p;
 
+    private GameManager gm;
+
+    private void Awake()
+    {
+        gm = GameManager.Instance;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        p = gm.P;   
     }
 
     // Update is called once per frame
