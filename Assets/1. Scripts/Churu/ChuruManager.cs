@@ -5,17 +5,15 @@ using Sirenix.OdinInspector;
 
 public class ChuruManager : MonoBehaviour
 {
-    [Title("Ingredient")] // Àç·á
-    [TabGroup("Ingredient", "Ingredient")] [SerializeField] private GameObject ingredientPrefab;
-    [TabGroup("Ingredient", "Ingredient")] [SerializeField] private Transform ingredientSpawnPoint;
-    [TabGroup("Ingredient", "Ingredient")] [SerializeField] private float ingredientSpawnTime = 2f;
-    [TabGroup("Ingredient", "Ingredient")] [SerializeField] private int maxIngredient = 10;
+    [FoldoutGroup("ChuruManager")] [SerializeField] protected GameObject objPrefab;
+    [FoldoutGroup("ChuruManager")] [SerializeField] protected Transform objSpawnPoint;
+    [FoldoutGroup("ChuruManager")] [SerializeField] protected float objSpawnTime = 2f;
+    [FoldoutGroup("ChuruManager")] [SerializeField] protected int maxObj = 10;
 
-    private float spawnTimer = 0f;
-    private Stack<GameObject> ingredients = new Stack<GameObject>();
+    protected float spawnTimer = 0f;
+    protected Stack<GameObject> churu = new Stack<GameObject>();
 
-    // Start is called before the first frame update
-    void Start()
+    protected virtual void Init()
     {
 
     }
@@ -23,28 +21,29 @@ public class ChuruManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpawnIngredient();
+        SpawnGameObject();
     }
 
-    private void SpawnIngredient()
+    protected void SpawnGameObject()
     {
         spawnTimer += Time.deltaTime;
-        if (spawnTimer >= ingredientSpawnTime)
+        if (spawnTimer >= objSpawnTime)
         {
-            if (ingredients.Count < maxIngredient)
+            if (churu.Count < maxObj)
             {
-                GameObject ingredient = Instantiate(ingredientPrefab);
-                Vector3 pos = new Vector3(ingredientSpawnPoint.position.x, ingredientSpawnPoint.position.y + Utility.ObjRendererCheck(ingredient) * ingredients.Count, ingredientSpawnPoint.position.z);
-                ingredient.transform.position = pos;
-                Debug.Log("Spawn Ingredient !");
-                ingredients.Push(ingredient);
-                ingredient.transform.SetParent(ingredientSpawnPoint);
+                GameObject gameObject = Instantiate(objPrefab);
+                Vector3 pos = new Vector3(objSpawnPoint.position.x
+                    , objSpawnPoint.position.y + Utility.ObjRendererCheck(gameObject) * churu.Count
+                    , objSpawnPoint.position.z);
+                gameObject.transform.position = pos;
+                churu.Push(gameObject);
+                gameObject.transform.SetParent(objSpawnPoint);
             }
             spawnTimer = 0f;
         }
-        else if(ingredients.Count >= maxIngredient)
+        else if(churu.Count >= maxObj)
         {
-            Debug.Log("Ingredient is Full !");
+            Debug.LogError("Object is Full !");
         }
     }
 }
