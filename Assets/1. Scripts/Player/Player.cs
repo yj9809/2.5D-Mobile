@@ -7,15 +7,18 @@ public class Player : MonoBehaviour
     [SerializeField] private Joystick joystick;
     [SerializeField] private GameObject obj;
     [SerializeField] private Transform testTrans;
+    [SerializeField] private ChuruManager churu;
     private CharacterController cc;
 
     private Stack<GameObject> testList = new Stack<GameObject>();
     private const float speed = 5f;
     private float time = 0;
 
+    [SerializeField] private GameObject chu;
     // Start is called before the first frame update
     void Start()
     {
+        time = float.MaxValue;
         cc = GetComponent<CharacterController>();
     }
 
@@ -29,6 +32,12 @@ public class Player : MonoBehaviour
         }
         time += Time.deltaTime;
         JoystickMove();
+
+        if(chu != null)
+        {
+            Vector3 pos = new Vector3(testTrans.position.x, testTrans.position.y + testList.Count * Utility.ObjRendererCheck(chu), testTrans.position.z);
+            chu.transform.position = Vector3.Slerp(chu.transform.position, pos, 0.01f);
+        }
     }
     private void JoystickMove()
     {
@@ -42,13 +51,11 @@ public class Player : MonoBehaviour
         ChuruManager churu = other.GetComponent<ChuruManager>();
         if (churu != null)
         {
-            if (churu.Churu.Count > 0 && time >= 0.3)
+            if (churu.Churu.Count > 0)
             {
-                GameObject newChuru = churu.Churu.Pop();
-                Vector3 pos = new Vector3(testTrans.position.x, testTrans.position.y + testList.Count * Utility.ObjRendererCheck(newChuru), testTrans.position.z);
-                newChuru.transform.position = Vector3.Slerp(newChuru.transform.position, pos, 0.5f);
-                newChuru.transform.parent = testTrans;
-                testList.Push(newChuru);
+                chu = churu.Churu.Pop();
+                chu.transform.parent = testTrans;
+                testList.Push(chu);
                 time = 0;
             }
         }
