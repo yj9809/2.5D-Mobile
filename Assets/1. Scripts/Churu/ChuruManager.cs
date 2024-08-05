@@ -12,6 +12,11 @@ public class ChuruManager : MonoBehaviour
 
     protected float spawnTimer = 0f;
     protected Stack<GameObject> churu = new Stack<GameObject>();
+    public Stack<GameObject> Churu
+    {
+        get { return churu; }
+        set { churu = value; }
+    }
 
     protected virtual void Init()
     {
@@ -43,7 +48,7 @@ public class ChuruManager : MonoBehaviour
         }
         else if(churu.Count >= maxObj)
         {
-            Debug.LogError("Object is Full !");
+            Debug.Log("Object is Full !");
         }
     }
 }

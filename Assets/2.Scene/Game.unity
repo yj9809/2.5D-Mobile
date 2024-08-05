@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 1765328525}
   m_Layer: 0
   m_Name: '[ Player ]'
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -757,7 +757,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 1674724943}
-  cc: {fileID: 0}
   obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
   testTrans: {fileID: 985523729}
 --- !u!4 &1765328528
@@ -804,6 +803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1869469681}
   - component: {fileID: 1869469682}
+  - component: {fileID: 1869469683}
   m_Layer: 0
   m_Name: IngredientSpawn
   m_TagString: Untagged
@@ -838,11 +838,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce8df19406beed44b9099f5243cabf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientPrefab: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c,
+  objPrefab: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c,
     type: 3}
-  ingredientSpawnPoint: {fileID: 1869469681}
-  ingredientSpawnTime: 2
-  maxIngredient: 10
+  objSpawnPoint: {fileID: 1869469681}
+  objSpawnTime: 1
+  maxObj: 10
+--- !u!65 &1869469683
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869469680}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: -1.51}
 --- !u!1 &2105160066
 GameObject:
   m_ObjectHideFlags: 0
