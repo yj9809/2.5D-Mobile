@@ -15,14 +15,19 @@ public static class Utility
     {
         GameObject newChuru;
         if (isCreate)
+        {
             newChuru = GameObject.Instantiate(churu, parentPos);
+        }
         else
+        {
             newChuru = getChuruStack.Pop();
+            newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.7f)
+            .SetEase(Ease.InBack);
+        }
 
         newChuru.transform.SetParent(parentPos);
-        newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 1f)
-            .SetEase(Ease.OutQuint);
         setChuruStack.Push(newChuru);
+        
 
     }
 }
