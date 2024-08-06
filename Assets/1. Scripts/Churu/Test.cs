@@ -14,5 +14,10 @@ public class Test : MonoBehaviour
     void Update()
     {
         Debug.Log("Branch Test !");
+        TestFunction();
+    }
+    private void TestFunction()
+    {
+        Debug.Log("function Test");
     }
 }
