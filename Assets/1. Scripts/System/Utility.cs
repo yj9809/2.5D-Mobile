@@ -28,7 +28,5 @@ public static class Utility
 
         newChuru.transform.SetParent(parentPos);
         setChuruStack.Push(newChuru);
-        
-
     }
 }
