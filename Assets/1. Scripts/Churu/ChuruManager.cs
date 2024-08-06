@@ -18,11 +18,6 @@ public class ChuruManager : MonoBehaviour
         set { churu = value; }
     }
 
-    protected virtual void Init()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {

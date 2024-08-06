@@ -1489,7 +1489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1869469681}
-  - component: {fileID: 1869469682}
+  - component: {fileID: 1869469684}
   - component: {fileID: 1869469683}
   m_Layer: 0
   m_Name: IngredientSpawn
@@ -1514,23 +1514,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1869469682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869469680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dce8df19406beed44b9099f5243cabf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objPrefab: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c,
-    type: 3}
-  objSpawnPoint: {fileID: 1869469681}
-  objSpawnTime: 1
-  maxObj: 10
 --- !u!65 &1869469683
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1544,6 +1527,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: -6}
+--- !u!114 &1869469684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869469680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66edfee00fcd9c645b5831167c237f33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objPrefab: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c,
+    type: 3}
+  objSpawnPoint: {fileID: 1869469681}
+  objSpawnTime: 2
+  maxObj: 10
 --- !u!1001 &1955812108
 PrefabInstance:
   m_ObjectHideFlags: 0
