@@ -36,13 +36,7 @@ public class ChuruManager : MonoBehaviour
         {
             if (churu.Count < maxObj)
             {
-                GameObject gameObject = Instantiate(objPrefab);
-                Vector3 pos = new Vector3(objSpawnPoint.position.x
-                    , objSpawnPoint.position.y + Utility.ObjRendererCheck(gameObject) * churu.Count
-                    , objSpawnPoint.position.z);
-                gameObject.transform.position = pos;
-                churu.Push(gameObject);
-                gameObject.transform.SetParent(objSpawnPoint);
+                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, churu, true);
             }
             spawnTimer = 0f;
         }

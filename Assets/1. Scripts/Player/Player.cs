@@ -13,13 +13,12 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform cartTransform;
 
     private Stack<GameObject> objStack = new Stack<GameObject>();
-    private int maxObjStackCount = 0;
+    [SerializeField] private int maxObjStackCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        maxObjStackCount = 4;
     }
 
     // Update is called once per frame
@@ -46,12 +45,7 @@ public class Player : MonoBehaviour
         {
             if (churu.Churu.Count > 0 && maxObjStackCount > objStack.Count)
             {
-                GameObject churuObj = churu.Churu.Pop();
-                churuObj.transform.SetParent(cartTransform);
-                churuObj.transform.DOLocalMove(new Vector3(0, 0 + (Utility.ObjRendererCheck(churuObj) * objStack.Count), 0), 1f)
-                    .SetEase(Ease.OutQuint);
-                objStack.Push(churuObj);
-                Debug.Log(Utility.ObjRendererCheck(churuObj) * objStack.Count);
+                Utility.ObjectDrop(cartTransform, null, churu.Churu, objStack, false);
             }
         }
     }
