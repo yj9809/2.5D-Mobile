@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectB: {fileID: 6781055591903838403, guid: 146be0dbd735a93448e9ff9504da5466, type: 3}
-  ad: {fileID: 1980397942}
+  newTransform: {fileID: 1980397942}
 --- !u!65 &343187403
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -752,7 +752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectB: {fileID: 2967805047894306447, guid: d888014baa1c6dd4a8109bc34937fe16, type: 3}
-  ad: {fileID: 1863210080}
+  newTransform: {fileID: 1863210080}
 --- !u!1 &1460193751
 GameObject:
   m_ObjectHideFlags: 0
