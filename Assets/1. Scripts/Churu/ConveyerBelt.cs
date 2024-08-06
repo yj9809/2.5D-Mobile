@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConveyerBelt : MonoBehaviour
 {
     [SerializeField] private float speed; // 3
-    [SerializeField] private Vector3 dir; // Z : -1
+    [SerializeField] private Vector3 dir; // 원하는 이동 방향에 1 또는 -1
     [SerializeField] private List<GameObject> onBelt;
 
     // Update is called once per frame
