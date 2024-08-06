@@ -14,6 +14,7 @@ public static class Utility
     public static void ObjectDrop(Transform parentPos, GameObject churu, Stack<GameObject> getChuruStack, Stack<GameObject> setChuruStack, bool isCreate)
     {
         GameObject newChuru;
+
         if (isCreate)
         {
             newChuru = PoolingManager.Instance.GetObj(churu);
@@ -24,9 +25,9 @@ public static class Utility
         {
             newChuru = getChuruStack.Pop();
             newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.7f)
-            .SetEase(Ease.InBack);
+            .SetEase(Ease.InBack)
+            .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
         }
-
         newChuru.transform.SetParent(parentPos);
         setChuruStack.Push(newChuru);
     }

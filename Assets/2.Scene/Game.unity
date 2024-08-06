@@ -456,7 +456,7 @@ GameObject:
   - component: {fileID: 725481503}
   - component: {fileID: 725481502}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Cart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1096,8 +1096,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 1674724943}
-  obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
   cc: {fileID: 0}
+  obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
+  cart: {fileID: 725481500}
   cartTransform: {fileID: 297735687}
   maxObjStackCount: 100
 --- !u!4 &1765328528
