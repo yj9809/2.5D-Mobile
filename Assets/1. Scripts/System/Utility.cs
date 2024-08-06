@@ -16,7 +16,8 @@ public static class Utility
         GameObject newChuru;
         if (isCreate)
         {
-            newChuru = GameObject.Instantiate(churu, parentPos);
+            newChuru = PoolingManager.Instance.GetObj(churu);
+            newChuru.transform.SetParent(parentPos);
             newChuru.transform.localPosition = new Vector3(0, (ObjRendererCheck(newChuru) * setChuruStack.Count), 0);
         }
         else
