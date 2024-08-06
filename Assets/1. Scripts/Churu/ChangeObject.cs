@@ -5,13 +5,14 @@ using UnityEngine;
 public class ChangeObject : MonoBehaviour
 {
     [SerializeField] private GameObject objectB; // 변환될 B 오브젝트의 프리팹
+    [SerializeField] private Transform newTransform;
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ingredient"))
+        if (other.CompareTag("Ingredient") || other.CompareTag("Churu"))
         {
-            Transform oldTransform = other.transform;
-            GameObject newObject = Instantiate(objectB, oldTransform.position, oldTransform.rotation);
+            GameObject newObject = Instantiate(objectB);
+            newObject.transform.position = newTransform.position; 
             newObject.GetComponent<Rigidbody>().velocity = other.GetComponent<Rigidbody>().velocity;
             Destroy(other.gameObject);
         }
