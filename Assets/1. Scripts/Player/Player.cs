@@ -34,10 +34,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    [SerializeField] private int maxObjStackCount = 0;
+    private Camera mainCamera;
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -51,7 +54,7 @@ public class Player : MonoBehaviour
     {
         if (joystick == null)
         {
-            Debug.LogError("JoystickÀÌ ºüÁ®ÀÖ½À´Ï´Ù.");
+            Debug.LogError("Joystickï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
@@ -60,11 +63,22 @@ public class Player : MonoBehaviour
 
         Vector3 moveDirection = new Vector3(joyX, 0, joyZ);
 
-        cc.Move(moveDirection * speed * Time.deltaTime);
-
-        if(moveDirection != Vector3.zero)
+        if (moveDirection != Vector3.zero)
         {
-            Quaternion newRotation = Quaternion.LookRotation(moveDirection);
+            // Ä«ï¿½Þ¶ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ moveDirection ï¿½ï¿½È¯
+            Vector3 cameraForward = mainCamera.transform.forward;
+            cameraForward.y = 0;
+            cameraForward.Normalize();
+
+            Vector3 cameraRight = mainCamera.transform.right;
+            cameraRight.y = 0;
+            cameraRight.Normalize();
+
+            Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
+
+            cc.Move(adjustedDirection * speed * Time.deltaTime);
+
+            Quaternion newRotation = Quaternion.LookRotation(adjustedDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
         }
     }
