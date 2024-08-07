@@ -14,6 +14,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform cartTransform;
 
     private Stack<GameObject> objStack = new Stack<GameObject>();
+    public Stack<GameObject> ObjStack
+    {
+        get { return objStack; }
+        set
+        {
+            objStack = value;
+        }
+    }
     [SerializeField] private int maxObjStackCount = 0;
 
     // Start is called before the first frame update
@@ -60,14 +68,18 @@ public class Player : MonoBehaviour
             cart.transform.DOScale(new Vector3(1, 0.01f, 2), 0.2f);
         }
     }
+    public void ObjectDrop()
+    {
+
+    }
     private void OnTriggerStay(Collider other)
     {
         ChuruManager churu = other.GetComponent<ChuruManager>();
         if (churu != null)
         {
-            if (churu.Churu.Count > 0 && maxObjStackCount > objStack.Count)
+            if (churu.ChuruStack.Count > 0 && maxObjStackCount > objStack.Count)
             {
-                Utility.ObjectDrop(cartTransform, null, churu.Churu, objStack, false);
+                Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, false);
             }
         }
     }

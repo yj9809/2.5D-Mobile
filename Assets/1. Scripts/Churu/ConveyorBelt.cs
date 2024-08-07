@@ -6,6 +6,7 @@ public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
     [SerializeField] private Vector3 direction = Vector3.forward;
+    [SerializeField] private Collider test;
 
     void OnCollisionStay(Collision collision)
     {

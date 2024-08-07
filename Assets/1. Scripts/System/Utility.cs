@@ -24,7 +24,7 @@ public static class Utility
         else
         {
             newChuru = getChuruStack.Pop();
-            newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.7f)
+            newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
             .SetEase(Ease.InBack)
             .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
         }

@@ -11,11 +11,11 @@ public class ChuruManager : MonoBehaviour
     [FoldoutGroup("ChuruManager")] [SerializeField] protected int maxObj = 10;
 
     protected float spawnTimer = 0f;
-    protected Stack<GameObject> churu = new Stack<GameObject>();
-    public Stack<GameObject> Churu
+    protected Stack<GameObject> churuStack = new Stack<GameObject>();
+    public Stack<GameObject> ChuruStack
     {
-        get { return churu; }
-        set { churu = value; }
+        get { return churuStack; }
+        set { churuStack = value; }
     }
 
     // Update is called once per frame
@@ -29,13 +29,13 @@ public class ChuruManager : MonoBehaviour
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= objSpawnTime)
         {
-            if (churu.Count < maxObj)
+            if (ChuruStack.Count < maxObj)
             {
-                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, churu, true);
+                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, ChuruStack, true);
             }
             spawnTimer = 0f;
         }
-        else if(churu.Count >= maxObj)
+        else if(ChuruStack.Count >= maxObj)
         {
             Debug.Log("Object is Full !");
         }
