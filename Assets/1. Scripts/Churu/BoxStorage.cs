@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BoxStorage : MonoBehaviour
+{
+    [SerializeField] private Transform boxTransform;
+
+    public Transform Box
+    {
+        get { return boxTransform; }
+    }
+
+    private Stack<GameObject> boxStack = new Stack<GameObject>();
+    public Stack<GameObject> BoxStack
+    {
+        get { return boxStack; }
+        set { boxStack = value; }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Box"))
+        {
+            Utility.ObjectDrop(transform, other.gameObject, null, boxStack, false);
+        }
+    }
+}

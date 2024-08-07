@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ingredient
   - Churu
+  - Box
   layers:
   - Default
   - TransparentFX

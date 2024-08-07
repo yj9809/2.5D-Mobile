@@ -13,10 +13,6 @@ public class ConveyorBelt : MonoBehaviour
     {
         get { return ingredientStorage; }
     }
-    public Transform BoxStorage
-    {
-        get { return ingredientStorage; }
-    }
 
     private Stack<GameObject> cbStack = new Stack<GameObject>();
     public Stack<GameObject> CbStack
