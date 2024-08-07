@@ -81,5 +81,11 @@ public class Player : MonoBehaviour
         {
             Utility.ObjectDrop(cb.IngredientStorage, null, objStack, cb.CbStack, 1);
         }
+    }public void GiveObject(BoxStorage bs)
+    {
+        if (bs.BoxStack.Count > 0 && maxObjStackCount > objStack.Count)
+        {
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, objStack, 1);
+        }
     }
 }

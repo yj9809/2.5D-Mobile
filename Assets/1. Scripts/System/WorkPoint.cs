@@ -6,12 +6,8 @@ public class WorkPoint : MonoBehaviour
 {
     [SerializeField] private ChuruManager cm;
     [SerializeField] private ConveyorBelt cb;
-
+    [SerializeField] private BoxStorage bs;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
     private void OnTriggerStay(Collider other)
     {
         Player p = other.GetComponent<Player>();
@@ -25,6 +21,11 @@ public class WorkPoint : MonoBehaviour
             if(cb != null)
             {
                 p.GiveObject(cb);
+            }
+
+            if(bs != null)
+            {
+                p.GiveObject(bs);
             }
         }
     }
