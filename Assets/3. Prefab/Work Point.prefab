@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2944756444144404593}
   - component: {fileID: 7646081294353099358}
   m_Layer: 0
-  m_Name: Particle
+  m_Name: Work Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4836,8 +4836,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2944756444144404595}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.7101352, y: 0.7101917, z: 3.7101417}
-  m_Center: {x: -0.000009536743, y: -0.00000040233135, z: -0.000014483929}
+  m_Size: {x: 4, y: 1, z: 4}
+  m_Center: {x: 0, y: 0.2, z: 0}

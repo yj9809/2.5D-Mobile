@@ -1433,18 +1433,13 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Particle
+      value: Work Point
       objectReference: {fileID: 0}
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: cm
       value: 
       objectReference: {fileID: 1869469684}
-    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!4 &1955812109 stripped
@@ -1719,18 +1714,13 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Particle
+      value: Work Point
       objectReference: {fileID: 0}
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: cb
       value: 
       objectReference: {fileID: 1463087579}
-    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!4 &7646081294353099356 stripped

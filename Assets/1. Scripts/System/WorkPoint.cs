@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropPoint : MonoBehaviour
+public class WorkPoint : MonoBehaviour
 {
     [SerializeField] private ChuruManager cm;
     [SerializeField] private ConveyorBelt cb;
