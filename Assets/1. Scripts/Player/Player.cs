@@ -13,13 +13,14 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
 
-    private Stack<GameObject> objStack = new Stack<GameObject>();
+    private Stack<GameObject> boxStack = new Stack<GameObject>();
+    private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> ObjStack
     {
-        get { return objStack; }
+        get { return ingredientStack; }
         set
         {
-            objStack = value;
+            ingredientStack = value;
         }
     }
     [SerializeField] private int maxObjStackCount = 0;
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
     }
     private void OnCart()
     {
-        if(objStack.Count <= 0)
+        if(ingredientStack.Count <= 0 && boxStack.Count <= 0)
         {
             cart.transform.DOScale(0, 0.2f);
         }
@@ -70,22 +71,22 @@ public class Player : MonoBehaviour
     }
     public void TakeObject(ChuruManager churu)
     {
-        if (churu.ChuruStack.Count > 0 && maxObjStackCount > objStack.Count)
+        if (churu.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, 1);
+            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, ingredientStack, 1);
         }
     }
     public void GiveObject(ConveyorBelt cb)
     {
-        if (objStack.Count > 0)
+        if (ingredientStack.Count > 0)
         {
-            Utility.ObjectDrop(cb.IngredientStorage, null, objStack, cb.CbStack, 1);
+            Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
     }public void GiveObject(BoxStorage bs)
     {
-        if (bs.BoxStack.Count > 0 && maxObjStackCount > objStack.Count)
+        if (bs.BoxStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, objStack, 1);
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, boxStack, 1);
         }
     }
 }

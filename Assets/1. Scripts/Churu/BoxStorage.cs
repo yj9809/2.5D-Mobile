@@ -18,7 +18,7 @@ public class BoxStorage : MonoBehaviour
         set { boxStack = value; }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Box"))
         {
