@@ -82,12 +82,4 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cb.TestTransform, null, objStack, cb.CbStack, false);
         }
     }
-    private void OnTriggerStay(Collider other)
-    {
-        ChuruManager churu = other.GetComponent<ChuruManager>();
-        if (churu != null)
-        {
-            
-        }
-    }
 }
