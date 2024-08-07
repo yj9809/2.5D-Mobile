@@ -24,7 +24,6 @@ public class WorkPoint : MonoBehaviour
 
             if(cb != null)
             {
-                Debug.Log("½ÇÇà");
                 p.GiveObject(cb);
             }
         }
