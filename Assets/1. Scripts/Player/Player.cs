@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     {
         if (objStack.Count > 0)
         {
-            Utility.ObjectDrop(cb.TestTransform, null, objStack, cb.CbStack, false);
+            Utility.ObjectDrop(cb.Storage, null, objStack, cb.CbStack, false);
         }
     }
 }
