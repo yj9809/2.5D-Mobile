@@ -6,12 +6,16 @@ public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
     [SerializeField] private Vector3 direction = Vector3.forward;
-    [SerializeField] private Transform storage;
+    [SerializeField] private Transform ingredientStorage;
     [SerializeField] private Transform onBelt;
 
-    public Transform Storage
+    public Transform IngredientStorage
     {
-        get { return storage; }
+        get { return ingredientStorage; }
+    }
+    public Transform BoxStorage
+    {
+        get { return ingredientStorage; }
     }
 
     private Stack<GameObject> cbStack = new Stack<GameObject>();
@@ -45,6 +49,7 @@ public class ConveyorBelt : MonoBehaviour
             {
                 GameObject gameObject = cbStack.Pop();
                 gameObject.transform.position = onBelt.position;
+                gameObject.AddComponent<Rigidbody>();
             }
         }
     }
