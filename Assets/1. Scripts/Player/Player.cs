@@ -68,19 +68,26 @@ public class Player : MonoBehaviour
             cart.transform.DOScale(new Vector3(1, 0.01f, 2), 0.2f);
         }
     }
-    public void ObjectDrop()
+    public void TakeObject(ChuruManager churu)
     {
-
+        if (churu.ChuruStack.Count > 0 && maxObjStackCount > objStack.Count)
+        {
+            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, false);
+        }
+    }
+    public void GiveObject(ConveyorBelt cb)
+    {
+        if (objStack.Count > 0)
+        {
+            Utility.ObjectDrop(cb.TestTransform, null, objStack, cb.CbStack, false);
+        }
     }
     private void OnTriggerStay(Collider other)
     {
         ChuruManager churu = other.GetComponent<ChuruManager>();
         if (churu != null)
         {
-            if (churu.ChuruStack.Count > 0 && maxObjStackCount > objStack.Count)
-            {
-                Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, false);
-            }
+            
         }
     }
 }
