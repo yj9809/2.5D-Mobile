@@ -31,7 +31,7 @@ public class ChuruManager : MonoBehaviour
         {
             if (ChuruStack.Count < maxObj)
             {
-                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, ChuruStack, true);
+                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, ChuruStack, 0);
             }
             spawnTimer = 0f;
         }

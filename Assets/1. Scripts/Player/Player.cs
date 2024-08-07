@@ -72,14 +72,14 @@ public class Player : MonoBehaviour
     {
         if (churu.ChuruStack.Count > 0 && maxObjStackCount > objStack.Count)
         {
-            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, false);
+            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, objStack, 1);
         }
     }
     public void GiveObject(ConveyorBelt cb)
     {
         if (objStack.Count > 0)
         {
-            Utility.ObjectDrop(cb.IngredientStorage, null, objStack, cb.CbStack, false);
+            Utility.ObjectDrop(cb.IngredientStorage, null, objStack, cb.CbStack, 1);
         }
     }
 }

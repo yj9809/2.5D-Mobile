@@ -22,7 +22,8 @@ public class BoxStorage : MonoBehaviour
     {
         if (other.CompareTag("Box"))
         {
-            Utility.ObjectDrop(transform, other.gameObject, null, boxStack, false);
+            Destroy(other.GetComponent<Rigidbody>());
+            Utility.ObjectDrop(transform, other.gameObject, null, boxStack, 2);
         }
     }
 }
