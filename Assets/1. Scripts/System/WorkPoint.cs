@@ -4,28 +4,29 @@ using UnityEngine;
 
 public class WorkPoint : MonoBehaviour
 {
-    [SerializeField] private ChuruManager cm;
-    [SerializeField] private ConveyorBelt cb;
-    [SerializeField] private BoxStorage bs;
+    [SerializeField] private IngredientMaker _ingredientMaker;
+    [SerializeField] private ConveyorBelt _conveyorBelt;
+    [SerializeField] private BoxStorage _boxStorage;
+
     // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
     {
         Player p = other.GetComponent<Player>();
         if (p != null)
         {
-            if(cm != null )
+            if(_ingredientMaker != null )
             {
-                p.TakeObject(cm);
+                p.TakeObject(_ingredientMaker);
             }
 
-            if(cb != null)
+            if(_conveyorBelt != null)
             {
-                p.GiveObject(cb);
+                p.GiveObject(_conveyorBelt);
             }
 
-            if(bs != null)
+            if(_boxStorage != null)
             {
-                p.GiveObject(bs);
+                p.GiveObject(_boxStorage);
             }
         }
     }

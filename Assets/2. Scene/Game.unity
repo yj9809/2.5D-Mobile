@@ -147,7 +147,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 297735686}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.6180001}
+  m_LocalPosition: {x: 0, y: 0.1, z: 1.6180001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1328,11 +1328,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 1674724943}
-  cc: {fileID: 0}
   obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
   cart: {fileID: 725481500}
   cartTransform: {fileID: 297735687}
-  maxObjStackCount: 100
 --- !u!4 &1765328528
 Transform:
   m_ObjectHideFlags: 0
@@ -1440,6 +1438,11 @@ PrefabInstance:
       propertyPath: bs
       value: 
       objectReference: {fileID: 1219976774}
+    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: _boxStorage
+      value: 
+      objectReference: {fileID: 1219976774}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!1 &1863210079
@@ -1515,7 +1518,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1869469680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66edfee00fcd9c645b5831167c237f33, type: 3}
+  m_Script: {fileID: 11500000, guid: dce8df19406beed44b9099f5243cabf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objPrefab: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c,
@@ -1593,6 +1596,11 @@ PrefabInstance:
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: cm
+      value: 
+      objectReference: {fileID: 1869469684}
+    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: _ingredientMaker
       value: 
       objectReference: {fileID: 1869469684}
     m_RemovedComponents: []
@@ -1910,6 +1918,11 @@ PrefabInstance:
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: cb
+      value: 
+      objectReference: {fileID: 1463087579}
+    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: _conveyorBelt
       value: 
       objectReference: {fileID: 1463087579}
     m_RemovedComponents: []

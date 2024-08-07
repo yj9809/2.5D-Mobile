@@ -18,6 +18,7 @@ public class PoolingManager : Singleton<PoolingManager>
         newObj.SetActive(false);
         return newObj;
     }
+
     public GameObject GetObj(GameObject prefab)
     {
         if(prefab == null)
@@ -42,6 +43,7 @@ public class PoolingManager : Singleton<PoolingManager>
         objToReturn.SetActive(true);
         return objToReturn;
     }
+
     private void ReturnObjecte(GameObject returnPrefab)
     {
         if(returnPrefab == null)

@@ -9,6 +9,7 @@ public enum CheckType
     Drop,
     Array
 }
+
 public static class Utility
 {
     public static float ObjRendererCheck(GameObject obj)
@@ -17,6 +18,7 @@ public static class Utility
 
         return ren.bounds.size.y;
     }
+
     public static void ObjectDrop(Transform parentPos, GameObject churu, Stack<GameObject> getChuruStack, Stack<GameObject> setChuruStack, int num)
     {
         GameObject newChuru;

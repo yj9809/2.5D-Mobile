@@ -5,17 +5,18 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
-    private float speed = 5f;
 
     [SerializeField] private Joystick joystick;
-    [SerializeField] private CharacterController cc;
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
+    private float speed = 5f;
 
-    private Stack<GameObject> boxStack = new Stack<GameObject>();
+    private int maxObjStackCount = 5;
+    private CharacterController cc;
+
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
-    public Stack<GameObject> ObjStack
+    public Stack<GameObject> IngredientStack
     {
         get { return ingredientStack; }
         set
@@ -23,7 +24,15 @@ public class Player : MonoBehaviour
             ingredientStack = value;
         }
     }
-    [SerializeField] private int maxObjStackCount = 0;
+    private Stack<GameObject> boxStack = new Stack<GameObject>();
+    public Stack<GameObject> BoxStack
+    {
+        get { return boxStack; }
+        set
+        {
+            boxStack = value;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +46,7 @@ public class Player : MonoBehaviour
         JoystickMove();
         OnCart();
     }
+
     private void JoystickMove()
     {
         if (joystick == null)
@@ -58,6 +68,7 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
         }
     }
+
     private void OnCart()
     {
         if(ingredientStack.Count <= 0 && boxStack.Count <= 0)
@@ -69,11 +80,12 @@ public class Player : MonoBehaviour
             cart.transform.DOScale(new Vector3(1, 0.01f, 2), 0.2f);
         }
     }
-    public void TakeObject(ChuruManager churu)
+
+    public void TakeObject(IngredientMaker im)
     {
-        if (churu.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
+        if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, churu.ChuruStack, ingredientStack, 1);
+            Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
         }
     }
     public void GiveObject(ConveyorBelt cb)
@@ -82,7 +94,8 @@ public class Player : MonoBehaviour
         {
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
-    }public void GiveObject(BoxStorage bs)
+    }
+    public void GiveObject(BoxStorage bs)
     {
         if (bs.BoxStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
         {

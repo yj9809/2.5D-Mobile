@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class ChuruManager : MonoBehaviour
+public class IngredientMaker : MonoBehaviour
 {
-    [FoldoutGroup("ChuruManager")] [SerializeField] protected GameObject objPrefab;
-    [FoldoutGroup("ChuruManager")] [SerializeField] protected Transform objSpawnPoint;
-    [FoldoutGroup("ChuruManager")] [SerializeField] protected float objSpawnTime = 2f;
-    [FoldoutGroup("ChuruManager")] [SerializeField] protected int maxObj = 10;
+    [TabGroup("IngredientMaker")] [SerializeField] private GameObject objPrefab;
+    [TabGroup("IngredientMaker")] [SerializeField] private Transform objSpawnPoint;
+    [TabGroup("IngredientMaker")] [SerializeField] private float objSpawnTime = 2f;
+    [TabGroup("IngredientMaker")] [SerializeField] private int maxObj = 10;
 
-    protected float spawnTimer = 0f;
-    protected Stack<GameObject> churuStack = new Stack<GameObject>();
+    private float spawnTimer = 0f;
+    private Stack<GameObject> churuStack = new Stack<GameObject>();
     public Stack<GameObject> ChuruStack
     {
         get { return churuStack; }
@@ -24,7 +24,7 @@ public class ChuruManager : MonoBehaviour
         SpawnGameObject();
     }
 
-    protected void SpawnGameObject()
+    private void SpawnGameObject()
     {
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= objSpawnTime)

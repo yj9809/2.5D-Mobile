@@ -7,7 +7,7 @@ public class ChangeObject : MonoBehaviour
     [SerializeField] private GameObject objectB; // 변환될 B 오브젝트의 프리팹
     [SerializeField] private Transform newTransform;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ingredient") || other.CompareTag("Churu"))
         {

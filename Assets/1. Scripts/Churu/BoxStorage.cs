@@ -6,7 +6,7 @@ public class BoxStorage : MonoBehaviour
 {
     [SerializeField] private Transform boxTransform;
 
-    public Transform Box
+    public Transform BoxTrans
     {
         get { return boxTransform; }
     }
