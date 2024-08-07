@@ -10,9 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
-    private float speed = 5f;
 
+    private float speed = 5f;
     private int maxObjStackCount = 5;
+
     private CharacterController cc;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
@@ -34,8 +35,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    [SerializeField] private int maxObjStackCount = 0;
     private Camera mainCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour
     {
         if (joystick == null)
         {
-            Debug.LogError("Joystick�� �����ֽ��ϴ�.");
+            Debug.LogError("Joystick is null !");
             return;
         }
 
@@ -65,7 +66,6 @@ public class Player : MonoBehaviour
 
         if (moveDirection != Vector3.zero)
         {
-            // ī�޶��� ȸ���� �������� moveDirection ��ȯ
             Vector3 cameraForward = mainCamera.transform.forward;
             cameraForward.y = 0;
             cameraForward.Normalize();
