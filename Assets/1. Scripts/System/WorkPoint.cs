@@ -7,6 +7,7 @@ public class WorkPoint : MonoBehaviour
     [SerializeField] private IngredientMaker _ingredientMaker;
     [SerializeField] private ConveyorBelt _conveyorBelt;
     [SerializeField] private BoxStorage _boxStorage;
+    [SerializeField] private Delivery _delivery;
 
     // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
@@ -27,6 +28,11 @@ public class WorkPoint : MonoBehaviour
             if(_boxStorage != null)
             {
                 p.GiveObject(_boxStorage);
+            }
+
+            if (_delivery != null)
+            {
+                p.GiveObject(_delivery);
             }
         }
     }

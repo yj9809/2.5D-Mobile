@@ -116,4 +116,11 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, boxStack, 1);
         }
     }
+    public void GiveObject(Delivery dv)
+    {
+        if (dv.DeliveryStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
+        {
+            Utility.ObjectDrop(cartTransform, null, dv.DeliveryStack, boxStack, 1);
+        }
+    }
 }
