@@ -123,4 +123,11 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, dv.DeliveryStack, boxStack, 1);
         }
     }
+    public void GiveObject(TestCar tc)
+    {
+        if (boxStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
+        {
+            Utility.ObjectDrop(tc.gameObject.transform, null, boxStack, tc.TestStack, 1);
+        }
+    }
 }

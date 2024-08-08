@@ -6,6 +6,18 @@ using UnityEngine.AI;
 public class TestCar : MonoBehaviour
 {
     [SerializeField] private Transform[] checkPoint;
+
+    [SerializeField] private GameObject workPoint;
+
+    private Stack<GameObject> testStack = new Stack<GameObject>();
+    public Stack<GameObject> TestStack
+    {
+        get { return testStack; }
+        set
+        {
+            testStack = value;
+        }
+    }
     private NavMeshAgent na;
 
     private int currentCheckPoint = 0;
@@ -14,6 +26,7 @@ public class TestCar : MonoBehaviour
     {
         na = GetComponent<NavMeshAgent>();
         na.SetDestination(checkPoint[currentCheckPoint].position);
+        workPoint.SetActive(false);
     }
 
     // Update is called once per frame
@@ -31,6 +44,7 @@ public class TestCar : MonoBehaviour
             {
                 // 모든 체크포인트를 지나면 이동 종료
                 na.isStopped = true;
+                workPoint.SetActive(true);
             }
         }
 
