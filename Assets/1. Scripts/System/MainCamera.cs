@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MainCamera : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class MainCamera : MonoBehaviour
     private bool isZoom;
 
     private GameManager gm;
+
+    private float positionY;
+    private float rotationX;
 
     private void Awake()
     {
@@ -25,7 +29,7 @@ public class MainCamera : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3
-            (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + cameraPosition.z);
+            (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + -4);
         transform.rotation = Quaternion.Euler
             (cameraRotation.x, cameraRotation.y, cameraRotation.z);
     }
@@ -34,15 +38,19 @@ public class MainCamera : MonoBehaviour
     {
         if (!isZoom)
         {
-            cameraPosition.y = 30f;
-            cameraRotation.x = 70f;
+            positionY = 30f;
+            rotationX = 70f;
             isZoom = true;
         }
         else
         {
-            cameraPosition.y = 12f;
-            cameraRotation.x = 50f;
+            positionY = 12f;
+            rotationX = 50f;
             isZoom = false;
         }
+        transform.DOMoveY(positionY, 0.5f)
+            .OnComplete(() => cameraPosition.y = positionY);
+        transform.DORotate(new Vector3(rotationX, cameraRotation.y, cameraRotation.z), 0.5f)
+            .OnComplete(() => cameraRotation.x = rotationX);
     }
 }
