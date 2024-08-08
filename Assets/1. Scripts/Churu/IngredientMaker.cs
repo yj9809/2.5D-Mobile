@@ -37,7 +37,7 @@ public class IngredientMaker : MonoBehaviour
         }
         else if(ChuruStack.Count >= maxObj)
         {
-            Debug.Log("Object is Full !");
+            //Debug.Log("Object is Full !");
         }
     }
 }
