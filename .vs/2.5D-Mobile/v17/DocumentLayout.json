@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kos09\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Unity\\2.5D-Mobile\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EB322F38-F76F-4ED5-9CD9-9B3C3CE37E7C}|Assembly-CSharp.csproj|c:\\users\\kos09\\onedrive\\\uBC14\uD0D5 \uD654\uBA74\\unity\\2.5d-mobile\\assets\\1. scripts\\system\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EB322F38-F76F-4ED5-9CD9-9B3C3CE37E7C}|Assembly-CSharp.csproj|solutionrelative:assets\\1. scripts\\system\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UIManager.cs",
+              "DocumentMoniker": "C:\\Users\\kos09\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Unity\\2.5D-Mobile\\Assets\\1. Scripts\\System\\UIManager.cs",
+              "RelativeDocumentMoniker": "Assets\\1. Scripts\\System\\UIManager.cs",
+              "ToolTip": "C:\\Users\\kos09\\OneDrive\\\uBC14\uD0D5 \uD654\uBA74\\Unity\\2.5D-Mobile\\Assets\\1. Scripts\\System\\UIManager.cs",
+              "RelativeToolTip": "Assets\\1. Scripts\\System\\UIManager.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAB0AAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-09T02:06:52.382Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
