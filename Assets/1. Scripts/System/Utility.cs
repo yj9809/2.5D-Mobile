@@ -43,7 +43,7 @@ public static class Utility
             }
             else if(num == (int) CheckType.Array)
             {
-                newChuru = PoolingManager.Instance.GetObj(churu);
+                newChuru = churu;
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * (setChuruStack.Count % 10)), 0), 0.2f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
@@ -55,7 +55,6 @@ public static class Utility
             }
         }
         newChuru.transform.SetParent(parentPos);
-        if(setChuruStack != null)
-            setChuruStack.Push(newChuru);
+        setChuruStack.Push(newChuru);
     }
 }
