@@ -37,7 +37,6 @@ public class WorkPoint : MonoBehaviour
             }
             if(testCar != null)
             {
-                Debug.Log("½ÇÇà");
                 p.GiveObject(testCar);
             }
         }

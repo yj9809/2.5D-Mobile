@@ -58,7 +58,7 @@ public class PoolingManager : Singleton<PoolingManager>
         {
             if(returnPrefab.GetComponent<Rigidbody>())
                 Destroy(returnPrefab.GetComponent<Rigidbody>());
-
+            returnPrefab.transform.SetParent(transform);
             poolDictionary[returnPrefab.name].Enqueue(returnPrefab);
         }
         else

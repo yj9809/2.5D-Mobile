@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
 
-    private float speed = 5f;
+    private float speed = 20f;
     private int maxObjStackCount = 5;
 
     private CharacterController cc;
@@ -111,23 +111,23 @@ public class Player : MonoBehaviour
     }
     public void GiveObject(BoxStorage bs)
     {
-        if (bs.BoxStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
+        if (bs.BoxStack.Count > 0  && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, boxStack, 1);
         }
     }
     public void GiveObject(Delivery dv)
     {
-        if (dv.DeliveryStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
+        if (dv.DeliveryStack.Count > 0 && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, dv.DeliveryStack, boxStack, 1);
         }
     }
     public void GiveObject(TestCar tc)
     {
-        if (boxStack.Count > 0 && maxObjStackCount > boxStack.Count && ingredientStack.Count <= 0)
+        if (boxStack.Count > 0 && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(tc.gameObject.transform, null, boxStack, tc.TestStack, 1);
+            Utility.ObjectDrop(tc.gameObject.transform, null, boxStack, tc.BoxStack, 3);
         }
     }
 }

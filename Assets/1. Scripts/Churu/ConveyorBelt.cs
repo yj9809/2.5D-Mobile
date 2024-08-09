@@ -39,7 +39,7 @@ public class ConveyorBelt : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1.5f);
 
             if (cbStack.Count > 0)
             {
