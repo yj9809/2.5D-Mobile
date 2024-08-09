@@ -89,13 +89,17 @@ public class TestCar : MonoBehaviour
             else
             {
                 // 모든 체크포인트를 지나면 이동 종료
-                na.isStopped = true;
+                ct = CarType.Go;
             }
         }
     }
 
     private void ClearBoxStack()
     {
+        foreach (GameObject item in boxStack)
+        {
+            PoolingManager.Instance.ReturnObjecte(item);
+        }
         boxStack.Clear();
         Debug.Log("boxStack Clear !");
     }
