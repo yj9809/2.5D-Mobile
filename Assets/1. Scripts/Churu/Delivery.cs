@@ -12,10 +12,6 @@ public class Delivery : MonoBehaviour
         get { return deliveryStack; }
         set { deliveryStack = value; }
     }
-    private void Update()
-    {
-        
-    }
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Box"))

@@ -26,6 +26,7 @@ public static class Utility
         if (num == (int)CheckType.Create)
         {
             newChuru = PoolingManager.Instance.GetObj(churu);
+            newChuru.name = churu.name;
             newChuru.transform.SetParent(parentPos);
             newChuru.transform.localPosition = new Vector3(0, (ObjRendererCheck(newChuru) * setChuruStack.Count), 0);
         }

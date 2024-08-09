@@ -44,7 +44,7 @@ public class PoolingManager : Singleton<PoolingManager>
         return objToReturn;
     }
 
-    private void ReturnObjecte(GameObject returnPrefab)
+    public void ReturnObjecte(GameObject returnPrefab)
     {
         if(returnPrefab == null)
         {
@@ -56,6 +56,9 @@ public class PoolingManager : Singleton<PoolingManager>
 
         if(poolDictionary.ContainsKey(returnPrefab.name))
         {
+            if(returnPrefab.GetComponent<Rigidbody>())
+                Destroy(returnPrefab.GetComponent<Rigidbody>());
+
             poolDictionary[returnPrefab.name].Enqueue(returnPrefab);
         }
         else
