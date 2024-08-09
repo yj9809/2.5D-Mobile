@@ -88,7 +88,7 @@ public class TestCar : MonoBehaviour
             }
             else
             {
-                // 모든 체크포인트를 지나면 이동 종료
+                // 다시 갔다가 돌아온다.
                 ct = CarType.Go;
             }
         }
@@ -96,6 +96,7 @@ public class TestCar : MonoBehaviour
 
     private void ClearBoxStack()
     {
+        // 게임 오브젝트도 함께 없애기 위해 클리어 전에 리턴 풀링 해주는 코드.
         foreach (GameObject item in boxStack)
         {
             PoolingManager.Instance.ReturnObjecte(item);
