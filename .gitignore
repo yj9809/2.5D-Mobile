@@ -3,6 +3,7 @@
 /Logs
 /obj
 /Temp
+.vs/
 
 *.csproj
 *.sln
