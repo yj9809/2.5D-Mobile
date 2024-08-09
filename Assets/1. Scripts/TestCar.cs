@@ -26,6 +26,8 @@ public class TestCar : MonoBehaviour
     }
 
     private int currentCheckPoint = 1;
+
+    private int goldPerBox = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,9 +41,12 @@ public class TestCar : MonoBehaviour
     {
         if(boxStack.Count >= 5)
         {
-            // 이쯤에다 코인 올라가는거 추가하면 될 듯
             workPoint.SetActive(false);
             ct = CarType.Come;
+
+            // boxStack이 모두 채워졌을 때 골드획득
+            UIManager.Instance.AddGold(boxStack.Count * goldPerBox);
+            ClearBoxStack();
         }
 
         if (ct == CarType.Go)
@@ -87,5 +92,11 @@ public class TestCar : MonoBehaviour
                 na.isStopped = true;
             }
         }
+    }
+
+    private void ClearBoxStack()
+    {
+        boxStack.Clear();
+        Debug.Log("boxStack Clear !");
     }
 }
