@@ -32,7 +32,7 @@ public static class Utility
             newChuru.transform.SetParent(parentPos);
             newChuru.transform.localPosition = new Vector3(0, (ObjRendererCheck(newChuru) * setChuruStack.Count), 0);
         }
-        else 
+        else
         {
             if (num == (int)CheckType.Drop)
             {
