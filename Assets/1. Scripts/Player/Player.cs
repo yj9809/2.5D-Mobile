@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
-
     [SerializeField] private Joystick joystick;
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
