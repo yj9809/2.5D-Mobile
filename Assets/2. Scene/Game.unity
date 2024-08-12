@@ -3049,7 +3049,7 @@ Animator:
   m_GameObject: {fileID: 865874995372593646}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ca3d8f9a97e981d429f5b24e9d0d52ed, type: 3}
-  m_Controller: {fileID: 9100000, guid: 86c19e7d21fdcfe43b8a5e3c3f1a8623, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5aa34c701a301224fb7264b1404d44d2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3095,8 +3095,8 @@ MonoBehaviour:
   cart: {fileID: 2042987073}
   cartTransform: {fileID: 678426187}
   maxObjStackCount: 5
-  speed: 2
-  waitTime: 3
+  speed: 3
+  cartSpeed: 1.5
 --- !u!4 &6017063803281175482
 Transform:
   m_ObjectHideFlags: 0
