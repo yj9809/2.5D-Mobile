@@ -24,7 +24,7 @@ public class IngredientMaker : MonoBehaviour
         SpawnGameObject();
     }
 
-    private void SpawnGameObject()
+    private void SpawnGameObject()  
     {
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= objSpawnTime)

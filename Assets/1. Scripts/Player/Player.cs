@@ -9,9 +9,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
+    [SerializeField] private int maxObjStackCount = 5;
 
-    private float speed = 10f;
-    private int maxObjStackCount = 5;
+    private float speed = 5f;
 
     private CharacterController cc;
 

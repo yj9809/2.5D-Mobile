@@ -29,7 +29,7 @@ public class MainCamera : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3
-            (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + -4);
+            (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + cameraPosition.z);
         transform.rotation = Quaternion.Euler
             (cameraRotation.x, cameraRotation.y, cameraRotation.z);
     }
