@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private float speed = 5f;
 
     private CharacterController cc;
+    private Animator animator;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         mainCamera = Camera.main;
     }
 
@@ -76,9 +78,14 @@ public class Player : MonoBehaviour
             Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
 
             cc.Move(adjustedDirection * speed * Time.deltaTime);
+            animator.SetBool("isWalk", true);
 
             Quaternion newRotation = Quaternion.LookRotation(adjustedDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
+        }
+        else
+        {
+            animator.SetBool("isWalk", false);
         }
 
         Vector3 currentPosition = transform.position;

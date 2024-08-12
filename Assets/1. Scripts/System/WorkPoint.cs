@@ -14,18 +14,21 @@ public class WorkPoint : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Player p = other.GetComponent<Player>();
-        if (p != null)
+        Employee e = other.GetComponent<Employee>();
+        if (p != null || e != null)
         {
             if(_ingredientMaker != null )
             {
                 Debug.Log("실행 : 재료");
-                p.TakeObject(_ingredientMaker);
+                if (p != null) p.TakeObject(_ingredientMaker);
+                if (e != null) e.TakeObject(_ingredientMaker);
             }
 
             if(_conveyorBelt != null)
             {
                 Debug.Log("실행 : 컨베이어 벨트");
-                p.GiveObject(_conveyorBelt);
+                if (p != null) p.GiveObject(_conveyorBelt);
+                if (e != null) e.GiveObject(_conveyorBelt);
             }
 
             if(_boxStorage != null)
