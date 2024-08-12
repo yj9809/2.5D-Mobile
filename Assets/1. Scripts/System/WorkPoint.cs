@@ -10,6 +10,12 @@ public class WorkPoint : MonoBehaviour
     [SerializeField] private Delivery _delivery;
     [SerializeField] private TestCar testCar;
 
+    private Player player;
+    private void Start()
+    {
+        player = GameManager.Instance.P;
+    }
+
     // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
     {

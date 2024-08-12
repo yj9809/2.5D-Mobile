@@ -12,8 +12,9 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform cartTransform;
     [SerializeField] private int maxObjStackCount = 5;
 
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float waitTime = 2f;
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float cartSpeed = 1.5f;
+    [SerializeField] private float waitTime = 1f;
     private bool moving = false;
     private bool isWaiting = false;
 
@@ -43,7 +44,6 @@ public class Employee : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        //transform.position = ingredientPoint.position;
     }
 
     // Update is called once per frame
@@ -68,7 +68,18 @@ public class Employee : MonoBehaviour
                 targetPosition = ingredientPoint.position;
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+            float currentSpeed = animator.GetFloat("Blend") == 1 ? cartSpeed : speed;
+            animator.SetBool("isMove", true);
+            if (ingredientStack.Count > 0)
+            {
+                animator.SetFloat("Blend", 1);
+            }
+            else
+            {
+                animator.SetFloat("Blend", 0);
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
             {
@@ -76,7 +87,7 @@ public class Employee : MonoBehaviour
                 StartCoroutine(WaitAtPosition());
             }
 
-            animator.SetBool("isWalk", true);
+            
 
             Vector3 direction = targetPosition - transform.position;
             direction.y = 0;
@@ -88,8 +99,7 @@ public class Employee : MonoBehaviour
         }
         else
         {
-            // 대기 상태일 때 애니메이션을 정지 상태로 설정
-            animator.SetBool("isWalk", false);
+            animator.SetBool("isMove", false);
         }
     }
 

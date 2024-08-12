@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxObjStackCount = 5;
 
     private float speed = 5f;
+    private float cartSpeed = 2.5f;
 
     private CharacterController cc;
     private Animator animator;
@@ -77,15 +78,27 @@ public class Player : MonoBehaviour
 
             Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
 
-            cc.Move(adjustedDirection * speed * Time.deltaTime);
-            animator.SetBool("isWalk", true);
+            float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : speed;
+            animator.SetBool("isMove", true);
+            if (ingredientStack.Count > 0)
+            {
+                animator.SetFloat("Blend", 1);
+            }
+            else
+            {
+                animator.SetFloat("Blend", 0);
+            }
+
+            cc.Move(adjustedDirection * currentSpeed * Time.deltaTime);
 
             Quaternion newRotation = Quaternion.LookRotation(adjustedDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
+
+            Debug.Log(currentSpeed);
         }
         else
         {
-            animator.SetBool("isWalk", false);
+            animator.SetBool("isMove", false);
         }
 
         Vector3 currentPosition = transform.position;
@@ -93,11 +106,12 @@ public class Player : MonoBehaviour
         transform.position = currentPosition;
     }
 
-    private void OnCart()
+    public void OnCart()
     {
-        if(ingredientStack.Count <= 0 && boxStack.Count <= 0)
+        if (ingredientStack.Count <= 0 && boxStack.Count <= 0)
         {
             cart.transform.DOScale(0, 0.2f);
+            
         }
         else
         {
