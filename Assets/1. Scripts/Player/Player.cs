@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     {
         if (joystick == null)
         {
-            Debug.LogError("Joystick is null !");
+            joystick = FindObjectOfType<Joystick>();
             return;
         }
 
