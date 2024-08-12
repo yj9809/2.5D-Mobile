@@ -6,7 +6,7 @@ using DG.Tweening;
 public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Player p;
-    private Vector3 cameraPosition = new Vector3(-4.5f, 12f, -4);
+    private Vector3 cameraPosition = new Vector3(-5.25f, 9f, -4.7f);
     private Vector3 cameraRotation = new Vector3(50f, 45f, 0);
     private bool isZoom;
 

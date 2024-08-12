@@ -81,6 +81,10 @@ public class Player : MonoBehaviour
             Quaternion newRotation = Quaternion.LookRotation(adjustedDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
         }
+
+        Vector3 currentPosition = transform.position;
+        currentPosition.y = 0;
+        transform.position = currentPosition;
     }
 
     private void OnCart()
