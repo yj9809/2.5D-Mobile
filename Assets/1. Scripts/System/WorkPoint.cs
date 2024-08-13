@@ -25,21 +25,18 @@ public class WorkPoint : MonoBehaviour
         {
             if(_ingredientMaker != null )
             {
-                Debug.Log("실행 : 재료");
                 if (p != null) p.TakeObject(_ingredientMaker);
                 if (e != null) e.TakeObject(_ingredientMaker);
             }
 
             if(_conveyorBelt != null)
             {
-                Debug.Log("실행 : 컨베이어 벨트");
                 if (p != null) p.GiveObject(_conveyorBelt);
                 if (e != null) e.GiveObject(_conveyorBelt);
             }
 
             if(_boxStorage != null)
             {
-                Debug.Log("실행 : 박스");
                 p.GiveObject(_boxStorage);
             }
 
@@ -49,7 +46,6 @@ public class WorkPoint : MonoBehaviour
             }
             if(testCar != null)
             {
-                Debug.Log("실행 : 트럭");
                 p.GiveObject(testCar);
             }
         }
