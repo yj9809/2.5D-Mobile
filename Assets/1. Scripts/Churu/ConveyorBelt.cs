@@ -8,9 +8,9 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField] private Vector3 direction = Vector3.forward;
     [SerializeField] private Transform ingredientStorage;
     [SerializeField] private Transform onBelt;
+    [SerializeField] private BoxStorage boxStorage;
 
-    private float timer = 2f;
-    private float time = 0;
+    private bool isOn = true;
 
     public Transform IngredientStorage
     {
@@ -37,13 +37,24 @@ public class ConveyorBelt : MonoBehaviour
     {
         StartCoroutine(PlaceObject());
     }
+    private void Update()
+    {
+        if(boxStorage.BoxStack.Count >= 40)
+        {
+            isOn = false;
+        }
+        else
+        {
+            isOn = true;
+        }
+    }
     private IEnumerator PlaceObject()
     {
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
 
-            if (cbStack.Count > 0)
+            if (cbStack.Count > 0 && isOn)
             {
                 PushStack();
                 GameObject newChuru = cbStack.Pop();
@@ -60,10 +71,14 @@ public class ConveyorBelt : MonoBehaviour
     // 추후 좋은 방법 생기면 다시 수정 예정.
     private void PushStack()
     {
-        cbStack.Clear();
-        foreach (Transform item in ingredientStorage)
+        if(ingredientStorage.childCount != cbStack.Count)
         {
-            cbStack.Push(item.gameObject);
+            Debug.Log("스택 수정");
+            cbStack.Clear();
+            foreach (Transform item in ingredientStorage)
+            {
+                cbStack.Push(item.gameObject);
+            }
         }
     }
 }

@@ -1780,6 +1780,7 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: -1}
   ingredientStorage: {fileID: 357901326}
   onBelt: {fileID: 424455994995044555}
+  boxStorage: {fileID: 1219976774}
 --- !u!1001 &1792941196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2413,7 +2414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &908703299340699681
 Transform:
   m_ObjectHideFlags: 0
@@ -3097,6 +3098,7 @@ MonoBehaviour:
   maxObjStackCount: 5
   speed: 3
   cartSpeed: 1.5
+  waitTime: 1
 --- !u!4 &6017063803281175482
 Transform:
   m_ObjectHideFlags: 0
