@@ -2413,7 +2413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &908703299340699681
 Transform:
   m_ObjectHideFlags: 0
@@ -3097,6 +3097,7 @@ MonoBehaviour:
   maxObjStackCount: 5
   speed: 3
   cartSpeed: 1.5
+  waitTime: 1
 --- !u!4 &6017063803281175482
 Transform:
   m_ObjectHideFlags: 0
