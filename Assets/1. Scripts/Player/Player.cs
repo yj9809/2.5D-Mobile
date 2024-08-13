@@ -18,24 +18,8 @@ public class Player : MonoBehaviour
     private Animator animator;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
-    public Stack<GameObject> IngredientStack
-    {
-        get { return ingredientStack; }
-        set
-        {
-            ingredientStack = value;
-        }
-    }
+    private Stack<GameObject> churuStack = new Stack<GameObject>();
     private Stack<GameObject> boxStack = new Stack<GameObject>();
-    public Stack<GameObject> BoxStack
-    {
-        get { return boxStack; }
-        set
-        {
-            boxStack = value;
-        }
-    }
-
     private Camera mainCamera;
 
     // Start is called before the first frame update
@@ -124,18 +108,27 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
         }
     }
-    public void GiveObject(ConveyorBelt cb)
+    public void GiveObject(ConveyorBelt cb, bool isChuru)
     {
-        if (ingredientStack.Count > 0)
+        Stack<GameObject> stack = new Stack<GameObject>();
+
+        if (isChuru) stack = churuStack;
+        else stack = ingredientStack;
+
+        if (ingredientStack.Count > 0 || churuStack.Count > 0)
         {
-            Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
+            Utility.ObjectDrop(cb.IngredientStorage, null, stack, cb.CbStack, 1);
         }
     }
-    public void GiveObject(BoxStorage bs)
+    public void GiveObject(BoxStorage bs, bool isChuru)
     {
+        Stack<GameObject> stack = new Stack<GameObject>();
+        if (isChuru)  stack = churuStack;
+        else stack = boxStack;
+
         if (bs.BoxStack.Count > 0  && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, boxStack, 1);
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, stack, 1);
         }
     }
     public void GiveObject(Delivery dv)
