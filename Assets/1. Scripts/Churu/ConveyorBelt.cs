@@ -62,7 +62,10 @@ public class ConveyorBelt : MonoBehaviour
                 newChuru.transform.SetParent(onBelt);
 
                 if(!newChuru.GetComponent<Rigidbody>())
+                {
                     newChuru.AddComponent<Rigidbody>();
+                    newChuru.GetComponent<Rigidbody>().freezeRotation = true;
+                }
             }
         }
     }
