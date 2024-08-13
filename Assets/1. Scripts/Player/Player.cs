@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            cart.transform.DOScale(new Vector3(1, 0.01f, 2), 0.2f);
+            cart.transform.DOScale(1, 0.2f);
         }
     }
 
