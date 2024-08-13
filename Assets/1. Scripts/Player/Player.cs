@@ -93,8 +93,6 @@ public class Player : MonoBehaviour
 
             Quaternion newRotation = Quaternion.LookRotation(adjustedDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime * 10f);
-
-            Debug.Log(currentSpeed);
         }
         else
         {

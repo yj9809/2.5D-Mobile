@@ -1046,9 +1046,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7115775916991387996}
+  - component: {fileID: 3756139160372560696}
   - component: {fileID: 3756139160372560678}
   - component: {fileID: 3756139160372560679}
-  - component: {fileID: 3756139160372560696}
   m_Layer: 0
   m_Name: '[ Player ]'
   m_TagString: Untagged
@@ -1075,6 +1075,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3756139160372560696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605314036304790502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c19e1323561524f87a6bb433d11f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 0}
+  obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
+  cart: {fileID: 7991565292229306694}
+  cartTransform: {fileID: 7072577327283952377}
+  maxObjStackCount: 5
 --- !u!95 &3756139160372560678
 Animator:
   serializedVersion: 5
@@ -1114,23 +1131,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3756139160372560696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7605314036304790502}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c19e1323561524f87a6bb433d11f81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
-  cart: {fileID: 7991565292229306694}
-  cartTransform: {fileID: 7072577327283952377}
-  maxObjStackCount: 5
 --- !u!1 &7660598360815739069
 GameObject:
   m_ObjectHideFlags: 0
