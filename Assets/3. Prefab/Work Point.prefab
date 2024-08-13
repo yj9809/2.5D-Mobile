@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2944756444144404592}
   - component: {fileID: 2944756444144404593}
   - component: {fileID: 7646081294353099358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Work Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2944756444144404595}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.40000004, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,8 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee52342fcf52e34ea0f0c95a6793ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cm: {fileID: 0}
-  cb: {fileID: 0}
+  _ingredientMaker: {fileID: 0}
+  _conveyorBelt: {fileID: 0}
+  _boxStorage: {fileID: 0}
+  _delivery: {fileID: 0}
+  testCar: {fileID: 0}
 --- !u!198 &2944756444144404592
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4839,5 +4842,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 4}
+  m_Size: {x: 4, y: 0.3, z: 4}
   m_Center: {x: 0, y: 0.2, z: 0}

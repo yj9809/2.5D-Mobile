@@ -20,7 +20,7 @@ public class BoxStorage : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Box") && boxStack.Count < 40)
+        if ((other.CompareTag("Box") || other.CompareTag("Churu")) && boxStack.Count < 40)
         {
             Destroy(other.GetComponent<Rigidbody>());
             Utility.ObjectDrop(boxTransform[boxTransformNum], other.gameObject, null, boxStack, 2);
