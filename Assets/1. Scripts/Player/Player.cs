@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
 
             float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : speed;
             animator.SetBool("isMove", true);
-            if (ingredientStack.Count > 0)
+            if (ingredientStack.Count > 0 || BoxStack.Count > 0)
             {
                 animator.SetFloat("Blend", 1);
             }
