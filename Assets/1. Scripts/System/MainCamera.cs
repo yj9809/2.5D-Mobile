@@ -26,7 +26,7 @@ public class MainCamera : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         transform.position = new Vector3
             (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + cameraPosition.z);
