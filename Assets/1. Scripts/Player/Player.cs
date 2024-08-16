@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
         if (isChuru) stack = churuStack;
         else stack = ingredientStack;
 
-        if (ingredientStack.Count > 0 || churuStack.Count > 0)
+        if ((ingredientStack.Count > 0 && !isChuru) || (churuStack.Count > 0 && isChuru))
         {
             Utility.ObjectDrop(cb.IngredientStorage, null, stack, cb.CbStack, 1);
         }
