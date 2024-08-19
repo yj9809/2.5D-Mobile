@@ -108,27 +108,25 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
         }
     }
-    public void GiveObject(ConveyorBelt cb, bool isChuru)
+    public void GiveObject(ConveyorBelt cb)
     {
-        Stack<GameObject> stack = new Stack<GameObject>();
-
-        if (isChuru) stack = churuStack;
-        else stack = ingredientStack;
-
-        if ((ingredientStack.Count > 0 && !isChuru) || (churuStack.Count > 0 && isChuru))
+        if (ingredientStack.Count > 0)
         {
-            Utility.ObjectDrop(cb.IngredientStorage, null, stack, cb.CbStack, 1);
+            Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
     }
-    public void GiveObject(BoxStorage bs, bool isChuru)
+    public void GiveObject(BoxStorage bs)
     {
-        Stack<GameObject> stack = new Stack<GameObject>();
-        if (isChuru)  stack = churuStack;
-        else stack = boxStack;
-
         if (bs.BoxStack.Count > 0  && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, stack, 1);
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, churuStack, 1);
+        }
+    }
+    public void GiveObject(BoxPackaging bp)
+    {
+        if (churuStack.Count > 0)
+        {
+            Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 1);
         }
     }
     public void GiveObject(Delivery dv)
