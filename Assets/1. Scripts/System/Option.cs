@@ -11,16 +11,17 @@ public class Option : MonoBehaviour
     [SerializeField] private Button soundToggleButton;
     [SerializeField] private AudioSource audioSource;
     private bool isSoundOn = true;
-    private MainCamera camera0;
+    private MainCamera _camera;
 
     // Start is called before the first frame update
     void Start()
     {
-        camera0 = FindObjectOfType<MainCamera>();
+        _camera = FindObjectOfType<MainCamera>();
 
         blurPanel.SetActive(false);
 
         isSoundOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
+        audioSource.mute = !isSoundOn;
         SoundText();
     }
 
@@ -42,7 +43,7 @@ public class Option : MonoBehaviour
 
     public void Zoom()
     {
-        camera0.ZoomScreen();
+        _camera.ZoomScreen();
     }
 
     public void ShowOption()
