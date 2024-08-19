@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
     {
         if (churuStack.Count > 0)
         {
-            Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 1);
+            Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 4);
         }
     }
     public void GiveObject(Delivery dv)

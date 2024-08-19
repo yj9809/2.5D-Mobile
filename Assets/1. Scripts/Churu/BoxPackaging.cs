@@ -76,7 +76,7 @@ public class BoxPackaging : MonoBehaviour
         {
             boxStorage.Push(newBox);
             newBox.transform.SetParent(packagingBoxParent);
-            newBox.transform.DOLocalMove(new Vector3(0, 0 + (Utility.ObjRendererCheck(newBox) * boxStorage.Count), 0), 0.2f).SetEase(Ease.InBack);
+            newBox.transform.DOLocalMove(new Vector3(0, 0 + (Utility.ObjRendererCheck(newBox, "y") * boxStorage.Count), 0), 0.2f).SetEase(Ease.InBack);
             this.newBox = null;
             this.count = 0;
         }
