@@ -6,10 +6,11 @@ using TMPro;
 
 public class Option : MonoBehaviour
 {
-    // 사운드 추가 후 다시 테스트 해야함
     [SerializeField] private GameObject blurPanel;
     [SerializeField] private Button soundToggleButton;
     [SerializeField] private AudioSource audioSource;
+    [SerializeField] private Sprite soundOn;
+    [SerializeField] private Sprite soundOff;
     private bool isSoundOn = true;
     private MainCamera _camera;
 
@@ -22,7 +23,7 @@ public class Option : MonoBehaviour
 
         isSoundOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
         audioSource.mute = !isSoundOn;
-        SoundText();
+        UpdateSoundImage();
     }
 
     public void SoundButton()
@@ -33,12 +34,12 @@ public class Option : MonoBehaviour
         PlayerPrefs.SetInt("SoundState", isSoundOn ? 1 : 0);
         PlayerPrefs.Save();
 
-        SoundText();
+        UpdateSoundImage();
     }
 
-    private void SoundText()
+    private void UpdateSoundImage()
     {
-        soundToggleButton.GetComponentInChildren<TextMeshProUGUI>().text = isSoundOn ? "Sound ON" : "Sound OFF";
+        soundToggleButton.image.sprite = isSoundOn ? soundOn : soundOff;
     }
 
     public void Zoom()
