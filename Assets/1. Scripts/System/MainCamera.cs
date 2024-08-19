@@ -6,51 +6,52 @@ using DG.Tweening;
 public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Player p;
-    private Vector3 cameraPosition = new Vector3(-5.25f, 9f, -4.7f);
+    private Vector3 cameraPosition = new Vector3(-5.25f, 12f, -4.7f);
     private Vector3 cameraRotation = new Vector3(50f, 45f, 0);
     private bool isZoom;
 
     private GameManager gm;
 
-    private float positionY;
-    private float rotationX;
-
     private void Awake()
     {
         gm = GameManager.Instance;
     }
+
     // Start is called before the first frame update
     void Start()
     {
         p = gm.P;
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = new Vector3
+
+        Vector3 targetPosition = new Vector3
             (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + cameraPosition.z);
-        transform.rotation = Quaternion.Euler
-            (cameraRotation.x, cameraRotation.y, cameraRotation.z);
+        transform.position = targetPosition;
+
+        transform.rotation = Quaternion.Euler(cameraRotation);
     }
 
     public void ZoomScreen()
     {
         if (!isZoom)
         {
-            positionY = 30f;
-            rotationX = 70f;
+            cameraPosition = new Vector3(-10f, 20f, -10f);
+            cameraRotation.x = 50f;
             isZoom = true;
         }
         else
         {
-            positionY = 12f;
-            rotationX = 50f;
+            cameraPosition = new Vector3(-5.25f, 12f, -4.7f);
+            cameraRotation.x = 50f;
             isZoom = false;
         }
-        transform.DOMoveY(positionY, 0.5f)
-            .OnComplete(() => cameraPosition.y = positionY);
-        transform.DORotate(new Vector3(rotationX, cameraRotation.y, cameraRotation.z), 0.5f)
-            .OnComplete(() => cameraRotation.x = rotationX);
+
+        Vector3 targetPosition = new Vector3
+            (p.transform.position.x + cameraPosition.x, cameraPosition.y, p.transform.position.z + cameraPosition.z);
+
+        transform.DOMove(targetPosition, 0.5f);
+        transform.DORotate(new Vector3(cameraRotation.x, cameraRotation.y, cameraRotation.z), 0.5f);
     }
 }
