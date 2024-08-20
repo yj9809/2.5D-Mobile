@@ -9,10 +9,10 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
-    [SerializeField] private int maxObjStackCount = 5;
-
-    private float speed = 5f;
-    private float cartSpeed = 2.5f;
+    public int maxObjStackCount = 5;
+    public float baseSpeed = 5f;
+    public float cartSpeed = 2.5f;
+    public int gold = 0;
 
     private CharacterController cc;
     private Animator animator;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
 
             Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
 
-            float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : speed;
+            float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : baseSpeed;
             animator.SetBool("isMove", true);
             if (ingredientStack.Count > 0 || boxStack.Count > 0)
             {

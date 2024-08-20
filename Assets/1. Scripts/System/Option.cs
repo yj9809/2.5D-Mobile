@@ -7,10 +7,13 @@ using TMPro;
 public class Option : MonoBehaviour
 {
     [SerializeField] private GameObject blurPanel;
-    [SerializeField] private Button soundToggleButton;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private Sprite soundOn;
-    [SerializeField] private Sprite soundOff;
+    [SerializeField] private Button musicButton;
+    [SerializeField] private Button soundEffectButton;
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource soundEffectSource;
+    [SerializeField] private Sprite[] musicOn_Off;
+    [SerializeField] private Sprite[] soundEffectOn_Off;
+    private bool isMusicOn = true;
     private bool isSoundOn = true;
     private MainCamera _camera;
 
@@ -21,25 +24,46 @@ public class Option : MonoBehaviour
 
         blurPanel.SetActive(false);
 
+        musicButton.onClick.AddListener(MusicButton);
+        soundEffectButton.onClick.AddListener(SoundButton);
+
+        isMusicOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
         isSoundOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
-        audioSource.mute = !isSoundOn;
-        UpdateSoundImage();
+        musicSource.mute = !isMusicOn;
+        soundEffectSource.mute = !isSoundOn;
+        UpdateMusicImage();
+        UpdateEffectImage();
     }
 
+    public void MusicButton()
+    {
+        isMusicOn = !isMusicOn;
+        musicSource.mute = !isMusicOn;
+
+        PlayerPrefs.SetInt("SoundState", isMusicOn ? 1 : 0);
+        PlayerPrefs.Save();
+
+        UpdateMusicImage();
+    }
     public void SoundButton()
     {
         isSoundOn = !isSoundOn;
-        audioSource.mute = !isSoundOn;
+        soundEffectSource.mute = !isSoundOn;
 
         PlayerPrefs.SetInt("SoundState", isSoundOn ? 1 : 0);
         PlayerPrefs.Save();
 
-        UpdateSoundImage();
+        UpdateEffectImage();
     }
 
-    private void UpdateSoundImage()
+    private void UpdateMusicImage()
     {
-        soundToggleButton.image.sprite = isSoundOn ? soundOn : soundOff;
+        musicButton.image.sprite = isMusicOn ? musicOn_Off[0] : musicOn_Off[1];
+    }
+
+    private void UpdateEffectImage()
+    {
+        soundEffectButton.image.sprite = isSoundOn ? soundEffectOn_Off[0] : soundEffectOn_Off[1];
     }
 
     public void Zoom()

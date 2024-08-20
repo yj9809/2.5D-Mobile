@@ -11,7 +11,8 @@ public enum WorkPointType
     ChuruStorage,
     BoxStorage,
     TestCar,
-    Packaging
+    Packaging,
+    Office
 }
 public class WorkPoint : MonoBehaviour
 {
@@ -53,6 +54,9 @@ public class WorkPoint : MonoBehaviour
                     break;
                 case WorkPointType.Packaging:
                     _boxPackaging.Packaging();
+                    break;
+                case WorkPointType.Office:
+                    UIManager.Instance.ShowUpgradeUI();
                     break;
             }
         }
