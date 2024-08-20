@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChangeObject : MonoBehaviour
 {
-    [SerializeField] private GameObject objectB; // º¯È¯µÉ B ¿ÀºêÁ§Æ®ÀÇ ÇÁ¸®ÆÕ
+    [SerializeField] private GameObject objectB; // ï¿½ï¿½È¯ï¿½ï¿½ B ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField] private Transform newTransform;
 
     private PoolingManager pool;
@@ -22,12 +22,15 @@ public class ChangeObject : MonoBehaviour
             newObject.name = objectB.name;
             newObject.transform.position = newTransform.position; 
 
-            if(!newObject.GetComponent<Rigidbody>())
+            Rigidbody rd = newObject.GetComponent<Rigidbody>();
+
+            if(rd == null)
             {
-                newObject.AddComponent<Rigidbody>();
-                newObject.GetComponent<Rigidbody>().freezeRotation = true;
+                rd = newObject.AddComponent<Rigidbody>();
+                rd.freezeRotation = true;
             }
-            newObject.GetComponent<Rigidbody>().velocity = other.GetComponent<Rigidbody>().velocity;
+
+            rd.velocity = other.GetComponent<Rigidbody>().velocity;
             pool.ReturnObjecte(other.gameObject);
         }
     }

@@ -6,17 +6,20 @@ public class BoxStorage : MonoBehaviour
 {
     [SerializeField] private Transform[] boxTransform;
 
-    private int boxTransformNum = 0;
 
     private Stack<GameObject> boxStack = new Stack<GameObject>();
+
     public Stack<GameObject> BoxStack
     {
         get { return boxStack; }
         set { boxStack = value; }
     }
+
+    private int boxTransformNum = 0;
+    
     private void Update()
     {
-        boxTransformNum = boxStack.Count / 10;
+        boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
     }
     private void OnTriggerStay(Collider other)
     {

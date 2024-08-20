@@ -19,6 +19,7 @@ public class BoxPackaging : MonoBehaviour
     private GameObject newBox;
 
     private Stack<GameObject> churuStorage = new Stack<GameObject>();
+
     public Transform StorageParent { get { return storageParent; } }
     public Stack<GameObject> ChuruStorage
     {
@@ -29,7 +30,7 @@ public class BoxPackaging : MonoBehaviour
         }
     }
 
-    PackagingType packaging = PackagingType.On;
+    private PackagingType packaging = PackagingType.On;
 
     private int count = 0;
 
@@ -45,9 +46,6 @@ public class BoxPackaging : MonoBehaviour
         {
             ChuruMove();
         }
-
-        //if (count <= 5)
-        //    packaging = PackagingType.On;
     }
     private void ChuruMove()
     {
@@ -56,7 +54,7 @@ public class BoxPackaging : MonoBehaviour
             GameObject churu = churuStorage.Pop();
 
             churu.transform.SetParent(newBox.transform);
-            churu.transform.DOLocalMove(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InBack)
+            churu.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
                     PoolingManager.Instance.ReturnObjecte(churu);
@@ -73,9 +71,13 @@ public class BoxPackaging : MonoBehaviour
         {
             //newBox.transform.SetParent(packagingBoxParent);
             newBox.AddComponent<Rigidbody>();
-            newBox.transform.DOMove(packagingBoxParent.position, 1f).SetEase(Ease.InBack);
-            this.newBox = null;
-            this.count = 0;
+            newBox.transform.DOMove(packagingBoxParent.position, 1f).SetEase(Ease.InBack)
+            .OnComplete(() => 
+            {
+                this.newBox = null;
+                this.count = 0;
+            });
+            
         }
         packaging = PackagingType.On;
     }
