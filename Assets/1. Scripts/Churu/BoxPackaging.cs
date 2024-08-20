@@ -71,13 +71,9 @@ public class BoxPackaging : MonoBehaviour
         {
             //newBox.transform.SetParent(packagingBoxParent);
             newBox.AddComponent<Rigidbody>();
-            newBox.transform.DOMove(packagingBoxParent.position, 1f).SetEase(Ease.InBack)
-            .OnComplete(() => 
-            {
-                this.newBox = null;
-                this.count = 0;
-            });
-            
+            newBox.transform.DOMove(packagingBoxParent.position, 1f).SetEase(Ease.InBack);
+            this.newBox = null;
+            this.count = 0;
         }
         packaging = PackagingType.On;
     }
