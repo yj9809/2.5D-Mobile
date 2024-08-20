@@ -57,9 +57,11 @@ public static class Utility
             else if (num == (int) CheckType.Array)
             {
                 newChuru = churu;
-                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru, "x") * (setChuruStack.Count % 10)), 0), 0.2f)
+                string name = newChuru.name == "Churub_Stick_Defalt" ? "x" : "y";
+                Debug.Log(ObjRendererCheck(newChuru, name) * (setChuruStack.Count % 10));
+                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru, name) * (setChuruStack.Count % 10)), 0), 0.2f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(270, 0, 0));
+                .OnComplete(() => newChuru.transform.localRotation =  name == "x" ? Quaternion.Euler(270, 0, 0) : Quaternion.Euler(0,0,0));
             }
             else if(num == (int) CheckType.Car)
             {

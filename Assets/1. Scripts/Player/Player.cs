@@ -64,14 +64,6 @@ public class Player : MonoBehaviour
 
             float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : baseSpeed;
             animator.SetBool("isMove", true);
-            if (ingredientStack.Count > 0 || boxStack.Count > 0)
-            {
-                animator.SetFloat("Blend", 1);
-            }
-            else
-            {
-                animator.SetFloat("Blend", 0);
-            }
 
             cc.Move(adjustedDirection * currentSpeed * Time.deltaTime);
 
@@ -90,14 +82,15 @@ public class Player : MonoBehaviour
 
     public void OnCart()
     {
-        if (ingredientStack.Count <= 0 && boxStack.Count <= 0)
+        if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
             cart.transform.DOScale(0, 0.2f);
-            
+            animator.SetFloat("Blend", 0);
         }
         else
         {
             cart.transform.DOScale(1, 0.2f);
+            animator.SetFloat("Blend", 1);
         }
     }
 
@@ -115,11 +108,14 @@ public class Player : MonoBehaviour
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
     }
-    public void GiveObject(BoxStorage bs)
+    public void GiveObject(BoxStorage bs, bool isChuru)
     {
+        Stack<GameObject> newStack = new Stack<GameObject>();
+        newStack = isChuru ? churuStack : boxStack;
+
         if (bs.BoxStack.Count > 0  && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, churuStack, 1);
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
         }
     }
     public void GiveObject(BoxPackaging bp)

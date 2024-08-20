@@ -19,7 +19,6 @@ public class BoxPackaging : MonoBehaviour
     private GameObject newBox;
 
     private Stack<GameObject> churuStorage = new Stack<GameObject>();
-    private Stack<GameObject> boxStorage = new Stack<GameObject>();
     public Transform StorageParent { get { return storageParent; } }
     public Stack<GameObject> ChuruStorage
     {
@@ -34,15 +33,13 @@ public class BoxPackaging : MonoBehaviour
 
     private int count = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
     public void Packaging()
     {
         if (newBox == null && churuStorage.Count != 0)
+        { 
             newBox = Instantiate(box, boxParent);
+            newBox.name = box.name;
+        }
 
         if (churuStorage.Count != 0 && newBox != null)
         {
@@ -59,7 +56,7 @@ public class BoxPackaging : MonoBehaviour
             GameObject churu = churuStorage.Pop();
 
             churu.transform.SetParent(newBox.transform);
-            churu.transform.DOLocalMove(new Vector3(0, 0, 0), 1f).SetEase(Ease.InBack)
+            churu.transform.DOLocalMove(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
                     PoolingManager.Instance.ReturnObjecte(churu);
@@ -74,9 +71,9 @@ public class BoxPackaging : MonoBehaviour
     {
         if(count == 5)
         {
-            boxStorage.Push(newBox);
-            newBox.transform.SetParent(packagingBoxParent);
-            newBox.transform.DOLocalMove(new Vector3(0, 0 + (Utility.ObjRendererCheck(newBox, "y") * boxStorage.Count), 0), 0.2f).SetEase(Ease.InBack);
+            //newBox.transform.SetParent(packagingBoxParent);
+            newBox.AddComponent<Rigidbody>();
+            newBox.transform.DOMove(packagingBoxParent.position, 1f).SetEase(Ease.InBack);
             this.newBox = null;
             this.count = 0;
         }

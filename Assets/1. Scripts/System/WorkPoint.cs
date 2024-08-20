@@ -43,7 +43,10 @@ public class WorkPoint : MonoBehaviour
                     //if (e != null) e.GiveObject(_conveyorBelt, false);
                     break;
                 case WorkPointType.ChuruStorage:
-                    p.GiveObject(_boxStorage);
+                    p.GiveObject(_boxStorage, true);
+                    break;
+                case WorkPointType.BoxStorage:
+                    p.GiveObject(_boxStorage, false);
                     break;
                 case WorkPointType.BoxPackaging_churu:
                     if (p != null) p.GiveObject(_boxPackaging);

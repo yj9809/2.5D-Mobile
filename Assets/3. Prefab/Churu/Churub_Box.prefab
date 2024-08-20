@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7738716535480241513}
   - component: {fileID: 6686343673828000460}
   - component: {fileID: 8876134636961543686}
-  - component: {fileID: 2452309415268956189}
+  - component: {fileID: -782331842017439401}
   m_Layer: 8
   m_Name: Churub_Box
   m_TagString: Box
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2452309415268956189
+--- !u!65 &-782331842017439401
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
