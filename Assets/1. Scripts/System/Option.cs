@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class Option : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class Option : MonoBehaviour
         musicButton.onClick.AddListener(MusicButton);
         soundEffectButton.onClick.AddListener(SoundButton);
 
-        isMusicOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
+        isMusicOn = PlayerPrefs.GetInt("MusicState", 1) == 1;
         isSoundOn = PlayerPrefs.GetInt("SoundState", 1) == 1;
         musicSource.mute = !isMusicOn;
         soundEffectSource.mute = !isSoundOn;
@@ -40,7 +39,7 @@ public class Option : MonoBehaviour
         isMusicOn = !isMusicOn;
         musicSource.mute = !isMusicOn;
 
-        PlayerPrefs.SetInt("SoundState", isMusicOn ? 1 : 0);
+        PlayerPrefs.SetInt("MusicState", isMusicOn ? 1 : 0);
         PlayerPrefs.Save();
 
         UpdateMusicImage();

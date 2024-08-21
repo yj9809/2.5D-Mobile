@@ -14,25 +14,22 @@ public enum CheckType
 
 public static class Utility
 {
-    public static float ObjRendererCheck(GameObject obj, string value)
+    public static Bounds ObjRendererCheck(GameObject obj)
     {
         Renderer ren = obj.GetComponent<Renderer>();
 
-        if(value == "x")
-            return ren.bounds.size.x;
-        else
-            return ren.bounds.size.y;
-
-        //임시로 x 값도 받아야하기에 return ren.bounds.size.x 도 같이 리턴 시키지만 추후
-        /*
-        Renderer ren = obj.GetComponent<Renderer>();
-
-        return ren.bounds.size.y;
-         */
-        //이 코드로 바꿔야함 string value 인자값도 빼야함
+        return ren.bounds;
     }
     // parentPos 이동 시킬 곳, churu 만들 오브젝트(처음 재료 만들어주는 곳에서만 사용하면 될꺼 같아서 나머지는 다 Null)
     // getChuruStack 가져올 스택(a에서 b로 옮길 때 a를 말함), setChuruStack 받을 스택(마찬가지로 b를 말함), num 타입 구분을 위한 인트
+    /// <summary>
+    /// 오브젝트 이동 시킬 함수.
+    /// </summary>
+    /// <param name="parentPos">이동 시킬 곳</param>
+    /// <param name="churu">만들 오브젝트</param>
+    /// <param name="getChuruStack">가져올 스택</param>
+    /// <param name="setChuruStack">받을 스택</param>
+    /// <param name="num">타입을 구분하는 인트</param>
     public static void ObjectDrop(Transform parentPos, GameObject churu, Stack<GameObject> getChuruStack, Stack<GameObject> setChuruStack, int num)
     {
         GameObject newChuru;
@@ -42,14 +39,14 @@ public static class Utility
             newChuru = PoolingManager.Instance.GetObj(churu);
             newChuru.name = churu.name;
             newChuru.transform.SetParent(parentPos);
-            newChuru.transform.localPosition = new Vector3(0, (ObjRendererCheck(newChuru, "y") * setChuruStack.Count), 0);
+            newChuru.transform.localPosition = new Vector3(0, (ObjRendererCheck(newChuru).size.y * setChuruStack.Count), 0);
         }
         else
         {
             if (num == (int)CheckType.Drop)
             {
                 newChuru = getChuruStack.Pop();
-                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru, "y") * setChuruStack.Count), 0), 0.2f)
+                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru).size.y * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
             }
@@ -57,11 +54,10 @@ public static class Utility
             else if (num == (int) CheckType.Array)
             {
                 newChuru = churu;
-                string name = newChuru.name == "Churub_Stick_Defalt" ? "x" : "y";
-                Debug.Log(ObjRendererCheck(newChuru, name) * (setChuruStack.Count % 10));
-                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru, name) * (setChuruStack.Count % 10)), 0), 0.2f)
+                Debug.Log(setChuruStack.Count % 10);
+                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru).size.y * (setChuruStack.Count % 10)), 0), 0.2f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => newChuru.transform.localRotation =  name == "x" ? Quaternion.Euler(270, 0, 0) : Quaternion.Euler(0,0,0));
+                .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0,0,0));
             }
             else if(num == (int) CheckType.Car)
             {
@@ -72,7 +68,7 @@ public static class Utility
             else
             {
                 newChuru = getChuruStack.Pop();
-                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru, "x") * setChuruStack.Count), 0), 0.2f)
+                newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru).size.x * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(270, 0, 90));
             }
