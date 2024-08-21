@@ -25,7 +25,6 @@ public class WorkPoint : MonoBehaviour
     [Title("WorkPointType")]
     [EnumToggleButtons, SerializeField] private WorkPointType wpType;
 
-    // Start is called before the first frame update
     private void OnTriggerStay(Collider other)
     {
         Player p = other.GetComponent<Player>();
@@ -63,5 +62,10 @@ public class WorkPoint : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        UIManager.Instance.CloseUpgradeUI();
     }
 }

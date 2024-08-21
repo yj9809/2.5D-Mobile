@@ -79,6 +79,10 @@ public class UIManager : Singleton<UIManager>
     {
         upgradePanel.SetActive(true);
     }
+    public void CloseUpgradeUI()
+    {
+        upgradePanel.SetActive(false);
+    }
     
     public void UpgradePlayerSpeed()
     {
@@ -98,7 +102,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseCartSpeedUpgradeCost;
         if (SpendGold(cost))
         {
-            p.baseSpeed += 1;
+            p.cartSpeed += 1;
             data.baseCost.baseCartSpeedUpgradeCost *= 2;
         }
         else
