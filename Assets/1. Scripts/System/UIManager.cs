@@ -14,13 +14,13 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button cartSpeedUpgradeButton;
     [SerializeField] private Button maxObjStackCountUpgradeButton;
 
-    //여기부터 윤제영에 테스트 참조임
-    [SerializeField] private Sprite[] onOffSprite;
-    [SerializeField] private Image onOffImage;
-    [SerializeField] private Slider testSilder;
-    [SerializeField] private Sprite[] buttonSprite;
-    [SerializeField] private Image buttonImage;
-    //여기까지 윤제영에 테스트 참조였음
+    ////여기부터 윤제영에 테스트 참조임
+    //[SerializeField] private Sprite[] onOffSprite;
+    //[SerializeField] private Image onOffImage;
+    //[SerializeField] private Slider testSilder;
+    //[SerializeField] private Sprite[] buttonSprite;
+    //[SerializeField] private Image buttonImage;
+    ////여기까지 윤제영에 테스트 참조였음
 
     private Player p;
     private DataManager data;
@@ -132,12 +132,12 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    //여기부터 윤제영 테스트 함수임
-    public void ButtonEvent()
-    {
-        testSilder.value = testSilder.value == 1 ? 0 : 1;
-        onOffImage.sprite = testSilder.value == 1 ? onOffSprite[1] : onOffSprite[0];
-        buttonImage.sprite = testSilder.value == 1 ? buttonSprite[1] : buttonSprite[0];
-    }
-    //여기까지 윤제영 테스트 함수였음
+    ////여기부터 윤제영 테스트 함수임
+    //public void ButtonEvent()
+    //{
+    //    testSilder.value = testSilder.value == 1 ? 0 : 1;
+    //    onOffImage.sprite = testSilder.value == 1 ? onOffSprite[1] : onOffSprite[0];
+    //    buttonImage.sprite = testSilder.value == 1 ? buttonSprite[1] : buttonSprite[0];
+    //}
+    ////여기까지 윤제영 테스트 함수였음
 }
