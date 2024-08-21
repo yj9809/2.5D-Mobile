@@ -4056,8 +4056,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Factory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b31cdd0824492a74aa607b9c538c4462, type: 2}
-  m_sharedMaterial: {fileID: 4185114828617532660, guid: b31cdd0824492a74aa607b9c538c4462,
+  m_fontAsset: {fileID: 11400000, guid: de385d8fcede05f408c967775943cab9, type: 2}
+  m_sharedMaterial: {fileID: -2086880998343867413, guid: de385d8fcede05f408c967775943cab9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5430,8 +5430,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Truck
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b31cdd0824492a74aa607b9c538c4462, type: 2}
-  m_sharedMaterial: {fileID: 4185114828617532660, guid: b31cdd0824492a74aa607b9c538c4462,
+  m_fontAsset: {fileID: 11400000, guid: de385d8fcede05f408c967775943cab9, type: 2}
+  m_sharedMaterial: {fileID: -2086880998343867413, guid: de385d8fcede05f408c967775943cab9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -6269,8 +6269,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b31cdd0824492a74aa607b9c538c4462, type: 2}
-  m_sharedMaterial: {fileID: 4185114828617532660, guid: b31cdd0824492a74aa607b9c538c4462,
+  m_fontAsset: {fileID: 11400000, guid: de385d8fcede05f408c967775943cab9, type: 2}
+  m_sharedMaterial: {fileID: -2086880998343867413, guid: de385d8fcede05f408c967775943cab9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -7457,8 +7457,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Office
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b31cdd0824492a74aa607b9c538c4462, type: 2}
-  m_sharedMaterial: {fileID: 4185114828617532660, guid: b31cdd0824492a74aa607b9c538c4462,
+  m_fontAsset: {fileID: 11400000, guid: de385d8fcede05f408c967775943cab9, type: 2}
+  m_sharedMaterial: {fileID: -2086880998343867413, guid: de385d8fcede05f408c967775943cab9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
