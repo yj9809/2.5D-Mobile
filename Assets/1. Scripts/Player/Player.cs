@@ -1,14 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using DG.Tweening;
 
+public enum PlayerType
+{
+    Joystick,
+    Auto
+}
 public class Player : MonoBehaviour
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private GameObject obj;
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
+
+    private PlayerType pT = PlayerType.Joystick;
+    public PlayerType PT
+    {
+        get { return pT; }
+        set { pT = value; }
+    }
     public int maxObjStackCount = 5;
     public float baseSpeed = 5f;
     public float cartSpeed = 2.5f;
@@ -16,11 +30,11 @@ public class Player : MonoBehaviour
 
     private CharacterController cc;
     private Animator animator;
+    private Camera mainCamera;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     private Stack<GameObject> churuStack = new Stack<GameObject>();
     private Stack<GameObject> boxStack = new Stack<GameObject>();
-    private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -33,10 +47,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        JoystickMove();
+        if(pT == PlayerType.Joystick)
+            JoystickMove();
+
         OnCart();
     }
-
     private void JoystickMove()
     {
         if (joystick == null)
@@ -79,6 +94,28 @@ public class Player : MonoBehaviour
         currentPosition.y = 0;
         transform.position = currentPosition;
     }
+    public void PlayerAutoMove(Transform pos, Action action)
+    {
+        if(ingredientStack.Count <=0 && boxStack.Count <=0 && churuStack.Count <= 0)
+        {
+            pT = PlayerType.Auto;
+            animator.SetBool("isMove", true);
+
+            Vector3 direction = (pos.position - transform.position).normalized;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            transform.DOMove(pos.position, 3f).SetEase(Ease.Linear).OnUpdate(() =>
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            }).OnComplete(() =>
+            {
+                animator.SetBool("isMove", false);
+                action();
+            });
+        }
+        
+    }
 
     public void OnCart()
     {
@@ -113,7 +150,7 @@ public class Player : MonoBehaviour
         Stack<GameObject> newStack = new Stack<GameObject>();
         newStack = isChuru ? churuStack : boxStack;
 
-        if (bs.BoxStack.Count > 0  && ingredientStack.Count <= 0)
+        if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
         }

@@ -21,12 +21,15 @@ public class BoxStorage : MonoBehaviour
     {
         boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
     }
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionStay(Collision collision)
     {
-        if ((other.CompareTag("Box") || other.CompareTag("Churu")) && boxStack.Count < 40)
+        if ((collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Churu")) && boxStack.Count < 40)
         {
-            Destroy(other.GetComponent<Rigidbody>());
-            Utility.ObjectDrop(boxTransform[boxTransformNum], other.gameObject, null, boxStack, 2);
+            Rigidbody rd = collision.transform.GetComponent<Rigidbody>();
+            if(rd != null)
+                Destroy(collision.transform.GetComponent<Rigidbody>());
+
+            Utility.ObjectDrop(boxTransform[boxTransformNum], collision.gameObject, null, boxStack, 2);
         }
     }
 }

@@ -7,6 +7,8 @@ using Sirenix.OdinInspector;
 
 public class UIManager : Singleton<UIManager>
 {
+    [SerializeField] private Button cameraZoomButton;
+
     [SerializeField] private TextMeshProUGUI goldTxt;
 
     [SerializeField] private GameObject upgradePanel;
@@ -37,6 +39,7 @@ public class UIManager : Singleton<UIManager>
         speedUpgradeButton.onClick.AddListener(UpgradePlayerSpeed);
         cartSpeedUpgradeButton.onClick.AddListener(UpgradePlayerCartSpeed);
         maxObjStackCountUpgradeButton.onClick.AddListener(UpgradePlayerMaxStack);
+        cameraZoomButton.onClick.AddListener(GameManager.Instance.MainCamera.ZoomScreen);
     }
 
     // Update is called once per frame
