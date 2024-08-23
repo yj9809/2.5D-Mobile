@@ -6678,7 +6678,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9177d1c091c2f3748b8266d739b0a5a1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 044243fd87bfcb144a6486f3415eb589, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8621,12 +8621,6 @@ Transform:
   m_Father: {fileID: 1151326380}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1955812109 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 120775326471026732, guid: ec78c0682218f824c91dc26f37568b5a,
-    type: 3}
-  m_PrefabInstance: {fileID: 2986155824851297106}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1962356586
 GameObject:
   m_ObjectHideFlags: 0
@@ -10889,6 +10883,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 887242263}
     m_Modifications:
+    - target: {fileID: 1923123336, guid: fc4258776f8b3cc42ac0171da448d497, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 30adda7fffe19c64ebb4a01b433234ac,
+        type: 3}
     - target: {fileID: 5776874712477388327, guid: fc4258776f8b3cc42ac0171da448d497,
         type: 3}
       propertyPath: m_Name
@@ -11066,8 +11065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c39bd6da2039a24eba3518a2eca151a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredientPoint: {fileID: 1955812109}
-  conveyorBletPoint: {fileID: 7646081294353099356}
+  ingredientPoint: {fileID: 0}
+  conveyorBletPoint: {fileID: 0}
   cart: {fileID: 2042987073}
   cartTransform: {fileID: 678426187}
   maxObjStackCount: 5
@@ -11626,12 +11625,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7646081294353099356 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1362940314515924441, guid: fc4258776f8b3cc42ac0171da448d497,
-    type: 3}
-  m_PrefabInstance: {fileID: 5776874713232836592}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7683380121185206519
 Transform:
   m_ObjectHideFlags: 0

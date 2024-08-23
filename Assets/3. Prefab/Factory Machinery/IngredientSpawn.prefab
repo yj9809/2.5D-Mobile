@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 120775326471026732}
+  - {fileID: 5809088000862875893}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,7 +50,7 @@ MonoBehaviour:
   objSpawnPoint: {fileID: 2986155824567841955}
   objSpawnTime: 0.5
   maxObj: 10
---- !u!1001 &2986155824657395806
+--- !u!1001 &8666023682913564807
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -70,12 +70,12 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.55
+      value: -1.677
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -115,17 +115,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Work Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
-        type: 3}
-      propertyPath: cm
-      value: 
-      objectReference: {fileID: 2986155824567841958}
-    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
-        type: 3}
-      propertyPath: wpType
-      value: 0
+      value: Work Point (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -134,9 +124,9 @@ PrefabInstance:
       objectReference: {fileID: 2986155824567841958}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
---- !u!4 &120775326471026732 stripped
+--- !u!4 &5809088000862875893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
     type: 3}
-  m_PrefabInstance: {fileID: 2986155824657395806}
+  m_PrefabInstance: {fileID: 8666023682913564807}
   m_PrefabAsset: {fileID: 0}
