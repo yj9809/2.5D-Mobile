@@ -170,6 +170,12 @@ public class UIManager : Singleton<UIManager>
 
         if (GUI.Button(new Rect(670, 250, 300, 100), "Gold", buttonStyle))
             AddGold(100);
+        if (GUI.Button(new Rect(670, 360, 300, 100), "BDP Up", buttonStyle))
+            cb.BreakDownProb += 0.1f;
+        if (GUI.Button(new Rect(670, 470, 300, 100), "BDP Down", buttonStyle))
+            cb.BreakDownProb -= 0.1f;
+        string def = $"BDP:{cb.BreakDownProb * 100}%";
+        def = GUI.TextArea(new Rect(670, 580, 300, 100), def, buttonStyle);
     }
     public void SetIngredientMaker(IngredientMaker im)
     {
