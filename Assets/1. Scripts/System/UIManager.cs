@@ -140,29 +140,36 @@ public class UIManager : Singleton<UIManager>
     //여기부터 윤제영 테스트 함수임
     private void OnGUI()
     {
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-        if (GUI.Button(new Rect(10, 50, 80, 20), "PMS Up"))
+        // 폰트 사이즈 조정
+        buttonStyle.fontSize = 50;
+
+        if (GUI.Button(new Rect(50, 250, 300, 100), "PMS Up", buttonStyle))
             p.MaxObjStackCount += 1;
-        if (GUI.Button(new Rect(10, 70, 80, 20), "PMS Down"))
+        if (GUI.Button(new Rect(50, 360, 300, 100), "PMS Down", buttonStyle))
             p.MaxObjStackCount -= 1;
-        if (GUI.Button(new Rect(10, 90, 80, 20), "PS Up"))
+        if (GUI.Button(new Rect(50, 470, 300, 100), "PS Up", buttonStyle))
             p.BaseSpeed += 1;
-        if (GUI.Button(new Rect(10, 110, 80, 20), "PS Down"))
+        if (GUI.Button(new Rect(50, 580, 300, 100), "PS Down", buttonStyle))
             p.BaseSpeed -= 1;
 
         string textAreaString = $"PMS:{p.MaxObjStackCount} PS:{p.BaseSpeed}";
-        textAreaString = GUI.TextArea(new Rect(10, 130, 80, 20), textAreaString);
+        textAreaString = GUI.TextArea(new Rect(50, 690, 300, 100), textAreaString, buttonStyle);
 
-        if (GUI.Button(new Rect(90, 50, 80, 20), "IM Up"))
+        if (GUI.Button(new Rect(360, 250, 300, 100), "IM Up", buttonStyle))
             im.ObjSpawnTime += 1;
-        if (GUI.Button(new Rect(90, 70, 80, 20), "IM Down"))
+        if (GUI.Button(new Rect(360, 360, 300, 100), "IM Down", buttonStyle))
             im.ObjSpawnTime -= 1;
-        if (GUI.Button(new Rect(90, 90, 80, 20), "CB Up"))
+        if (GUI.Button(new Rect(360, 470, 300, 100), "CB Up", buttonStyle))
             cb.PlaceObjectTime += 1;
-        if (GUI.Button(new Rect(90, 110, 80, 20), "CB Down"))
+        if (GUI.Button(new Rect(360, 580, 300, 100), "CB Down", buttonStyle))
             cb.PlaceObjectTime -= 1;
         string abc = $"IM:{im.ObjSpawnTime} CB:{cb.PlaceObjectTime}";
-        abc = GUI.TextArea(new Rect(90, 130, 80, 20), abc);
+        abc = GUI.TextArea(new Rect(350, 690, 300, 100), abc, buttonStyle);
+
+        if (GUI.Button(new Rect(670, 250, 300, 100), "Gold", buttonStyle))
+            AddGold(100);
     }
     public void SetIngredientMaker(IngredientMaker im)
     {

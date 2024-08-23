@@ -20,6 +20,13 @@ public class ConveyorBelt : MonoBehaviour
         get { return placeObjectTime; }
         set { placeObjectTime = value; }
     }
+
+    private float breakDownProb = 0.1f;
+    public float BreakDownProb
+    {
+        get { return breakDownProb; }
+        set { breakDownProb = value; }
+    }
     private bool isOn = true;
     private bool isBreakDown = false;
     public Transform IngredientStorage
@@ -58,7 +65,7 @@ public class ConveyorBelt : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(placeObjectTime);
-            if(cbStack.Count > 0 && Random.value < 0.1f)
+            if(cbStack.Count > 0 && Random.value < breakDownProb)
             {
                 BreakDownEvent();
                 yield break;
