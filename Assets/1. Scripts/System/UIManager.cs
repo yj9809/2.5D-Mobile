@@ -7,6 +7,8 @@ using Sirenix.OdinInspector;
 
 public class UIManager : Singleton<UIManager>
 {
+    [SerializeField] private Button cameraZoomButton;
+
     [SerializeField] private TextMeshProUGUI goldTxt;
 
     [SerializeField] private GameObject upgradePanel;
@@ -20,6 +22,8 @@ public class UIManager : Singleton<UIManager>
     //[SerializeField] private Slider testSilder;
     //[SerializeField] private Sprite[] buttonSprite;
     //[SerializeField] private Image buttonImage;
+    private IngredientMaker im;
+    private ConveyorBelt cb;
     ////여기까지 윤제영에 테스트 참조였음
 
     private Player p;
@@ -37,6 +41,7 @@ public class UIManager : Singleton<UIManager>
         speedUpgradeButton.onClick.AddListener(UpgradePlayerSpeed);
         cartSpeedUpgradeButton.onClick.AddListener(UpgradePlayerCartSpeed);
         maxObjStackCountUpgradeButton.onClick.AddListener(UpgradePlayerMaxStack);
+        cameraZoomButton.onClick.AddListener(GameManager.Instance.MainCamera.ZoomScreen);
     }
 
     // Update is called once per frame
@@ -50,7 +55,7 @@ public class UIManager : Singleton<UIManager>
 
     private void UpdateUI()
     {
-        goldTxt.text = "Gold: " + p.gold.ToString();
+        goldTxt.text = "Gold: " + p.Gold.ToString();
     }
 
     public void SellItem()
@@ -61,19 +66,19 @@ public class UIManager : Singleton<UIManager>
 
     public void AddGold(int amount)
     {
-        p.gold += amount;
+        p.Gold += amount;
         UpdateUI();
-        Debug.Log($"골드 획득: {amount}, 현재 골드: {p.gold}");
+        Debug.Log($"골드 획득: {amount}, 현재 골드: {p.Gold}");
     }
 
     //골드 사용 함수
     public bool SpendGold(int amount)
     {
-        if (p.gold >= amount)
+        if (p.Gold >= amount)
         {
-            p.gold -= amount;
+            p.Gold -= amount;
             UpdateUI();
-            Debug.Log($"골드 사용: {amount}, 남은 골드: {p.gold}");
+            Debug.Log($"골드 사용: {amount}, 남은 골드: {p.Gold}");
             return true;
         }
         else
@@ -97,7 +102,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseSpeedUpgradeCost;
         if (SpendGold(cost))
         {
-            p.baseSpeed += 1;
+            p.BaseSpeed += 1;
             data.baseCost.baseSpeedUpgradeCost *= 2;
         }
         else
@@ -110,7 +115,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseCartSpeedUpgradeCost;
         if (SpendGold(cost))
         {
-            p.cartSpeed += 1;
+            p.CartSpeed += 1;
             data.baseCost.baseCartSpeedUpgradeCost *= 2;
         }
         else
@@ -123,7 +128,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseMaxObjStackCountUpgradeCost;
         if (SpendGold(cost))
         {
-            p.maxObjStackCount += 1;
+            p.MaxObjStackCount += 1;
             data.baseCost.baseMaxObjStackCountUpgradeCost *= 2;
         }
         else
@@ -132,12 +137,53 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    ////여기부터 윤제영 테스트 함수임
-    //public void ButtonEvent()
-    //{
-    //    testSilder.value = testSilder.value == 1 ? 0 : 1;
-    //    onOffImage.sprite = testSilder.value == 1 ? onOffSprite[1] : onOffSprite[0];
-    //    buttonImage.sprite = testSilder.value == 1 ? buttonSprite[1] : buttonSprite[0];
-    //}
-    ////여기까지 윤제영 테스트 함수였음
+    //여기부터 윤제영 테스트 함수임
+    private void OnGUI()
+    {
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+
+        // 폰트 사이즈 조정
+        buttonStyle.fontSize = 50;
+
+        if (GUI.Button(new Rect(50, 250, 300, 100), "PMS Up", buttonStyle))
+            p.MaxObjStackCount += 1;
+        if (GUI.Button(new Rect(50, 360, 300, 100), "PMS Down", buttonStyle))
+            p.MaxObjStackCount -= 1;
+        if (GUI.Button(new Rect(50, 470, 300, 100), "PS Up", buttonStyle))
+            p.BaseSpeed += 1;
+        if (GUI.Button(new Rect(50, 580, 300, 100), "PS Down", buttonStyle))
+            p.BaseSpeed -= 1;
+
+        string textAreaString = $"PMS:{p.MaxObjStackCount} PS:{p.BaseSpeed}";
+        textAreaString = GUI.TextArea(new Rect(50, 690, 300, 100), textAreaString, buttonStyle);
+
+        if (GUI.Button(new Rect(360, 250, 300, 100), "IM Up", buttonStyle))
+            im.ObjSpawnTime += 1;
+        if (GUI.Button(new Rect(360, 360, 300, 100), "IM Down", buttonStyle))
+            im.ObjSpawnTime -= 1;
+        if (GUI.Button(new Rect(360, 470, 300, 100), "CB Up", buttonStyle))
+            cb.PlaceObjectTime += 1;
+        if (GUI.Button(new Rect(360, 580, 300, 100), "CB Down", buttonStyle))
+            cb.PlaceObjectTime -= 1;
+        string abc = $"IM:{im.ObjSpawnTime} CB:{cb.PlaceObjectTime}";
+        abc = GUI.TextArea(new Rect(350, 690, 300, 100), abc, buttonStyle);
+
+        if (GUI.Button(new Rect(670, 250, 300, 100), "Gold", buttonStyle))
+            AddGold(100);
+        if (GUI.Button(new Rect(670, 360, 300, 100), "BDP Up", buttonStyle))
+            cb.BreakDownProb += 0.1f;
+        if (GUI.Button(new Rect(670, 470, 300, 100), "BDP Down", buttonStyle))
+            cb.BreakDownProb -= 0.1f;
+        string def = $"BDP:{cb.BreakDownProb * 100}%";
+        def = GUI.TextArea(new Rect(670, 580, 300, 100), def, buttonStyle);
+    }
+    public void SetIngredientMaker(IngredientMaker im)
+    {
+        this.im = im;
+    }
+    public void SetConveyorBelt(ConveyorBelt cb)
+    {
+        this.cb = cb;
+    }
+    //여기까지 윤제영 테스트 함수였음
 }

@@ -16,4 +16,14 @@ public class GameManager : Singleton<GameManager>
             return p;
         }
     }
+    private MainCamera mainCamera;
+    public MainCamera MainCamera
+    {
+        get 
+        {
+            if (mainCamera == null)
+                mainCamera = FindObjectOfType<MainCamera>();
+            return mainCamera;
+        }
+    }
 }

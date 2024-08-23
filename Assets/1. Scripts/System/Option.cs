@@ -8,13 +8,14 @@ public class Option : MonoBehaviour
     private MainCamera _camera;
     [SerializeField] private GameObject blurPanel;
 
-    [SerializeField] private Button musicButton;
-    [SerializeField] private Slider musicSlider;
     [SerializeField] private AudioSource musicSource;
-    [SerializeField] private Image musicOn_OffImage;
-    [SerializeField] private Sprite[] musicOn_Off;
-    [SerializeField] private Image musicButtonImage;
-    [SerializeField] private Sprite[] musicButtonSprite;
+    [SerializeField] private Button musicButton;
+    [SerializeField] private Image musicBGImage;
+    [SerializeField] private Image musicOnOffImage;
+    [SerializeField] private Image musicTextImage;
+    [SerializeField] private Sprite[] musicBGSprites;
+    [SerializeField] private Sprite[] musicOnOffSprites;
+    [SerializeField] private Sprite[] musicTextSprites;
     private bool isMusicOn = true;
 
     // Start is called before the first frame update
@@ -25,28 +26,28 @@ public class Option : MonoBehaviour
 
         isMusicOn = PlayerPrefs.GetInt("MusicState", 1) == 1;
         musicSource.mute = !isMusicOn;
-
-        musicSlider.value = PlayerPrefs.GetFloat("MusicState", 1f);
-        musicSource.volume = musicSlider.value;
+        UpdateMusicUI();
 
         musicButton.onClick.AddListener(ToggleMusic);
-        musicSlider.onValueChanged.AddListener(UpdateMusicVolume);
     }
 
     private void ToggleMusic()
     {
         isMusicOn = !isMusicOn;
         musicSource.mute = !isMusicOn;
-        musicOn_OffImage.sprite = isMusicOn ? musicOn_Off[1] : musicOn_Off[0];
-        musicButtonImage.sprite = isMusicOn ? musicButtonSprite[1] : musicButtonSprite[0];
-
         PlayerPrefs.SetInt("MusicState", isMusicOn ? 1 : 0);
-    }
-    private void UpdateMusicVolume(float value)
-    {
-        musicSource.volume = value; 
-        PlayerPrefs.SetFloat("MusicVolume", value);
         PlayerPrefs.Save();
+        UpdateMusicUI();
+    }
+
+    private void UpdateMusicUI()
+    {
+        musicBGImage.sprite = isMusicOn ? musicBGSprites[1] : musicBGSprites[0];
+        musicOnOffImage.sprite = isMusicOn ? musicOnOffSprites[1] : musicOnOffSprites[0];
+        musicTextImage.sprite = isMusicOn ? musicTextSprites[1] : musicTextSprites[0];
+
+        RectTransform rt = musicOnOffImage.GetComponent<RectTransform>();
+        rt.anchoredPosition = isMusicOn ? new Vector2(75, 0) : new Vector2(-75, 0);
     }
 
     public void Zoom()

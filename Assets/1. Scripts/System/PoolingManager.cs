@@ -59,11 +59,6 @@ public class PoolingManager : Singleton<PoolingManager>
             if(returnPrefab.GetComponent<Rigidbody>())
                 Destroy(returnPrefab.GetComponent<Rigidbody>());
 
-            // 이것도 임시 코드입니다. 나중에 churu prefab이 바뀌면 뺴야하는 코드에요
-            if (returnPrefab.gameObject.CompareTag("Churu"))
-                returnPrefab.transform.rotation = Quaternion.Euler(270, 0, 0);
-            // 62번 63번 두 줄입니다.
-
             returnPrefab.transform.SetParent(transform);
             poolDictionary[returnPrefab.name].Enqueue(returnPrefab);
         }
