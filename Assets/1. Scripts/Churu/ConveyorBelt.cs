@@ -47,7 +47,7 @@ public class ConveyorBelt : MonoBehaviour
         breakDownEventButton.gameObject.SetActive(false);
         eventGauge.gameObject.SetActive(false);
         //테스트용
-        UIManager.Instance.SetConveyorBelt(this);
+        //UIManager.Instance.SetConveyorBelt(this);
     }
     private void Update()
     {
