@@ -61,7 +61,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     {
         OnDrag(eventData);
     }
-
+    /*
     public void OnDrag(PointerEventData eventData)
     {
         cam = null;
@@ -71,9 +71,29 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         Vector2 position = RectTransformUtility.WorldToScreenPoint(cam, background.position);
         Vector2 radius = background.sizeDelta / 2;
         input = (eventData.position - position) / (radius * canvas.scaleFactor);
+        Debug.Log($"Input: {input}, Horizontal: {Horizontal}, Vertical: {Vertical}");
         FormatInput();
         HandleInput(input.magnitude, input.normalized, radius, cam);
         handle.anchoredPosition = input * radius * handleRange;
+    }
+    */
+    //기존 코드에서 기울기가 적용되면 바뀌지 않는걸 수정하기 위한 코드입니다.
+    public void OnDrag(PointerEventData eventData)
+    {
+        cam = null;
+        if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
+            cam = canvas.worldCamera;
+
+        Vector2 localPointerPosition;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(background, eventData.position, cam, out localPointerPosition))
+        {
+            Vector2 radius = background.sizeDelta / 2;
+            input = (localPointerPosition - background.rect.center) / (radius * canvas.scaleFactor);
+            FormatInput();
+            HandleInput(input.magnitude, input.normalized, radius, cam);
+
+            handle.anchoredPosition = input * radius * handleRange;
+        }
     }
 
     protected virtual void HandleInput(float magnitude, Vector2 normalised, Vector2 radius, Camera cam)
@@ -94,7 +114,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         else if (axisOptions == AxisOptions.Vertical)
             input = new Vector2(0f, input.y);
     }
-
+    
     private float SnapFloat(float value, AxisOptions snapAxis)
     {
         if (value == 0)
@@ -128,6 +148,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         }
         return 0;
     }
+    
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {

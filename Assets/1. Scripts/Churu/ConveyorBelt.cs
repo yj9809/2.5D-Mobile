@@ -14,6 +14,12 @@ public class ConveyorBelt : MonoBehaviour
     [SerializeField] private Button breakDownEventButton;
     [SerializeField] private Image eventGauge;
 
+    private float placeObjectTime = 3f;
+    public float PlaceObjectTime
+    {
+        get { return placeObjectTime; }
+        set { placeObjectTime = value; }
+    }
     private bool isOn = true;
     private bool isBreakDown = false;
     public Transform IngredientStorage
@@ -33,6 +39,8 @@ public class ConveyorBelt : MonoBehaviour
         breakDownEventButton.onClick.AddListener(BreakDownEventButton);
         breakDownEventButton.gameObject.SetActive(false);
         eventGauge.gameObject.SetActive(false);
+        //테스트용
+        UIManager.Instance.SetConveyorBelt(this);
     }
     private void Update()
     {
@@ -49,8 +57,8 @@ public class ConveyorBelt : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3f);
-            if(cbStack.Count > 0 && Random.value < 0.5f)
+            yield return new WaitForSeconds(placeObjectTime);
+            if(cbStack.Count > 0 && Random.value < 0.1f)
             {
                 BreakDownEvent();
                 yield break;

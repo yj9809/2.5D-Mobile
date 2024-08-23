@@ -23,10 +23,31 @@ public class Player : MonoBehaviour
         get { return pT; }
         set { pT = value; }
     }
-    public int maxObjStackCount = 5;
-    public float baseSpeed = 5f;
-    public float cartSpeed = 2.5f;
-    public int gold = 0;
+    private int maxObjStackCount = 5;
+    private float baseSpeed = 5f;
+    private float cartSpeed = 2.5f;
+    private int gold = 0;
+
+    public int MaxObjStackCount 
+    {
+        get { return maxObjStackCount; }
+        set { maxObjStackCount = value; }
+    }
+    public float BaseSpeed
+    {
+        get { return baseSpeed; }
+        set { baseSpeed = value; }
+    }
+    public float CartSpeed
+    {
+        get { return cartSpeed; }
+        set { cartSpeed = value; }
+    }
+    public int Gold
+    {
+        get { return gold; }
+        set { gold = value; }
+    }
 
     private CharacterController cc;
     private Animator animator;
@@ -101,11 +122,13 @@ public class Player : MonoBehaviour
             pT = PlayerType.Auto;
             animator.SetBool("isMove", true);
 
-            Vector3 direction = (pos.position - transform.position).normalized;
+            float distance = Vector3.Distance(transform.position, pos.position);
+            float moveDuration = distance / baseSpeed;
 
+            Vector3 direction = (pos.position - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            transform.DOMove(pos.position, 3f).SetEase(Ease.Linear).OnUpdate(() =>
+            transform.DOMove(pos.position, moveDuration).SetEase(Ease.Linear).OnUpdate(() =>
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
             }).OnComplete(() =>
@@ -114,7 +137,6 @@ public class Player : MonoBehaviour
                 action();
             });
         }
-        
     }
 
     public void OnCart()

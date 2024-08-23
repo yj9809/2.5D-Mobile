@@ -11,6 +11,13 @@ public class IngredientMaker : MonoBehaviour
     [TabGroup("IngredientMaker")] [SerializeField] private int maxObj = 10;
 
     private float spawnTimer = 0f;
+
+    public float ObjSpawnTime
+    {
+        get { return objSpawnTime; }
+        set { objSpawnTime = value; }
+    }
+
     private Stack<GameObject> churuStack = new Stack<GameObject>();
     public Stack<GameObject> ChuruStack
     {
@@ -22,6 +29,8 @@ public class IngredientMaker : MonoBehaviour
     void Update()
     {
         SpawnGameObject();
+        //테스트용
+        UIManager.Instance.SetIngredientMaker(this);
     }
 
     private void SpawnGameObject()  

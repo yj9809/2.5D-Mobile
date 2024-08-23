@@ -11,6 +11,7 @@ public class MainCamera : MonoBehaviour
     private Vector3 targetCameraPosition;
     private bool isZoom;
 
+    private Canvas joystickCanvas;
     private Tween cameraTween;
 
     void Start()
@@ -18,6 +19,9 @@ public class MainCamera : MonoBehaviour
         p = GameManager.Instance.P;
         targetCameraPosition = inCameraPosition;
         transform.position = GetTargetPosition(targetCameraPosition);
+        joystickCanvas = GameObject.Find("Joystick_Canvas").GetComponent<Canvas>();
+        joystickCanvas.worldCamera = transform.GetComponent<Camera>();
+        joystickCanvas.planeDistance = 2;
     }
 
     void Update()

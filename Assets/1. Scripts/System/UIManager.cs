@@ -22,6 +22,8 @@ public class UIManager : Singleton<UIManager>
     //[SerializeField] private Slider testSilder;
     //[SerializeField] private Sprite[] buttonSprite;
     //[SerializeField] private Image buttonImage;
+    private IngredientMaker im;
+    private ConveyorBelt cb;
     ////여기까지 윤제영에 테스트 참조였음
 
     private Player p;
@@ -53,7 +55,7 @@ public class UIManager : Singleton<UIManager>
 
     private void UpdateUI()
     {
-        goldTxt.text = "Gold: " + p.gold.ToString();
+        goldTxt.text = "Gold: " + p.Gold.ToString();
     }
 
     public void SellItem()
@@ -64,19 +66,19 @@ public class UIManager : Singleton<UIManager>
 
     public void AddGold(int amount)
     {
-        p.gold += amount;
+        p.Gold += amount;
         UpdateUI();
-        Debug.Log($"골드 획득: {amount}, 현재 골드: {p.gold}");
+        Debug.Log($"골드 획득: {amount}, 현재 골드: {p.Gold}");
     }
 
     //골드 사용 함수
     public bool SpendGold(int amount)
     {
-        if (p.gold >= amount)
+        if (p.Gold >= amount)
         {
-            p.gold -= amount;
+            p.Gold -= amount;
             UpdateUI();
-            Debug.Log($"골드 사용: {amount}, 남은 골드: {p.gold}");
+            Debug.Log($"골드 사용: {amount}, 남은 골드: {p.Gold}");
             return true;
         }
         else
@@ -100,7 +102,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseSpeedUpgradeCost;
         if (SpendGold(cost))
         {
-            p.baseSpeed += 1;
+            p.BaseSpeed += 1;
             data.baseCost.baseSpeedUpgradeCost *= 2;
         }
         else
@@ -113,7 +115,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseCartSpeedUpgradeCost;
         if (SpendGold(cost))
         {
-            p.cartSpeed += 1;
+            p.CartSpeed += 1;
             data.baseCost.baseCartSpeedUpgradeCost *= 2;
         }
         else
@@ -126,7 +128,7 @@ public class UIManager : Singleton<UIManager>
         int cost = data.baseCost.baseMaxObjStackCountUpgradeCost;
         if (SpendGold(cost))
         {
-            p.maxObjStackCount += 1;
+            p.MaxObjStackCount += 1;
             data.baseCost.baseMaxObjStackCountUpgradeCost *= 2;
         }
         else
@@ -135,12 +137,40 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    ////여기부터 윤제영 테스트 함수임
-    //public void ButtonEvent()
-    //{
-    //    testSilder.value = testSilder.value == 1 ? 0 : 1;
-    //    onOffImage.sprite = testSilder.value == 1 ? onOffSprite[1] : onOffSprite[0];
-    //    buttonImage.sprite = testSilder.value == 1 ? buttonSprite[1] : buttonSprite[0];
-    //}
-    ////여기까지 윤제영 테스트 함수였음
+    //여기부터 윤제영 테스트 함수임
+    private void OnGUI()
+    {
+
+        if (GUI.Button(new Rect(10, 50, 80, 20), "PMS Up"))
+            p.MaxObjStackCount += 1;
+        if (GUI.Button(new Rect(10, 70, 80, 20), "PMS Down"))
+            p.MaxObjStackCount -= 1;
+        if (GUI.Button(new Rect(10, 90, 80, 20), "PS Up"))
+            p.BaseSpeed += 1;
+        if (GUI.Button(new Rect(10, 110, 80, 20), "PS Down"))
+            p.BaseSpeed -= 1;
+
+        string textAreaString = $"PMS:{p.MaxObjStackCount} PS:{p.BaseSpeed}";
+        textAreaString = GUI.TextArea(new Rect(10, 130, 80, 20), textAreaString);
+
+        if (GUI.Button(new Rect(90, 50, 80, 20), "IM Up"))
+            im.ObjSpawnTime += 1;
+        if (GUI.Button(new Rect(90, 70, 80, 20), "IM Down"))
+            im.ObjSpawnTime -= 1;
+        if (GUI.Button(new Rect(90, 90, 80, 20), "CB Up"))
+            cb.PlaceObjectTime += 1;
+        if (GUI.Button(new Rect(90, 110, 80, 20), "CB Down"))
+            cb.PlaceObjectTime -= 1;
+        string abc = $"IM:{im.ObjSpawnTime} CB:{cb.PlaceObjectTime}";
+        abc = GUI.TextArea(new Rect(90, 130, 80, 20), abc);
+    }
+    public void SetIngredientMaker(IngredientMaker im)
+    {
+        this.im = im;
+    }
+    public void SetConveyorBelt(ConveyorBelt cb)
+    {
+        this.cb = cb;
+    }
+    //여기까지 윤제영 테스트 함수였음
 }
