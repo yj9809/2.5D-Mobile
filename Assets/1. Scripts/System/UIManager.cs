@@ -138,6 +138,7 @@ public class UIManager : Singleton<UIManager>
     }
 
     //여기부터 윤제영 테스트 함수임
+    /*
     private void OnGUI()
     {
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -185,5 +186,6 @@ public class UIManager : Singleton<UIManager>
     {
         this.cb = cb;
     }
+    */
     //여기까지 윤제영 테스트 함수였음
 }

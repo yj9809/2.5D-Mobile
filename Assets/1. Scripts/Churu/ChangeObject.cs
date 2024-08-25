@@ -16,7 +16,7 @@ public class ChangeObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ingredient") || other.CompareTag("Churu"))
+        if (other.CompareTag("Ingredient"))
         {
             GameObject newObject = pool.GetObj(objectB);
             newObject.name = objectB.name;
