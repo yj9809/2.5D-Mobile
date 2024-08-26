@@ -14,6 +14,15 @@ public enum CheckType
 
 public static class Utility
 {
+    public static AndroidJavaObject androidPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+    public static AndroidJavaObject AndroidcurrentActivity = androidPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+    public static AndroidJavaObject AndroidVibrator = AndroidcurrentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+
+    public static void Vibrate()
+    {
+        AndroidVibrator.Call("vibrate", 500, -1);
+    }
+
     public static float ObjRendererCheck(GameObject obj)
     {
         BoxCollider ren = obj.GetComponent<BoxCollider>();
@@ -46,6 +55,7 @@ public static class Utility
             if (num == (int)CheckType.Drop)
             {
                 newChuru = getChuruStack.Pop();
+                Vibrate();
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
