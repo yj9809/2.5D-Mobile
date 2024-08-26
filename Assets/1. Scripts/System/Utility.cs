@@ -28,20 +28,10 @@ public static class Vibration
 #endif
     }
 
-    public static void Vibrate(long milliseconds, int repeat)
+    public static void Vibrate(long milliseconds)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-         AndroidVibrator.Call("vibrate", pattern, repeat);
-#else
-        Handheld.Vibrate();
-#endif
-    }
-    public static void Vibrate(long[] pattern, int repeat)
-    {
-
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-        AndroidVibrator.Call("vibrate", pattern, repeat);
+         AndroidVibrator.Call("vibrate", milliseconds);
 #else
         Handheld.Vibrate();
 #endif
