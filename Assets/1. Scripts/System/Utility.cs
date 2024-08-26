@@ -28,10 +28,10 @@ public static class Vibration
 #endif
     }
 
-    public static void Vibrate(long milliseconds)
+    public static void Vibrate(long milliseconds, int repeat)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
-        AndroidVibrator.Call("vibrate", milliseconds);
+         AndroidVibrator.Call("vibrate", pattern, repeat);
 #else
         Handheld.Vibrate();
 #endif
@@ -58,10 +58,6 @@ public static class Vibration
 
 public static class Utility
 {
-    public static void Vibrate()
-    {
-    }
-
     public static float ObjRendererCheck(GameObject obj)
     {
         BoxCollider ren = obj.GetComponent<BoxCollider>();
@@ -94,7 +90,6 @@ public static class Utility
             if (num == (int)CheckType.Drop)
             {
                 newChuru = getChuruStack.Pop();
-                Vibrate();
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
                 .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));

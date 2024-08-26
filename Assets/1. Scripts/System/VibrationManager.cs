@@ -6,6 +6,6 @@ public class VibrationManager : MonoBehaviour
 {
     public void OnClick1()
     {
-        Vibration.Vibrate((long)5000);
+        //Vibration.Vibrate((long)5000);
     }
 }
