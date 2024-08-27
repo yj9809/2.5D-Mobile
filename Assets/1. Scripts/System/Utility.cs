@@ -12,7 +12,7 @@ public enum CheckType
     Car,
     Box
 }
-public static class Vibration
+public static class Vibrations
 {
 #if UNITY_ANDROID && !UNITY_EDITOR
     public static AndroidJavaClass AndroidPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -23,8 +23,6 @@ public static class Vibration
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidVibrator.Call("vibrate");
-#else
-        Handheld.Vibrate();
 #endif
     }
 
@@ -32,8 +30,6 @@ public static class Vibration
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
          AndroidVibrator.Call("vibrate", milliseconds);
-#else
-        Handheld.Vibrate();
 #endif
     }
 
