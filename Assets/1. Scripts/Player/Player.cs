@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
         cc = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         mainCamera = Camera.main;
+        Vibration.Init();
     }
 
     // Update is called once per frame
@@ -158,6 +159,7 @@ public class Player : MonoBehaviour
         if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
+            Vibration.VibratePop();
         }
     }
     public void GiveObject(ConveyorBelt cb)
@@ -165,6 +167,7 @@ public class Player : MonoBehaviour
         if (ingredientStack.Count > 0)
         {
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
+            Vibration.VibratePop();
         }
     }
     public void GiveObject(BoxStorage bs, bool isChuru)
@@ -175,6 +178,7 @@ public class Player : MonoBehaviour
         if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
+            Vibration.VibratePop();
         }
     }
     public void GiveObject(BoxPackaging bp)
@@ -182,6 +186,7 @@ public class Player : MonoBehaviour
         if (churuStack.Count > 0)
         {
             Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 4);
+            Vibration.VibratePop();
         }
     }
     public void GiveObject(Delivery dv)
@@ -189,6 +194,7 @@ public class Player : MonoBehaviour
         if (dv.DeliveryStack.Count > 0 && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, dv.DeliveryStack, boxStack, 1);
+
         }
     }
     public void GiveObject(TestCar tc)
@@ -196,6 +202,8 @@ public class Player : MonoBehaviour
         if (boxStack.Count > 0 && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(tc.gameObject.transform, null, boxStack, tc.BoxStack, 3);
+            Vibration.VibratePop();
         }
     }
+
 }
