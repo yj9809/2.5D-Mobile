@@ -12,6 +12,7 @@ public enum CheckType
     Car,
     Box
 }
+#region 진동이었던 친구...
 public static class Vibrations
 {
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -41,7 +42,7 @@ public static class Vibrations
     }
 
 }
-
+#endregion
 public static class Utility
 {
     public static float ObjRendererCheck(GameObject obj)
