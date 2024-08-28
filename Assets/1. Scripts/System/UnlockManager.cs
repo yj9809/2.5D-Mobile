@@ -9,45 +9,56 @@ public class UnlockManager : MonoBehaviour
     [SerializeField] private Image unlockFillImage;
     private float currentFill;
 
+    private bool isTrigger = false;
     private bool isUnlocked = false;
-    private Coroutine unlockCoroutine;
+    private int amount;
+
     private Player p;
 
     void Start()
     {
         p = GameManager.Instance.P;
+        amount = 1000;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isUnlocked)
+        if (other.CompareTag("Player") && !isUnlocked && p.Gold > amount)
         {
-            unlockCoroutine = StartCoroutine(UnlockRoutine(currentFill));
+            isTrigger = true;
+            UIManager.Instance.SpendGold(amount);
+            StartCoroutine(UnlockProcess(currentFill));
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && !isUnlocked && unlockCoroutine != null)
+        if (other.CompareTag("Player") && !isUnlocked)
         {
-            StopCoroutine(unlockCoroutine);
+            isTrigger = false;
         }
     }
 
-    private IEnumerator UnlockRoutine(float unlockProgress)
+    private IEnumerator UnlockProcess(float updateProcess)
     {
-        currentFill = unlockProgress;
+        currentFill = updateProcess;
 
         while (currentFill < unlockTime)
         {
-            currentFill += Time.deltaTime;
-            UpdateUnlockUI(currentFill / unlockTime);
+            if (isTrigger)
+            {
+                currentFill += Time.deltaTime;
+                UpdateUnlockUI(currentFill / unlockTime);
+            }
             yield return null;
         }
 
-        Instantiate(lockPrefab, transform.position, Quaternion.identity);
-        isUnlocked = true;
-        ResetUnlockUI();
+        if (currentFill >= unlockTime)
+        {
+            Instantiate(lockPrefab, transform.position, Quaternion.identity);
+            isUnlocked = true;
+            ResetUnlockUI();
+        }
     }
 
     private void UpdateUnlockUI(float progress)

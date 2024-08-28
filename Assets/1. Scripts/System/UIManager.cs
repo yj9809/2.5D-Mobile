@@ -61,7 +61,7 @@ public class UIManager : Singleton<UIManager>
     public void SellItem()
     {
         //테스트용
-        AddGold(10);
+        AddGold(100);
     }
 
     public void AddGold(int amount)
