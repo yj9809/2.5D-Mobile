@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UnlockManager : MonoBehaviour
 {
-    [SerializeField] private GameObject lockPrefab;
+    [SerializeField] private GameObject lockObject;
     [SerializeField] private float unlockTime = 3.0f;
     [SerializeField] private Image unlockFillImage;
     private float currentFill;
@@ -53,9 +54,11 @@ public class UnlockManager : MonoBehaviour
             yield return null;
         }
 
+        // 오브젝트 생성구간
         if (currentFill >= unlockTime)
         {
-            Instantiate(lockPrefab, transform.position, Quaternion.identity);
+            //Instantiate(lockPrefab, transform.position, Quaternion.identity);
+            lockObject.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce);
             isUnlocked = true;
             ResetUnlockUI();
         }
