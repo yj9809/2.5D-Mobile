@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 
 public class GameManager : Singleton<GameManager>
@@ -25,6 +26,29 @@ public class GameManager : Singleton<GameManager>
             if (mainCamera == null)
                 mainCamera = FindObjectOfType<MainCamera>();
             return mainCamera;
+        }
+    }
+
+    private DataManager data;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        data = DataManager.Instance;
+        
+    }
+
+    private void Start()
+    {
+        SceneManager.activeSceneChanged += OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene previousScene, Scene newScene)
+    {
+        if(data.baseCost.step1)
+        {
+            Debug.Log("½ÇÇà");
+            StepSystem.Instance.Step1Obj[0].gameObject.SetActive(false);
+            StepSystem.Instance.Step1Obj[1].gameObject.SetActive(true);
         }
     }
 }

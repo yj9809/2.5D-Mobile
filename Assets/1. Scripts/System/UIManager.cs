@@ -53,15 +53,44 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    // 재화 단위 변경
+    private string ChangeNumbet(string number)
+    {
+        char[] unitAlphabet = new char[3] { 'K', 'M', 'B' };
+        int unit = 0;
+        while (number.Length > 6)
+        {
+            unit++;
+            number = number.Substring(0, number.Length - 3);
+        }
+        if (number.Length > 3)
+        {
+            int newInt = int.Parse(number);
+            if (number.Length > 4)
+            {
+                return (newInt / 1000).ToString() + unitAlphabet[unit];
+            }
+            else
+            {
+                return (newInt / 1000f).ToString("0.0") + unitAlphabet[unit];
+            }
+        }
+        else
+        {
+            int newInt = int.Parse(number);
+            return (newInt).ToString();
+        }
+    }
+
     private void UpdateUI()
     {
-        goldTxt.text = "Gold: " + p.Gold.ToString();
+        goldTxt.text = ChangeNumbet(p.Gold.ToString());
     }
 
     public void SellItem()
     {
         //테스트용
-        AddGold(100);
+        AddGold(900);
     }
 
     public void AddGold(int amount)

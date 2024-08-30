@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UnlockManager : MonoBehaviour
 {
-    [SerializeField] private GameObject lockPrefab;
+    [SerializeField] private GameObject lockObject;
     [SerializeField] private float unlockTime = 3.0f;
     [SerializeField] private Image unlockFillImage;
+    [SerializeField] private int stepNum;
     private float currentFill;
 
     private bool isTrigger = false;
@@ -53,9 +55,18 @@ public class UnlockManager : MonoBehaviour
             yield return null;
         }
 
+        // 오브젝트 생성구간
         if (currentFill >= unlockTime)
         {
-            Instantiate(lockPrefab, transform.position, Quaternion.identity);
+            //Instantiate(lockPrefab, transform.position, Quaternion.identity);
+            foreach (Transform item in transform)
+            {
+                item.gameObject.SetActive(false);
+            }
+            lockObject.gameObject.SetActive(true);
+            lockObject.transform.DOScale(Vector3.zero, 0f);
+            lockObject.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
+                .OnComplete(() => DataManager.Instance.StepOnOff(stepNum));
             isUnlocked = true;
             ResetUnlockUI();
         }
