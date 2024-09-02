@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using DG.Tweening;
 
 public class Employee : MonoBehaviour
@@ -19,6 +20,7 @@ public class Employee : MonoBehaviour
     private bool isWaiting = false;
 
     private Animator animator;
+    private NavMeshAgent na;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -44,6 +46,7 @@ public class Employee : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        na = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -57,17 +60,6 @@ public class Employee : MonoBehaviour
     {
         if (!isWaiting)
         {
-            Vector3 targetPosition;
-
-            if (moving)
-            {
-                targetPosition = conveyorBletPoint.position;
-            }
-            else
-            {
-                targetPosition = ingredientPoint.position;
-            }
-
             float currentSpeed = animator.GetFloat("Blend") == 1 ? cartSpeed : speed;
             animator.SetBool("isMove", true);
             if (ingredientStack.Count > 0)
@@ -79,23 +71,6 @@ public class Employee : MonoBehaviour
                 animator.SetFloat("Blend", 0);
             }
 
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-            {
-                moving = !moving;
-                StartCoroutine(WaitAtPosition());
-            }
-
-            
-
-            Vector3 direction = targetPosition - transform.position;
-            direction.y = 0;
-            if (direction != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
-            }
         }
         else
         {

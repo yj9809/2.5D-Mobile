@@ -23,7 +23,7 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0.8f;
+    private float breakDownProb = 0f;
     public float BreakDownProb
     {
         get { return breakDownProb; }
