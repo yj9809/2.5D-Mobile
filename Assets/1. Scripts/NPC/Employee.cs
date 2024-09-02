@@ -111,22 +111,28 @@ public class Employee : MonoBehaviour
             yield return new WaitForSeconds(3f);
             if (!moving)
             {
+                Transform bestTarget = null;
+                int highestStackCount = 0;
+
                 foreach (var item in GameManager.Instance.stackCount)
                 {
                     int count = item.GetStackCount();
                     Transform pos = item.GetTransform();
                     int type = item.GetTypeNum();
-                    if (stackCount < count)
+
+                    // 현재 목표보다 훨씬 높은 스택 차이(예: 2배 이상)일 경우만 목표 변경
+                    if (count > highestStackCount && (bestTarget == null || count > highestStackCount * 2))
                     {
-                        stackCount = count;
-                        target = pos;
+                        highestStackCount = count;
+                        bestTarget = pos;
                         employeeType = (EmployeeType)type;
                     }
                 }
-                if (target != null)
+
+                if (bestTarget != null)
                 {
+                    target = bestTarget;
                     moving = true;
-                    Debug.Log(moving);
                     stackCount = 0;
                 }
             }

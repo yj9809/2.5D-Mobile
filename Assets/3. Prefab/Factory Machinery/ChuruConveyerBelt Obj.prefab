@@ -379,7 +379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1923123334
 RectTransform:
   m_ObjectHideFlags: 0
@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 5776874712476612138}
   - component: {fileID: 5776874712476612137}
   - component: {fileID: 5776874712476612136}
+  - component: {fileID: 187681968}
   m_Layer: 0
   m_Name: ConveyerBelt
   m_TagString: Untagged
@@ -807,7 +808,6 @@ MonoBehaviour:
   ingredientStorage: {fileID: 5776874713590211582}
   onBelt: {fileID: 6181309834136713019}
   boxStorage: {fileID: 5776874712031910326}
-  breakDownEventButton: {fileID: 1923123335}
   eventGauge: {fileID: 40491699}
   displayImg: {fileID: 909012989}
   displayImgArray:
@@ -877,6 +877,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.657658, y: 0.48012805, z: 1.1568838}
   m_Center: {x: 0, y: 0.24006402, z: 0}
+--- !u!208 &187681968
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5776874712476612134}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.329, y: 0.24000001, z: 1.16}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.24000001, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &5776874712477388327
 GameObject:
   m_ObjectHideFlags: 0
