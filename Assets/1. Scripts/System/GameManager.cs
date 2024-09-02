@@ -44,6 +44,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         data = DataManager.Instance;
+        Application.targetFrameRate = 60;
     }
 
     private void Start()
