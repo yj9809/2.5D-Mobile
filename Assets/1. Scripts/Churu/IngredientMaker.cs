@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class IngredientMaker : MonoBehaviour
+public class IngredientMaker : MonoBehaviour, IStackable
 {
     [TabGroup("IngredientMaker")] [SerializeField] private GameObject objPrefab;
     [TabGroup("IngredientMaker")] [SerializeField] private Transform objSpawnPoint;
@@ -25,10 +25,18 @@ public class IngredientMaker : MonoBehaviour
         set { churuStack = value; }
     }
 
+    private GameManager gm;
+
+    private void Start()
+    {
+        gm = GameManager.Instance;
+        gm.stackCount.Add(this);
+    }
     // Update is called once per frame
     void Update()
     {
         SpawnGameObject();
+        
         //테스트용
         UIManager.Instance.SetIngredientMaker(this);
     }
@@ -49,4 +57,9 @@ public class IngredientMaker : MonoBehaviour
             //Debug.Log("Object is Full !");
         }
     }
+
+    public int GetStackCount() => churuStack.Count;
+
+    public Transform GetTransform() => transform.GetChild(0).transform;
+    public int GetTypeNum() => 0;
 }

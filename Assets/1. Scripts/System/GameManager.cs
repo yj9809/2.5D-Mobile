@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Android;
 
+
+public interface IStackable
+{
+    int GetStackCount();
+    Transform GetTransform();
+    int GetTypeNum();
+}
 public class GameManager : Singleton<GameManager>
 {
     private Player p;
@@ -31,11 +38,12 @@ public class GameManager : Singleton<GameManager>
 
     private DataManager data;
 
+    public List<IStackable> stackCount = new List<IStackable>();
+
     protected override void Awake()
     {
         base.Awake();
         data = DataManager.Instance;
-        Application.targetFrameRate = 60; // 60프레임 고정
     }
 
     private void Start()
