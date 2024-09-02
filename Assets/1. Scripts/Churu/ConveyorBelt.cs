@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
     [SerializeField] private Vector3 direction = Vector3.forward;
-    [SerializeField] private Transform ingredientStorage;
-    [SerializeField] private Transform onBelt;
-    [SerializeField] private BoxStorage boxStorage;
-    [SerializeField] private Button breakDownEventButton;
-    [SerializeField] private Image eventGauge;
+    [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
+    [TabGroup("Transform"), SerializeField] private Transform onBelt;
+    [TabGroup("GameObj"), SerializeField] private BoxStorage boxStorage;
+    [TabGroup("BreakEvent"),SerializeField] private Image eventGauge;
+    [TabGroup("BreakEvent"), SerializeField] private Image displayImg;
+    [TabGroup("BreakEvent"), SerializeField] private Sprite[] displayImgArray;
 
     private float placeObjectTime = 3f;
     public float PlaceObjectTime
@@ -21,7 +23,7 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0.1f;
+    private float breakDownProb = 0f;
     public float BreakDownProb
     {
         get { return breakDownProb; }
@@ -43,11 +45,10 @@ public class ConveyorBelt : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PlaceObject());
-        breakDownEventButton.onClick.AddListener(BreakDownEventButton);
-        breakDownEventButton.gameObject.SetActive(false);
+        StartCoroutine(DisplayImgChange());
         eventGauge.gameObject.SetActive(false);
         //테스트용
-        //UIManager.Instance.SetConveyorBelt(this);
+        UIManager.Instance.SetConveyorBelt(this);
     }
     private void Update()
     {
@@ -68,7 +69,6 @@ public class ConveyorBelt : MonoBehaviour
             if(cbStack.Count > 0 && Random.value < breakDownProb)
             {
                 BreakDownEvent();
-                yield break;
             }
 
             if (cbStack.Count > 0 && isOn && !isBreakDown)
@@ -77,12 +77,19 @@ public class ConveyorBelt : MonoBehaviour
             }
         }
     }
-    // 가독성을 위해 따로 함수로 빼뒀습니다.
-    private void BreakDownEvent()
+    private IEnumerator DisplayImgChange()
     {
-        isBreakDown = true;
-        breakDownEventButton.gameObject.SetActive(true);
+        while (true)
+        {
+            if (displayImg.sprite != displayImgArray[0])
+                displayImg.sprite = displayImgArray[0];
+            else
+                displayImg.sprite = displayImgArray[1];
+            yield return new WaitForSeconds(2f);
+        }
     }
+    // 가독성을 위해 따로 함수로 빼뒀습니다.
+    
     private void OnConveyorObj()
     {
         PushStack();
@@ -97,13 +104,17 @@ public class ConveyorBelt : MonoBehaviour
         }
     }
     // 고장 이벤트를 위한 테스트 함수들입니다.
-    private void BreakDownEventButton()
+    private void BreakDownEvent()
     {
-        GameManager.Instance.P.PlayerAutoMove(transform.GetChild(0), BreakDownSolution);
+        isBreakDown = true;
+        StopAllCoroutines();
+        UIManager.Instance.ShowBreakDownEventUI();
+        displayImg.sprite = displayImgArray[2];
     }
-    private void BreakDownSolution()
+    
+    public void BreakDownSolution()
     {
-        breakDownEventButton.gameObject.SetActive(false);
+        UIManager.Instance.HideBreakDownEventUI();
         eventGauge.gameObject.SetActive(true);
         SolutionInProgress();
     }
@@ -117,6 +128,7 @@ public class ConveyorBelt : MonoBehaviour
             GameManager.Instance.P.PT = PlayerType.Joystick;
             eventGaugeFill.fillAmount = 0;
             StartCoroutine(PlaceObject());
+            StartCoroutine(DisplayImgChange());
         });
     }
     // 임시로 스택 관련 버그 발생 문제 해결 코드.

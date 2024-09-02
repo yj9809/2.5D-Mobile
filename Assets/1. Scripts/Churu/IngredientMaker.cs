@@ -30,7 +30,7 @@ public class IngredientMaker : MonoBehaviour
     {
         SpawnGameObject();
         //테스트용
-        //UIManager.Instance.SetIngredientMaker(this);
+        UIManager.Instance.SetIngredientMaker(this);
     }
 
     private void SpawnGameObject()  
