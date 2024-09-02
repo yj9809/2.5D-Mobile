@@ -13,7 +13,7 @@ public class FpsCounter : MonoBehaviour
     private float timeleft; // 현재 주기의 남은 시간
 
     // FPS를 표시할 텍스트
-    TextMeshProUGUI textFpsCounter;
+    private TextMeshProUGUI textFpsCounter;
 
     void Start()
     {
@@ -22,7 +22,6 @@ public class FpsCounter : MonoBehaviour
 
     void Update()
     {
-
         // 남은 시간 갱신
         timeleft -= Time.deltaTime;
         // 주기별 FPS 누적
@@ -44,6 +43,5 @@ public class FpsCounter : MonoBehaviour
             accum = 0.0F;
             frames = 0;
         }
-
     }
 }
