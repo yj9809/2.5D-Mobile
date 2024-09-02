@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
     {
         base.Awake();
         data = DataManager.Instance;
-        
+        Application.targetFrameRate = 60; // 60프레임 고정
     }
 
     private void Start()
