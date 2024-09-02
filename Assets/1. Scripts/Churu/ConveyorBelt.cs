@@ -12,7 +12,6 @@ public class ConveyorBelt : MonoBehaviour
     [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     [TabGroup("Transform"), SerializeField] private Transform onBelt;
     [TabGroup("GameObj"), SerializeField] private BoxStorage boxStorage;
-    [TabGroup("BreakEvent"), SerializeField] private Button breakDownEventButton;
     [TabGroup("BreakEvent"),SerializeField] private Image eventGauge;
     [TabGroup("BreakEvent"), SerializeField] private Image displayImg;
     [TabGroup("BreakEvent"), SerializeField] private Sprite[] displayImgArray;
@@ -47,11 +46,9 @@ public class ConveyorBelt : MonoBehaviour
     {
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
-        breakDownEventButton.onClick.AddListener(BreakDownEventButton);
-        breakDownEventButton.gameObject.SetActive(false);
         eventGauge.gameObject.SetActive(false);
         //테스트용
-        //UIManager.Instance.SetConveyorBelt(this);
+        UIManager.Instance.SetConveyorBelt(this);
     }
     private void Update()
     {
@@ -84,11 +81,11 @@ public class ConveyorBelt : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2f);
             if (displayImg.sprite != displayImgArray[0])
                 displayImg.sprite = displayImgArray[0];
             else
                 displayImg.sprite = displayImgArray[1];
+            yield return new WaitForSeconds(2f);
         }
     }
     // 가독성을 위해 따로 함수로 빼뒀습니다.
@@ -111,16 +108,13 @@ public class ConveyorBelt : MonoBehaviour
     {
         isBreakDown = true;
         StopAllCoroutines();
-        breakDownEventButton.gameObject.SetActive(true);
+        UIManager.Instance.ShowBreakDownEventUI();
         displayImg.sprite = displayImgArray[2];
     }
-    private void BreakDownEventButton()
+    
+    public void BreakDownSolution()
     {
-        GameManager.Instance.P.PlayerAutoMove(transform.GetChild(0), BreakDownSolution);
-    }
-    private void BreakDownSolution()
-    {
-        breakDownEventButton.gameObject.SetActive(false);
+        UIManager.Instance.HideBreakDownEventUI();
         eventGauge.gameObject.SetActive(true);
         SolutionInProgress();
     }

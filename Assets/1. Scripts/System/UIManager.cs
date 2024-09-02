@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 
 public class UIManager : Singleton<UIManager>
@@ -15,6 +16,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button speedUpgradeButton;
     [SerializeField] private Button cartSpeedUpgradeButton;
     [SerializeField] private Button maxObjStackCountUpgradeButton;
+
+    [SerializeField] private Button breakDownButton;
 
     ////여기부터 윤제영에 테스트 참조임
     //[SerializeField] private Sprite[] onOffSprite;
@@ -36,12 +39,15 @@ public class UIManager : Singleton<UIManager>
         data = DataManager.Instance;
 
         upgradePanel.SetActive(false);
+        breakDownButton.gameObject.SetActive(false);
 
         UpdateUI();
         speedUpgradeButton.onClick.AddListener(UpgradePlayerSpeed);
         cartSpeedUpgradeButton.onClick.AddListener(UpgradePlayerCartSpeed);
         maxObjStackCountUpgradeButton.onClick.AddListener(UpgradePlayerMaxStack);
         cameraZoomButton.onClick.AddListener(GameManager.Instance.MainCamera.ZoomScreen);
+
+        breakDownButton.onClick.AddListener(BreakDownEventButton);
     }
 
     // Update is called once per frame
@@ -53,6 +59,12 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    private void UpdateUI()
+    {
+        goldTxt.text = ChangeNumbet(p.Gold.ToString());
+    }
+
+    #region GoldUI
     // 재화 단위 변경
     private string ChangeNumbet(string number)
     {
@@ -80,11 +92,6 @@ public class UIManager : Singleton<UIManager>
             int newInt = int.Parse(number);
             return (newInt).ToString();
         }
-    }
-
-    private void UpdateUI()
-    {
-        goldTxt.text = ChangeNumbet(p.Gold.ToString());
     }
 
     public void SellItem()
@@ -116,7 +123,9 @@ public class UIManager : Singleton<UIManager>
             return false;
         }
     }
+    #endregion
 
+    #region UpgradeUI
     public void ShowUpgradeUI()
     {
         upgradePanel.SetActive(true);
@@ -165,6 +174,26 @@ public class UIManager : Singleton<UIManager>
             Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
         }
     }
+    #endregion
+
+    #region BreakDownEventUI
+    public void ShowBreakDownEventUI()
+    {
+        breakDownButton.gameObject.SetActive(true);
+    }
+    public void HideBreakDownEventUI()
+    {
+        breakDownButton.gameObject.SetActive(false);
+    }
+    private void BreakDownEventButton()
+    {
+        GameManager.Instance.P.PlayerAutoMove(cb.transform.GetChild(0), cb.BreakDownSolution);
+    }
+    public void SetConveyorBelt(ConveyorBelt cb)
+    {
+        this.cb = cb;
+    }
+    #endregion
 
     //여기부터 윤제영 테스트 함수임
     /*
