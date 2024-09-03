@@ -67,6 +67,12 @@ public class WorkPoint : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        UIManager.Instance.CloseUpgradeUI();
+        Player p = other.GetComponent<Player>();
+        if (p != null)
+        {
+            UIManager.Instance.CloseUpgradeUI();
+            p.StopBoxPackagingAnimation();
+        }
+        
     }
 }
