@@ -196,50 +196,50 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     //여기부터 윤제영 테스트 함수임
-    /*
+    
     private void OnGUI()
     {
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
         // 폰트 사이즈 조정
-        buttonStyle.fontSize = 50;
+        buttonStyle.fontSize = 20;
 
-        if (GUI.Button(new Rect(50, 250, 300, 100), "PMS Up", buttonStyle))
+        if (GUI.Button(new Rect(10, 250, 200, 100), "소지갯수 올리기", buttonStyle))
             p.MaxObjStackCount += 1;
-        if (GUI.Button(new Rect(50, 360, 300, 100), "PMS Down", buttonStyle))
+        if (GUI.Button(new Rect(10, 360, 200, 100), "소지갯수 내리기", buttonStyle))
             p.MaxObjStackCount -= 1;
-        if (GUI.Button(new Rect(50, 470, 300, 100), "PS Up", buttonStyle))
+        if (GUI.Button(new Rect(10, 470, 200, 100), "이동속도 올리기", buttonStyle))
             p.BaseSpeed += 1;
-        if (GUI.Button(new Rect(50, 580, 300, 100), "PS Down", buttonStyle))
+        if (GUI.Button(new Rect(10, 580, 200, 100), "이동속도 내리기", buttonStyle))
             p.BaseSpeed -= 1;
 
-        string textAreaString = $"PMS:{p.MaxObjStackCount} PS:{p.BaseSpeed}";
-        textAreaString = GUI.TextArea(new Rect(50, 690, 300, 100), textAreaString, buttonStyle);
+        string textAreaString = $"소지갯수:{p.MaxObjStackCount}\n이동속도:{p.BaseSpeed}";
+        textAreaString = GUI.TextArea(new Rect(10, 690, 200, 100), textAreaString, buttonStyle);
 
-        if (GUI.Button(new Rect(360, 250, 300, 100), "IM Up", buttonStyle))
+        if (GUI.Button(new Rect(220, 250, 200, 100), "재료생산 느리게", buttonStyle))
             im.ObjSpawnTime += 1;
-        if (GUI.Button(new Rect(360, 360, 300, 100), "IM Down", buttonStyle))
+        if (GUI.Button(new Rect(220, 360, 200, 100), "재료생산 빠르게", buttonStyle))
             im.ObjSpawnTime -= 1;
-        if (GUI.Button(new Rect(360, 470, 300, 100), "CB Up", buttonStyle))
+        if (GUI.Button(new Rect(220, 470, 200, 100), "재료변환 느리게", buttonStyle))
             cb.PlaceObjectTime += 1;
-        if (GUI.Button(new Rect(360, 580, 300, 100), "CB Down", buttonStyle))
+        if (GUI.Button(new Rect(220, 580, 200, 100), "재료변환 빠르게", buttonStyle))
             cb.PlaceObjectTime -= 1;
-        string abc = $"IM:{im.ObjSpawnTime} CB:{cb.PlaceObjectTime}";
-        abc = GUI.TextArea(new Rect(350, 690, 300, 100), abc, buttonStyle);
+        string abc = $"재료생산:{im.ObjSpawnTime}초\n재료변환:{cb.PlaceObjectTime}초";
+        abc = GUI.TextArea(new Rect(220, 690, 200, 100), abc, buttonStyle);
 
-        if (GUI.Button(new Rect(670, 250, 300, 100), "Gold", buttonStyle))
+        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
             AddGold(100);
-        if (GUI.Button(new Rect(670, 360, 300, 100), "BDP Up", buttonStyle))
+        if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
             cb.BreakDownProb += 0.1f;
-        if (GUI.Button(new Rect(670, 470, 300, 100), "BDP Down", buttonStyle))
+        if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
             cb.BreakDownProb -= 0.1f;
-        string def = $"BDP:{cb.BreakDownProb * 100}%";
-        def = GUI.TextArea(new Rect(670, 580, 300, 100), def, buttonStyle);
+        string def = $"고장확률:{cb.BreakDownProb * 100}%";
+        def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
     }
     public void SetIngredientMaker(IngredientMaker im)
     {
         this.im = im;
     }
-    */
+    
     //여기까지 윤제영 테스트 함수였음
 }
