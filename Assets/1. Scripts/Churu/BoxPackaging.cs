@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 
@@ -17,6 +18,7 @@ public class BoxPackaging : MonoBehaviour
     [SerializeField] private GameObject box;
 
     private GameObject newBox;
+    private TMP_Text boxCountTxt;
 
     private Stack<GameObject> churuStorage = new Stack<GameObject>();
 
@@ -33,6 +35,7 @@ public class BoxPackaging : MonoBehaviour
     private PackagingType packaging = PackagingType.On;
 
     private int count = 0;
+    private const int maxCount = 5;
 
     public void Packaging()
     {
@@ -40,6 +43,8 @@ public class BoxPackaging : MonoBehaviour
         { 
             newBox = Instantiate(box, boxParent);
             newBox.name = box.name;
+            boxCountTxt = newBox.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>();
+            newBox.transform.GetChild(0).gameObject.SetActive(true);
         }
 
         if (churuStorage.Count != 0 && newBox != null)
@@ -59,6 +64,7 @@ public class BoxPackaging : MonoBehaviour
                 {
                     PoolingManager.Instance.ReturnObjecte(churu);
                     count++;
+                    boxCountTxt.text = $"{count}/{maxCount}";
                     BoxMove(newBox, count);
                 }
                 );
@@ -73,6 +79,7 @@ public class BoxPackaging : MonoBehaviour
             newBox.transform.DOMove(packagingBoxParent.position, 0.3f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
+                    this.newBox.transform.GetChild(0).gameObject.SetActive(false);
                     this.newBox = null;
                     this.count = 0;
                     packaging = PackagingType.On;
