@@ -58,6 +58,8 @@ public class BoxPackaging : MonoBehaviour
         {
             GameObject churu = churuStorage.Pop();
 
+            GameManager.Instance.P.DoBoxPackagingAnimation();
+
             churu.transform.SetParent(newBox.transform);
             churu.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.InBack)
                 .OnComplete(() =>
