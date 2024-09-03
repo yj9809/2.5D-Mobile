@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxStorage : MonoBehaviour
+public class BoxStorage : MonoBehaviour, IStackable
 {
     [SerializeField] private Transform[] boxTransform;
 
@@ -16,7 +16,12 @@ public class BoxStorage : MonoBehaviour
     }
 
     private int boxTransformNum = 0;
-    
+
+    private void Start()
+    {
+        GameManager.Instance.stackCount.Add(this);
+    }
+
     private void Update()
     {
         boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
@@ -32,4 +37,10 @@ public class BoxStorage : MonoBehaviour
             Utility.ObjectDrop(boxTransform[boxTransformNum], collision.gameObject, null, boxStack, 2);
         }
     }
+
+    public int GetStackCount() => boxStack.Count;
+
+    public Transform GetTransform() => transform.GetChild(0).transform;
+
+    public int GetTypeNum() => 1;
 }

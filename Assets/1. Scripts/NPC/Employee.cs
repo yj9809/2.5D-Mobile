@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
 
+public enum EmployeeType { im, cb}
+
 public class Employee : MonoBehaviour
 {
-    [SerializeField] private Transform ingredientPoint;
-    [SerializeField] private Transform conveyorBletPoint;
-
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
     [SerializeField] private int maxObjStackCount = 5;
+
+    [SerializeField] private Transform cbTrans;
+    [SerializeField] private Transform boxTrans;
 
     [SerializeField] private float speed = 3f;
     [SerializeField] private float cartSpeed = 1.5f;
@@ -21,6 +23,10 @@ public class Employee : MonoBehaviour
 
     private Animator animator;
     private NavMeshAgent na;
+    [SerializeField] private Transform target;
+    private EmployeeType employeeType;
+
+    int stackCount = 0;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -29,6 +35,15 @@ public class Employee : MonoBehaviour
         set
         {
             ingredientStack = value;
+        }
+    }
+    private Stack<GameObject> churuStack = new Stack<GameObject>();
+    public Stack<GameObject> ChuruStack
+    {
+        get { return churuStack; }
+        set
+        {
+            churuStack = value;
         }
     }
 
@@ -47,6 +62,7 @@ public class Employee : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
+        StartCoroutine(CheckStack());
     }
 
     // Update is called once per frame
@@ -54,6 +70,16 @@ public class Employee : MonoBehaviour
     {
         Move();
         OnCart();
+
+        if (target != null)
+            na.SetDestination(target.position);
+
+        if (ingredientStack.Count > 0 && employeeType == EmployeeType.im)
+            target = cbTrans;
+        else if (churuStack.Count > 0)
+            target = boxTrans;
+        else
+            moving = false;
     }
 
     private void Move()
@@ -78,6 +104,40 @@ public class Employee : MonoBehaviour
         }
     }
 
+    private IEnumerator CheckStack()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(3f);
+            if (!moving)
+            {
+                Transform bestTarget = null;
+                int highestStackCount = 0;
+
+                foreach (var item in GameManager.Instance.stackCount)
+                {
+                    int count = item.GetStackCount();
+                    Transform pos = item.GetTransform();
+                    int type = item.GetTypeNum();
+
+                    // 현재 목표보다 훨씬 높은 스택 차이(예: 2배 이상)일 경우만 목표 변경
+                    if (count > highestStackCount && (bestTarget == null || count > highestStackCount * 2))
+                    {
+                        highestStackCount = count;
+                        bestTarget = pos;
+                        employeeType = (EmployeeType)type;
+                    }
+                }
+
+                if (bestTarget != null)
+                {
+                    target = bestTarget;
+                    moving = true;
+                    stackCount = 0;
+                }
+            }
+        }
+    }
 
     private IEnumerator WaitAtPosition()
     {
@@ -88,13 +148,13 @@ public class Employee : MonoBehaviour
 
     private void OnCart()
     {
-        if (ingredientStack.Count <= 0 && boxStack.Count <= 0)
+        if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
             cart.transform.DOScale(0, 0.2f);
         }
         else
         {
-            cart.transform.DOScale(new Vector3(1, 0.01f, 2), 0.2f);
+            cart.transform.DOScale(Vector3.one, 0.2f);
         }
     }
 
@@ -111,6 +171,25 @@ public class Employee : MonoBehaviour
         if (ingredientStack.Count > 0)
         {
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
+        }
+    }
+    public void GiveObject(BoxStorage bs, bool isChuru)
+    {
+        Stack<GameObject> newStack = new Stack<GameObject>();
+        newStack = isChuru ? churuStack : boxStack;
+
+        if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
+        {
+            Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
+            Vibration.VibratePop();
+        }
+    }
+    public void GiveObject(BoxPackaging bp)
+    {
+        if (churuStack.Count > 0)
+        {
+            Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 4);
+            Vibration.VibratePop();
         }
     }
 }

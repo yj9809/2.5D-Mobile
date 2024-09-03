@@ -16,6 +16,8 @@ public class ConveyorBelt : MonoBehaviour
     [TabGroup("BreakEvent"), SerializeField] private Image displayImg;
     [TabGroup("BreakEvent"), SerializeField] private Sprite[] displayImgArray;
 
+    private GameManager gm;
+
     private float placeObjectTime = 3f;
     public float PlaceObjectTime
     {
@@ -44,6 +46,7 @@ public class ConveyorBelt : MonoBehaviour
     }
     private void Start()
     {
+        gm = GameManager.Instance;
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
         eventGauge.gameObject.SetActive(false);
