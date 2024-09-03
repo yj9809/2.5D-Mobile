@@ -35,7 +35,11 @@ public class WorkPoint : MonoBehaviour
             {
                 case WorkPointType.Ingredient:
                     if (p != null) p.TakeObject(_ingredientMaker);
-                    if (e != null) e.TakeObject(_ingredientMaker);
+                    if (e != null)
+                    {
+                        Debug.Log("½ÇÇà");
+                        e.TakeObject(_ingredientMaker);
+                    }
                     break;
                 case WorkPointType.ConveyorBelt_ingredient :
                     if (p != null) p.GiveObject(_conveyorBelt);

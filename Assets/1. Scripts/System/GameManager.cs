@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Android;
-
 
 public interface IStackable
 {
     int GetStackCount();
     Transform GetTransform();
-    int GetTypeNum();
 }
+
 public class GameManager : Singleton<GameManager>
 {
     private Player p;
@@ -18,17 +16,18 @@ public class GameManager : Singleton<GameManager>
     {
         get
         {
-            if(p == null)
+            if (p == null)
             {
                 p = FindObjectOfType<Player>();
             }
             return p;
         }
     }
+
     private MainCamera mainCamera;
     public MainCamera MainCamera
     {
-        get 
+        get
         {
             if (mainCamera == null)
                 mainCamera = FindObjectOfType<MainCamera>();
@@ -39,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     private DataManager data;
 
     public List<IStackable> stackCount = new List<IStackable>();
+    private List<Employee> employees = new List<Employee>();
 
     protected override void Awake()
     {
@@ -50,14 +50,44 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         SceneManager.activeSceneChanged += OnSceneLoaded;
+        employees.AddRange(FindObjectsOfType<Employee>());
     }
+
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
     {
-        if(data.baseCost.step1)
+        if (data.baseCost.step1)
         {
             Debug.Log("실행");
             StepSystem.Instance.Step1Obj[0].gameObject.SetActive(false);
             StepSystem.Instance.Step1Obj[1].gameObject.SetActive(true);
+        }
+    }
+
+    public void AddStackable(IStackable stackable)
+    {
+        if (!stackCount.Contains(stackable))
+        {
+            stackCount.Add(stackable);
+        }
+    }
+
+    public void RemoveStackable(IStackable stackable)
+    {
+        if (stackCount.Contains(stackable))
+        {
+            stackCount.Remove(stackable);
+        }
+    }
+
+    public void UpdateTargets()
+    {
+        foreach (var employee in employees)
+        {
+            if (employee != null)
+            {
+                // 현재 목표가 있는 경우 새로운 목표로 업데이트
+                employee.StartCoroutine(employee.CheckStack());
+            }
         }
     }
 }
