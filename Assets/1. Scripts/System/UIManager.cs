@@ -228,7 +228,7 @@ public class UIManager : Singleton<UIManager>
         abc = GUI.TextArea(new Rect(220, 690, 200, 100), abc, buttonStyle);
 
         if (GUI.Button(new Rect(430, 250, 200, 100), "µ∑", buttonStyle))
-            AddGold(100);
+            AddGold(900);
         if (GUI.Button(new Rect(430, 360, 200, 100), "∞Ì¿Â»Æ∑¸ ≥Ù∞‘", buttonStyle))
             cb.BreakDownProb += 0.1f;
         if (GUI.Button(new Rect(430, 470, 200, 100), "∞Ì¿Â»Æ∑¸ ≥∑∞‘", buttonStyle))
