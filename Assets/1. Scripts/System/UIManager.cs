@@ -202,7 +202,7 @@ public class UIManager : Singleton<UIManager>
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
         // 폰트 사이즈 조정
-        buttonStyle.fontSize = 20;
+        buttonStyle.fontSize = 25;
 
         if (GUI.Button(new Rect(10, 250, 200, 100), "소지갯수 올리기", buttonStyle))
             p.MaxObjStackCount += 1;
@@ -228,7 +228,7 @@ public class UIManager : Singleton<UIManager>
         abc = GUI.TextArea(new Rect(220, 690, 200, 100), abc, buttonStyle);
 
         if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-            AddGold(100);
+            AddGold(900);
         if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
             cb.BreakDownProb += 0.1f;
         if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))

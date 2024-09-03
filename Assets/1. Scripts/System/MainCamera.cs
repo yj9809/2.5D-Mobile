@@ -7,11 +7,9 @@ public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Player p;
     private Vector3 inCameraPosition = new Vector3(-6.7f, 9f, -6.2f);
-    private Vector3 outCameraPosition = new Vector3(-10f, 20f, -10f);
     private Vector3 targetCameraPosition;
     private bool isZoom;
 
-    private Canvas joystickCanvas;
     private Tween cameraTween;
 
     void Start()
@@ -19,9 +17,6 @@ public class MainCamera : MonoBehaviour
         p = GameManager.Instance.P;
         targetCameraPosition = inCameraPosition;
         transform.position = GetTargetPosition(targetCameraPosition);
-        joystickCanvas = GameObject.Find("Joystick_Canvas").GetComponent<Canvas>();
-        joystickCanvas.worldCamera = transform.GetComponent<Camera>();
-        joystickCanvas.planeDistance = 2;
     }
 
     void Update()
@@ -37,23 +32,19 @@ public class MainCamera : MonoBehaviour
     {
         if (!isZoom)
         {
-            targetCameraPosition = outCameraPosition;
+            transform.GetComponent<Camera>().DOOrthoSize(15, 1f);
             isZoom = true;
         }
         else
         {
-            targetCameraPosition = inCameraPosition;
+            transform.GetComponent<Camera>().DOOrthoSize(9, 1f);
             isZoom = false;
         }
-
-        Vector3 targetPosition = GetTargetPosition(targetCameraPosition);
 
         if (cameraTween != null)
         {
             cameraTween.Kill(true);
         }
-
-        cameraTween = transform.DOMove(targetPosition, 1f).SetEase(Ease.InOutQuad);
     }
 
     private Vector3 GetTargetPosition(Vector3 cameraPosition)

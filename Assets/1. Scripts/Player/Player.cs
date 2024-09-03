@@ -154,6 +154,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void DoBoxPackagingAnimation()
+    {
+        animator.SetTrigger("doPackaging");
+    }
+
     public void TakeObject(IngredientMaker im)
     {
         if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
