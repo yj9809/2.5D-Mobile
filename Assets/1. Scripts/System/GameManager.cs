@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public interface IStackable
@@ -36,23 +37,32 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private NavMeshSurface nms;
     private DataManager data;
 
     public List<IStackable> stackCount = new List<IStackable>();
     public List<Transform> cbTrans = new List<Transform>();
     private List<Employee> employees = new List<Employee>();
 
+    private Dictionary<IStackable, bool> targetUsage = new Dictionary<IStackable, bool>();
+
     protected override void Awake()
     {
         base.Awake();
         data = DataManager.Instance;
         Application.targetFrameRate = 60;
+        nms = FindObjectOfType<NavMeshSurface>();
     }
 
     private void Start()
     {
         SceneManager.activeSceneChanged += OnSceneLoaded;
         employees.AddRange(FindObjectsOfType<Employee>());
+        nms.BuildNavMesh();
+        foreach (var stackable in stackCount)
+        {
+            targetUsage[stackable] = false; // 모든 타겟의 사용 상태를 초기화
+        }
     }
 
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
@@ -72,12 +82,19 @@ public class GameManager : Singleton<GameManager>
             stackCount.Add(stackable);
         }
     }
-
-    public void RemoveStackable(IStackable stackable)
+    public bool IsTargetBeingUsed(IStackable stackable)
     {
-        if (stackCount.Contains(stackable))
+        if (targetUsage.ContainsKey(stackable))
         {
-            stackCount.Remove(stackable);
+            return targetUsage[stackable]; // 딕셔너리에서 타겟의 사용 상태 반환
+        }
+        return false; // 타겟이 딕셔너리에 없으면 사용 중이 아님
+    }
+    public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
+    {
+        if (targetUsage.ContainsKey(stackable))
+        {
+            targetUsage[stackable] = isUsed; // 딕셔너리에서 타겟의 사용 상태 업데이트
         }
     }
 
@@ -91,5 +108,10 @@ public class GameManager : Singleton<GameManager>
                 employee.StartCoroutine(employee.CheckStack());
             }
         }
+    }
+
+    public void NowNavMeshBake()
+    {
+        nms.BuildNavMesh();
     }
 }

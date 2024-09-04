@@ -1163,6 +1163,7 @@ MonoBehaviour:
   speed: 3
   cartSpeed: 1.5
   waitTime: 1
+  randomTarget: 0
   moving: 0
 --- !u!95 &3448532601444029160
 Animator:
@@ -1224,7 +1225,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 0
 --- !u!1 &8781189212870396726
 GameObject:
   m_ObjectHideFlags: 0

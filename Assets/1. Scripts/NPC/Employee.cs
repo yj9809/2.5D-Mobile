@@ -69,16 +69,19 @@ public class Employee : MonoBehaviour
         {
             if (ingredientStack.Count > 0)
             {
+                gm.SetTargetBeingUsed(currentTarget, false);
                 currentTarget = null;
                 target = gm.cbTrans[randomTarget];
             }
             else if (churuStack.Count > 0)
             {
+                gm.SetTargetBeingUsed(currentTarget, false);
                 currentTarget = null;
                 target = boxTrans;
             }
             else if (boxStack.Count > 0)
             {
+                gm.SetTargetBeingUsed(currentTarget, false);
                 currentTarget = null;
                 target = truckTrans;
             }
@@ -91,6 +94,7 @@ public class Employee : MonoBehaviour
         else if (currentTarget != null && currentTarget.GetStackCount() == 0 && (ingredientStack.Count <= 0 && churuStack.Count <= 0 && boxStack.Count <= 0))
         {
             // 스택 카운터가 0인 경우 새로운 목표를 설정
+            gm.SetTargetBeingUsed(currentTarget, false);
             currentTarget = null;
             moving = false;
             StartCoroutine(CheckStack()); // 목표 재설정
@@ -123,10 +127,10 @@ public class Employee : MonoBehaviour
                 IStackable bestTarget = null;
                 int highestStackCount = 0;
 
-                foreach (var item in GameManager.Instance.stackCount)
+                foreach (var item in gm.stackCount)
                 {
-                    // 다른 일꾼들이 선택하지 않은 스택 카운터만 고려
-                    if (item != currentTarget)
+                    // 타겟이 사용 중이지 않은 것만 고려
+                    if (!gm.IsTargetBeingUsed(item))
                     {
                         int count = item.GetStackCount();
 
@@ -144,6 +148,8 @@ public class Employee : MonoBehaviour
                     randomTarget = Random.Range(0, gm.cbTrans.Count);
                     currentTarget = bestTarget;
                     moving = true;
+                    gm.SetTargetBeingUsed(bestTarget, true); // 타겟을 사용 중으로 설정
+                    gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
         }
