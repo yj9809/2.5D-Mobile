@@ -66,7 +66,12 @@ public class UnlockManager : MonoBehaviour
             lockObject.gameObject.SetActive(true);
             lockObject.transform.DOScale(Vector3.zero, 0f);
             lockObject.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
-                .OnComplete(() => DataManager.Instance.StepOnOff(stepNum));
+                .OnComplete(() => 
+                {
+                    GameManager.Instance.NowNavMeshBake();
+                    DataManager.Instance.StepOnOff(stepNum);
+                }
+                );
             isUnlocked = true;
             ResetUnlockUI();
         }

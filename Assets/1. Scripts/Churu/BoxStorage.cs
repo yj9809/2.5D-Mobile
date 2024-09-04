@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
+public enum BoxStorageType
+{
+    ChuruStorage,
+    BoxStorage
+}
 public class BoxStorage : MonoBehaviour, IStackable
 {
     [SerializeField] private Transform[] boxTransform;
-
+    [EnumToggleButtons] public BoxStorageType bsType; 
 
     private Stack<GameObject> boxStack = new Stack<GameObject>();
 
@@ -19,7 +25,8 @@ public class BoxStorage : MonoBehaviour, IStackable
 
     private void Start()
     {
-        GameManager.Instance.stackCount.Add(this);
+        if(bsType == BoxStorageType.ChuruStorage)
+            GameManager.Instance.stackCount.Add(this);
     }
 
     private void Update()

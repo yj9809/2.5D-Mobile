@@ -30,18 +30,22 @@ public class IngredientMaker : MonoBehaviour, IStackable
     private void Start()
     {
         gm = GameManager.Instance;
-        gm.stackCount.Add(this);
+        gm.AddStackable(this); // 리스트에 추가
     }
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
         SpawnGameObject();
-
-        //테스트용
         UIManager.Instance.SetIngredientMaker(this);
+
+        // 타겟 업데이트 로직
+        if (ChuruStack.Count == 0)
+        {
+            gm.UpdateTargets();
+        }
     }
 
-    private void SpawnGameObject()  
+    private void SpawnGameObject()
     {
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= objSpawnTime)
@@ -51,10 +55,6 @@ public class IngredientMaker : MonoBehaviour, IStackable
                 Utility.ObjectDrop(objSpawnPoint, objPrefab, null, ChuruStack, 0);
             }
             spawnTimer = 0f;
-        }
-        else if(ChuruStack.Count >= maxObj)
-        {
-            //Debug.Log("Object is Full !");
         }
     }
 

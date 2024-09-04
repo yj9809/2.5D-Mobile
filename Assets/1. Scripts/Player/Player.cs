@@ -156,7 +156,13 @@ public class Player : MonoBehaviour
 
     public void DoBoxPackagingAnimation()
     {
-        animator.SetTrigger("doPackaging");
+        transform.rotation = Quaternion.Euler(0, -90f, 0);
+        animator.SetLayerWeight(1, 1);
+    }
+
+    public void StopBoxPackagingAnimation()
+    {
+        animator.SetLayerWeight(1, 0);
     }
 
     public void TakeObject(IngredientMaker im)

@@ -35,7 +35,10 @@ public class WorkPoint : MonoBehaviour
             {
                 case WorkPointType.Ingredient:
                     if (p != null) p.TakeObject(_ingredientMaker);
-                    if (e != null) e.TakeObject(_ingredientMaker);
+                    if (e != null)
+                    {
+                        e.TakeObject(_ingredientMaker);
+                    }
                     break;
                 case WorkPointType.ConveyorBelt_ingredient :
                     if (p != null) p.GiveObject(_conveyorBelt);
@@ -67,6 +70,12 @@ public class WorkPoint : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        UIManager.Instance.CloseUpgradeUI();
+        Player p = other.GetComponent<Player>();
+        if (p != null)
+        {
+            UIManager.Instance.CloseUpgradeUI();
+            p.StopBoxPackagingAnimation();
+        }
+        
     }
 }

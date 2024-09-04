@@ -242,4 +242,5 @@ public class UIManager : Singleton<UIManager>
     }
     
     //여기까지 윤제영 테스트 함수였음
+    
 }

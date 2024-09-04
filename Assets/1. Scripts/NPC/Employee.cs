@@ -4,69 +4,60 @@ using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
 
-public enum EmployeeType { im, cb}
-
 public class Employee : MonoBehaviour
 {
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
     [SerializeField] private int maxObjStackCount = 5;
 
-    [SerializeField] private Transform cbTrans;
     [SerializeField] private Transform boxTrans;
+    [SerializeField] private Transform truckTrans;
 
     [SerializeField] private float speed = 3f;
     [SerializeField] private float cartSpeed = 1.5f;
     [SerializeField] private float waitTime = 1f;
-    private bool moving = false;
+    [SerializeField] private int randomTarget = 0;
+
+    [SerializeField] private bool moving = false;
     private bool isWaiting = false;
 
+    private GameManager gm;
     private Animator animator;
     private NavMeshAgent na;
-    [SerializeField] private Transform target;
-    private EmployeeType employeeType;
-
-    int stackCount = 0;
+    private Transform target;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
     {
         get { return ingredientStack; }
-        set
-        {
-            ingredientStack = value;
-        }
+        set { ingredientStack = value; }
     }
+
     private Stack<GameObject> churuStack = new Stack<GameObject>();
     public Stack<GameObject> ChuruStack
     {
         get { return churuStack; }
-        set
-        {
-            churuStack = value;
-        }
+        set { churuStack = value; }
     }
 
     private Stack<GameObject> boxStack = new Stack<GameObject>();
     public Stack<GameObject> BoxStack
     {
         get { return boxStack; }
-        set
-        {
-            boxStack = value;
-        }
+        set { boxStack = value; }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private IStackable currentTarget;
+
+    private void Start()
     {
+        gm = GameManager.Instance;
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
         StartCoroutine(CheckStack());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         Move();
         OnCart();
@@ -74,12 +65,41 @@ public class Employee : MonoBehaviour
         if (target != null)
             na.SetDestination(target.position);
 
-        if (ingredientStack.Count > 0 && employeeType == EmployeeType.im)
-            target = cbTrans;
-        else if (churuStack.Count > 0)
-            target = boxTrans;
-        else
+        if (target != null && Vector3.Distance(transform.position, target.position) < 0.2f)
+        {
+            if (ingredientStack.Count > 0)
+            {
+                gm.SetTargetBeingUsed(currentTarget, false);
+                currentTarget = null;
+                target = gm.cbTrans[randomTarget];
+            }
+            else if (churuStack.Count > 0)
+            {
+                gm.SetTargetBeingUsed(currentTarget, false);
+                currentTarget = null;
+                target = boxTrans;
+            }
+            else if (boxStack.Count > 0)
+            {
+                gm.SetTargetBeingUsed(currentTarget, false);
+                currentTarget = null;
+                target = truckTrans;
+            }
+            else
+            {
+                moving = false;
+                StartCoroutine(CheckStack());
+            }
+        }
+        else if (currentTarget != null && currentTarget.GetStackCount() == 0 && (ingredientStack.Count <= 0 && churuStack.Count <= 0 && boxStack.Count <= 0))
+        {
+            // 스택 카운터가 0인 경우 새로운 목표를 설정
+            gm.SetTargetBeingUsed(currentTarget, false);
+            currentTarget = null;
             moving = false;
+            StartCoroutine(CheckStack()); // 목표 재설정
+        }
+
     }
 
     private void Move()
@@ -88,15 +108,7 @@ public class Employee : MonoBehaviour
         {
             float currentSpeed = animator.GetFloat("Blend") == 1 ? cartSpeed : speed;
             animator.SetBool("isMove", true);
-            if (ingredientStack.Count > 0)
-            {
-                animator.SetFloat("Blend", 1);
-            }
-            else
-            {
-                animator.SetFloat("Blend", 0);
-            }
-
+            animator.SetFloat("Blend", ingredientStack.Count > 0 ? 1 : 0);
         }
         else
         {
@@ -104,36 +116,40 @@ public class Employee : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckStack()
+    public IEnumerator CheckStack()
     {
         while (true)
         {
             yield return new WaitForSeconds(3f);
+
             if (!moving)
             {
-                Transform bestTarget = null;
+                IStackable bestTarget = null;
                 int highestStackCount = 0;
 
-                foreach (var item in GameManager.Instance.stackCount)
+                foreach (var item in gm.stackCount)
                 {
-                    int count = item.GetStackCount();
-                    Transform pos = item.GetTransform();
-                    int type = item.GetTypeNum();
-
-                    // 현재 목표보다 훨씬 높은 스택 차이(예: 2배 이상)일 경우만 목표 변경
-                    if (count > highestStackCount && (bestTarget == null || count > highestStackCount * 2))
+                    // 타겟이 사용 중이지 않은 것만 고려
+                    if (!gm.IsTargetBeingUsed(item))
                     {
-                        highestStackCount = count;
-                        bestTarget = pos;
-                        employeeType = (EmployeeType)type;
+                        int count = item.GetStackCount();
+
+                        if (count > highestStackCount && (bestTarget == null || count > highestStackCount * 2))
+                        {
+                            highestStackCount = count;
+                            bestTarget = item;
+                        }
                     }
                 }
 
                 if (bestTarget != null)
                 {
-                    target = bestTarget;
+                    target = bestTarget.GetTransform();
+                    randomTarget = Random.Range(0, gm.cbTrans.Count);
+                    currentTarget = bestTarget;
                     moving = true;
-                    stackCount = 0;
+                    gm.SetTargetBeingUsed(bestTarget, true); // 타겟을 사용 중으로 설정
+                    gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
         }
@@ -173,10 +189,10 @@ public class Employee : MonoBehaviour
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
     }
+
     public void GiveObject(BoxStorage bs, bool isChuru)
     {
-        Stack<GameObject> newStack = new Stack<GameObject>();
-        newStack = isChuru ? churuStack : boxStack;
+        Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
 
         if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
         {
@@ -184,6 +200,7 @@ public class Employee : MonoBehaviour
             Vibration.VibratePop();
         }
     }
+
     public void GiveObject(BoxPackaging bp)
     {
         if (churuStack.Count > 0)
