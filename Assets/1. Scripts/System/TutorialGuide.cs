@@ -25,7 +25,6 @@ public class TutorialGuide : MonoBehaviour
         Vector3 direction = target.position - player.position;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         canvas.rotation = lookRotation * Quaternion.Euler(90, 0, 0);
-
         canvas.localPosition = Vector3.zero;
     }
 }
