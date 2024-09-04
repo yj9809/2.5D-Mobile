@@ -37,7 +37,6 @@ public class WorkPoint : MonoBehaviour
                     if (p != null) p.TakeObject(_ingredientMaker);
                     if (e != null)
                     {
-                        Debug.Log("½ÇÇà");
                         e.TakeObject(_ingredientMaker);
                     }
                     break;

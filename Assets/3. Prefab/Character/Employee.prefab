@@ -1158,14 +1158,12 @@ MonoBehaviour:
   cart: {fileID: 8438730585487653000}
   cartTransform: {fileID: 8781189212870396727}
   maxObjStackCount: 5
-  cbTrans: {fileID: 0}
   boxTrans: {fileID: 0}
   truckTrans: {fileID: 0}
   speed: 3
   cartSpeed: 1.5
   waitTime: 1
   moving: 0
-  target: {fileID: 0}
 --- !u!95 &3448532601444029160
 Animator:
   serializedVersion: 5

@@ -10,20 +10,21 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform cartTransform;
     [SerializeField] private int maxObjStackCount = 5;
 
-    [SerializeField] private Transform cbTrans;
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
 
     [SerializeField] private float speed = 3f;
     [SerializeField] private float cartSpeed = 1.5f;
     [SerializeField] private float waitTime = 1f;
+    [SerializeField] private int randomTarget = 0;
 
     [SerializeField] private bool moving = false;
     private bool isWaiting = false;
 
+    private GameManager gm;
     private Animator animator;
     private NavMeshAgent na;
-    [SerializeField] private Transform target;
+    private Transform target;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -50,6 +51,7 @@ public class Employee : MonoBehaviour
 
     private void Start()
     {
+        gm = GameManager.Instance;
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
         StartCoroutine(CheckStack());
@@ -63,22 +65,37 @@ public class Employee : MonoBehaviour
         if (target != null)
             na.SetDestination(target.position);
 
-        if (ingredientStack.Count > 0)
-            target = cbTrans;
-        else if (churuStack.Count > 0)
-            target = boxTrans;
-        else if (boxStack.Count > 0)
-            target = truckTrans;
-        else
+        if (target != null && Vector3.Distance(transform.position, target.position) < 0.2f)
         {
-            if (currentTarget != null && currentTarget.GetStackCount() == 0)
+            if (ingredientStack.Count > 0)
             {
-                // 스택 카운터가 0인 경우 새로운 목표를 설정
                 currentTarget = null;
+                target = gm.cbTrans[randomTarget];
+            }
+            else if (churuStack.Count > 0)
+            {
+                currentTarget = null;
+                target = boxTrans;
+            }
+            else if (boxStack.Count > 0)
+            {
+                currentTarget = null;
+                target = truckTrans;
+            }
+            else
+            {
                 moving = false;
-                StartCoroutine(CheckStack()); // 목표 재설정
+                StartCoroutine(CheckStack());
             }
         }
+        else if (currentTarget != null && currentTarget.GetStackCount() == 0 && (ingredientStack.Count <= 0 && churuStack.Count <= 0 && boxStack.Count <= 0))
+        {
+            // 스택 카운터가 0인 경우 새로운 목표를 설정
+            currentTarget = null;
+            moving = false;
+            StartCoroutine(CheckStack()); // 목표 재설정
+        }
+
     }
 
     private void Move()
@@ -124,6 +141,7 @@ public class Employee : MonoBehaviour
                 if (bestTarget != null)
                 {
                     target = bestTarget.GetTransform();
+                    randomTarget = Random.Range(0, gm.cbTrans.Count);
                     currentTarget = bestTarget;
                     moving = true;
                 }

@@ -7,6 +7,7 @@ public interface IStackable
 {
     int GetStackCount();
     Transform GetTransform();
+    int GetTypeNum();
 }
 
 public class GameManager : Singleton<GameManager>
@@ -38,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     private DataManager data;
 
     public List<IStackable> stackCount = new List<IStackable>();
+    public List<Transform> cbTrans = new List<Transform>();
     private List<Employee> employees = new List<Employee>();
 
     protected override void Awake()
