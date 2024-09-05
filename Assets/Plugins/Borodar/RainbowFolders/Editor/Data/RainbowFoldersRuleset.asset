@@ -433,3 +433,15 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 0}
     IsBackgroundRecursive: 0
     IsHidden: 0
+  - Type: 1
+    Key: Assets/6. 2D Sprite
+    Ordinal: 35
+    Priority: 0
+    IconType: 1
+    SmallIcon: {fileID: 2800000, guid: 4b7b53a896ad98a4fa98ac531526227d, type: 3}
+    LargeIcon: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
