@@ -1127,10 +1127,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2743274658033894429, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
       propertyPath: m_Name
       value: Employee (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8735728690376280210, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
@@ -1235,6 +1245,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2743274658033894429, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
       propertyPath: m_Name
@@ -3338,10 +3353,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2743274658033894429, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
       propertyPath: m_Name
       value: Employee (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8735728690376280210, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
@@ -5641,10 +5666,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2743274658033894429, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
       propertyPath: m_Name
       value: Employee (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8735728690376280210, guid: ea187e9cb165aed4da86166bbf37b1ef,
         type: 3}
