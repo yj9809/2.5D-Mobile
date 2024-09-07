@@ -13,9 +13,6 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
 
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private float cartSpeed = 1.5f;
-    [SerializeField] private float waitTime = 1f;
     [SerializeField] private int randomTarget = 0;
 
     [SerializeField] private bool moving = false;
@@ -25,6 +22,9 @@ public class Employee : MonoBehaviour
     private Animator animator;
     private NavMeshAgent na;
     private Transform target;
+
+    Vector3 previousPosition;
+    Vector3 currentPosition;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -52,6 +52,7 @@ public class Employee : MonoBehaviour
     private void Start()
     {
         gm = GameManager.Instance;
+        boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
         StartCoroutine(CheckStack());
@@ -61,10 +62,57 @@ public class Employee : MonoBehaviour
     {
         Move();
         OnCart();
+        MovementDetection();
+        TargetSwitching();
 
         if (target != null)
             na.SetDestination(target.position);
+    }
 
+    private void Move()
+    {
+        if (!isWaiting)
+        {
+            animator.SetBool("isMove", true);
+            animator.SetFloat("Blend", ingredientStack.Count > 0 ? 1 : 0);
+        }
+        else
+        {
+            animator.SetBool("isMove", false);
+        }
+    }
+
+    //이동 판별 함수
+    private void MovementDetection()
+    {
+        currentPosition = GetComponent<CharacterController>().transform.position;
+
+        if (Vector3.Distance(previousPosition, currentPosition) > 0.01f)
+            isWaiting = false;
+        else
+            isWaiting = true;
+
+        previousPosition = currentPosition;
+    }
+
+    // 물건을 들고 있는지 판별하는 함수
+    private void OnCart()
+    {
+        if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
+        {
+            na.speed = 3;
+            cart.transform.DOScale(0, 0.2f);
+        }
+        else
+        {
+            na.speed = 1.5f;
+            cart.transform.DOScale(Vector3.one, 0.2f);
+        }
+    }
+
+    // 타겟 전환용 함수
+    private void TargetSwitching()
+    {
         if (target != null && Vector3.Distance(transform.position, target.position) < 0.2f)
         {
             if (ingredientStack.Count > 0)
@@ -99,23 +147,9 @@ public class Employee : MonoBehaviour
             moving = false;
             StartCoroutine(CheckStack()); // 목표 재설정
         }
-
     }
 
-    private void Move()
-    {
-        if (!isWaiting)
-        {
-            float currentSpeed = animator.GetFloat("Blend") == 1 ? cartSpeed : speed;
-            animator.SetBool("isMove", true);
-            animator.SetFloat("Blend", ingredientStack.Count > 0 ? 1 : 0);
-        }
-        else
-        {
-            animator.SetBool("isMove", false);
-        }
-    }
-
+    // 스택 카운터를 판별해 적절한 타겟을 찾아주는 함수
     public IEnumerator CheckStack()
     {
         while (true)
@@ -148,32 +182,13 @@ public class Employee : MonoBehaviour
                     randomTarget = Random.Range(0, gm.cbTrans.Count);
                     currentTarget = bestTarget;
                     moving = true;
+
                     gm.SetTargetBeingUsed(bestTarget, true); // 타겟을 사용 중으로 설정
                     gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
         }
     }
-
-    private IEnumerator WaitAtPosition()
-    {
-        isWaiting = true;
-        yield return new WaitForSeconds(waitTime);
-        isWaiting = false;
-    }
-
-    private void OnCart()
-    {
-        if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
-        {
-            cart.transform.DOScale(0, 0.2f);
-        }
-        else
-        {
-            cart.transform.DOScale(Vector3.one, 0.2f);
-        }
-    }
-
     public void TakeObject(IngredientMaker im)
     {
         if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)

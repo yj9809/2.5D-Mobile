@@ -8,6 +8,7 @@ using Sirenix.OdinInspector;
 public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
+    [SerializeField] private float placeObjectTime = 3f;
     [SerializeField] private Vector3 direction = Vector3.forward;
     [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     [TabGroup("Transform"), SerializeField] private Transform onBelt;
@@ -18,7 +19,6 @@ public class ConveyorBelt : MonoBehaviour
 
     private GameManager gm;
 
-    private float placeObjectTime = 3f;
     public float PlaceObjectTime
     {
         get { return placeObjectTime; }

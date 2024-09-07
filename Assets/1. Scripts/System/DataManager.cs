@@ -15,6 +15,8 @@ public class BaseCost
     public bool step6 = false;
     public bool step7 = false;
     public bool step8 = false;
+
+    public int tutorialStep = 0;
 }
 
 public class DataManager : Singleton<DataManager>
