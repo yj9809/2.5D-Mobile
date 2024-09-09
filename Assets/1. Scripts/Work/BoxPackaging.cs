@@ -35,6 +35,10 @@ public class BoxPackaging : MonoBehaviour
     private PackagingType packaging = PackagingType.On;
 
     private int count = 0;
+    public int Count
+    {
+        get { return count; }
+    }
     private const int maxCount = 5;
 
     public void Packaging()

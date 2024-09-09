@@ -25,10 +25,10 @@ public class Player : MonoBehaviour
         get { return pT; }
         set { pT = value; }
     }
-    private int maxObjStackCount = 5;
-    private float baseSpeed = 5f;
-    private float cartSpeed = 2.5f;
-    private int gold = 0;
+    [SerializeField] private int maxObjStackCount = 5;
+    [SerializeField] private float baseSpeed = 5f;
+    [SerializeField] private float cartSpeed = 2.5f;
+    [SerializeField] private int gold = 0;
 
     public int MaxObjStackCount 
     {
@@ -56,8 +56,23 @@ public class Player : MonoBehaviour
     private Camera mainCamera;
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
+    public Stack<GameObject> IngredientStack
+    {
+        get { return ingredientStack; }
+        set { ingredientStack = value; }
+    }
     private Stack<GameObject> churuStack = new Stack<GameObject>();
+    public Stack<GameObject> ChuruStack
+    {
+        get { return churuStack; }
+        set { churuStack = value; }
+    }
     private Stack<GameObject> boxStack = new Stack<GameObject>();
+    public Stack<GameObject> BoxStack
+    {
+        get { return boxStack; }
+        set { boxStack = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
