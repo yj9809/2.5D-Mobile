@@ -20,9 +20,9 @@ public class BoxPackaging : MonoBehaviour
     private GameObject newBox;
     private TMP_Text boxCountTxt;
 
-    private Stack<GameObject> churuStorage = new Stack<GameObject>();
-
     public Transform StorageParent { get { return storageParent; } }
+
+    private Stack<GameObject> churuStorage = new Stack<GameObject>();
     public Stack<GameObject> ChuruStorage
     {
         get { return churuStorage; }

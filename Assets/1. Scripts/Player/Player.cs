@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
 
-    [SerializeField] private GameObject Test;
+    [SerializeField] private GameObject[] Test;
 
     private PlayerType pT = PlayerType.Joystick;
     public PlayerType PT
@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            Instantiate(Test, Vector3.zero, Quaternion.identity);
+            Instantiate(Test[UnityEngine.Random.Range(0, Test.Length)], Vector3.zero, Quaternion.identity);
         }
     }
     private void JoystickMove()
