@@ -16,7 +16,7 @@ public class TestCar : MonoBehaviour
     [SerializeField] private GameObject workPoint;
 
     private NavMeshAgent na;
-    private CarType ct = CarType.Go;
+    [SerializeField] private CarType ct = CarType.Go;
 
     [SerializeField] private Stack<GameObject> boxStack = new Stack<GameObject>();
     public Stack<GameObject> BoxStack
@@ -68,6 +68,7 @@ public class TestCar : MonoBehaviour
             else
             {
                 // 모든 체크포인트를 지나면 이동 종료
+                transform.rotation = Quaternion.Euler(0, -90, 0);
                 na.isStopped = true;
                 workPoint.SetActive(true);
             }
