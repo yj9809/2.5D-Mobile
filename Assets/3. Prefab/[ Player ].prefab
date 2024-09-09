@@ -1060,7 +1060,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2952592081749473900}
   m_Father: {fileID: 584580378}
@@ -4289,7 +4289,7 @@ MonoBehaviour:
   - {fileID: 7478094668819165057, guid: 4564e1c60c94a7643ae1804ccfec2659, type: 3}
   maxObjStackCount: 5
   baseSpeed: 5
-  cartSpeed: 2.5
+  cartSpeed: 5
   gold: 0
 --- !u!95 &3756139160372560678
 Animator:

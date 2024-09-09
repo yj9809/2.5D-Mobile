@@ -19882,10 +19882,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 584580374, guid: 677210d4ea26d7f4c93c728c566858b4, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 584580379, guid: 677210d4ea26d7f4c93c728c566858b4, type: 3}
       propertyPath: turorialPanel
       value: 
@@ -19922,11 +19918,6 @@ PrefabInstance:
       propertyPath: targets.Array.data[6]
       value: 
       objectReference: {fileID: 6150222}
-    - target: {fileID: 3756139160372560696, guid: 677210d4ea26d7f4c93c728c566858b4,
-        type: 3}
-      propertyPath: cartSpeed
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7115775916991387996, guid: 677210d4ea26d7f4c93c728c566858b4,
         type: 3}
       propertyPath: m_RootOrder
