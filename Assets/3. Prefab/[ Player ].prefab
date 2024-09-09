@@ -114,8 +114,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e89f9357095f146890a9e9036de567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  target: {fileID: 0}
+  tutorialButton: {fileID: 0}
+  turorialPanal: {fileID: 0}
+  player: {fileID: 7115775916991387996}
+  targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   canvas: {fileID: 584580378}
 --- !u!1 &147968561891982803
 GameObject:
@@ -4271,6 +4280,7 @@ MonoBehaviour:
   obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
   cart: {fileID: 7991565292229306694}
   cartTransform: {fileID: 7072577327283952377}
+  Test: {fileID: 8246190257601597992, guid: ea187e9cb165aed4da86166bbf37b1ef, type: 3}
 --- !u!95 &3756139160372560678
 Animator:
   serializedVersion: 5
