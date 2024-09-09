@@ -73,8 +73,13 @@ public class Employee : MonoBehaviour
     {
         if (!isWaiting)
         {
+            bool isBlend = false;
+
+            if (ingredientStack.Count > 0 || churuStack.Count > 0 || boxStack.Count > 0)
+                isBlend = true;
+
             animator.SetBool("isMove", true);
-            animator.SetFloat("Blend", ingredientStack.Count > 0 ? 1 : 0);
+            animator.SetFloat("Blend", isBlend ? 1 : 0);
         }
         else
         {

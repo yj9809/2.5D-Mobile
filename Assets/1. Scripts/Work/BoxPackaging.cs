@@ -16,13 +16,14 @@ public class BoxPackaging : MonoBehaviour
     [SerializeField] private Transform boxParent;
     [SerializeField] private Transform packagingBoxParent;
     [SerializeField] private GameObject box;
+    [SerializeField] private BoxStorage boxStorage;
 
     private GameObject newBox;
     private TMP_Text boxCountTxt;
 
-    private Stack<GameObject> churuStorage = new Stack<GameObject>();
-
     public Transform StorageParent { get { return storageParent; } }
+
+    private Stack<GameObject> churuStorage = new Stack<GameObject>();
     public Stack<GameObject> ChuruStorage
     {
         get { return churuStorage; }
@@ -35,11 +36,15 @@ public class BoxPackaging : MonoBehaviour
     private PackagingType packaging = PackagingType.On;
 
     private int count = 0;
+    public int Count
+    {
+        get { return count; }
+    }
     private const int maxCount = 5;
 
     public void Packaging()
     {
-        if (newBox == null && churuStorage.Count != 0)
+        if (newBox == null && churuStorage.Count != 0 && boxStorage.BoxStack.Count < 40)
         { 
             newBox = Instantiate(box, boxParent);
             newBox.name = box.name;
@@ -61,7 +66,7 @@ public class BoxPackaging : MonoBehaviour
             GameManager.Instance.P.DoBoxPackagingAnimation();
 
             churu.transform.SetParent(newBox.transform);
-            churu.transform.DOLocalMove(Vector3.zero, 0.5f).SetEase(Ease.InBack)
+            churu.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
                     PoolingManager.Instance.ReturnObjecte(churu);

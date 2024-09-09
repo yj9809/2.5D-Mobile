@@ -114,9 +114,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e89f9357095f146890a9e9036de567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  target: {fileID: 0}
-  canvas: {fileID: 584580378}
+  tutorialButton: {fileID: 0}
+  turorialPanel: {fileID: 0}
+  player: {fileID: 7115775916991387996}
+  targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  arrow: {fileID: 2952592082283232298}
 --- !u!1 &147968561891982803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,7 +1060,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2952592081749473900}
   m_Father: {fileID: 584580378}
@@ -4271,6 +4280,17 @@ MonoBehaviour:
   obj: {fileID: 1408560353431138167, guid: 5a65d4ccf65050144b35ba8121741a7c, type: 3}
   cart: {fileID: 7991565292229306694}
   cartTransform: {fileID: 7072577327283952377}
+  Test:
+  - {fileID: 7658212902799945587, guid: deee7be79f28c0340a373da604193526, type: 3}
+  - {fileID: 5240298106012947325, guid: 4c84ac8ce46e5444fa5de1a9a85b1d0a, type: 3}
+  - {fileID: 8810262333338127977, guid: 166fdcaded596ae4e909341639b6f406, type: 3}
+  - {fileID: 811180455077345137, guid: 316c925a47e6cfc4594c1be608242826, type: 3}
+  - {fileID: 8965331944652917705, guid: b586d61e7b2eb4b49b1aede2f8b323b2, type: 3}
+  - {fileID: 7478094668819165057, guid: 4564e1c60c94a7643ae1804ccfec2659, type: 3}
+  maxObjStackCount: 5
+  baseSpeed: 5
+  cartSpeed: 5
+  gold: 0
 --- !u!95 &3756139160372560678
 Animator:
   serializedVersion: 5
