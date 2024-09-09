@@ -748,6 +748,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChuruConveyerBelt Obj (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4589677937551333336, guid: fc4258776f8b3cc42ac0171da448d497,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc4258776f8b3cc42ac0171da448d497, type: 3}
 --- !u!4 &220522690 stripped
@@ -2105,6 +2110,28 @@ MonoBehaviour:
   - {fileID: 1355816930}
   - {fileID: 692359486}
   workPoint: {fileID: 6150222}
+--- !u!1 &521875101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6181130755223103545, guid: fc4258776f8b3cc42ac0171da448d497,
+    type: 3}
+  m_PrefabInstance: {fileID: 4589677936159301135}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &521875103
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521875101}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.85, y: 0.126, z: 0.85}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.126, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &528149051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,6 +3062,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720315691}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &722859396 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 332952515610736444, guid: a72f206f3fe698149860e6c299d5965e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7266291469902217580}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &722859398
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722859396}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.85, y: 0.126, z: 0.85}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.126, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &733626379
 GameObject:
   m_ObjectHideFlags: 0
@@ -3201,6 +3250,28 @@ Transform:
   m_Father: {fileID: 766446686}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &772371232 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6181130755223103545, guid: fc4258776f8b3cc42ac0171da448d497,
+    type: 3}
+  m_PrefabInstance: {fileID: 220522689}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &772371234
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772371232}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.85, y: 0.126, z: 0.85}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.126, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &808391785
 GameObject:
   m_ObjectHideFlags: 0
@@ -4221,6 +4292,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngredientSpawn (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2986155824567841954, guid: ec78c0682218f824c91dc26f37568b5a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2986155824567841955, guid: ec78c0682218f824c91dc26f37568b5a,
         type: 3}
       propertyPath: m_RootOrder
@@ -4659,7 +4735,7 @@ PrefabInstance:
     - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
@@ -10579,9 +10655,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5452686883454957121, guid: ec78c0682218f824c91dc26f37568b5a,
+    - target: {fileID: 3725927667400903968, guid: ec78c0682218f824c91dc26f37568b5a,
         type: 3}
-      propertyPath: wpType
+      propertyPath: m_Extents.y
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 3725927667400903968, guid: ec78c0682218f824c91dc26f37568b5a,
+        type: 3}
+      propertyPath: m_Extents.z
+      value: 0.355
+      objectReference: {fileID: 0}
+    - target: {fileID: 3725927667400903968, guid: ec78c0682218f824c91dc26f37568b5a,
+        type: 3}
+      propertyPath: m_MoveThreshold
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -11689,7 +11775,11 @@ PrefabInstance:
       propertyPath: packagingBoxParent
       value: 
       objectReference: {fileID: 1624578440}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 568979288478961750, guid: a72f206f3fe698149860e6c299d5965e, type: 3}
+    - {fileID: 4876227364365198112, guid: a72f206f3fe698149860e6c299d5965e, type: 3}
+    - {fileID: 3570780610224210167, guid: a72f206f3fe698149860e6c299d5965e, type: 3}
+    - {fileID: 7266291470028143061, guid: a72f206f3fe698149860e6c299d5965e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a72f206f3fe698149860e6c299d5965e, type: 3}
 --- !u!4 &7266291469902217581 stripped
 Transform:
