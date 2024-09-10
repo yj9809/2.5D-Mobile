@@ -8916,6 +8916,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
+      propertyPath: truck
+      value: 
+      objectReference: {fileID: 518758702}
+    - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
       propertyPath: wpType
       value: 5
       objectReference: {fileID: 0}

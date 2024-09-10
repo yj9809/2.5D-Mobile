@@ -9,7 +9,7 @@ public enum CarType
     Come
 }
 
-public class TestCar : MonoBehaviour
+public class Truck : MonoBehaviour
 {
     [SerializeField] private Transform[] checkPoint;
 

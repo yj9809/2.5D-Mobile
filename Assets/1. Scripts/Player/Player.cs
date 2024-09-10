@@ -230,11 +230,11 @@ public class Player : MonoBehaviour
 
         }
     }
-    public void GiveObject(TestCar tc)
+    public void GiveObject(Truck tr)
     {
         if (boxStack.Count > 0 && ingredientStack.Count <= 0)
         {
-            Utility.ObjectDrop(tc.gameObject.transform, null, boxStack, tc.BoxStack, 3);
+            Utility.ObjectDrop(tr.gameObject.transform, null, boxStack, tr.BoxStack, 3);
             Vibration.VibratePop();
         }
     }
