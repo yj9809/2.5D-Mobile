@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 660911240, guid: f624596d5fe1bd5459a5da424a8abc1b, type: 3}
+  m_Name: TheBackendSettings
+  m_EditorClassIdentifier: 
+  clientAppID: 6f02ecf0-6f0f-11ef-aa26-59d7afaacf138364
+  signatureKey: 6f02ecf1-6f0f-11ef-aa26-59d7afaacf138364
+  functionAuthKey: 
+  packageName: com.DefaultCompany.Churub-Factory
+  sendLogReport: 1
+  timeOutSec: 100
+  Version: 5.13.0
+  autoRefreshToken: 1
+  retryWhenClientRequestFailError: 1
+  retryWhenServerError: 1
+  initFailWhenDeviceIdUnknown: 1
+  autoLoadLocationProperties: 1
+  waitUntilInitializeFinish: 1
