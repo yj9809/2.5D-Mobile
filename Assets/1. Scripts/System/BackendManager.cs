@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using BackEnd;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using UnityEngine;
 
 public class BackendManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         var bro = Backend.Initialize();
 
-        if(bro.IsSuccess())
+        if (bro.IsSuccess())
         {
             Debug.Log("초기화 성공 : " + bro);
         }
@@ -18,11 +17,5 @@ public class BackendManager : MonoBehaviour
         {
             Debug.LogError("초기화 실패 : " + bro);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

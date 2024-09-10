@@ -159,7 +159,7 @@ public class TutorialGuide : MonoBehaviour
         {
             ToNextStep();
         }
-        else if (boxStorage.BoxStack.Count < 1)
+        else if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count < 1)
         {
             step = 0;
         }
