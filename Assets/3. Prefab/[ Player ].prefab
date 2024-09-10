@@ -126,6 +126,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   arrow: {fileID: 2952592082283232298}
+  canvas: {fileID: 584580378}
 --- !u!1 &147968561891982803
 GameObject:
   m_ObjectHideFlags: 0

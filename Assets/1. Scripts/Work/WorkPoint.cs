@@ -10,7 +10,7 @@ public enum WorkPointType
     BoxPackaging_churu,
     ChuruStorage,
     BoxStorage,
-    TestCar,
+    Truck,
     Packaging,
     Office
 }
@@ -20,7 +20,7 @@ public class WorkPoint : MonoBehaviour
     [SerializeField] private ConveyorBelt _conveyorBelt;
     [SerializeField] private BoxStorage _boxStorage;
     [SerializeField] private BoxPackaging _boxPackaging;
-    [SerializeField] private TestCar testCar;
+    [SerializeField] private Truck truck;
 
     [Title("WorkPointType")]
     [EnumToggleButtons, SerializeField] private WorkPointType wpType;
@@ -55,8 +55,8 @@ public class WorkPoint : MonoBehaviour
                     if (p != null) p.GiveObject(_boxPackaging);
                     if (e != null) e.GiveObject(_boxPackaging);
                     break;
-                case WorkPointType.TestCar:
-                    p.GiveObject(testCar);
+                case WorkPointType.Truck:
+                    p.GiveObject(truck);
                     break;
                 case WorkPointType.Packaging:
                     _boxPackaging.Packaging();
