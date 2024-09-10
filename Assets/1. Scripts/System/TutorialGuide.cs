@@ -162,6 +162,7 @@ public class TutorialGuide : MonoBehaviour
         else if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count < 1)
         {
             step = 0;
+            Debug.Log("1");
         }
     }
 
@@ -185,7 +186,7 @@ public class TutorialGuide : MonoBehaviour
         {
             ToNextStep();
         }
-        else if (truck.BoxStack.Count < 5)
+        else if (GameManager.Instance.P.BoxStack.Count == 0 && truck.BoxStack.Count < 5)
         {
             step = 0;
         }
