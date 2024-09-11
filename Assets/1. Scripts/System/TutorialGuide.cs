@@ -26,6 +26,9 @@ public class TutorialGuide : MonoBehaviour
         boxPackaging = FindObjectOfType<BoxPackaging>();
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
+
+        canvas.gameObject.SetActive(false);
+        SetTargetsActive(false);
     }
 
     void Update()
@@ -74,7 +77,7 @@ public class TutorialGuide : MonoBehaviour
             Transform target = targets[step].transform;
             Vector3 targetPosition = new Vector3(target.position.x, canvas.position.y, target.position.z);
 
-            canvas.DOMove(targetPosition, 0.5f).SetEase(Ease.OutSine);
+            canvas.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
         }
         #endregion
     }
@@ -136,10 +139,6 @@ public class TutorialGuide : MonoBehaviour
         {
             ToNextStep();
         }
-        else if (GameManager.Instance.P.ChuruStack.Count == 0 && boxPackaging.ChuruStorage.Count < 5)
-        {
-            step = 0;
-        }
     }
 
     private void _Step4()
@@ -150,10 +149,6 @@ public class TutorialGuide : MonoBehaviour
         if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1)
         {
             ToNextStep();
-        }
-        else if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count < 1)
-        {
-            step = 0;
         }
     }
 
@@ -177,10 +172,6 @@ public class TutorialGuide : MonoBehaviour
         {
             ToNextStep();
         }
-        else if (GameManager.Instance.P.BoxStack.Count == 0 && truck.BoxStack.Count < 5)
-        {
-            step = 0;
-        }
     }
 
     private void _Step7()
@@ -192,6 +183,14 @@ public class TutorialGuide : MonoBehaviour
     private void ToNextStep()
     {
         step++;
+    }
+
+    private void SetTargetsActive(bool isActive)
+    {
+        foreach (var target in targets)
+        {
+            target.SetActive(isActive);
+        }
     }
 
     private void SetActiveTarget(int index)
