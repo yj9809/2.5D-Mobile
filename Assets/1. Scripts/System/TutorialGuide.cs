@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class TutorialGuide : MonoBehaviour
 {
     private bool doTutorial = false;
     [SerializeField] private Button tutorialButton;
-    [SerializeField] private RectTransform canvas;
+    [SerializeField] private RectTransform guideLine;
+    [SerializeField] private RectTransform textPanel;
+    [SerializeField] private TextMeshProUGUI tutorialText;
 
     [SerializeField] private GameObject[] targets;
 
@@ -27,7 +30,8 @@ public class TutorialGuide : MonoBehaviour
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
 
-        canvas.gameObject.SetActive(false);
+        guideLine.gameObject.SetActive(false);
+        textPanel.gameObject.SetActive(false);
         SetTargetsActive(false);
     }
 
@@ -35,14 +39,16 @@ public class TutorialGuide : MonoBehaviour
     {
         if (doTutorial)
         {
-            canvas.gameObject.SetActive(true);
+            guideLine.gameObject.SetActive(true);
+            textPanel.gameObject.SetActive(true);
 
             GuideLine();
             TutorialGuideStep();
         }
         else
         {
-            canvas.gameObject.SetActive(false);
+            guideLine.gameObject.SetActive(false);
+            textPanel.gameObject.SetActive(false);
         }
     }
 
@@ -75,9 +81,9 @@ public class TutorialGuide : MonoBehaviour
         if (step < targets.Length)
         {
             Transform target = targets[step].transform;
-            Vector3 targetPosition = new Vector3(target.position.x, canvas.position.y, target.position.z);
+            Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
-            canvas.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
+            guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
         }
         #endregion
     }
@@ -99,8 +105,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step0()
     {
-        Debug.Log("Step 1 !");
         SetActiveTarget(0);
+        tutorialText.text = $"재료 보관소로 이동 하자 !";
 
         if (GameManager.Instance.P.IngredientStack.Count > 0)
         {
@@ -110,8 +116,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step1()
     {
-        Debug.Log("Step 2 !");
         SetActiveTarget(1);
+        tutorialText.text = $"재료를 컨베이어 벨트로 옮기자 !";
 
         if (GameManager.Instance.P.IngredientStack.Count <= 0)
         {
@@ -121,8 +127,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step2()
     {
-        Debug.Log("Step 3 !");
         SetActiveTarget(2);
+        tutorialText.text = $"완성된 츄룹을 포장작업대 창고로 옮기자 !";
 
         if (GameManager.Instance.P.ChuruStack.Count > 0)
         {
@@ -132,8 +138,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step3()
     {
-        Debug.Log("Step 4 !");
         SetActiveTarget(3);
+        tutorialText.text = $"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5";
 
         if (GameManager.Instance.P.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
         {
@@ -143,8 +149,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step4()
     {
-        Debug.Log("Step 5 !");
         SetActiveTarget(4);
+        tutorialText.text = $"포장작업대에서\n박스포장을 진행하자 !";
 
         if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1)
         {
@@ -154,8 +160,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step5()
     {
-        Debug.Log("Step 6 !");
         SetActiveTarget(5);
+        tutorialText.text = $"완성한 박스를\n트럭에 싣자 !";
 
         if (GameManager.Instance.P.BoxStack.Count > 0)
         {
@@ -165,8 +171,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step6()
     {
-        Debug.Log("Step 7 !");
         SetActiveTarget(6);
+        tutorialText.text = $"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5";
 
         if (GameManager.Instance.P.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
         {
