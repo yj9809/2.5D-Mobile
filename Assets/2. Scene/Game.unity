@@ -4307,7 +4307,6 @@ GameObject:
   - component: {fileID: 455098771}
   - component: {fileID: 455098770}
   - component: {fileID: 455098769}
-  - component: {fileID: 455098768}
   m_Layer: 5
   m_Name: TutorialGuideLine
   m_TagString: Untagged
@@ -4315,28 +4314,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &455098768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 455098767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76e89f9357095f146890a9e9036de567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tutorialButton: {fileID: 736489287931673970}
-  canvas: {fileID: 455098772}
-  targets:
-  - {fileID: 478464437}
-  - {fileID: 1373650794}
-  - {fileID: 1263702198}
-  - {fileID: 969914475}
-  - {fileID: 236782942}
-  - {fileID: 876720550}
-  - {fileID: 6150222}
 --- !u!114 &455098769
 MonoBehaviour:
   m_ObjectHideFlags: 0
