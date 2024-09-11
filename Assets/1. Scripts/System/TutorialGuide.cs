@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class TutorialGuide : MonoBehaviour
 {
     private bool doTutorial = false;
     [SerializeField] private Button tutorialButton;
-    [SerializeField] private GameObject tutorialPanel;
-
-    [SerializeField] private Transform player;
-    [SerializeField] private GameObject[] targets;
-    [SerializeField] private RectTransform arrow;
     [SerializeField] private RectTransform canvas;
+
+    [SerializeField] private GameObject[] targets;
 
     private int step;
     private BoxPackaging boxPackaging;
@@ -21,31 +19,27 @@ public class TutorialGuide : MonoBehaviour
 
     void Start()
     {
-        player = GameManager.Instance.P.transform;
-
         tutorialButton.onClick.AddListener(ToggleTutorial);
-        arrow.gameObject.SetActive(false);
 
         step = DataManager.Instance.baseCost.tutorialStep;
 
         boxPackaging = FindObjectOfType<BoxPackaging>();
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
-
-        SetTargetsActive(false);
     }
 
     void Update()
     {
         if (doTutorial)
         {
-            ShowTutorialGuide();
+            canvas.gameObject.SetActive(true);
+
             GuideLine();
             TutorialGuideStep();
         }
         else
         {
-            CloseTutorialGuide();
+            canvas.gameObject.SetActive(false);
         }
     }
 
@@ -55,19 +49,10 @@ public class TutorialGuide : MonoBehaviour
         Debug.Log("doTutorial: " + doTutorial);
     }
 
-    private void ShowTutorialGuide()
-    {
-        arrow.gameObject.SetActive(true);
-    }
-
-    private void CloseTutorialGuide()
-    {
-        arrow.gameObject.SetActive(false);
-    }
-
     private void GuideLine()
     {
-        if (step < targets.Length)
+        #region 플레이어 중심 화살표 (주석처리)
+        /*if (step < targets.Length)
         {
             Transform target = targets[step].transform;
             Vector3 direction = target.position - player.position;
@@ -80,7 +65,18 @@ public class TutorialGuide : MonoBehaviour
             canvas.localScale = new Vector3(guideScaleFactor, guideScaleFactor, guideScaleFactor);
 
             arrow.localPosition = Vector3.zero;
+        }*/
+        #endregion
+
+        #region 타겟 위치 화살표
+        if (step < targets.Length)
+        {
+            Transform target = targets[step].transform;
+            Vector3 targetPosition = new Vector3(target.position.x, canvas.position.y, target.position.z);
+
+            canvas.DOMove(targetPosition, 0.5f).SetEase(Ease.OutSine);
         }
+        #endregion
     }
 
     private void TutorialGuideStep()
@@ -106,10 +102,6 @@ public class TutorialGuide : MonoBehaviour
         if (GameManager.Instance.P.IngredientStack.Count > 0)
         {
             ToNextStep();
-        }
-        else
-        {
-            StepChange();
         }
     }
 
@@ -162,7 +154,6 @@ public class TutorialGuide : MonoBehaviour
         else if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count < 1)
         {
             step = 0;
-            Debug.Log("1");
         }
     }
 
@@ -201,35 +192,6 @@ public class TutorialGuide : MonoBehaviour
     private void ToNextStep()
     {
         step++;
-    }
-
-    private void StepChange()
-    {
-        if (boxPackaging.ChuruStorage.Count >= 5)
-        {
-            GoToStep(4);
-        }
-        else if (boxStorage.BoxStack.Count >= 1)
-        {
-            GoToStep(5);
-        }
-        else if (truck.BoxStack.Count >= 5)
-        {
-            GoToStep(7);
-        }
-    }
-
-    private void GoToStep(int newStep)
-    {
-        step = newStep;
-    }
-
-    private void SetTargetsActive(bool isActive)
-    {
-        foreach (var target in targets)
-        {
-            target.SetActive(isActive);
-        }
     }
 
     private void SetActiveTarget(int index)

@@ -51,7 +51,7 @@ MonoBehaviour:
   _conveyorBelt: {fileID: 0}
   _boxStorage: {fileID: 0}
   _boxPackaging: {fileID: 0}
-  testCar: {fileID: 0}
+  truck: {fileID: 0}
   wpType: 7
 --- !u!198 &2944756444144404592
 ParticleSystem:

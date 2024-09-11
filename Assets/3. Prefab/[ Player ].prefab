@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &584580378
 RectTransform:
   m_ObjectHideFlags: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorialButton: {fileID: 0}
-  turorialPanel: {fileID: 0}
+  tutorialPanel: {fileID: 0}
   player: {fileID: 7115775916991387996}
   targets:
   - {fileID: 0}
