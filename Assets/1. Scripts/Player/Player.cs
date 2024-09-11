@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float baseSpeed = 5f;
     [SerializeField] private float cartSpeed = 2.5f;
     [SerializeField] private int gold = 0;
+    [SerializeField] private int goldPerBox = 5;
 
     public int MaxObjStackCount 
     {
@@ -49,6 +50,11 @@ public class Player : MonoBehaviour
     {
         get { return gold; }
         set { gold = value; }
+    }
+    public int GoldPerBox
+    {
+        get { return goldPerBox; }
+        set { goldPerBox = value; }
     }
 
     private CharacterController cc;

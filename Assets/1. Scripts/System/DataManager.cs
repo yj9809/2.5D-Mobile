@@ -5,8 +5,12 @@ using UnityEngine;
 public class BaseCost
 {
     public int baseSpeedUpgradeCost = 10;
-    public int baseCartSpeedUpgradeCost = 10;
     public int baseMaxObjStackCountUpgradeCost = 10;
+    public int baseGoldPerBoxUpgradeCost = 10;
+    public int baseSpeedUpgradeCount = 0;
+    public int baseMaxObjStackCountUpgradeCount = 0;
+    public int baseGoldPerBoxUpgradeCount = 0;
+    public int baseUpgradeMaxCount = 5;
     public bool step1 = true;
     public bool step2 = false;
     public bool step3 = false;

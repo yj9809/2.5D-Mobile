@@ -27,7 +27,6 @@ public class Truck : MonoBehaviour
 
     private int currentCheckPoint = 1;
 
-    private int goldPerBox = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +44,7 @@ public class Truck : MonoBehaviour
             ct = CarType.Come;
 
             // boxStackÀÌ ¸ðµÎ Ã¤¿öÁ³À» ¶§ °ñµåÈ¹µæ
-            UIManager.Instance.AddGold(boxStack.Count * goldPerBox);
+            UIManager.Instance.AddGold(boxStack.Count * GameManager.Instance.P.GoldPerBox);
             ClearBoxStack();
         }
 

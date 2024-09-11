@@ -8,46 +8,43 @@ using Sirenix.OdinInspector;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private Button cameraZoomButton;
+    [TabGroup("Camera Zoom"), SerializeField] private Button cameraZoomButton;
+    [TabGroup("Camera Zoom"), SerializeField] private Sprite[] cameraZoomButtonImg;
 
     [SerializeField] private TextMeshProUGUI goldTxt;
 
-    [SerializeField] private GameObject upgradePanel;
-    [SerializeField] private Button speedUpgradeButton;
-    [SerializeField] private Button cartSpeedUpgradeButton;
-    [SerializeField] private Button maxObjStackCountUpgradeButton;
+    [TabGroup("Upgrade"), SerializeField] private GameObject upgradePanel;
+    [TabGroup("Upgrade"), SerializeField] private Button speedUpgradeButton;
+    [TabGroup("Upgrade"), SerializeField] private Button cartSpeedUpgradeButton;
+    [TabGroup("Upgrade"), SerializeField] private Button maxObjStackCountUpgradeButton;
+    [TabGroup("Upgrade"), SerializeField] private TMP_Text[] upgradeTxt;
 
     [SerializeField] private Button breakDownButton;
 
     ////여기부터 윤제영에 테스트 참조임
-    //[SerializeField] private Sprite[] onOffSprite;
-    //[SerializeField] private Image onOffImage;
-    //[SerializeField] private Slider testSilder;
-    //[SerializeField] private Sprite[] buttonSprite;
-    //[SerializeField] private Image buttonImage;
     private IngredientMaker im;
     private ConveyorBelt cb;
     ////여기까지 윤제영에 테스트 참조였음
 
     private Player p;
-    private DataManager data;
+    private BaseCost baseCost;
+    private GameManager gm;
 
     // Start is called before the first frame update
     void Start()
     {
         p = GameManager.Instance.P;
-        data = DataManager.Instance;
+        baseCost = DataManager.Instance.baseCost;
+        gm = GameManager.Instance;
 
         upgradePanel.SetActive(false);
         breakDownButton.gameObject.SetActive(false);
 
         UpdateUI();
-        speedUpgradeButton.onClick.AddListener(UpgradePlayerSpeed);
-        cartSpeedUpgradeButton.onClick.AddListener(UpgradePlayerCartSpeed);
-        maxObjStackCountUpgradeButton.onClick.AddListener(UpgradePlayerMaxStack);
-        cameraZoomButton.onClick.AddListener(GameManager.Instance.MainCamera.ZoomScreen);
+        cameraZoomButton.onClick.AddListener(ZoomScreen);
 
         breakDownButton.onClick.AddListener(BreakDownEventButton);
+        UpgradeTxtUpdate();
     }
 
     // Update is called once per frame
@@ -62,6 +59,12 @@ public class UIManager : Singleton<UIManager>
     private void UpdateUI()
     {
         goldTxt.text = ChangeNumbet(p.Gold.ToString());
+    }
+    private void ZoomScreen()
+    {
+        gm.MainCamera.ZoomScreen();
+        cameraZoomButton.image.sprite = 
+            cameraZoomButton.image.sprite == cameraZoomButtonImg[0] ? cameraZoomButtonImg[1] : cameraZoomButtonImg[0];
     }
 
     #region GoldUI
@@ -135,44 +138,58 @@ public class UIManager : Singleton<UIManager>
         upgradePanel.SetActive(false);
     }
     
-    public void UpgradePlayerSpeed()
+    public void Upgrade(int num)
     {
-        int cost = data.baseCost.baseSpeedUpgradeCost;
-        if (SpendGold(cost))
+        int cost = 0;
+        switch (num)
         {
-            p.BaseSpeed += 1;
-            data.baseCost.baseSpeedUpgradeCost *= 2;
-        }
-        else
-        {
-            Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+            case 0:
+                cost = baseCost.baseSpeedUpgradeCost;
+                if (SpendGold(cost) && baseCost.baseSpeedUpgradeCount < baseCost.baseUpgradeMaxCount)
+                {
+                    p.BaseSpeed += 1;
+                    p.CartSpeed += 1;
+                    baseCost.baseSpeedUpgradeCount++;
+                    baseCost.baseSpeedUpgradeCost *= 2;
+                }
+                else
+                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                UpgradeTxtUpdate();
+                break;
+            case 1:
+                cost = baseCost.baseMaxObjStackCountUpgradeCost;
+                if(SpendGold(cost) && baseCost.baseMaxObjStackCountUpgradeCount < baseCost.baseUpgradeMaxCount)
+                {
+                    p.MaxObjStackCount += 1;
+                    baseCost.baseMaxObjStackCountUpgradeCount++;
+                    baseCost.baseMaxObjStackCountUpgradeCost *= 2;
+                }
+                else
+                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                UpgradeTxtUpdate();
+                break;
+            case 2:
+                cost = baseCost.baseGoldPerBoxUpgradeCost;
+                if(SpendGold(cost) && baseCost.baseGoldPerBoxUpgradeCount < baseCost.baseUpgradeMaxCount)
+                {
+                    p.GoldPerBox += 10;
+                    baseCost.baseGoldPerBoxUpgradeCount++;
+                    baseCost.baseGoldPerBoxUpgradeCost *= 2;
+                }
+                else
+                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                UpgradeTxtUpdate();
+                break;
         }
     }
-    public void UpgradePlayerCartSpeed()
+    private void UpgradeTxtUpdate()
     {
-        int cost = data.baseCost.baseCartSpeedUpgradeCost;
-        if (SpendGold(cost))
-        {
-            p.CartSpeed += 1;
-            data.baseCost.baseCartSpeedUpgradeCost *= 2;
-        }
-        else
-        {
-            Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
-        }
-    }
-    public void UpgradePlayerMaxStack()
-    {
-        int cost = data.baseCost.baseMaxObjStackCountUpgradeCost;
-        if (SpendGold(cost))
-        {
-            p.MaxObjStackCount += 1;
-            data.baseCost.baseMaxObjStackCountUpgradeCost *= 2;
-        }
-        else
-        {
-            Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
-        }
+        upgradeTxt[0].text =
+            $"{baseCost.baseSpeedUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 속도 : {p.BaseSpeed}/{p.CartSpeed}";
+        upgradeTxt[1].text =
+                    $"{baseCost.baseMaxObjStackCountUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 운반 가능 갯수 : {p.MaxObjStackCount}";
+        upgradeTxt[2].text =
+                    $"{baseCost.baseGoldPerBoxUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 수익 : 박스 당 {p.GoldPerBox}";
     }
     #endregion
 
