@@ -241,6 +241,7 @@ public class Player : MonoBehaviour
         if (boxStack.Count > 0 && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(tr.gameObject.transform, null, boxStack, tr.BoxStack, 3);
+            tr.BoxCountTextUpdate();
             Vibration.VibratePop();
         }
     }

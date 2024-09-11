@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.AI;
 
 public enum CarType
@@ -14,9 +15,10 @@ public class Truck : MonoBehaviour
     [SerializeField] private Transform[] checkPoint;
 
     [SerializeField] private GameObject workPoint;
+    [SerializeField] private TMP_Text boxCountTxt;
 
     private NavMeshAgent na;
-    [SerializeField] private CarType ct = CarType.Go;
+    private CarType ct = CarType.Go;
 
     [SerializeField] private Stack<GameObject> boxStack = new Stack<GameObject>();
     public Stack<GameObject> BoxStack
@@ -41,6 +43,7 @@ public class Truck : MonoBehaviour
         if(boxStack.Count >= 5)
         {
             workPoint.SetActive(false);
+            boxCountTxt.gameObject.SetActive(false);
             ct = CarType.Come;
 
             // boxStack이 모두 채워졌을 때 골드획득
@@ -70,6 +73,7 @@ public class Truck : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, -90, 0);
                 na.isStopped = true;
                 workPoint.SetActive(true);
+                boxCountTxt.gameObject.SetActive(true);
             }
         }
     }
@@ -93,7 +97,10 @@ public class Truck : MonoBehaviour
             }
         }
     }
-
+    public void BoxCountTextUpdate()
+    {
+        boxCountTxt.text = $"{boxStack.Count} / 5";
+    }
     private void ClearBoxStack()
     {
         // 게임 오브젝트도 함께 없애기 위해 클리어 전에 리턴 풀링 해주는 코드.

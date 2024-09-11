@@ -194,11 +194,11 @@ public class UIManager : Singleton<UIManager>
     private void UpgradeTxtUpdate()
     {
         upgradeTxt[0].text =
-            $"{baseCost.baseSpeedUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 속도 : {p.BaseSpeed}/{p.CartSpeed}";
+            $"{baseCost.baseSpeedUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 속도 : {p.BaseSpeed}/{p.CartSpeed}";
         upgradeTxt[1].text =
-                    $"{baseCost.baseMaxObjStackCountUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 운반 가능 갯수 : {p.MaxObjStackCount}";
+                    $"{baseCost.baseMaxObjStackCountUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 운반 가능 갯수 : {p.MaxObjStackCount}";
         upgradeTxt[2].text =
-                    $"{baseCost.baseGoldPerBoxUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 현재 수익 : 박스 당 {p.GoldPerBox}";
+                    $"{baseCost.baseGoldPerBoxUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 수익 : 박스 당 {p.GoldPerBox}";
     }
     #endregion
 
