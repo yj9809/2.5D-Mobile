@@ -13,6 +13,9 @@ public class TestLogin : MonoBehaviour
 
     private void Start()
     {
+        string googlehash = Backend.Utils.GetGoogleHash();
+        test.text = googlehash;
+        Debug.Log("구글 해시 키 : " + googlehash);
         var bro = Backend.Initialize(); // 뒤끝 초기화
 
         // 뒤끝 초기화에 대한 응답값
@@ -28,8 +31,7 @@ public class TestLogin : MonoBehaviour
 
     public void Test()
     {
-        BackendLogin.Instance.CustomSignUp(id.text, pw.text);
-        Debug.Log("테스트를 종료합니다.");
+        BackendLogin.Instance.StartGoogleLogin();
     }
 }
 public class BackendLogin
@@ -67,7 +69,18 @@ public class BackendLogin
 
     public void CustomLogin(string id, string pw)
     {
-        // Step 3. 로그인 구현하기 로직
+        Debug.Log("로그인을 요청합니다.");
+
+        var bro = Backend.BMember.CustomLogin(id, pw);
+
+        if (bro.IsSuccess())
+        {
+            Debug.Log("로그인이 성공했습니다. : " + bro);
+        }
+        else
+        {
+            Debug.LogError("로그인이 실패했습니다. : " + bro);
+        }
     }
 
     public void UpdateNickname(string nickname)

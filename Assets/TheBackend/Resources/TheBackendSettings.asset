@@ -15,7 +15,7 @@ MonoBehaviour:
   clientAppID: 6f02ecf0-6f0f-11ef-aa26-59d7afaacf138364
   signatureKey: 6f02ecf1-6f0f-11ef-aa26-59d7afaacf138364
   functionAuthKey: 
-  packageName: com.DefaultCompany.Churub-Factory
+  packageName: com.Churub.ChurubFactory
   sendLogReport: 1
   timeOutSec: 100
   Version: 5.13.0
