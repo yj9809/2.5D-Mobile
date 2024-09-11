@@ -145,39 +145,48 @@ public class UIManager : Singleton<UIManager>
         {
             case 0:
                 cost = baseCost.baseSpeedUpgradeCost;
-                if (SpendGold(cost) && baseCost.baseSpeedUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if (baseCost.baseSpeedUpgradeCount < baseCost.baseUpgradeMaxCount)
                 {
-                    p.BaseSpeed += 1;
-                    p.CartSpeed += 1;
-                    baseCost.baseSpeedUpgradeCount++;
-                    baseCost.baseSpeedUpgradeCost *= 2;
+                    if(SpendGold(cost))
+                    {
+                        p.BaseSpeed += 1;
+                        p.CartSpeed += 1;
+                        baseCost.baseSpeedUpgradeCount++;
+                        baseCost.baseSpeedUpgradeCost *= 2;
+                    }
                 }
                 else
-                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                    Debug.Log("최대 업그레이드 입니다.");
                 UpgradeTxtUpdate();
                 break;
             case 1:
                 cost = baseCost.baseMaxObjStackCountUpgradeCost;
-                if(SpendGold(cost) && baseCost.baseMaxObjStackCountUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if(baseCost.baseMaxObjStackCountUpgradeCount < baseCost.baseUpgradeMaxCount)
                 {
-                    p.MaxObjStackCount += 1;
-                    baseCost.baseMaxObjStackCountUpgradeCount++;
-                    baseCost.baseMaxObjStackCountUpgradeCost *= 2;
+                    if (SpendGold(cost))
+                    {
+                        p.MaxObjStackCount += 1;
+                        baseCost.baseMaxObjStackCountUpgradeCount++;
+                        baseCost.baseMaxObjStackCountUpgradeCost *= 2;
+                    }
                 }
                 else
-                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                    Debug.Log("최대 업그레이드 입니다.");
                 UpgradeTxtUpdate();
                 break;
             case 2:
                 cost = baseCost.baseGoldPerBoxUpgradeCost;
-                if(SpendGold(cost) && baseCost.baseGoldPerBoxUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if(baseCost.baseGoldPerBoxUpgradeCount < baseCost.baseUpgradeMaxCount)
                 {
-                    p.GoldPerBox += 10;
-                    baseCost.baseGoldPerBoxUpgradeCount++;
-                    baseCost.baseGoldPerBoxUpgradeCost *= 2;
+                    if(SpendGold(cost))
+                    {
+                        p.GoldPerBox += 10;
+                        baseCost.baseGoldPerBoxUpgradeCount++;
+                        baseCost.baseGoldPerBoxUpgradeCost *= 2;
+                    }
                 }
                 else
-                    Debug.Log("골드가 부족하여 업그레이드를 진행할 수 없습니다.");
+                    Debug.Log("최대 업그레이드 입니다.");
                 UpgradeTxtUpdate();
                 break;
         }
