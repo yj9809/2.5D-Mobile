@@ -9,6 +9,7 @@ public class TestLogin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField id;
     [SerializeField] private TMP_InputField pw;
+    [SerializeField] private TMP_Text test;
 
     private void Start()
     {
