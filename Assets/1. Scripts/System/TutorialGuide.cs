@@ -15,7 +15,6 @@ public class TutorialGuide : MonoBehaviour
 
     [SerializeField] private GameObject[] targets;
 
-    private int step;
     private BaseCost baseCost;
     private BoxPackaging boxPackaging;
     private BoxStorage boxStorage;
@@ -27,7 +26,6 @@ public class TutorialGuide : MonoBehaviour
         tutorialButton.onClick.AddListener(ToggleTutorial);
 
         baseCost = DataManager.Instance.baseCost;
-        step = DataManager.Instance.baseCost.tutorialStep;
         player = GameManager.Instance.P;
 
         boxPackaging = FindObjectOfType<BoxPackaging>();
@@ -82,9 +80,9 @@ public class TutorialGuide : MonoBehaviour
         #endregion
 
         #region 타겟 위치 화살표
-        if (step < targets.Length)
+        if (DataManager.Instance.baseCost.tutorialStep < targets.Length)
         {
-            Transform target = targets[step].transform;
+            Transform target = targets[DataManager.Instance.baseCost.tutorialStep].transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
             guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
@@ -94,7 +92,7 @@ public class TutorialGuide : MonoBehaviour
 
     private void TutorialGuideStep()
     {
-        switch (step)
+        switch (DataManager.Instance.baseCost.tutorialStep)
         {
             case 0: _Step0(); break;
             case 1: _Step1(); break;
@@ -187,17 +185,18 @@ public class TutorialGuide : MonoBehaviour
     private void _Step7()
     {
         SetActiveTarget(7);
-        tutorialText.text = $"돈을 모아 직원을 고용하자 !\n{player.Gold} / 50";
+        tutorialText.text = $"돈을 모아 직원을 고용하자 !\n{baseCost.playerGold} / 50";
 
-        if (true)
+        if (baseCost.baseEmployeeAddCount > 0)
         {
-            EndTutorial();
+            tutorialText.text = $"튜토리얼끝";
+            StartCoroutine(EndTutorial(3f));
         }
     }
 
     private void ToNextStep()
     {
-        step++;
+        DataManager.Instance.baseCost.tutorialStep++;
     }
 
     private void SetTargetsActive(bool isActive)
@@ -216,8 +215,10 @@ public class TutorialGuide : MonoBehaviour
         }
     }
 
-    private void EndTutorial()
+    private IEnumerator EndTutorial(float delay)
     {
-
+        yield return new WaitForSeconds(delay);
+        doTutorial = false;
+        baseCost.tutorialClear = true;
     }
 }

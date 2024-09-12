@@ -39,6 +39,7 @@ public class BaseCost
     public bool step8 = false;
 
     public int tutorialStep = 0;
+    public bool tutorialClear = false;
 }
 
 public class DataManager : Singleton<DataManager>
