@@ -34,7 +34,6 @@ public class TutorialGuide : MonoBehaviour
 
         guideLine.gameObject.SetActive(false);
         textPanel.gameObject.SetActive(false);
-        SetTargetsActive(false);
     }
 
     void Update()
@@ -58,6 +57,8 @@ public class TutorialGuide : MonoBehaviour
     {
         doTutorial = !doTutorial;
         Debug.Log("doTutorial: " + doTutorial);
+
+        SetTargetsActive(!doTutorial);
     }
 
     private void GuideLine()
