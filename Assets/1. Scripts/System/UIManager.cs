@@ -313,51 +313,51 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
 //여기부터 윤제영 테스트 함수임
-#if !UNITY_EDITOR
-    private void OnGUI()
-    {
-        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+//#if !UNITY_EDITOR
+//    private void OnGUI()
+//    {
+//        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-        // 폰트 사이즈 조정
-        buttonStyle.fontSize = 25;
+//        // 폰트 사이즈 조정
+//        buttonStyle.fontSize = 25;
 
-        if (GUI.Button(new Rect(10, 250, 200, 100), "소지갯수 올리기", buttonStyle))
-            p.MaxObjStackCount += 1;
-        if (GUI.Button(new Rect(10, 360, 200, 100), "소지갯수 내리기", buttonStyle))
-            p.MaxObjStackCount -= 1;
-        if (GUI.Button(new Rect(10, 470, 200, 100), "이동속도 올리기", buttonStyle))
-            p.BaseSpeed += 1;
-        if (GUI.Button(new Rect(10, 580, 200, 100), "이동속도 내리기", buttonStyle))
-            p.BaseSpeed -= 1;
+//        if (GUI.Button(new Rect(10, 250, 200, 100), "소지갯수 올리기", buttonStyle))
+//            p.MaxObjStackCount += 1;
+//        if (GUI.Button(new Rect(10, 360, 200, 100), "소지갯수 내리기", buttonStyle))
+//            p.MaxObjStackCount -= 1;
+//        if (GUI.Button(new Rect(10, 470, 200, 100), "이동속도 올리기", buttonStyle))
+//            p.BaseSpeed += 1;
+//        if (GUI.Button(new Rect(10, 580, 200, 100), "이동속도 내리기", buttonStyle))
+//            p.BaseSpeed -= 1;
 
-        string textAreaString = $"소지갯수:{p.MaxObjStackCount}\n이동속도:{p.BaseSpeed}";
-        textAreaString = GUI.TextArea(new Rect(10, 690, 200, 100), textAreaString, buttonStyle);
+//        string textAreaString = $"소지갯수:{p.MaxObjStackCount}\n이동속도:{p.BaseSpeed}";
+//        textAreaString = GUI.TextArea(new Rect(10, 690, 200, 100), textAreaString, buttonStyle);
 
-        if (GUI.Button(new Rect(220, 250, 200, 100), "재료생산 느리게", buttonStyle))
-            im.ObjSpawnTime += 1;
-        if (GUI.Button(new Rect(220, 360, 200, 100), "재료생산 빠르게", buttonStyle))
-            im.ObjSpawnTime -= 1;
-        if (GUI.Button(new Rect(220, 470, 200, 100), "재료변환 느리게", buttonStyle))
-            cb.PlaceObjectTime += 1;
-        if (GUI.Button(new Rect(220, 580, 200, 100), "재료변환 빠르게", buttonStyle))
-            cb.PlaceObjectTime -= 1;
-        string abc = $"재료생산:{im.ObjSpawnTime}초\n재료변환:{cb.PlaceObjectTime}초";
-        abc = GUI.TextArea(new Rect(220, 690, 200, 100), abc, buttonStyle);
+//        if (GUI.Button(new Rect(220, 250, 200, 100), "재료생산 느리게", buttonStyle))
+//            im.ObjSpawnTime += 1;
+//        if (GUI.Button(new Rect(220, 360, 200, 100), "재료생산 빠르게", buttonStyle))
+//            im.ObjSpawnTime -= 1;
+//        if (GUI.Button(new Rect(220, 470, 200, 100), "재료변환 느리게", buttonStyle))
+//            cb.PlaceObjectTime += 1;
+//        if (GUI.Button(new Rect(220, 580, 200, 100), "재료변환 빠르게", buttonStyle))
+//            cb.PlaceObjectTime -= 1;
+//        string abc = $"재료생산:{im.ObjSpawnTime}초\n재료변환:{cb.PlaceObjectTime}초";
+//        abc = GUI.TextArea(new Rect(220, 690, 200, 100), abc, buttonStyle);
 
-        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-            AddGold(900);
-        if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
-            cb.BreakDownProb += 0.1f;
-        if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
-            cb.BreakDownProb -= 0.1f;
-        string def = $"고장확률:{cb.BreakDownProb * 100}%";
-        def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
-    }
-    public void SetIngredientMaker(IngredientMaker im)
-    {
-        this.im = im;
-    }
-#endif
+//        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
+//            AddGold(900);
+//        if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
+//            cb.BreakDownProb += 0.1f;
+//        if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
+//            cb.BreakDownProb -= 0.1f;
+//        string def = $"고장확률:{cb.BreakDownProb * 100}%";
+//        def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
+//    }
+//    public void SetIngredientMaker(IngredientMaker im)
+//    {
+//        this.im = im;
+//    }
+//#endif
     //여기까지 윤제영 테스트 함수였음
     
 }
