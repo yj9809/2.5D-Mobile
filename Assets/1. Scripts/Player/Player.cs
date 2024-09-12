@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
 
-    [SerializeField] private GameObject[] Test;
+    public List<Employee> employee;
 
     private PlayerType pT = PlayerType.Joystick;
     public PlayerType PT
@@ -25,41 +25,41 @@ public class Player : MonoBehaviour
         get { return pT; }
         set { pT = value; }
     }
-    [SerializeField] private int maxObjStackCount = 5;
-    [SerializeField] private float baseSpeed = 5f;
-    [SerializeField] private float cartSpeed = 2.5f;
-    [SerializeField] private int gold = 0;
-    [SerializeField] private int goldPerBox = 5;
-
-    public int MaxObjStackCount 
-    {
-        get { return maxObjStackCount; }
-        set { maxObjStackCount = value; }
-    }
-    public float BaseSpeed
-    {
-        get { return baseSpeed; }
-        set { baseSpeed = value; }
-    }
-    public float CartSpeed
-    {
-        get { return cartSpeed; }
-        set { cartSpeed = value; }
-    }
-    public int Gold
-    {
-        get { return gold; }
-        set { gold = value; }
-    }
-    public int GoldPerBox
-    {
-        get { return goldPerBox; }
-        set { goldPerBox = value; }
-    }
+    //[SerializeField] private int maxObjStackCount = 5;
+    //[SerializeField] private float baseSpeed = 5f;
+    //[SerializeField] private float cartSpeed = 2.5f;
+    //[SerializeField] private int gold = 0;
+    //[SerializeField] private int goldPerBox = 5;
 
     private CharacterController cc;
     private Animator animator;
     private Camera mainCamera;
+    private BaseCost baseCost;
+    public int MaxObjStackCount 
+    {
+        get { return baseCost.playerMaxObjStackCount; }
+        set { baseCost.playerMaxObjStackCount = value; }
+    }
+    public float BaseSpeed
+    {
+        get { return baseCost.playerBaseSpeed; }
+        set { baseCost.playerBaseSpeed = value; }
+    }
+    public float CartSpeed
+    {
+        get { return baseCost.playerBaseCartSpeed; }
+        set { baseCost.playerBaseCartSpeed = value; }
+    }
+    public int Gold
+    {
+        get { return baseCost.playerGold; }
+        set { baseCost.playerGold = value; }
+    }
+    public int GoldPerBox
+    {
+        get { return baseCost.playerGoldPerBox; }
+        set { baseCost.playerGoldPerBox = value; }
+    }
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -85,6 +85,7 @@ public class Player : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+        baseCost = DataManager.Instance.baseCost;
         mainCamera = Camera.main;
         Vibration.Init();
     }
@@ -96,11 +97,6 @@ public class Player : MonoBehaviour
             JoystickMove();
 
         OnCart();
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            Instantiate(Test[UnityEngine.Random.Range(0, Test.Length)], Vector3.zero, Quaternion.identity);
-        }
     }
     private void JoystickMove()
     {
@@ -127,7 +123,7 @@ public class Player : MonoBehaviour
 
             Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
 
-            float currentSpeed = animator.GetFloat("Blend") == 1? cartSpeed : baseSpeed;
+            float currentSpeed = animator.GetFloat("Blend") == 1? CartSpeed : BaseSpeed;
             animator.SetBool("isMove", true);
 
             cc.Move(adjustedDirection * currentSpeed * Time.deltaTime);
@@ -152,7 +148,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isMove", true);
 
             float distance = Vector3.Distance(transform.position, pos.position);
-            float moveDuration = distance / baseSpeed;
+            float moveDuration = distance / BaseSpeed;
 
             Vector3 direction = (pos.position - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -195,7 +191,7 @@ public class Player : MonoBehaviour
 
     public void TakeObject(IngredientMaker im)
     {
-        if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
+        if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
             Vibration.VibratePop();
@@ -214,7 +210,7 @@ public class Player : MonoBehaviour
         Stack<GameObject> newStack = new Stack<GameObject>();
         newStack = isChuru ? churuStack : boxStack;
 
-        if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
+        if (bs.BoxStack.Count > 0 && MaxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
             Vibration.VibratePop();

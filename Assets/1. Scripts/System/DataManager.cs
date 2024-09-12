@@ -10,7 +10,25 @@ public class BaseCost
     public int baseSpeedUpgradeCount = 0;
     public int baseMaxObjStackCountUpgradeCount = 0;
     public int baseGoldPerBoxUpgradeCount = 0;
+    public int baseEmployeeSpeedUpgradeCost = 10;
+    public int baseEmployeeMaxObjStackCountUpgradeCost = 10;
+    public int baseEmployeeAddCost = 10;
+    public int baseEmployeeSpeedUpgradeCount = 0;
+    public int baseEmployeeMaxObjStackCountUpgradeCount = 0;
+    public int baseEmployeeAddCount = 0;
     public int baseUpgradeMaxCount = 5;
+
+    // Player 데이터
+    public float playerBaseSpeed = 5;
+    public float playerBaseCartSpeed = 2.5f;
+    public int playerMaxObjStackCount = 3;
+    public int playerGold = 0;
+    public int playerGoldPerBox = 5;
+    // Employee 데이터
+    public float employeeBaseSpeed = 3;
+    public float employeeBaseCartSpeed = 1.5f;
+    public int employeeBaseMaxObjStackCount = 3;
+
     public bool step1 = true;
     public bool step2 = false;
     public bool step3 = false;

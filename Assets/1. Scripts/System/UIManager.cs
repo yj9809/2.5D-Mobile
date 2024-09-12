@@ -6,6 +6,23 @@ using TMPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
+[System.Serializable]
+public class UpgradeInfo
+{
+    public string description;
+    public System.Func<string> valueGetter;
+    public System.Func<string> count; // 현재 업그레이드 횟수
+    public int maxCount; // 최대 업그레이드 횟수
+
+    public UpgradeInfo(string description, System.Func<string> valueGetter, System.Func<string> count, int maxCount)
+    {
+        this.description = description;
+        this.valueGetter = valueGetter;
+        this.count = count;
+        this.maxCount = maxCount;
+    }
+}
+
 public class UIManager : Singleton<UIManager>
 {
     [TabGroup("Camera Zoom"), SerializeField] private Button cameraZoomButton;
@@ -30,6 +47,8 @@ public class UIManager : Singleton<UIManager>
     private BaseCost baseCost;
     private GameManager gm;
 
+    private List<UpgradeInfo> upgradeInfos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +63,8 @@ public class UIManager : Singleton<UIManager>
         cameraZoomButton.onClick.AddListener(ZoomScreen);
 
         breakDownButton.onClick.AddListener(BreakDownEventButton);
-        UpgradeTxtUpdate();
+        SetUpgradeInfo();
+        //UpgradeTxtUpdate();
     }
 
     // Update is called once per frame
@@ -53,6 +73,25 @@ public class UIManager : Singleton<UIManager>
         if (Input.GetKeyDown(KeyCode.F1))
         {
             SellItem();
+        }
+    }
+
+    private void SetUpgradeInfo()
+    {
+        int maxCount = baseCost.baseUpgradeMaxCount;
+        upgradeInfos = new List<UpgradeInfo>
+    {
+        new UpgradeInfo("속도", () => $"{p.BaseSpeed}/{p.CartSpeed}", () => $"{baseCost.baseSpeedUpgradeCount}", maxCount),
+        new UpgradeInfo("운반 가능 갯수", () => $"{p.MaxObjStackCount}", () => $"{baseCost.baseMaxObjStackCountUpgradeCount}", maxCount),
+        new UpgradeInfo("수익", () => $"박스 당 {p.GoldPerBox}", () => $"{baseCost.baseGoldPerBoxUpgradeCount}", maxCount),
+        new UpgradeInfo("종업원 속도", () => $"{baseCost.employeeBaseSpeed}/{baseCost.employeeBaseCartSpeed}", () => $"{baseCost.baseEmployeeSpeedUpgradeCount}", maxCount),
+        new UpgradeInfo("종업원 운반 가능 갯수", () => $"{baseCost.employeeBaseMaxObjStackCount}", () => $"{baseCost.baseEmployeeMaxObjStackCountUpgradeCount}", maxCount),
+        new UpgradeInfo("종업원 수", () => $"{baseCost.baseEmployeeAddCount}", () => $"{baseCost.baseEmployeeAddCount}", maxCount)
+    };
+
+        for (int i = 0; i < upgradeInfos.Count; i++)
+        {
+            upgradeTxt[i].text = $"{upgradeInfos[i].count()}/{upgradeInfos[i].maxCount} \n {upgradeInfos[i].description} : {upgradeInfos[i].valueGetter()}";
         }
     }
 
@@ -141,11 +180,12 @@ public class UIManager : Singleton<UIManager>
     public void Upgrade(int num)
     {
         int cost = 0;
+        int maxCount = baseCost.baseUpgradeMaxCount;
         switch (num)
         {
             case 0:
                 cost = baseCost.baseSpeedUpgradeCost;
-                if (baseCost.baseSpeedUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if (baseCost.baseSpeedUpgradeCount < maxCount)
                 {
                     if(SpendGold(cost))
                     {
@@ -157,11 +197,12 @@ public class UIManager : Singleton<UIManager>
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate();
+                UpgradeTxtUpdate(0);
                 break;
+
             case 1:
                 cost = baseCost.baseMaxObjStackCountUpgradeCost;
-                if(baseCost.baseMaxObjStackCountUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if(baseCost.baseMaxObjStackCountUpgradeCount < maxCount)
                 {
                     if (SpendGold(cost))
                     {
@@ -172,11 +213,12 @@ public class UIManager : Singleton<UIManager>
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate();
+                UpgradeTxtUpdate(1);
                 break;
+
             case 2:
                 cost = baseCost.baseGoldPerBoxUpgradeCost;
-                if(baseCost.baseGoldPerBoxUpgradeCount < baseCost.baseUpgradeMaxCount)
+                if(baseCost.baseGoldPerBoxUpgradeCount < maxCount)
                 {
                     if(SpendGold(cost))
                     {
@@ -187,18 +229,67 @@ public class UIManager : Singleton<UIManager>
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate();
+                UpgradeTxtUpdate(2);
                 break;
+
+            case 3:
+                cost = baseCost.baseEmployeeSpeedUpgradeCost;
+                if(baseCost.baseEmployeeSpeedUpgradeCount < maxCount)
+                {
+                    if(SpendGold(cost))
+                    {
+                        baseCost.employeeBaseSpeed += 0.5f;
+                        baseCost.employeeBaseCartSpeed += 0.5f;
+                        baseCost.baseEmployeeSpeedUpgradeCost *= 2;
+                        baseCost.baseEmployeeSpeedUpgradeCount++;
+                    }
+                }
+                else
+                    Debug.Log("최대 업그레이드 입니다.");
+                UpgradeTxtUpdate(3);
+                break;
+
+            case 4:
+                cost = baseCost.baseEmployeeMaxObjStackCountUpgradeCost;
+                if(baseCost.baseEmployeeMaxObjStackCountUpgradeCount < maxCount)
+                {
+                    if(SpendGold(cost))
+                    {
+                        baseCost.employeeBaseMaxObjStackCount += 1;
+                        baseCost.baseEmployeeMaxObjStackCountUpgradeCost *= 2;
+                        baseCost.baseEmployeeMaxObjStackCountUpgradeCount++;
+                    }
+                }
+                else
+                    Debug.Log("최대 업그레이드 입니다.");
+                UpgradeTxtUpdate(4);
+                break;
+
+            case 5:
+                cost = baseCost.baseEmployeeAddCost;
+                if (baseCost.baseEmployeeAddCount < maxCount)
+                {
+                    if (SpendGold(cost))
+                    {
+                        int random = Random.Range(0, gm.employee.Count);
+                        Debug.Log(random);
+                        Employee employee = Instantiate(gm.employee[random], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
+                        gm.employee.RemoveAt(random);
+                        p.employee.Add(employee);
+                        baseCost.baseEmployeeAddCost *= 2;
+                        baseCost.baseEmployeeAddCount++;
+                    }
+                }
+                else
+                    Debug.Log("종업원이 최대입니다.");
+                UpgradeTxtUpdate(5);
+                break;
+
         }
     }
-    private void UpgradeTxtUpdate()
+    private void UpgradeTxtUpdate(int num)
     {
-        upgradeTxt[0].text =
-            $"{baseCost.baseSpeedUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 속도 : {p.BaseSpeed}/{p.CartSpeed}";
-        upgradeTxt[1].text =
-                    $"{baseCost.baseMaxObjStackCountUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 운반 가능 갯수 : {p.MaxObjStackCount}";
-        upgradeTxt[2].text =
-                    $"{baseCost.baseGoldPerBoxUpgradeCount}/{baseCost.baseUpgradeMaxCount} \n 수익 : 박스 당 {p.GoldPerBox}";
+        upgradeTxt[num].text = $"{upgradeInfos[num].count()}/{upgradeInfos[num].maxCount} \n {upgradeInfos[num].description} : {upgradeInfos[num].valueGetter()}";
     }
     #endregion
 

@@ -8,7 +8,7 @@ public class Employee : MonoBehaviour
 {
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
-    [SerializeField] private int maxObjStackCount = 5;
+    [SerializeField] private int maxObjStackCount = 0;
 
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
@@ -22,9 +22,16 @@ public class Employee : MonoBehaviour
     private Animator animator;
     private NavMeshAgent na;
     private Transform target;
+    private BaseCost baseCost;
 
     Vector3 previousPosition;
     Vector3 currentPosition;
+
+    public int MaxObjStackCount
+    {
+        get { return baseCost.employeeBaseMaxObjStackCount; }
+        set { baseCost.employeeBaseMaxObjStackCount = value; }
+    }
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -55,6 +62,8 @@ public class Employee : MonoBehaviour
         boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
+        baseCost = DataManager.Instance.baseCost;
+
         StartCoroutine(CheckStack());
     }
 
@@ -105,12 +114,12 @@ public class Employee : MonoBehaviour
     {
         if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
-            na.speed = 3;
+            na.speed = baseCost.employeeBaseSpeed;
             cart.transform.DOScale(0, 0.2f);
         }
         else
         {
-            na.speed = 1.5f;
+            na.speed = baseCost.employeeBaseCartSpeed;
             cart.transform.DOScale(Vector3.one, 0.2f);
         }
     }
