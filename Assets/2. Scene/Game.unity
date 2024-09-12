@@ -2180,6 +2180,7 @@ MonoBehaviour:
   - {fileID: 236782942}
   - {fileID: 876720550}
   - {fileID: 6150222}
+  - {fileID: 1439566818}
 --- !u!4 &224255417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5763682258460260626, guid: e1ff1443143e1f84c9e9ccdaaded4e2e,
@@ -2397,7 +2398,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Work Point
+      value: Work Point (7)
       objectReference: {fileID: 0}
     - target: {fileID: 4542146906485703202, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -13941,6 +13942,12 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1439566818 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
+    type: 3}
+  m_PrefabInstance: {fileID: 236385402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1457262676
 PrefabInstance:
   m_ObjectHideFlags: 0

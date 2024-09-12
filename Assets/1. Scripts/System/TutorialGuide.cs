@@ -16,15 +16,19 @@ public class TutorialGuide : MonoBehaviour
     [SerializeField] private GameObject[] targets;
 
     private int step;
+    private BaseCost baseCost;
     private BoxPackaging boxPackaging;
     private BoxStorage boxStorage;
     private Truck truck;
+    private Player player;
 
     void Start()
     {
         tutorialButton.onClick.AddListener(ToggleTutorial);
 
+        baseCost = DataManager.Instance.baseCost;
         step = DataManager.Instance.baseCost.tutorialStep;
+        player = GameManager.Instance.P;
 
         boxPackaging = FindObjectOfType<BoxPackaging>();
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
@@ -108,7 +112,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(0);
         tutorialText.text = $"재료 보관소로 이동 하자 !";
 
-        if (GameManager.Instance.P.IngredientStack.Count > 0)
+        if (player.IngredientStack.Count > 0)
         {
             ToNextStep();
         }
@@ -119,7 +123,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(1);
         tutorialText.text = $"재료를 컨베이어 벨트로 옮기자 !";
 
-        if (GameManager.Instance.P.IngredientStack.Count <= 0)
+        if (player.IngredientStack.Count <= 0)
         {
             ToNextStep();
         }
@@ -130,7 +134,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(2);
         tutorialText.text = $"완성된 츄룹을 포장작업대 창고로 옮기자 !";
 
-        if (GameManager.Instance.P.ChuruStack.Count > 0)
+        if (player.ChuruStack.Count > 0)
         {
             ToNextStep();
         }
@@ -141,7 +145,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(3);
         tutorialText.text = $"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5";
 
-        if (GameManager.Instance.P.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
+        if (player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
         {
             ToNextStep();
         }
@@ -163,7 +167,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(5);
         tutorialText.text = $"완성한 박스를\n트럭에 싣자 !";
 
-        if (GameManager.Instance.P.BoxStack.Count > 0)
+        if (player.BoxStack.Count > 0)
         {
             ToNextStep();
         }
@@ -174,7 +178,7 @@ public class TutorialGuide : MonoBehaviour
         SetActiveTarget(6);
         tutorialText.text = $"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5";
 
-        if (GameManager.Instance.P.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
+        if (player.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
         {
             ToNextStep();
         }
@@ -182,8 +186,13 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step7()
     {
-        Debug.Log("Step 8 !");
-        // 강화 관련 작업
+        SetActiveTarget(7);
+        tutorialText.text = $"돈을 모아 직원을 고용하자 !\n{player.Gold} / 50";
+
+        if (true)
+        {
+            EndTutorial();
+        }
     }
 
     private void ToNextStep()
@@ -205,5 +214,10 @@ public class TutorialGuide : MonoBehaviour
         {
             targets[index].SetActive(true);
         }
+    }
+
+    private void EndTutorial()
+    {
+
     }
 }
