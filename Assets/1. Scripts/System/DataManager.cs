@@ -22,7 +22,7 @@ public class BaseCost
     public float playerBaseSpeed = 5;
     public float playerBaseCartSpeed = 2.5f;
     public int playerMaxObjStackCount = 3;
-    public int playerGold = 0;
+    public int playerGold = 100;
     public int playerGoldPerBox = 5;
     // Employee ตฅภฬลอ
     public float employeeBaseSpeed = 3;

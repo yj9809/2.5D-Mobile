@@ -79,14 +79,17 @@ public class Player : MonoBehaviour
         get { return boxStack; }
         set { boxStack = value; }
     }
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         cc = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         baseCost = DataManager.Instance.baseCost;
         mainCamera = Camera.main;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         Vibration.Init();
     }
 
