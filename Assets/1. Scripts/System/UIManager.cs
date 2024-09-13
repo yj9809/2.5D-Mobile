@@ -59,11 +59,11 @@ public class UIManager : Singleton<UIManager>
         upgradePanel.SetActive(false);
         breakDownButton.gameObject.SetActive(false);
 
-        UpdateUI();
         cameraZoomButton.onClick.AddListener(ZoomScreen);
 
         breakDownButton.onClick.AddListener(BreakDownEventButton);
         SetUpgradeInfo();
+        UpdateUI();
         //UpgradeTxtUpdate();
     }
 
@@ -80,19 +80,14 @@ public class UIManager : Singleton<UIManager>
     {
         int maxCount = baseCost.baseUpgradeMaxCount;
         upgradeInfos = new List<UpgradeInfo>
-    {
-        new UpgradeInfo("속도", () => $"{p.BaseSpeed}/{p.CartSpeed}", () => $"{baseCost.baseSpeedUpgradeCount}", maxCount),
-        new UpgradeInfo("운반 가능 갯수", () => $"{p.MaxObjStackCount}", () => $"{baseCost.baseMaxObjStackCountUpgradeCount}", maxCount),
-        new UpgradeInfo("수익", () => $"박스 당{p.GoldPerBox}", () => $"{baseCost.baseGoldPerBoxUpgradeCount}", maxCount),
-        new UpgradeInfo("종업원 속도", () => $"{baseCost.employeeBaseSpeed}/{baseCost.employeeBaseCartSpeed}", () => $"{baseCost.baseEmployeeSpeedUpgradeCount}", maxCount),
-        new UpgradeInfo("종업원 운반 가능 갯수", () => $"{baseCost.employeeBaseMaxObjStackCount}", () => $"{baseCost.baseEmployeeMaxObjStackCountUpgradeCount}", maxCount),
-        new UpgradeInfo("종업원 수", () => $"{baseCost.baseEmployeeAddCount}", () => $"{baseCost.baseEmployeeAddCount}", maxCount)
-    };
-
-        for (int i = 0; i < upgradeInfos.Count; i++)
         {
-            upgradeTxt[i].text = $"{upgradeInfos[i].count()}/{upgradeInfos[i].maxCount} \n {upgradeInfos[i].description} : {upgradeInfos[i].valueGetter()}";
-        }
+            new UpgradeInfo("속도", () => $"{p.BaseSpeed}/{p.CartSpeed}", () => $"{baseCost.baseSpeedUpgradeCount}", maxCount),
+            new UpgradeInfo("운반 가능 갯수", () => $"{p.MaxObjStackCount}", () => $"{baseCost.baseMaxObjStackCountUpgradeCount}", maxCount),
+            new UpgradeInfo("수익", () => $"박스 당{p.GoldPerBox}", () => $"{baseCost.baseGoldPerBoxUpgradeCount}", maxCount),
+            new UpgradeInfo("종업원 속도", () => $"{baseCost.employeeBaseSpeed}/{baseCost.employeeBaseCartSpeed}", () => $"{baseCost.baseEmployeeSpeedUpgradeCount}", maxCount),
+            new UpgradeInfo("종업원 운반 가능 갯수", () => $"{baseCost.employeeBaseMaxObjStackCount}", () => $"{baseCost.baseEmployeeMaxObjStackCountUpgradeCount}", maxCount),
+            new UpgradeInfo("종업원 수", () => $"{baseCost.baseEmployeeAddCount}", () => $"{baseCost.baseEmployeeAddCount}", maxCount)
+        };
     }
 
     private void UpdateUI()
@@ -171,6 +166,10 @@ public class UIManager : Singleton<UIManager>
     public void ShowUpgradeUI()
     {
         upgradePanel.SetActive(true);
+        for (int i = 0; i < upgradeInfos.Count; i++)
+        {
+            upgradeTxt[i].text = $"{upgradeInfos[i].count()}/{upgradeInfos[i].maxCount} \n {upgradeInfos[i].description} : {upgradeInfos[i].valueGetter()}";
+        }
     }
     public void CloseUpgradeUI()
     {
