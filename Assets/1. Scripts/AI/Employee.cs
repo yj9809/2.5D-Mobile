@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
+
+public enum EmployeeType { Packaing, Cart}
 
 public class Employee : MonoBehaviour
 {
@@ -14,6 +17,8 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform truckTrans;
 
     [SerializeField] private int randomTarget = 0;
+
+    [EnumToggleButtons, SerializeField] private EmployeeType employeeType = EmployeeType.Cart;
 
     [SerializeField] private bool moving = false;
     private bool isWaiting = false;
@@ -69,6 +74,9 @@ public class Employee : MonoBehaviour
 
     private void Update()
     {
+        if (employeeType == EmployeeType.Packaing)
+            return;
+
         Move();
         OnCart();
         MovementDetection();

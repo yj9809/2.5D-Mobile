@@ -177,8 +177,6 @@ public class UIManager : Singleton<UIManager>
     {
         upgradePanel.SetActive(false);
     }
-
-
     public void Upgrade(int num)
     {
         int cost = 0;
