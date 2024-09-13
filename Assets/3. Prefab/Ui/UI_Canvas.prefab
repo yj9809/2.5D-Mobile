@@ -4552,6 +4552,7 @@ MonoBehaviour:
   - {fileID: 5533023265418128021}
   - {fileID: 7934044564769259012}
   breakDownButton: {fileID: 7984066245553858565}
+  txt: {fileID: 0}
 --- !u!223 &3933046323338179959
 Canvas:
   m_ObjectHideFlags: 0
