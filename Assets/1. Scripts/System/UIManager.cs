@@ -148,6 +148,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region UpgradeUI
+    // 업그레이드 데이터 항목 넣어주는 함수
     private void SetUpgradeInfo()
     {
         int maxCount = baseCost.baseUpgradeMaxCount;
@@ -161,6 +162,7 @@ public class UIManager : Singleton<UIManager>
             new UpgradeInfo("종업원 수", () => $"{baseCost.baseEmployeeAddCount}", () => $"{baseCost.baseEmployeeAddCount}", maxCount)
         };
     }
+    // 업그레이드 데이터 텍스트에 넣어주는 함수
     private void SetUpgradeText()
     {
         for (int i = 0; i < upgradeInfos.Count; i++)
@@ -168,15 +170,18 @@ public class UIManager : Singleton<UIManager>
             UpgradeTxtUpdate(i);
         }
     }
+    // 오피스 강화 패널 여는 함수
     public void ShowUpgradeUI()
     {
         upgradePanel.SetActive(true);
         SetUpgradeText();
     }
+    // 오피스 강화 패널 닫는 함수
     public void CloseUpgradeUI()
     {
         upgradePanel.SetActive(false);
     }
+    // 업그레이드 수치 올리기 위한 버튼에 연결한 함수
     public void Upgrade(int num)
     {
         int cost = 0;
@@ -287,6 +292,7 @@ public class UIManager : Singleton<UIManager>
 
         }
     }
+    // 업그레이드 수치 변화가 있을 경우 텍스트 업데이트용 함수
     private void UpgradeTxtUpdate(int num)
     {
         upgradeTxt[num].text = $"{upgradeInfos[num].count()}/{upgradeInfos[num].maxCount} \n {upgradeInfos[num].description} : {upgradeInfos[num].valueGetter()}";
