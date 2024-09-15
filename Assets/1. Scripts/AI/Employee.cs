@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
+
+public enum EmployeeType { Packaing, Cart}
 
 public class Employee : MonoBehaviour
 {
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
-    [SerializeField] private int maxObjStackCount = 5;
+    [SerializeField] private int maxObjStackCount = 0;
 
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
 
     [SerializeField] private int randomTarget = 0;
+
+    [EnumToggleButtons, SerializeField] private EmployeeType employeeType = EmployeeType.Cart;
 
     [SerializeField] private bool moving = false;
     private bool isWaiting = false;
@@ -22,9 +27,16 @@ public class Employee : MonoBehaviour
     private Animator animator;
     private NavMeshAgent na;
     private Transform target;
+    private BaseCost baseCost;
 
     Vector3 previousPosition;
     Vector3 currentPosition;
+
+    public int MaxObjStackCount
+    {
+        get { return baseCost.employeeBaseMaxObjStackCount; }
+        set { baseCost.employeeBaseMaxObjStackCount = value; }
+    }
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
     public Stack<GameObject> IngredientStack
@@ -55,11 +67,19 @@ public class Employee : MonoBehaviour
         boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
+        baseCost = DataManager.Instance.baseCost;
+
         StartCoroutine(CheckStack());
     }
 
     private void Update()
     {
+        if (employeeType == EmployeeType.Packaing)
+        {
+
+            return;
+        }
+
         Move();
         OnCart();
         MovementDetection();
@@ -86,7 +106,6 @@ public class Employee : MonoBehaviour
             animator.SetBool("isMove", false);
         }
     }
-
     //이동 판별 함수
     private void MovementDetection()
     {
@@ -99,22 +118,20 @@ public class Employee : MonoBehaviour
 
         previousPosition = currentPosition;
     }
-
     // 물건을 들고 있는지 판별하는 함수
     private void OnCart()
     {
         if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
-            na.speed = 3;
+            na.speed = baseCost.employeeBaseSpeed;
             cart.transform.DOScale(0, 0.2f);
         }
         else
         {
-            na.speed = 1.5f;
+            na.speed = baseCost.employeeBaseCartSpeed;
             cart.transform.DOScale(Vector3.one, 0.2f);
         }
     }
-
     // 타겟 전환용 함수
     private void TargetSwitching()
     {
@@ -153,7 +170,6 @@ public class Employee : MonoBehaviour
             StartCoroutine(CheckStack()); // 목표 재설정
         }
     }
-
     // 스택 카운터를 판별해 적절한 타겟을 찾아주는 함수
     public IEnumerator CheckStack()
     {
@@ -194,6 +210,7 @@ public class Employee : MonoBehaviour
             }
         }
     }
+    // 재료 받아오는 함수
     public void TakeObject(IngredientMaker im)
     {
         if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
@@ -201,7 +218,7 @@ public class Employee : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
         }
     }
-
+    // 컨베이어로 옮기는 함수
     public void GiveObject(ConveyorBelt cb)
     {
         if (ingredientStack.Count > 0)
@@ -209,7 +226,7 @@ public class Employee : MonoBehaviour
             Utility.ObjectDrop(cb.IngredientStorage, null, ingredientStack, cb.CbStack, 1);
         }
     }
-
+    // 변환 재료 받아오는 함수
     public void GiveObject(BoxStorage bs, bool isChuru)
     {
         Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
@@ -219,7 +236,7 @@ public class Employee : MonoBehaviour
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
         }
     }
-
+    // 박스 포장대에 옮기는 함수
     public void GiveObject(BoxPackaging bp)
     {
         if (churuStack.Count > 0)

@@ -36,9 +36,9 @@ public class IngredientMaker : MonoBehaviour, IStackable
     private void Update()
     {
         SpawnGameObject();
-#if !UNITY_EDITOR
-        UIManager.Instance.SetIngredientMaker(this);
-#endif
+//#if !UNITY_EDITOR
+//        UIManager.Instance.SetIngredientMaker(this);
+//#endif
 
         // 타겟 업데이트 로직
         if (ChuruStack.Count == 0)

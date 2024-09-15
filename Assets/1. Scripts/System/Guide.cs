@@ -3,53 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
-public class TutorialGuide : MonoBehaviour
+public class Guide : MonoBehaviour
 {
-    private bool doTutorial = false;
-    [SerializeField] private Button tutorialButton;
-    [SerializeField] private RectTransform canvas;
+    [SerializeField] private RectTransform guideLine;
+    [SerializeField] private TextMeshProUGUI guideText;
 
     [SerializeField] private GameObject[] targets;
 
-    private int step;
+    private BaseCost baseCost;
     private BoxPackaging boxPackaging;
     private BoxStorage boxStorage;
     private Truck truck;
+    private Player player;
 
     void Start()
     {
-        tutorialButton.onClick.AddListener(ToggleTutorial);
-
-        step = DataManager.Instance.baseCost.tutorialStep;
+        baseCost = DataManager.Instance.baseCost;
+        player = GameManager.Instance.P;
 
         boxPackaging = FindObjectOfType<BoxPackaging>();
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
 
-        canvas.gameObject.SetActive(false);
+        truck.gameObject.SetActive(false);
         SetTargetsActive(false);
     }
 
     void Update()
     {
-        if (doTutorial)
-        {
-            canvas.gameObject.SetActive(true);
-
-            GuideLine();
-            TutorialGuideStep();
-        }
-        else
-        {
-            canvas.gameObject.SetActive(false);
-        }
-    }
-
-    private void ToggleTutorial()
-    {
-        doTutorial = !doTutorial;
-        Debug.Log("doTutorial: " + doTutorial);
+        GuideLine();
+        GuideStep();
     }
 
     private void GuideLine()
@@ -72,19 +57,19 @@ public class TutorialGuide : MonoBehaviour
         #endregion
 
         #region 타겟 위치 화살표
-        if (step < targets.Length)
+        if (DataManager.Instance.baseCost.guideStep < targets.Length)
         {
-            Transform target = targets[step].transform;
-            Vector3 targetPosition = new Vector3(target.position.x, canvas.position.y, target.position.z);
+            Transform target = targets[DataManager.Instance.baseCost.guideStep].transform;
+            Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
-            canvas.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
+            guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
         }
         #endregion
     }
 
-    private void TutorialGuideStep()
+    private void GuideStep()
     {
-        switch (step)
+        switch (DataManager.Instance.baseCost.guideStep)
         {
             case 0: _Step0(); break;
             case 1: _Step1(); break;
@@ -99,10 +84,10 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step0()
     {
-        Debug.Log("Step 1 !");
         SetActiveTarget(0);
+        guideText.text = $"재료 보관소로 이동 하자 !";
 
-        if (GameManager.Instance.P.IngredientStack.Count > 0)
+        if (player.IngredientStack.Count > 0)
         {
             ToNextStep();
         }
@@ -110,10 +95,10 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step1()
     {
-        Debug.Log("Step 2 !");
         SetActiveTarget(1);
+        guideText.text = $"재료를 컨베이어 벨트로 옮기자 !";
 
-        if (GameManager.Instance.P.IngredientStack.Count <= 0)
+        if (player.IngredientStack.Count <= 0)
         {
             ToNextStep();
         }
@@ -121,10 +106,10 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step2()
     {
-        Debug.Log("Step 3 !");
         SetActiveTarget(2);
+        guideText.text = $"완성된 츄룹을 포장작업대 창고로 옮기자 !";
 
-        if (GameManager.Instance.P.ChuruStack.Count > 0)
+        if (player.ChuruStack.Count > 0)
         {
             ToNextStep();
         }
@@ -132,10 +117,10 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step3()
     {
-        Debug.Log("Step 4 !");
         SetActiveTarget(3);
+        guideText.text = $"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5";
 
-        if (GameManager.Instance.P.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
+        if (player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
         {
             ToNextStep();
         }
@@ -143,8 +128,8 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step4()
     {
-        Debug.Log("Step 5 !");
         SetActiveTarget(4);
+        guideText.text = $"포장작업대에서\n박스포장을 진행하자 !";
 
         if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1)
         {
@@ -154,10 +139,11 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step5()
     {
-        Debug.Log("Step 6 !");
+        truck.gameObject.SetActive(true);
         SetActiveTarget(5);
+        guideText.text = $"완성한 박스를\n트럭에 싣자 !";
 
-        if (GameManager.Instance.P.BoxStack.Count > 0)
+        if (player.BoxStack.Count > 0)
         {
             ToNextStep();
         }
@@ -165,10 +151,10 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step6()
     {
-        Debug.Log("Step 7 !");
         SetActiveTarget(6);
+        guideText.text = $"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5";
 
-        if (GameManager.Instance.P.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
+        if (player.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
         {
             ToNextStep();
         }
@@ -176,13 +162,18 @@ public class TutorialGuide : MonoBehaviour
 
     private void _Step7()
     {
-        Debug.Log("Step 8 !");
-        // 강화 관련 작업
+        SetActiveTarget(7);
+        guideText.text = $"돈을 모아 직원을 고용하자 !\n{baseCost.playerGold} / 50";
+
+        if (baseCost.baseEmployeeAddCount > 0)
+        {
+            guideText.text = $"-";
+        }
     }
 
     private void ToNextStep()
     {
-        step++;
+        DataManager.Instance.baseCost.guideStep++;
     }
 
     private void SetTargetsActive(bool isActive)

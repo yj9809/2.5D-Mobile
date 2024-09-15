@@ -37,6 +37,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public List<GameObject> employee;
+
     private NavMeshSurface nms;
     private DataManager data;
 
