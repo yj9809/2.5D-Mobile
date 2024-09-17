@@ -427,7 +427,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 7733717212360752527, guid: ca3d8f9a97e981d429f5b24e9d0d52ed, type: 3}
+  m_Mesh: {fileID: 7733717212360752527, guid: 979e754d9e484a94db52116e07fb375e, type: 3}
   m_Bones:
   - {fileID: 2838134946473363024}
   - {fileID: 3236199788858470186}
@@ -1256,6 +1256,7 @@ MonoBehaviour:
   boxTrans: {fileID: 0}
   truckTrans: {fileID: 0}
   randomTarget: 0
+  employeeType: 1
   moving: 0
 --- !u!95 &2877706230071168681
 Animator:
@@ -1266,7 +1267,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8810262333338127977}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ca3d8f9a97e981d429f5b24e9d0d52ed, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 979e754d9e484a94db52116e07fb375e, type: 3}
   m_Controller: {fileID: 9100000, guid: 86c19e7d21fdcfe43b8a5e3c3f1a8623, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
