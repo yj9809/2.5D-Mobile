@@ -59,7 +59,8 @@ public class WorkPoint : MonoBehaviour
                     p.GiveObject(truck);
                     break;
                 case WorkPointType.Packaging:
-                    _boxPackaging.Packaging();
+                    if(p != null || e != null)
+                        _boxPackaging.Packaging(p, e);
                     break;
                 case WorkPointType.Office:
                     UIManager.Instance.ShowUpgradeUI();
@@ -74,7 +75,7 @@ public class WorkPoint : MonoBehaviour
         if (p != null)
         {
             UIManager.Instance.CloseUpgradeUI();
-            p.StopBoxPackagingAnimation();
+            p.StopBoxPackagingAnimationPlayer();
         }
         
     }

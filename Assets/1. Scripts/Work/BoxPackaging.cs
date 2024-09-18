@@ -42,7 +42,7 @@ public class BoxPackaging : MonoBehaviour
     }
     private const int maxCount = 5;
 
-    public void Packaging()
+    public void Packaging(Player p, Employee employee)
     {
         if (newBox == null && churuStorage.Count != 0 && boxStorage.BoxStack.Count < 40)
         { 
@@ -54,16 +54,26 @@ public class BoxPackaging : MonoBehaviour
 
         if (churuStorage.Count != 0 && newBox != null)
         {
-            ChuruMove();
+            ChuruMove(p, employee);
+        }
+        else
+        {
+            if (p != null)
+                p.StopBoxPackagingAnimationPlayer();
+            if (employee != null)
+                employee.StopBoxPackagingAnimationEmployee();
         }
     }
-    private void ChuruMove()
+    private void ChuruMove(Player p, Employee employee)
     {
         if(packaging != PackagingType.Off)
         {
             GameObject churu = churuStorage.Pop();
 
-            GameManager.Instance.P.DoBoxPackagingAnimation();
+            if(p != null)
+                GameManager.Instance.P.DoBoxPackagingAnimationPlayer();
+            if (employee != null)
+                employee.DoBoxPackagingAnimationEmployee();
 
             churu.transform.SetParent(newBox.transform);
             churu.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.InBack)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
@@ -277,10 +278,23 @@ public class UIManager : Singleton<UIManager>
                     if (SpendGold(cost))
                     {
                         int random = Random.Range(0, gm.employee.Count);
-                        Debug.Log(random);
-                        Employee employee = Instantiate(gm.employee[random], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
+                        Employee employee;
+                        if (baseCost.baseEmployeeAddCount == 4)
+                        {
+                            Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
+                            employee = Instantiate(gm.employee[random]).GetComponent<Employee>();
+                            Destroy(employee.GetComponent<NavMeshAgent>());
+                            employee.transform.position = pos;
+                            employee.PackaingEmployee();
+                        }
+                        else
+                        {
+                            employee = Instantiate(gm.employee[random], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
+                        }
                         gm.employee.RemoveAt(random);
                         p.employee.Add(employee);
+
+
                         baseCost.baseEmployeeAddCost *= 2;
                         baseCost.baseEmployeeAddCount++;
                     }

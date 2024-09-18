@@ -244,4 +244,18 @@ public class Employee : MonoBehaviour
             Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 4);
         }
     }
+    public void PackaingEmployee()
+    {
+        employeeType = EmployeeType.Packaing;
+    }
+    public void DoBoxPackagingAnimationEmployee()
+    {
+        transform.rotation = Quaternion.Euler(0, -90f, 0);
+        animator.SetLayerWeight(1, 1);
+    }
+
+    public void StopBoxPackagingAnimationEmployee()
+    {
+        animator.SetLayerWeight(1, 0);
+    }
 }

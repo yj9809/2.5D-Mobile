@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
     {
         SceneManager.activeSceneChanged += OnSceneLoaded;
         employees.AddRange(FindObjectsOfType<Employee>());
-        nms.BuildNavMesh();
+        //nms.BuildNavMesh();
         foreach (var stackable in stackCount)
         {
             targetUsage[stackable] = false; // 모든 타겟의 사용 상태를 초기화
@@ -69,6 +69,14 @@ public class GameManager : Singleton<GameManager>
 
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
     {
+        if(nms != null)
+            nms.BuildNavMesh();
+        else
+        {
+            nms = FindObjectOfType<NavMeshSurface>();
+            nms.BuildNavMesh();
+        }
+
         if (data.baseCost.step1)
         {
             Debug.Log("실행");

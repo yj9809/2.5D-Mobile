@@ -181,13 +181,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void DoBoxPackagingAnimation()
+    public void DoBoxPackagingAnimationPlayer()
     {
         transform.rotation = Quaternion.Euler(0, -90f, 0);
         animator.SetLayerWeight(1, 1);
     }
 
-    public void StopBoxPackagingAnimation()
+    public void StopBoxPackagingAnimationPlayer()
     {
         animator.SetLayerWeight(1, 0);
     }
