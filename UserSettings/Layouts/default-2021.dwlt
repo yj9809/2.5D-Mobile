@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Project
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 277
+  controlID: 34852
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 129
+  controlID: 34853
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 179
+  controlID: 34794
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -371,7 +371,7 @@ MonoBehaviour:
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
-  m_EnterPlayModeBehavior: 0
+  m_EnterPlayModeBehavior: 1
   m_UseMipMap: 0
   m_VSyncEnabled: 0
   m_Gizmos: 0
@@ -707,9 +707,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 3.8016908, y: 4.5339746, z: -6.427556}
+    m_Target: {x: 3.5406227, y: 10.347778, z: 16.468628}
     speed: 2
-    m_Value: {x: 3.8016908, y: 4.5339746, z: -6.427556}
+    m_Value: {x: 3.5406227, y: 10.347778, z: 16.468628}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -756,13 +756,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.23869479, y: -0.060557358, z: 0.014915593, w: -0.9690926}
+    m_Target: {x: 0.12019395, y: 0.8064683, z: -0.17568916, w: 0.55171907}
     speed: 2
-    m_Value: {x: -0.23869416, y: -0.060557198, z: 0.014915554, w: -0.96909004}
+    m_Value: {x: 0.12018805, y: 0.80642873, z: -0.17568053, w: 0.55169195}
   m_Size:
-    m_Target: 2.4819922
+    m_Target: 10
     speed: 2
-    m_Value: 2.4819922
+    m_Value: 10
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -956,9 +956,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 8e8d0000
+      m_SelectedIDs: aa620000
       m_LastClickedID: 0
-      m_ExpandedIDs: 62a9feffeab3feff6cb9feffd0bdfeff96c0feff58c8feff4cd1feffd4dbfeff14ecfeffb2edfeffe6f8feff8eacffff1eafffff76afffff58b0ffff5eb0ffffaab0ffffc4b0ffffc8b0ffffecb0ffff2cb1ffff30b1ffff50b7ffffbab8ffffaad800002cda0000bcda00003e8a0200508d0200388f020052910200549602006e980200709d02008a9f0200
+      m_ExpandedIDs: 9096fcff449afcff6ca7fcfffea7fcff02dafcffe0dafcff32dbfcff2aeafcff76eafcff7e55feff466effff866fffffca73ffff6c8effff0e95ffff6e97ffffd497ffff969fffff32a8ffffbab2fffff2ceffff5ad0ffff20dcffffa6dcffff24eeffff62f9ffff28fbfffff4ffffff0e7a0000e287000012960000729700008c990000929e0000aca0000020a6000094a60000f4a6000026a70000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1023,23 +1023,23 @@ MonoBehaviour:
     m_SkipHidden: 1
     m_SearchArea: 1
     m_Folders:
-    - Assets/5. Animator
+    - Assets/2. Scene
     m_Globs: []
     m_OriginalText: 
     m_FilterByTypeIntersection: 0
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets/5. Animator
+  - Assets/2. Scene
   m_LastFoldersGridSize: 60
   m_LastProjectPath: C:\Users\dkrkt\OneDrive\Desktop\Unity\2.5D-Mobile
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: d87d0000
-    m_LastClickedID: 32216
-    m_ExpandedIDs: 00000000cc7d0000d07d0000d47d0000dc7d0000d6c30000d0c8000000ca9a3b
+    m_SelectedIDs: ac610000
+    m_LastClickedID: 25004
+    m_ExpandedIDs: 000000008a6100008c6100008e6100009061000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1067,7 +1067,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000cc7d000000ca9a3b
+    m_ExpandedIDs: 000000008a6100008c6100008e6100009061000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

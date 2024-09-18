@@ -58,9 +58,9 @@ public class BoxPackaging : MonoBehaviour
         }
         else
         {
-            if (p != null)
+            if (p != null && p.BoxStack.Count <= 0 && p.ChuruStack.Count <= 0 && p.IngredientStack.Count <= 0)
                 p.StopBoxPackagingAnimationPlayer();
-            if (employee != null)
+            if (employee != null && employee.BoxStack.Count <= 0 && employee.ChuruStack.Count <= 0 && employee.IngredientStack.Count <= 0)
                 employee.StopBoxPackagingAnimationEmployee();
         }
     }
