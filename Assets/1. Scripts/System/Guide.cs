@@ -79,6 +79,7 @@ public class Guide : MonoBehaviour
             case 5: _Step5(); break;
             case 6: _Step6(); break;
             case 7: _Step7(); break;
+            case 8: _Step8(); break;
         }
     }
 
@@ -166,6 +167,17 @@ public class Guide : MonoBehaviour
         guideText.text = $"돈을 모아 직원을 고용하자 !\n{baseCost.playerGold} / 50";
 
         if (baseCost.baseEmployeeAddCount > 0)
+        {
+            ToNextStep();
+        }
+    }
+
+    private void _Step8()
+    {
+        SetActiveTarget(8);
+        guideText.text = $"돈을 모아 기계를 추가하자 !\n{baseCost.playerGold} / 1000";
+
+        if (true)
         {
             guideText.text = $"-";
         }

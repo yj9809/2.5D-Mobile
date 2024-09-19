@@ -2,31 +2,33 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class UnlockManager : MonoBehaviour
 {
-    [SerializeField] private GameObject lockObject;
-    [SerializeField] private float unlockTime = 3.0f;
-    [SerializeField] private Image unlockFillImage;
+    [SerializeField] private GameObject _Object;
+    [SerializeField] private Image _FillImage;
+    [SerializeField] private int amount;
     [SerializeField] private int stepNum;
-    private float currentFill;
+    [ProgressBar(0, 100), SerializeField]private float currentFill;
 
+    private float unlockTime = 3.0f;
     private bool isTrigger = false;
     private bool isUnlocked = false;
-    private int amount;
 
     private Player p;
 
     void Start()
     {
         p = GameManager.Instance.P;
-        amount = 1000;
+        //amount = 10;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isUnlocked && p.Gold > amount)
+        if (other.CompareTag("Player") && !isUnlocked && p.Gold >= amount)
         {
+            Debug.Log("1");
             isTrigger = true;
             UIManager.Instance.SpendGold(amount);
             StartCoroutine(UnlockProcess(currentFill));
@@ -44,28 +46,28 @@ public class UnlockManager : MonoBehaviour
     private IEnumerator UnlockProcess(float updateProcess)
     {
         currentFill = updateProcess;
-
-        while (currentFill < unlockTime)
+        float fillRate = 100f / unlockTime;
+        while (currentFill < 100)
         {
             if (isTrigger)
             {
-                currentFill += Time.deltaTime;
-                UpdateUnlockUI(currentFill / unlockTime);
+                currentFill += fillRate * Time.deltaTime;
+                UpdateUnlockUI(currentFill / 100);
             }
             yield return null;
         }
 
         // 오브젝트 생성구간
-        if (currentFill >= unlockTime)
+        if (currentFill >= 100)
         {
             //Instantiate(lockPrefab, transform.position, Quaternion.identity);
             foreach (Transform item in transform)
             {
                 item.gameObject.SetActive(false);
             }
-            lockObject.gameObject.SetActive(true);
-            lockObject.transform.DOScale(Vector3.zero, 0f);
-            lockObject.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
+            _Object.gameObject.SetActive(true);
+            _Object.transform.DOScale(Vector3.zero, 0f);
+            _Object.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
                 .OnComplete(() => 
                 {
                     GameManager.Instance.NowNavMeshBake();
@@ -79,17 +81,17 @@ public class UnlockManager : MonoBehaviour
 
     private void UpdateUnlockUI(float progress)
     {
-        if (unlockFillImage != null)
+        if (_FillImage != null)
         {
-            unlockFillImage.fillAmount = progress;
+            _FillImage.fillAmount = progress;
         }
     }
 
     private void ResetUnlockUI()
     {
-        if (unlockFillImage != null)
+        if (_FillImage != null)
         {
-            unlockFillImage.fillAmount = 0f;
+            _FillImage.fillAmount = 0f;
         }
     }
 }
