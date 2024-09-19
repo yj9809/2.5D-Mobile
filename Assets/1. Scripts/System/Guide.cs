@@ -154,7 +154,7 @@ public class Guide : MonoBehaviour
         SetActiveTarget(6);
         guideText.text = $"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5";
 
-        if (player.BoxStack.Count <= 0 && truck.BoxStack.Count >= 5)
+        if (truck.BoxStack.Count >= 5)
         {
             ToNextStep();
         }
