@@ -77,12 +77,13 @@ public class GameManager : Singleton<GameManager>
             nms.BuildNavMesh();
         }
 
-        if (data.baseCost.step1)
-        {
-            Debug.Log("실행");
-            StepSystem.Instance.Step1Obj[0].gameObject.SetActive(false);
-            StepSystem.Instance.Step1Obj[1].gameObject.SetActive(true);
-        }
+        // 오브젝트 단계를 설정하기 위해 임시로 넣어둠
+        //if (data.baseCost.step1)
+        //{
+        //    Debug.Log("실행");
+        //    StepSystem.Instance.Step1Obj[0].gameObject.SetActive(false);
+        //    StepSystem.Instance.Step1Obj[1].gameObject.SetActive(true);
+        //}
     }
 
     public void AddStackable(IStackable stackable)
