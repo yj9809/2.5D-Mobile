@@ -1158,7 +1158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &76670660
 Transform:
   m_ObjectHideFlags: 0
@@ -5267,6 +5267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 484974654}
+  - component: {fileID: 484974655}
   m_Layer: 0
   m_Name: Chack Point (2)
   m_TagString: Untagged
@@ -5289,6 +5290,19 @@ Transform:
   m_Father: {fileID: 748702713}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &484974655
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484974653}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &486111504
 GameObject:
   m_ObjectHideFlags: 0
@@ -7297,6 +7311,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 692359486}
+  - component: {fileID: 692359487}
   m_Layer: 0
   m_Name: Chack Point (1)
   m_TagString: Untagged
@@ -7312,13 +7327,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692359485}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.7, y: -1.5, z: -9.19}
+  m_LocalPosition: {x: 13, y: -1.5, z: 0.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 748702713}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &692359487
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692359485}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &706949045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4951539387160519592, guid: e1ff1443143e1f84c9e9ccdaaded4e2e,
@@ -10576,7 +10604,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.61
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -14223,6 +14251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1355816930}
+  - component: {fileID: 1355816931}
   m_Layer: 0
   m_Name: Chack Point
   m_TagString: Untagged
@@ -14238,13 +14267,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355816929}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.1, y: -1.45, z: 22.4}
+  m_LocalPosition: {x: 11.4, y: -1.45, z: 22.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 748702713}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1355816931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355816929}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1356655782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 637266203769893088, guid: 2b70b8ba15efd0449a9140d8a8e17534,
@@ -22485,6 +22527,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1278725324}
     m_Modifications:
+    - target: {fileID: 1009927240970897780, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009927240970897780, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3933046322594588963, guid: f128df6200d3fab4ebf28a1c630e07d4,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -22653,6 +22705,21 @@ PrefabInstance:
     - target: {fileID: 3933046323338179958, guid: f128df6200d3fab4ebf28a1c630e07d4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971828623377741384, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971828623377741384, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971828623377741384, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
