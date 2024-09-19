@@ -10,16 +10,14 @@ using Sirenix.OdinInspector;
 [System.Serializable]
 public class UpgradeInfo
 {
-    public string description;
-    public System.Func<string> valueGetter;
-    public System.Func<string> count; // 현재 업그레이드 횟수
+    public System.Func<int> count;
+    public System.Func<int> cost;
     public int maxCount; // 최대 업그레이드 횟수
 
-    public UpgradeInfo(string description, System.Func<string> valueGetter, System.Func<string> count, int maxCount)
+    public UpgradeInfo(System.Func<int> count, System.Func<int> cost, int maxCount)
     {
-        this.description = description;
-        this.valueGetter = valueGetter;
         this.count = count;
+        this.cost = cost;
         this.maxCount = maxCount;
     }
 }
@@ -32,10 +30,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI goldTxt;
 
     [TabGroup("Upgrade"), SerializeField] private GameObject upgradePanel;
-    [TabGroup("Upgrade"), SerializeField] private Button speedUpgradeButton;
-    [TabGroup("Upgrade"), SerializeField] private Button cartSpeedUpgradeButton;
-    [TabGroup("Upgrade"), SerializeField] private Button maxObjStackCountUpgradeButton;
-    [TabGroup("Upgrade"), SerializeField] private TMP_Text[] upgradeTxt;
+    [TabGroup("Upgrade"), SerializeField] private Sprite[] UpgradeStepSprite;
+    [TabGroup("Upgrade"), SerializeField] private Image[] UpgradeStepImage;
+    [TabGroup("Upgrade"), SerializeField] private TMP_Text[] UpgradeCostText;
 
     [SerializeField] private Button breakDownButton;
 
@@ -155,27 +152,36 @@ public class UIManager : Singleton<UIManager>
         int maxCount = baseCost.baseUpgradeMaxCount;
         upgradeInfos = new List<UpgradeInfo>
         {
-            new UpgradeInfo("속도", () => $"{p.BaseSpeed}/{p.CartSpeed}", () => $"{baseCost.baseSpeedUpgradeCount}", maxCount),
-            new UpgradeInfo("운반 가능 갯수", () => $"{p.MaxObjStackCount}", () => $"{baseCost.baseMaxObjStackCountUpgradeCount}", maxCount),
-            new UpgradeInfo("수익", () => $"박스 당{p.GoldPerBox}", () => $"{baseCost.baseGoldPerBoxUpgradeCount}", maxCount),
-            new UpgradeInfo("종업원 속도", () => $"{baseCost.employeeBaseSpeed}/{baseCost.employeeBaseCartSpeed}", () => $"{baseCost.baseEmployeeSpeedUpgradeCount}", maxCount),
-            new UpgradeInfo("종업원 운반 가능 갯수", () => $"{baseCost.employeeBaseMaxObjStackCount}", () => $"{baseCost.baseEmployeeMaxObjStackCountUpgradeCount}", maxCount),
-            new UpgradeInfo("종업원 수", () => $"{baseCost.baseEmployeeAddCount}", () => $"{baseCost.baseEmployeeAddCount}", maxCount)
+            new UpgradeInfo(() => baseCost.baseSpeedUpgradeCount, () => baseCost.baseSpeedUpgradeCost, maxCount ),
+            new UpgradeInfo(() => baseCost.baseMaxObjStackCountUpgradeCount, () => baseCost.baseMaxObjStackCountUpgradeCost, maxCount),
+            new UpgradeInfo(() => baseCost.baseGoldPerBoxUpgradeCount, () => baseCost.baseGoldPerBoxUpgradeCost, maxCount),
+            new UpgradeInfo(() => baseCost.baseEmployeeSpeedUpgradeCount, () => baseCost.baseEmployeeSpeedUpgradeCost, maxCount),
+            new UpgradeInfo(() => baseCost.baseEmployeeMaxObjStackCountUpgradeCount, () => baseCost.baseEmployeeMaxObjStackCountUpgradeCost, maxCount),
+            new UpgradeInfo(() => baseCost.baseEmployeeAddCount, () => baseCost.baseEmployeeAddCost, maxCount)
         };
     }
-    // 업그레이드 데이터 텍스트에 넣어주는 함수
-    private void SetUpgradeText()
+    // 업그레이드 표시 항목 업데이트 함수
+    private void UpgradeTextUpdate(int num)
     {
-        for (int i = 0; i < upgradeInfos.Count; i++)
+        if (upgradeInfos[num].count() == 5)
+            UpgradeCostText[num].text = "Max";
+        else
+            UpgradeCostText[num].text = upgradeInfos[num].cost().ToString();
+        UpgradeStepImage[num].sprite = UpgradeStepSprite[upgradeInfos[num].count()];
+    }
+    // 시작 시 업그레이드 항목 초기화 해주는 함수
+    private void StartUpgradeTextUpdate()
+    {
+        for (int i = 0; i < UpgradeCostText.Length; i++)
         {
-            UpgradeTxtUpdate(i);
+            UpgradeTextUpdate(i);
         }
     }
     // 오피스 강화 패널 여는 함수
     public void ShowUpgradeUI()
     {
         upgradePanel.SetActive(true);
-        SetUpgradeText();
+        StartUpgradeTextUpdate();
     }
     // 오피스 강화 패널 닫는 함수
     public void CloseUpgradeUI()
@@ -199,11 +205,11 @@ public class UIManager : Singleton<UIManager>
                         p.CartSpeed += 1;
                         baseCost.baseSpeedUpgradeCount++;
                         baseCost.baseSpeedUpgradeCost *= 2;
+                        UpgradeTextUpdate(0);
                     }
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate(0);
                 break;
 
             case 1:
@@ -215,11 +221,11 @@ public class UIManager : Singleton<UIManager>
                         p.MaxObjStackCount += 1;
                         baseCost.baseMaxObjStackCountUpgradeCount++;
                         baseCost.baseMaxObjStackCountUpgradeCost *= 2;
+                        UpgradeTextUpdate(1);
                     }
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate(1);
                 break;
 
             case 2:
@@ -231,11 +237,11 @@ public class UIManager : Singleton<UIManager>
                         p.GoldPerBox += 10;
                         baseCost.baseGoldPerBoxUpgradeCount++;
                         baseCost.baseGoldPerBoxUpgradeCost *= 2;
+                        UpgradeTextUpdate(2);
                     }
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate(2);
                 break;
 
             case 3:
@@ -248,11 +254,11 @@ public class UIManager : Singleton<UIManager>
                         baseCost.employeeBaseCartSpeed += 0.5f;
                         baseCost.baseEmployeeSpeedUpgradeCost *= 2;
                         baseCost.baseEmployeeSpeedUpgradeCount++;
+                        UpgradeTextUpdate(3);
                     }
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate(3);
                 break;
 
             case 4:
@@ -264,11 +270,11 @@ public class UIManager : Singleton<UIManager>
                         baseCost.employeeBaseMaxObjStackCount += 1;
                         baseCost.baseEmployeeMaxObjStackCountUpgradeCost *= 2;
                         baseCost.baseEmployeeMaxObjStackCountUpgradeCount++;
+                        UpgradeTextUpdate(4);
                     }
                 }
                 else
                     Debug.Log("최대 업그레이드 입니다.");
-                UpgradeTxtUpdate(4);
                 break;
 
             case 5:
@@ -297,19 +303,14 @@ public class UIManager : Singleton<UIManager>
 
                         baseCost.baseEmployeeAddCost *= 2;
                         baseCost.baseEmployeeAddCount++;
+                        UpgradeTextUpdate(5);
                     }
                 }
                 else
                     Debug.Log("종업원이 최대입니다.");
-                UpgradeTxtUpdate(5);
                 break;
 
         }
-    }
-    // 업그레이드 수치 변화가 있을 경우 텍스트 업데이트용 함수
-    private void UpgradeTxtUpdate(int num)
-    {
-        upgradeTxt[num].text = $"{upgradeInfos[num].count()}/{upgradeInfos[num].maxCount} \n {upgradeInfos[num].description} : {upgradeInfos[num].valueGetter()}";
     }
     #endregion
 
