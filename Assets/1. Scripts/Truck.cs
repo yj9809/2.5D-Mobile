@@ -70,7 +70,7 @@ public class Truck : MonoBehaviour
             else
             {
                 // 모든 체크포인트를 지나면 이동 종료
-                transform.rotation = Quaternion.Euler(0, -90, 0);
+                transform.rotation = Quaternion.Euler(0, 0, 0);
                 na.isStopped = true;
                 workPoint.SetActive(true);
                 boxCountTxt.gameObject.SetActive(true);
