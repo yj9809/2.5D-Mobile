@@ -71,7 +71,8 @@ public class BoxPackaging : MonoBehaviour
             GameObject churu = churuStorage.Pop();
 
             if(p != null)
-                GameManager.Instance.P.DoBoxPackagingAnimationPlayer();
+                p.DoBoxPackagingAnimationPlayer();
+
             if (employee != null)
                 employee.DoBoxPackagingAnimationEmployee();
 
