@@ -4,23 +4,31 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
+public enum UnlockType
+{
+    Office,
+    Machine
+}
+
 public class UnlockManager : MonoBehaviour
 {
+    [EnumToggleButtons, SerializeField] private UnlockType unlockType;
     [SerializeField] private GameObject _Object;
+    [SerializeField] private GameObject _OfficeWall;
     [SerializeField] private Image _FillImage;
     [SerializeField] private int amount;
     [SerializeField] private int stepNum;
-    [ProgressBar(0, 100), SerializeField]private float currentFill;
+    [ProgressBar(0, 100), SerializeField] private float currentFill;
 
     private float unlockTime = 3.0f;
     private bool isTrigger = false;
     private bool isUnlocked = false;
 
     private Player p;
-
-    void Start()
+    private void Awake()
     {
         p = GameManager.Instance.P;
+        _Object.SetActive(false);
         //amount = 10;
     }
 
@@ -28,9 +36,7 @@ public class UnlockManager : MonoBehaviour
     {
         if (other.CompareTag("Player") && !isUnlocked && p.Gold >= amount)
         {
-            Debug.Log("1");
             isTrigger = true;
-            UIManager.Instance.SpendGold(amount);
             StartCoroutine(UnlockProcess(currentFill));
         }
     }
@@ -60,23 +66,37 @@ public class UnlockManager : MonoBehaviour
         // 오브젝트 생성구간
         if (currentFill >= 100)
         {
-            //Instantiate(lockPrefab, transform.position, Quaternion.identity);
-            foreach (Transform item in transform)
+            if (unlockType == UnlockType.Office)
             {
-                item.gameObject.SetActive(false);
+                SetActiveObject();
+                DestoryWall();
             }
-            _Object.gameObject.SetActive(true);
-            _Object.transform.DOScale(Vector3.zero, 0f);
-            _Object.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
-                .OnComplete(() => 
-                {
-                    GameManager.Instance.NowNavMeshBake();
-                    DataManager.Instance.StepOnOff(stepNum);
-                }
-                );
-            isUnlocked = true;
-            ResetUnlockUI();
+            else if (unlockType == UnlockType.Machine)
+            {
+                SetActiveObject();
+            }
         }
+    }
+
+    private void SetActiveObject()
+    {
+        foreach (Transform item in transform)
+        {
+            item.gameObject.SetActive(false);
+        }
+        _Object.gameObject.SetActive(true);
+        _Object.transform.DOScale(Vector3.zero, 0f);
+        _Object.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
+            .OnComplete(() =>
+            {
+                GameManager.Instance.NowNavMeshBake();
+                DataManager.Instance.StepOnOff(stepNum);
+            }
+            );
+
+        isUnlocked = true;
+
+        UIManager.Instance.SpendGold(amount);
     }
 
     private void UpdateUnlockUI(float progress)
@@ -87,11 +107,8 @@ public class UnlockManager : MonoBehaviour
         }
     }
 
-    private void ResetUnlockUI()
+    private void DestoryWall()
     {
-        if (_FillImage != null)
-        {
-            _FillImage.fillAmount = 0f;
-        }
+        _OfficeWall.SetActive(false);
     }
 }

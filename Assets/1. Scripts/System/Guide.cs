@@ -12,6 +12,9 @@ public class Guide : MonoBehaviour
 
     [SerializeField] private GameObject[] targets;
 
+    [SerializeField] private GameObject _OfficeObject;
+    [SerializeField] private GameObject _MachineObject;
+
     private BaseCost baseCost;
     private BoxPackaging boxPackaging;
     private BoxStorage boxStorage;
@@ -80,6 +83,7 @@ public class Guide : MonoBehaviour
             case 6: _Step6(); break;
             case 7: _Step7(); break;
             case 8: _Step8(); break;
+            case 9: _Step9(); break;
         }
     }
 
@@ -164,9 +168,9 @@ public class Guide : MonoBehaviour
     private void _Step7()
     {
         SetActiveTarget(7);
-        guideText.text = $"돈을 모아 직원을 고용하자 !\n{baseCost.playerGold} / 50";
+        guideText.text = $"지역 해금 : 사무실\n{baseCost.playerGold} / 100";
 
-        if (baseCost.baseEmployeeAddCount > 0)
+        if (_OfficeObject.activeSelf)
         {
             ToNextStep();
         }
@@ -175,9 +179,20 @@ public class Guide : MonoBehaviour
     private void _Step8()
     {
         SetActiveTarget(8);
-        guideText.text = $"돈을 모아 기계를 추가하자 !\n{baseCost.playerGold} / 1000";
+        guideText.text = $"사무실 : 직원 고용\n{baseCost.playerGold} / 50";
 
-        if (true)
+        if (baseCost.baseEmployeeAddCount > 0)
+        {
+            ToNextStep();
+        }
+    }
+
+    private void _Step9()
+    {
+        SetActiveTarget(9);
+        guideText.text = $"지역 해금 : 컨베이어 벨트\n{baseCost.playerGold} / 300";
+
+        if (_MachineObject.activeSelf)
         {
             guideText.text = $"-";
         }
