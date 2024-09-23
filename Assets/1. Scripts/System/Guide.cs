@@ -7,6 +7,10 @@ using TMPro;
 
 public class Guide : MonoBehaviour
 {
+    private bool isGuideActive = true;
+    [SerializeField] private Button guideButton;
+    [SerializeField] private GameObject guidePanel;
+
     [SerializeField] private RectTransform guideLine;
     [SerializeField] private TextMeshProUGUI guideText;
 
@@ -26,6 +30,8 @@ public class Guide : MonoBehaviour
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
 
+        guideButton.onClick.AddListener(GuideButton);
+
         boxPackaging = FindObjectOfType<BoxPackaging>();
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
@@ -38,6 +44,16 @@ public class Guide : MonoBehaviour
     {
         GuideLine();
         GuideStep();
+    }
+
+    private void GuideButton()
+    {
+        isGuideActive = !isGuideActive;
+        if (isGuideActive)
+            guidePanel.SetActive(true);
+        else
+            guidePanel.SetActive(false);
+
     }
 
     private void GuideLine()
@@ -112,7 +128,7 @@ public class Guide : MonoBehaviour
     private void _Step2()
     {
         SetActiveTarget(2);
-        guideText.text = $"완성된 츄룹을 포장작업대 창고로 옮기자 !";
+        guideText.text = $"완성된 츄룹을\n포장작업대 창고로 옮기자 !";
 
         if (player.ChuruStack.Count > 0)
         {
