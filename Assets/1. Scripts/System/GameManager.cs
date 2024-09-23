@@ -93,6 +93,13 @@ public class GameManager : Singleton<GameManager>
             stackCount.Add(stackable);
         }
     }
+    public void AddTarget(IStackable stackable)
+    {
+        if (!targetUsage.ContainsKey(stackable))
+        {
+            targetUsage[stackable] = false; // 기본값으로 false 설정
+        }
+    }
     public bool IsTargetBeingUsed(IStackable stackable)
     {
         if (targetUsage.ContainsKey(stackable))
@@ -103,9 +110,19 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
     {
+        if (stackable == null)
+        {
+            Debug.LogError("stackable is null");
+            return;
+        }
+
         if (targetUsage.ContainsKey(stackable))
         {
-            targetUsage[stackable] = isUsed; // 딕셔너리에서 타겟의 사용 상태 업데이트
+            targetUsage[stackable] = isUsed;
+        }
+        else
+        {
+            Debug.LogWarning("The specified stackable is not in the dictionary.");
         }
     }
 

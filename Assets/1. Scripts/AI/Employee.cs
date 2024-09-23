@@ -26,7 +26,7 @@ public class Employee : MonoBehaviour
     private GameManager gm;
     private Animator animator;
     private NavMeshAgent na;
-    private Transform target;
+    [SerializeField] private Transform target;
     private BaseCost baseCost;
 
     Vector3 previousPosition;
@@ -58,7 +58,7 @@ public class Employee : MonoBehaviour
         get { return boxStack; }
         set { boxStack = value; }
     }
-
+    
     [SerializeField] private IStackable currentTarget;
 
     private void Start()
@@ -76,12 +76,12 @@ public class Employee : MonoBehaviour
     {
         if (employeeType == EmployeeType.Packaing)
         {
-
+            cart.SetActive(false);
             return;
         }
 
-        Move();
         OnCart();
+        Move();
         MovementDetection();
         TargetSwitching();
 
@@ -135,31 +135,9 @@ public class Employee : MonoBehaviour
     // 타겟 전환용 함수
     private void TargetSwitching()
     {
-        if (target != null && Vector3.Distance(transform.position, target.position) < 0.2f)
+        if (target != null && Vector3.Distance(transform.position, target.position) < 0.3f)
         {
-            if (ingredientStack.Count > 0)
-            {
-                gm.SetTargetBeingUsed(currentTarget, false);
-                currentTarget = null;
-                target = gm.cbTrans[randomTarget];
-            }
-            else if (churuStack.Count > 0)
-            {
-                gm.SetTargetBeingUsed(currentTarget, false);
-                currentTarget = null;
-                target = boxTrans;
-            }
-            else if (boxStack.Count > 0)
-            {
-                gm.SetTargetBeingUsed(currentTarget, false);
-                currentTarget = null;
-                target = truckTrans;
-            }
-            else
-            {
-                moving = false;
-                StartCoroutine(CheckStack());
-            }
+            ChangeTarget();
         }
         else if (currentTarget != null && currentTarget.GetStackCount() == 0 && (ingredientStack.Count <= 0 && churuStack.Count <= 0 && boxStack.Count <= 0))
         {
@@ -168,6 +146,48 @@ public class Employee : MonoBehaviour
             currentTarget = null;
             moving = false;
             StartCoroutine(CheckStack()); // 목표 재설정
+        }
+    }
+    private void ChangeTarget()
+    {
+        if (ingredientStack.Count > 0)
+        {
+            if (currentTarget != null)
+            {
+                gm.AddTarget(currentTarget); // 대상이 없으면 추가
+                gm.SetTargetBeingUsed(currentTarget, false);
+            }
+
+            currentTarget = null;
+            target = gm.cbTrans[randomTarget];
+        }
+        else if (churuStack.Count > 0)
+        {
+            Debug.Log(churuStack.Count);
+            if (currentTarget != null)
+            {
+                gm.AddTarget(currentTarget); // 대상이 없으면 추가
+                gm.SetTargetBeingUsed(currentTarget, false);
+            }
+
+            currentTarget = null;
+            target = boxTrans;
+        }
+        else if (boxStack.Count > 0)
+        {
+            if (currentTarget != null)
+            {
+                gm.AddTarget(currentTarget); // 대상이 없으면 추가
+                gm.SetTargetBeingUsed(currentTarget, false);
+            }
+
+            currentTarget = null;
+            target = truckTrans;
+        }
+        else
+        {
+            moving = false;
+            StartCoroutine(CheckStack());
         }
     }
     // 스택 카운터를 판별해 적절한 타겟을 찾아주는 함수
@@ -204,7 +224,12 @@ public class Employee : MonoBehaviour
                     currentTarget = bestTarget;
                     moving = true;
 
-                    gm.SetTargetBeingUsed(bestTarget, true); // 타겟을 사용 중으로 설정
+                    if (currentTarget != null)
+                    {
+                        gm.AddTarget(currentTarget); // 대상이 없으면 추가
+                        gm.SetTargetBeingUsed(currentTarget, false);
+                    }
+                    
                     gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }

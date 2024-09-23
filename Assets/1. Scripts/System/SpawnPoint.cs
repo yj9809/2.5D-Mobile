@@ -33,8 +33,8 @@ public class SpawnPoint : MonoBehaviour
         if(spawnTime >= spawnTimer)
         {
             Npc newNpc = pool.GetObj(npc).GetComponent<Npc>();
-            newNpc.GetComponent<Npc>().Target = target;
             newNpc.transform.position = GetRandomPositionInBounds(bounds);
+            newNpc.GetComponent<Npc>().Target = target;
             newNpc.SetSpawnPoint(this);
             newNpc.name = npc.name;
             spawnTime = 0;

@@ -30,7 +30,7 @@ public class Npc : MonoBehaviour
         if (!hasInitialized)
         {
             value = Random.Range(0, 2);
-            Debug.Log(value);
+            
             hasInitialized = true;
         }
     }
@@ -64,6 +64,7 @@ public class Npc : MonoBehaviour
                     if (value == 1)
                     {
                         npcType = NpcType.Store;
+                        Debug.Log(npcType);
                         na.SetDestination(spawnPoint.GetRandomPositionInPlaneBounds());
                     }
                     else
@@ -105,6 +106,7 @@ public class Npc : MonoBehaviour
             value = 0;
             npcType = NpcType.Home;
             na.SetDestination(target[currentTargetNum].position);
+            returnHome = 15f;
         }
     }
     public void SetSpawnPoint(SpawnPoint spawnPoint)
