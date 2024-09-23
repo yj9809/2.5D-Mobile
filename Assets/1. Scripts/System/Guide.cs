@@ -9,11 +9,10 @@ public class Guide : MonoBehaviour
 {
     private bool isGuideActive = true;
     [SerializeField] private Button guideButton;
-    [SerializeField] private GameObject guidePanel;
-
-    [SerializeField] private RectTransform guideLine;
+    [SerializeField] private GameObject guideUI;
     [SerializeField] private TextMeshProUGUI guideText;
 
+    [SerializeField] private RectTransform guideLine;
     [SerializeField] private GameObject[] targets;
 
     [SerializeField] private GameObject _OfficeObject;
@@ -24,6 +23,8 @@ public class Guide : MonoBehaviour
     private BoxStorage boxStorage;
     private Truck truck;
     private Player player;
+
+    private bool isWaiting = false;
 
     void Start()
     {
@@ -49,11 +50,7 @@ public class Guide : MonoBehaviour
     private void GuideButton()
     {
         isGuideActive = !isGuideActive;
-        if (isGuideActive)
-            guidePanel.SetActive(true);
-        else
-            guidePanel.SetActive(false);
-
+        guideUI.SetActive(isGuideActive);
     }
 
     private void GuideLine()
@@ -106,112 +103,90 @@ public class Guide : MonoBehaviour
     private void _Step0()
     {
         SetActiveTarget(0);
-        guideText.text = $"재료 보관소로 이동 하자 !";
-
-        if (player.IngredientStack.Count > 0)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText("재료 보관소로 이동 하자 !"
+            , player.IngredientStack.Count > 0);
     }
 
     private void _Step1()
     {
         SetActiveTarget(1);
-        guideText.text = $"재료를 컨베이어 벨트로 옮기자 !";
-
-        if (player.IngredientStack.Count <= 0)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText("재료를\n컨베이어 벨트로 옮기자 !"
+            , player.IngredientStack.Count <= 0);
     }
 
     private void _Step2()
     {
         SetActiveTarget(2);
-        guideText.text = $"완성된 츄룹을\n포장작업대 창고로 옮기자 !";
-
-        if (player.ChuruStack.Count > 0)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText("완성된 츄룹을\n포장작업대 창고로 옮기자 !"
+            , player.ChuruStack.Count > 0);
     }
 
     private void _Step3()
     {
         SetActiveTarget(3);
-        guideText.text = $"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5";
-
-        if (player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText($"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5"
+            , player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5);
     }
 
     private void _Step4()
     {
         SetActiveTarget(4);
-        guideText.text = $"포장작업대에서\n박스포장을 진행하자 !";
-
-        if (boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText("포장작업대에서\n박스포장을 진행하자 !"
+            , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1);
     }
 
     private void _Step5()
     {
         truck.gameObject.SetActive(true);
         SetActiveTarget(5);
-        guideText.text = $"완성한 박스를\n트럭에 싣자 !";
-
-        if (player.BoxStack.Count > 0)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText("완성한 박스를\n트럭에 싣자 !"
+            , player.BoxStack.Count > 0);
     }
 
     private void _Step6()
     {
         SetActiveTarget(6);
-        guideText.text = $"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5";
-
-        if (truck.BoxStack.Count >= 5)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText($"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5"
+            , truck.BoxStack.Count >= 5);
     }
 
     private void _Step7()
     {
         SetActiveTarget(7);
-        guideText.text = $"지역 해금 : 사무실\n{baseCost.playerGold} / 100";
-
-        if (_OfficeObject.activeSelf)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText($"지역 해금 : 사무실\n{baseCost.playerGold} / 100"
+            , _OfficeObject.activeSelf);
     }
 
     private void _Step8()
     {
         SetActiveTarget(8);
-        guideText.text = $"사무실 : 직원 고용\n{baseCost.playerGold} / 50";
-
-        if (baseCost.baseEmployeeAddCount > 0)
-        {
-            ToNextStep();
-        }
+        UpdateGuideText($"사무실 : 직원 고용\n{baseCost.playerGold} / 50"
+            , baseCost.baseEmployeeAddCount > 0);
     }
 
     private void _Step9()
     {
         SetActiveTarget(9);
-        guideText.text = $"지역 해금 : 컨베이어 벨트\n{baseCost.playerGold} / 300";
+        UpdateGuideText($"지역 해금 : 컨베이어 벨트\n{baseCost.playerGold} / 300"
+            , _MachineObject.activeSelf);
+    }
 
-        if (_MachineObject.activeSelf)
+    private void UpdateGuideText(string text, bool isCompleted)
+    {
+        guideText.text = text;
+
+        if (isCompleted && !isWaiting)
         {
-            guideText.text = $"-";
+            StartCoroutine(WaitAndNextStep(2f));
         }
+    }
+
+    private IEnumerator WaitAndNextStep(float waitTime)
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
+        ToNextStep();
+        isWaiting = false;
     }
 
     private void ToNextStep()
