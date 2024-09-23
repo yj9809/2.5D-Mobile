@@ -70,6 +70,10 @@ public class UIManager : Singleton<UIManager>
         {
             SellItem();
         }
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Employee employee = Instantiate(gm.employee[0], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
+        }
     }
    
     private void UpdateUI()
@@ -334,7 +338,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     //여기부터 윤제영 테스트 함수임
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
         private void OnGUI()
         {
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -345,9 +349,9 @@ public class UIManager : Singleton<UIManager>
             if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
                 AddGold(900);
             if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
-                cb.BreakDownProb += 0.1f;
+                cb.BreakDownProb += 0.01f;
             if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
-                cb.BreakDownProb -= 0.1f;
+                cb.BreakDownProb -= 0.01f;
             string def = $"고장확률:{cb.BreakDownProb * 100}%";
             def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
         }
@@ -355,7 +359,7 @@ public class UIManager : Singleton<UIManager>
         {
             this.im = im;
         }
-#endif
+//#endif
     //여기까지 윤제영 테스트 함수였음
 
 }
