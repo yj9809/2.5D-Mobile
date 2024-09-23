@@ -175,9 +175,10 @@ public class Guide : MonoBehaviour
     {
         guideText.text = text;
 
-        if (isCompleted && !isWaiting)
+        if (isCompleted)// && !isWaiting)
         {
-            StartCoroutine(WaitAndNextStep(2f));
+            ToNextStep();
+            //StartCoroutine(WaitAndNextStep(2f));
         }
     }
 

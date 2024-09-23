@@ -91,6 +91,7 @@ public class UnlockManager : MonoBehaviour
             {
                 GameManager.Instance.NowNavMeshBake();
                 DataManager.Instance.StepOnOff(stepNum);
+                Vibration.VibratePop();
             }
             );
 
