@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class BaseCost
 {
-    public int baseSpeedUpgradeCost = 10;
-    public int baseMaxObjStackCountUpgradeCost = 10;
-    public int baseGoldPerBoxUpgradeCost = 10;
+    public int baseSpeedUpgradeCost = 100;
+    public int baseMaxObjStackCountUpgradeCost = 100;
+    public int baseGoldPerBoxUpgradeCost = 100;
     public int baseSpeedUpgradeCount = 0;
     public int baseMaxObjStackCountUpgradeCount = 0;
     public int baseGoldPerBoxUpgradeCount = 0;
-    public int baseEmployeeSpeedUpgradeCost = 10;
-    public int baseEmployeeMaxObjStackCountUpgradeCost = 10;
-    public int baseEmployeeAddCost = 10;
+    public int baseEmployeeSpeedUpgradeCost = 100;
+    public int baseEmployeeMaxObjStackCountUpgradeCost = 100;
+    public int baseEmployeeAddCost = 100;
     public int baseEmployeeSpeedUpgradeCount = 0;
     public int baseEmployeeMaxObjStackCountUpgradeCount = 0;
     public int baseEmployeeAddCount = 0;
@@ -23,7 +23,7 @@ public class BaseCost
     public float playerBaseCartSpeed = 2.5f;
     public int playerMaxObjStackCount = 3;
     public int playerGold = 100;
-    public int playerGoldPerBox = 5;
+    public int playerGoldPerBox = 50;
     // Employee µ•¿Ã≈Õ
     public float employeeBaseSpeed = 3;
     public float employeeBaseCartSpeed = 1.5f;

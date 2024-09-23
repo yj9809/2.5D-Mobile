@@ -171,6 +171,7 @@ public class UIManager : Singleton<UIManager>
             UpgradeCostText[num].text = "Max";
         else
             UpgradeCostText[num].text = upgradeInfos[num].cost().ToString();
+
         UpgradeStepImage[num].sprite = UpgradeStepSprite[upgradeInfos[num].count()];
     }
     // 시작 시 업그레이드 항목 초기화 해주는 함수
@@ -238,7 +239,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
-                        p.GoldPerBox += 10;
+                        p.GoldPerBox += 100;
                         baseCost.baseGoldPerBoxUpgradeCount++;
                         baseCost.baseGoldPerBoxUpgradeCost *= 2;
                         UpgradeTextUpdate(2);
