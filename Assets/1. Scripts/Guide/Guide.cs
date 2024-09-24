@@ -105,7 +105,7 @@ public class Guide : MonoBehaviour
         }
     }
 
-    #region GuideSteps 0 ~ 9
+    #region GuideSteps
     private void _Step0()
     {
         SetActiveTarget(0);
