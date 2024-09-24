@@ -4325,9 +4325,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e89f9357095f146890a9e9036de567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guidePrefab: {fileID: 2281420700284977494, guid: 6a784891631c93349a0d863670cc9434,
+    type: 3}
   guideButton: {fileID: 3933046321519090203}
   guideUI: {fileID: 3933046321519090202}
-  guideText: {fileID: 3933046321519090204}
   guideLine: {fileID: 455098772}
   targets:
   - {fileID: 1898313507}
@@ -31250,6 +31251,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1278725324}
     m_Modifications:
+    - target: {fileID: 869932162189401502, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869932162189401502, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 869932162189401502, guid: f128df6200d3fab4ebf28a1c630e07d4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3933046323338179955, guid: f128df6200d3fab4ebf28a1c630e07d4,
         type: 3}
       propertyPath: m_Name
@@ -31378,18 +31394,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3933046321519090204 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4620769902054966737, guid: f128df6200d3fab4ebf28a1c630e07d4,
-    type: 3}
-  m_PrefabInstance: {fileID: 3933046321519090201}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4086526360566276879

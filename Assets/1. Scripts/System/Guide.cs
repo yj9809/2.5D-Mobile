@@ -7,10 +7,13 @@ using TMPro;
 
 public class Guide : MonoBehaviour
 {
+    [SerializeField] private GameObject guidePrefab;
+    private GameObject curGuidePrefab;
+    private TextMeshProUGUI guideText;
+
     private bool isGuideActive = true;
     [SerializeField] private Button guideButton;
     [SerializeField] private GameObject guideUI;
-    [SerializeField] private TextMeshProUGUI guideText;
 
     [SerializeField] private RectTransform guideLine;
     [SerializeField] private GameObject[] targets;
@@ -23,8 +26,6 @@ public class Guide : MonoBehaviour
     private BoxStorage boxStorage;
     private Truck truck;
     private Player player;
-
-    private bool isWaiting = false;
 
     void Start()
     {
@@ -39,6 +40,8 @@ public class Guide : MonoBehaviour
 
         truck.gameObject.SetActive(false);
         SetTargetsActive(false);
+
+        CreateGuidePrefab();
     }
 
     void Update()
@@ -103,35 +106,35 @@ public class Guide : MonoBehaviour
     private void _Step0()
     {
         SetActiveTarget(0);
-        UpdateGuideText("재료 보관소로 이동 하자 !"
+        UpdateGuide("재료 보관소로 이동 하자 !"
             , player.IngredientStack.Count > 0);
     }
 
     private void _Step1()
     {
         SetActiveTarget(1);
-        UpdateGuideText("재료를\n컨베이어 벨트로 옮기자 !"
+        UpdateGuide("재료를\n컨베이어 벨트로 옮기자 !"
             , player.IngredientStack.Count <= 0);
     }
 
     private void _Step2()
     {
         SetActiveTarget(2);
-        UpdateGuideText("완성된 츄룹을\n포장작업대 창고로 옮기자 !"
+        UpdateGuide("완성된 츄룹을\n포장작업대 창고로 옮기자 !"
             , player.ChuruStack.Count > 0);
     }
 
     private void _Step3()
     {
         SetActiveTarget(3);
-        UpdateGuideText($"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5"
+        UpdateGuide($"츄룹 창고 이동 작업\n{boxPackaging.ChuruStorage.Count} / 5"
             , player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5);
     }
 
     private void _Step4()
     {
         SetActiveTarget(4);
-        UpdateGuideText("포장작업대에서\n박스포장을 진행하자 !"
+        UpdateGuide("포장작업대에서\n박스포장을 진행하자 !"
             , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1);
     }
 
@@ -139,60 +142,71 @@ public class Guide : MonoBehaviour
     {
         truck.gameObject.SetActive(true);
         SetActiveTarget(5);
-        UpdateGuideText("완성한 박스를\n트럭에 싣자 !"
+        UpdateGuide("완성한 박스를\n트럭에 싣자 !"
             , player.BoxStack.Count > 0);
     }
 
     private void _Step6()
     {
         SetActiveTarget(6);
-        UpdateGuideText($"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5"
+        UpdateGuide($"박스 트럭 상차 작업\n{truck.BoxStack.Count} / 5"
             , truck.BoxStack.Count >= 5);
     }
 
     private void _Step7()
     {
         SetActiveTarget(7);
-        UpdateGuideText($"지역 해금 : 사무실\n{baseCost.playerGold} / 100"
+        UpdateGuide($"지역 해금 : 사무실\n{baseCost.playerGold} / 100"
             , _OfficeObject.activeSelf);
     }
 
     private void _Step8()
     {
         SetActiveTarget(8);
-        UpdateGuideText($"사무실 : 직원 고용\n{baseCost.playerGold} / 50"
+        UpdateGuide($"사무실 : 직원 고용\n{baseCost.playerGold} / 50"
             , baseCost.baseEmployeeAddCount > 0);
     }
 
     private void _Step9()
     {
         SetActiveTarget(9);
-        UpdateGuideText($"지역 해금 : 컨베이어 벨트\n{baseCost.playerGold} / 300"
+        UpdateGuide($"지역 해금 : 컨베이어 벨트\n{baseCost.playerGold} / 300"
             , _MachineObject.activeSelf);
     }
 
-    private void UpdateGuideText(string text, bool isCompleted)
+    private void CreateGuidePrefab()
     {
-        guideText.text = text;
-
-        if (isCompleted)// && !isWaiting)
+        if (curGuidePrefab != null)
         {
-            ToNextStep();
-            //StartCoroutine(WaitAndNextStep(2f));
+            Destroy(curGuidePrefab, 2f);
         }
-    }
 
-    private IEnumerator WaitAndNextStep(float waitTime)
-    {
-        isWaiting = true;
-        yield return new WaitForSeconds(waitTime);
-        ToNextStep();
-        isWaiting = false;
+        curGuidePrefab = Instantiate(guidePrefab, guideUI.transform);
+
+        guideText = curGuidePrefab.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void ToNextStep()
     {
         DataManager.Instance.baseCost.guideStep++;
+    }
+
+    private void UpdateGuide(string text, bool isCompleted)
+    {
+        if (guideText != null)
+        {
+            guideText.text = text;
+        }
+
+        if (isCompleted)
+        {
+            CreateGuidePrefab();
+            if (guideText != null)
+            {
+                guideText.text = text;
+            }
+            ToNextStep();
+        }
     }
 
     private void SetTargetsActive(bool isActive)
