@@ -44,6 +44,9 @@ public class Guide : MonoBehaviour
         SetTargetsActive(false);
 
         CreateGuidePrefab();
+
+        // 테스트 완료
+        SetWorkPoint();
     }
 
     void Update()
@@ -102,6 +105,14 @@ public class Guide : MonoBehaviour
             case 7: _Step7(); break;
             case 8: _Step8(); break;
             case 9: _Step9(); break;
+        }
+    }
+
+    private void SetWorkPoint()
+    {
+        for (int i = 0; i <= DataManager.Instance.baseCost.guideStep; i++)
+        {
+            targets[i].SetActive(true);
         }
     }
 

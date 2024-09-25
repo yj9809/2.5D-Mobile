@@ -223,7 +223,7 @@ public class Player : MonoBehaviour
     {
         if (churuStack.Count > 0)
         {
-            Utility.ObjectDrop(bp.StorageParent, null, churuStack, bp.ChuruStorage, 4);
+            Utility.ObjectDrop(bp.churuStorageParent, null, churuStack, bp.ChuruStorage, 4);
             Vibration.VibratePop();
         }
     }

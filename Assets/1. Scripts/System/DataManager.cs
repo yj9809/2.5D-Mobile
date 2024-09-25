@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class BaseCost
 {
@@ -24,10 +25,16 @@ public class BaseCost
     public int playerMaxObjStackCount = 3;
     public int playerGold = 100;
     public int playerGoldPerBox = 50;
+
     // Employee 데이터
     public float employeeBaseSpeed = 3;
     public float employeeBaseCartSpeed = 1.5f;
     public int employeeBaseMaxObjStackCount = 3;
+
+    // 오브젝트 데이터
+    public int conveyorBeltBoxStorageStackCount = 0;
+    public int packagingWaitObjCount = 0;
+    public int packagingBoxStorageStackCount = 0;
 
     public bool step1 = true;
     public bool step2 = false;
@@ -46,38 +53,51 @@ public class DataManager : Singleton<DataManager>
 {
     public BaseCost baseCost = new BaseCost();
 
-    public void StepOnOff(int num)
+    public string path;
+    public string fileName = "SaveFile";
+    public string filePath;
+
+    // Start is called before the first frame update
+    protected override void Awake()
     {
-        switch (num)
+        base.Awake();
+
+        path = Application.persistentDataPath + "/Save";
+        Debug.Log(path);
+        if (!Directory.Exists(path))
         {
-            case 1:
-                baseCost.step1 = true;
-                break;
-            case 2:
-                baseCost.step2 = true;
-                break;
-            case 3:
-                baseCost.step3 = true;
-                break;
-            case 4:
-                baseCost.step4 = true;
-                break;
-            case 5:
-                baseCost.step5 = true;
-                break;
-            case 6:
-                baseCost.step6 = true;
-                break;
-            case 7:
-                baseCost.step7 = true;
-                break;
-            case 8:
-                baseCost.step8 = true;
-                break;
-            case 9:
-                baseCost.step9 = true;
-                break;
+            Directory.CreateDirectory(path);
         }
+
+        filePath = Path.Combine(path, fileName);
+
+    }
+
+    public void SaveData()
+    {
+        string data = JsonUtility.ToJson(baseCost);
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
+        string encode = System.Convert.ToBase64String(bytes);
+        File.WriteAllText(filePath, encode);
+    }
+
+    public void LoadData()
+    {
+        string data = File.ReadAllText(filePath);
+        byte[] bytes = System.Convert.FromBase64String(data);
+        string decode = System.Text.Encoding.UTF8.GetString(bytes);
+        baseCost = JsonUtility.FromJson<BaseCost>(decode);
+    }
+
+    public void DataClear()
+    {
+        if (CheckFile())
+            File.Delete(filePath);
+    }
+
+    public bool CheckFile()
+    {
+        return File.Exists(filePath);
     }
 }
 

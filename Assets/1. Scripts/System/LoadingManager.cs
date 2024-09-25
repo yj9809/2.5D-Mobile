@@ -6,17 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class LoadingManager : MonoBehaviour
 {
+    private DataManager data;
     private static float loadingTime = 3f;
     private static string gameScene = "Game";
 
     private void Start()
     {
+        data = DataManager.Instance;
         StartCoroutine(LoadScene());
     }
 
     private IEnumerator LoadScene()
     {
         yield return new WaitForSeconds(loadingTime);
+
+        if (data.CheckFile())
+            data.LoadData();
 
         AsyncOperation gameLoad = SceneManager.LoadSceneAsync(gameScene);
 

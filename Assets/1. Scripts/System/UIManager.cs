@@ -340,26 +340,31 @@ public class UIManager : Singleton<UIManager>
 
     //여기부터 윤제영 테스트 함수임
 //#if !UNITY_EDITOR
-        private void OnGUI()
-        {
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+    private void OnGUI()
+    {
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-            // 폰트 사이즈 조정
-            buttonStyle.fontSize = 25;
+        // 폰트 사이즈 조정
+        buttonStyle.fontSize = 25;
 
-            if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-                AddGold(900);
-            if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
-                cb.BreakDownProb += 0.01f;
-            if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
-                cb.BreakDownProb -= 0.01f;
-            string def = $"고장확률:{cb.BreakDownProb * 100}%";
-            def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
-        }
-        public void SetIngredientMaker(IngredientMaker im)
-        {
-            this.im = im;
-        }
+        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
+            AddGold(900);
+        if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
+            cb.BreakDownProb += 0.01f;
+        if (GUI.Button(new Rect(430, 470, 200, 100), "고장확률 낮게", buttonStyle))
+            cb.BreakDownProb -= 0.01f;
+        string def = $"고장확률:{cb.BreakDownProb * 100}%";
+        def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
+
+        if (GUI.Button(new Rect(650, 250, 200, 100), "세이브", buttonStyle))
+            DataManager.Instance.SaveData();
+        if (GUI.Button(new Rect(650, 360, 200, 100), "데이터 클리어", buttonStyle))
+            DataManager.Instance.DataClear();
+    }
+    public void SetIngredientMaker(IngredientMaker im)
+    {
+        this.im = im;
+    }
 //#endif
     //여기까지 윤제영 테스트 함수였음
 
