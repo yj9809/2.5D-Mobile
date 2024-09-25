@@ -17,7 +17,7 @@ public class UnlockManager : MonoBehaviour
     [SerializeField] private GameObject _OfficeWall;
     [SerializeField] private Image _FillImage;
     [SerializeField] private int amount;
-    [SerializeField] private int stepNum;
+    //[SerializeField] private int stepNum;
     [ProgressBar(0, 100), SerializeField] private float currentFill;
 
     private float unlockTime = 3.0f;
@@ -90,7 +90,7 @@ public class UnlockManager : MonoBehaviour
             .OnComplete(() =>
             {
                 GameManager.Instance.NowNavMeshBake();
-                DataManager.Instance.StepOnOff(stepNum);
+                //DataManager.Instance.StepOnOff(stepNum);
                 Vibration.VibratePop();
             }
             );

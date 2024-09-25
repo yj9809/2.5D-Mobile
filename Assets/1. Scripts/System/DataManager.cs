@@ -37,6 +37,7 @@ public class BaseCost
     public bool step6 = false;
     public bool step7 = false;
     public bool step8 = false;
+    public bool step9 = false;
 
     public int guideStep = 0;
 }
@@ -72,6 +73,9 @@ public class DataManager : Singleton<DataManager>
                 break;
             case 8:
                 baseCost.step8 = true;
+                break;
+            case 9:
+                baseCost.step9 = true;
                 break;
         }
     }
