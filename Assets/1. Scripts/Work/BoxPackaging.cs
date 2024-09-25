@@ -18,6 +18,9 @@ public class BoxPackaging : MonoBehaviour, IStackCountSave
     [SerializeField] private GameObject box;
     [SerializeField] private BoxStorage boxStorage;
 
+    [SerializeField] private GameObject churu;
+
+    private DataManager data;
     private GameObject newBox;
     private TMP_Text boxCountTxt;
 
@@ -44,7 +47,19 @@ public class BoxPackaging : MonoBehaviour, IStackCountSave
 
     private void Start()
     {
-        DataManager.Instance.AddObjStackCountList(this);
+        data = DataManager.Instance;
+        SetSaveStackObj();
+        data.AddObjStackCountList(this);
+    }
+
+    private void SetSaveStackObj()
+    {
+        for (int i = 0; i < data.baseCost.packagingWaitObjCount; i++)
+        {
+            GameObject newChuru = Instantiate(churu, storageParent);
+            churuStorage.Push(newChuru);
+            newChuru.transform.localPosition = new Vector3(0, 0 + (Utility.ObjRendererCheck(newChuru) * churuStorage.Count), 0);
+        }
     }
 
     public void Packaging(Player p, Employee employee)

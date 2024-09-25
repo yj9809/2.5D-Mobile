@@ -10,8 +10,13 @@ public enum BoxStorageType
 }
 public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
 {
-    [SerializeField] private Transform[] boxTransform;
-    [EnumToggleButtons] public BoxStorageType bsType; 
+    [TabGroup("Storage Transform"), SerializeField] private Transform[] boxTransform;
+    [EnumToggleButtons] public BoxStorageType bsType;
+
+    [TabGroup("Game Object"), SerializeField] private GameObject churu;
+    [TabGroup("Game Object"), SerializeField] private GameObject box;
+
+    private DataManager data;
 
     private Stack<GameObject> boxStack = new Stack<GameObject>();
 
@@ -25,9 +30,12 @@ public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
 
     private void Start()
     {
-        DataManager.Instance.AddObjStackCountList(this);
+        data = DataManager.Instance;
+        data.AddObjStackCountList(this);
 
-        if(bsType == BoxStorageType.ChuruStorage)
+        SetSaveStackObj();
+
+        if (bsType == BoxStorageType.ChuruStorage)
             GameManager.Instance.stackCount.Add(this);
     }
 
@@ -44,6 +52,30 @@ public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
                 Destroy(collision.transform.GetComponent<Rigidbody>());
 
             Utility.ObjectDrop(boxTransform[boxTransformNum], collision.gameObject, null, boxStack, 2);
+        }
+    }
+
+    public void SetSaveStackObj()
+    {
+        if (bsType == BoxStorageType.ChuruStorage)
+        {
+            for (int i = 0; i < data.baseCost.churuStorageStackCount; i++)
+            {
+                boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
+                GameObject churu = Instantiate(this.churu, transform);
+
+                Utility.ObjectDrop(boxTransform[boxTransformNum], churu, null, boxStack, 2);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < data.baseCost.packagingBoxStorageStackCount; i++)
+            {
+                boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
+                GameObject box = Instantiate(this.box, transform);
+
+                Utility.ObjectDrop(boxTransform[boxTransformNum], box, null, boxStack, 2);
+            }
         }
     }
 
