@@ -8,7 +8,7 @@ public enum BoxStorageType
     ChuruStorage,
     BoxStorage
 }
-public class BoxStorage : MonoBehaviour, IStackable
+public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
 {
     [SerializeField] private Transform[] boxTransform;
     [EnumToggleButtons] public BoxStorageType bsType; 
@@ -25,6 +25,8 @@ public class BoxStorage : MonoBehaviour, IStackable
 
     private void Start()
     {
+        DataManager.Instance.AddObjStackCountList(this);
+
         if(bsType == BoxStorageType.ChuruStorage)
             GameManager.Instance.stackCount.Add(this);
     }
@@ -50,4 +52,12 @@ public class BoxStorage : MonoBehaviour, IStackable
     public Transform GetTransform() => transform.GetChild(0).transform;
 
     public int GetTypeNum() => 1;
+
+    public void StackCountSave()
+    {
+        if (bsType == BoxStorageType.ChuruStorage)
+            DataManager.Instance.baseCost.churuStorageStackCount = boxStack.Count;
+        else
+            DataManager.Instance.baseCost.packagingBoxStorageStackCount = boxStack.Count;
+    }
 }

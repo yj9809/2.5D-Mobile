@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+public interface IStackCountSave
+{
+    void StackCountSave();
+}
+
 public class BaseCost
 {
     public int baseSpeedUpgradeCost = 100;
@@ -33,19 +38,9 @@ public class BaseCost
 
     // 오브젝트 데이터
     public int conveyorBeltBoxStorageStackCount = 0;
+    public int churuStorageStackCount = 0;
     public int packagingWaitObjCount = 0;
     public int packagingBoxStorageStackCount = 0;
-
-    public bool step1 = true;
-    public bool step2 = false;
-    public bool step3 = false;
-    public bool step4 = false;
-    public bool step5 = false;
-    public bool step6 = false;
-    public bool step7 = false;
-    public bool step8 = false;
-    public bool step9 = false;
-    public bool step10 = false;
 
     public int guideStep = 0;
 }
@@ -53,6 +48,8 @@ public class BaseCost
 public class DataManager : Singleton<DataManager>
 {
     public BaseCost baseCost = new BaseCost();
+
+    private List<IStackCountSave> objStackCountList = new List<IStackCountSave>();
 
     public string path;
     public string fileName = "SaveFile";
@@ -76,6 +73,8 @@ public class DataManager : Singleton<DataManager>
 
     public void SaveData()
     {
+        ObjStackCountSave();
+
         string data = JsonUtility.ToJson(baseCost);
         byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
         string encode = System.Convert.ToBase64String(bytes);
@@ -88,6 +87,19 @@ public class DataManager : Singleton<DataManager>
         byte[] bytes = System.Convert.FromBase64String(data);
         string decode = System.Text.Encoding.UTF8.GetString(bytes);
         baseCost = JsonUtility.FromJson<BaseCost>(decode);
+    }
+
+    public void AddObjStackCountList(IStackCountSave iStackCountSave)
+    {
+        objStackCountList.Add(iStackCountSave);
+    }
+
+    private void ObjStackCountSave()
+    {
+        foreach (var item in objStackCountList)
+        {
+            item.StackCountSave();
+        }
     }
 
     public void DataClear()

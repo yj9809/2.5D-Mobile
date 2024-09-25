@@ -10,7 +10,7 @@ public enum PackagingType
     On,
     Off
 }
-public class BoxPackaging : MonoBehaviour
+public class BoxPackaging : MonoBehaviour, IStackCountSave
 {
     [SerializeField] private Transform storageParent;
     [SerializeField] private Transform boxParent;
@@ -41,6 +41,11 @@ public class BoxPackaging : MonoBehaviour
         get { return count; }
     }
     private const int maxCount = 5;
+
+    private void Start()
+    {
+        DataManager.Instance.AddObjStackCountList(this);
+    }
 
     public void Packaging(Player p, Employee employee)
     {
@@ -110,5 +115,9 @@ public class BoxPackaging : MonoBehaviour
             packaging = PackagingType.On;
         }
     }
-    
+
+    public void StackCountSave()
+    {
+        DataManager.Instance.baseCost.packagingWaitObjCount = churuStorage.Count;
+    }
 }
