@@ -185,10 +185,6 @@ public class Guide : MonoBehaviour
             if (guideClearImage != null)
             {
                 curGuidePrefab.GetComponent<Image>().sprite = guideClearImage;
-                if (guideTextNum != null)
-                {
-                    guideTextNum.text = "";
-                }
             }
             Destroy(curGuidePrefab, 2f);
         }
@@ -206,14 +202,12 @@ public class Guide : MonoBehaviour
 
     private void UpdateGuide(string text, string numberText, bool isCompleted)
     {
-        if (guideText != null)
+        if (guideText != null && guideTextNum != null)
         {
             guideText.text = text;
 
-            if (guideTextNum != null)
-            {
-                guideTextNum.text = isCompleted ? $"<color=yellow>{numberText}</color>" : numberText;
-            }
+            guideTextNum.color = isCompleted ? Color.yellow : Color.black;
+            guideTextNum.text = numberText;
         }
 
         if (isCompleted)
