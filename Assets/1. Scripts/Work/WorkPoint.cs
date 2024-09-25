@@ -12,7 +12,8 @@ public enum WorkPointType
     BoxStorage,
     Truck,
     Packaging,
-    Office
+    Office,
+    Store
 }
 public class WorkPoint : MonoBehaviour
 {

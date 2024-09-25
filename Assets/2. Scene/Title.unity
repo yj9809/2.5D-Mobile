@@ -580,7 +580,6 @@ MonoBehaviour:
   - {fileID: 5240298106012947325, guid: 4c84ac8ce46e5444fa5de1a9a85b1d0a, type: 3}
   - {fileID: 8810262333338127977, guid: 166fdcaded596ae4e909341639b6f406, type: 3}
   - {fileID: 811180455077345137, guid: 316c925a47e6cfc4594c1be608242826, type: 3}
-  - {fileID: 8965331944652917705, guid: b586d61e7b2eb4b49b1aede2f8b323b2, type: 3}
   - {fileID: 7478094668819165057, guid: 4564e1c60c94a7643ae1804ccfec2659, type: 3}
   cbTrans: []
 --- !u!4 &1644890539

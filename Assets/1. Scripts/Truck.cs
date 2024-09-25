@@ -93,6 +93,7 @@ public class Truck : MonoBehaviour
             else
             {
                 // 다시 갔다가 돌아온다.
+                boxCountTxt.text = "0 / 5";
                 ct = CarType.Go;
             }
         }
