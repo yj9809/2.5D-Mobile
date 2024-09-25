@@ -45,6 +45,7 @@ public class BaseCost
     public bool step7 = false;
     public bool step8 = false;
     public bool step9 = false;
+    public bool step10 = false;
 
     public int guideStep = 0;
 }

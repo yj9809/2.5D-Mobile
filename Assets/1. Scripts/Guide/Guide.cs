@@ -22,6 +22,7 @@ public class Guide : MonoBehaviour
 
     [SerializeField] private GameObject _OfficeObject;
     [SerializeField] private GameObject _MachineObject;
+    [SerializeField] private GameObject _StoreObject;
 
     private BaseCost baseCost;
     private BoxPackaging boxPackaging;
@@ -40,7 +41,10 @@ public class Guide : MonoBehaviour
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
 
-        truck.gameObject.SetActive(false);
+        if (baseCost.guideStep < 5)
+        {
+            truck.gameObject.SetActive(false);
+        }
         SetTargetsActive(false);
 
         CreateGuidePrefab();
@@ -105,14 +109,7 @@ public class Guide : MonoBehaviour
             case 7: _Step7(); break;
             case 8: _Step8(); break;
             case 9: _Step9(); break;
-        }
-    }
-
-    private void SetWorkPoint()
-    {
-        for (int i = 0; i <= DataManager.Instance.baseCost.guideStep; i++)
-        {
-            targets[i].SetActive(true);
+            case 10: _Step10(); break;
         }
     }
 
@@ -187,6 +184,13 @@ public class Guide : MonoBehaviour
         UpdateGuide($"지역 해금 : 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 300"
             , _MachineObject.activeSelf);
     }
+
+    private void _Step10()
+    {
+        SetActiveTarget(10);
+        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerGold.ToString() + " / 500"
+            , _StoreObject.activeSelf);
+    }
     #endregion
 
     private void CreateGuidePrefab()
@@ -225,6 +229,14 @@ public class Guide : MonoBehaviour
         {
             CreateGuidePrefab();
             ToNextStep();
+        }
+    }
+
+    private void SetWorkPoint()
+    {
+        for (int i = 0; i <= DataManager.Instance.baseCost.guideStep; i++)
+        {
+            targets[i].SetActive(true);
         }
     }
 

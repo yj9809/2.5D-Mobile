@@ -7,14 +7,15 @@ using Sirenix.OdinInspector;
 public enum UnlockType
 {
     Office,
-    Machine
+    Machine,
+    Store
 }
 
 public class UnlockManager : MonoBehaviour
 {
     [EnumToggleButtons, SerializeField] private UnlockType unlockType;
     [SerializeField] private GameObject _Object;
-    [SerializeField] private GameObject _OfficeWall;
+    [SerializeField] private GameObject _Wall;
     [SerializeField] private Image _FillImage;
     [SerializeField] private int amount;
     //[SerializeField] private int stepNum;
@@ -110,6 +111,6 @@ public class UnlockManager : MonoBehaviour
 
     private void DestoryWall()
     {
-        _OfficeWall.SetActive(false);
+        _Wall.SetActive(false);
     }
 }
