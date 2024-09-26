@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
+using TMPro;
 
 public class Option : MonoBehaviour
 {
-    private MainCamera _camera;
     [SerializeField] private GameObject blurPanel;
 
     [SerializeField] private AudioSource musicSource;
@@ -18,10 +19,14 @@ public class Option : MonoBehaviour
     [SerializeField] private Sprite[] musicTextSprites;
     private bool isMusicOn = true;
 
+    [TitleGroup("Exit")] 
+    [SerializeField] private TextMeshProUGUI exitText;
+    private float pressedTime;
+    private float exitDelay = 2f;
+
     // Start is called before the first frame update
     void Start()
     {
-        _camera = FindObjectOfType<MainCamera>();
         blurPanel.SetActive(false);
 
         isMusicOn = PlayerPrefs.GetInt("MusicState", 1) == 1;
@@ -29,6 +34,25 @@ public class Option : MonoBehaviour
         UpdateMusicUI();
 
         musicButton.onClick.AddListener(ToggleMusic);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.time - pressedTime < exitDelay)
+            {
+                Application.Quit();
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            }
+            else
+            {
+                pressedTime = Time.time;
+                ShowExitWarning();
+            }
+        }
     }
 
     private void ToggleMusic()
@@ -50,11 +74,6 @@ public class Option : MonoBehaviour
         rt.anchoredPosition = isMusicOn ? new Vector2(75, 0) : new Vector2(-75, 0);
     }
 
-    public void Zoom()
-    {
-        _camera.ZoomScreen();
-    }
-
     public void ShowOption()
     {
         blurPanel.SetActive(true);
@@ -63,5 +82,17 @@ public class Option : MonoBehaviour
     public void CloseOption()
     {
         blurPanel.SetActive(false);
+    }
+
+    private void ShowExitWarning()
+    {
+        exitText.gameObject.SetActive(true);
+        exitText.text = "한 번 더 누르면 종료됩니다.";
+        Invoke("HideExitWarning", exitDelay);
+    }
+
+    private void HideExitWarning()
+    {
+        exitText.gameObject.SetActive(false);
     }
 }
