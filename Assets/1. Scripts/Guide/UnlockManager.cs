@@ -18,7 +18,6 @@ public class UnlockManager : MonoBehaviour
     [SerializeField] private GameObject _Wall;
     [SerializeField] private Image _FillImage;
     [SerializeField] private int amount;
-    //[SerializeField] private int stepNum;
     [ProgressBar(0, 100), SerializeField] private float currentFill;
 
     private float unlockTime = 3.0f;
@@ -100,6 +99,11 @@ public class UnlockManager : MonoBehaviour
             else if (unlockType == UnlockType.Machine)
             {
                 SetActiveObject();
+            }
+            else if (unlockType == UnlockType.Store)
+            {
+                SetActiveObject();
+                DestoryWall();
             }
         }
     }
