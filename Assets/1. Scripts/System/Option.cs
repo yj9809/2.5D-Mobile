@@ -7,6 +7,9 @@ using TMPro;
 
 public class Option : MonoBehaviour
 {
+    [SerializeField] private Button showOptionButton;
+    [SerializeField] private Button closeOptionButton;
+
     [SerializeField] private GameObject blurPanel;
 
     [SerializeField] private AudioSource musicSource;
@@ -33,6 +36,8 @@ public class Option : MonoBehaviour
         musicSource.mute = !isMusicOn;
         UpdateMusicUI();
 
+        showOptionButton.onClick.AddListener(ShowOption);
+        closeOptionButton.onClick.AddListener(CloseOption);
         musicButton.onClick.AddListener(ToggleMusic);
     }
 
@@ -55,6 +60,16 @@ public class Option : MonoBehaviour
         }
     }
 
+    private void ShowOption()
+    {
+        blurPanel.SetActive(true);
+    }
+
+    private void CloseOption()
+    {
+        blurPanel.SetActive(false);
+    }
+
     private void ToggleMusic()
     {
         isMusicOn = !isMusicOn;
@@ -72,16 +87,6 @@ public class Option : MonoBehaviour
 
         RectTransform rt = musicOnOffImage.GetComponent<RectTransform>();
         rt.anchoredPosition = isMusicOn ? new Vector2(75, 0) : new Vector2(-75, 0);
-    }
-
-    public void ShowOption()
-    {
-        blurPanel.SetActive(true);
-    }
-
-    public void CloseOption()
-    {
-        blurPanel.SetActive(false);
     }
 
     private void ShowExitWarning()
