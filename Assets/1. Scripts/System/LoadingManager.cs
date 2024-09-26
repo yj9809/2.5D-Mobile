@@ -13,6 +13,7 @@ public class LoadingManager : MonoBehaviour
     private void Start()
     {
         data = DataManager.Instance;
+        GameManager.Instance.sceneName = gameScene;
         StartCoroutine(LoadScene());
     }
 

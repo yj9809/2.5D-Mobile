@@ -651,6 +651,7 @@ MonoBehaviour:
   randomTarget: 0
   employeeType: 1
   moving: 0
+  target: {fileID: 0}
 --- !u!95 &1518481791592190909
 Animator:
   serializedVersion: 5
@@ -711,7 +712,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 3
 --- !u!1 &5439554578341965862
 GameObject:
   m_ObjectHideFlags: 0

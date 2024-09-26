@@ -48,6 +48,8 @@ public class GameManager : Singleton<GameManager>
 
     private Dictionary<IStackable, bool> targetUsage = new Dictionary<IStackable, bool>();
 
+    public string sceneName;
+
     protected override void Awake()
     {
         base.Awake();
@@ -69,12 +71,48 @@ public class GameManager : Singleton<GameManager>
 
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
     {
-        if(nms != null)
-            nms.BuildNavMesh();
-        else
+        if(sceneName == "Game")
         {
-            nms = FindObjectOfType<NavMeshSurface>();
-            nms.BuildNavMesh();
+            if (nms != null)
+                nms.BuildNavMesh();
+            else
+            {
+                nms = FindObjectOfType<NavMeshSurface>();
+                nms.BuildNavMesh();
+            }
+
+            List<GameObject> employeesToRemove = new List<GameObject>();
+            int employeeNum = 0;
+
+            foreach (var item in employee)
+            {
+                if (data.baseCost.employeeList.Contains(item.name))
+                {
+                    GameObject newEmployee;
+                    if (employeeNum != 3)
+                    {
+                        newEmployee = Instantiate(item.gameObject, Vector3.zero, Quaternion.identity);
+                    }
+                    else
+                    {
+                        Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
+                        newEmployee = Instantiate(item.gameObject);
+                        Destroy(newEmployee.GetComponent<NavMeshAgent>());
+                        newEmployee.transform.position = pos;
+                        newEmployee.GetComponent<Employee>().PackaingEmployee();
+                    }
+
+                    newEmployee.name = item.name;
+                    employeesToRemove.Add(item);
+                    p.employee.Add(newEmployee.GetComponent<Employee>());
+                    employeeNum++;
+                }
+            }
+
+            foreach (var item in employeesToRemove)
+            {
+                employee.Remove(item);
+            }
         }
 
         // 오브젝트 단계를 설정하기 위해 임시로 넣어둠

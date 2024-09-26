@@ -72,7 +72,7 @@ public class UIManager : Singleton<UIManager>
         }
         if (Input.GetKeyDown(KeyCode.F2))
         {
-            Employee employee = Instantiate(gm.employee[0], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
+            Upgrade(5);
         }
     }
    
@@ -81,6 +81,7 @@ public class UIManager : Singleton<UIManager>
         Debug.Log(baseCost);
         goldTxt.text = ChangeNumbet(p.Gold.ToString());
     }
+
     private void ZoomScreen()
     {
         gm.MainCamera.ZoomScreen();
@@ -302,6 +303,7 @@ public class UIManager : Singleton<UIManager>
                         {
                             employee = Instantiate(gm.employee[random], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
                         }
+                        employee.name = gm.employee[random].name;
                         gm.employee.RemoveAt(random);
                         p.employee.Add(employee);
 

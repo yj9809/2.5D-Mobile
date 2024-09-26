@@ -10,7 +10,7 @@ public enum PackagingType
     On,
     Off
 }
-public class BoxPackaging : MonoBehaviour, IStackCountSave
+public class BoxPackaging : MonoBehaviour, IObjectDataSave
 {
     [SerializeField] private Transform storageParent;
     [SerializeField] private Transform boxParent;
@@ -131,7 +131,7 @@ public class BoxPackaging : MonoBehaviour, IStackCountSave
         }
     }
 
-    public void StackCountSave()
+    public void ObjectDataSave()
     {
         DataManager.Instance.baseCost.packagingWaitObjCount = churuStorage.Count;
     }

@@ -10,7 +10,7 @@ public enum PlayerType
     Joystick,
     Auto
 }
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IObjectDataSave
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private GameObject obj;
@@ -67,18 +67,21 @@ public class Player : MonoBehaviour
         get { return ingredientStack; }
         set { ingredientStack = value; }
     }
+
     private Stack<GameObject> churuStack = new Stack<GameObject>();
     public Stack<GameObject> ChuruStack
     {
         get { return churuStack; }
         set { churuStack = value; }
     }
+
     private Stack<GameObject> boxStack = new Stack<GameObject>();
     public Stack<GameObject> BoxStack
     {
         get { return boxStack; }
         set { boxStack = value; }
     }
+
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -91,6 +94,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         Vibration.Init();
+        DataManager.Instance.AddObjStackCountList(this);
     }
 
     // Update is called once per frame
@@ -101,6 +105,7 @@ public class Player : MonoBehaviour
 
         OnCart();
     }
+
     private void JoystickMove()
     {
         if (joystick == null)
@@ -143,6 +148,7 @@ public class Player : MonoBehaviour
         currentPosition.y = 0;
         transform.position = currentPosition;
     }
+
     public void PlayerAutoMove(Transform pos, Action action)
     {
         if(ingredientStack.Count <=0 && boxStack.Count <=0 && churuStack.Count <= 0)
@@ -200,6 +206,7 @@ public class Player : MonoBehaviour
             Vibration.VibratePop();
         }
     }
+
     public void GiveObject(ConveyorBelt cb)
     {
         if (ingredientStack.Count > 0)
@@ -208,6 +215,7 @@ public class Player : MonoBehaviour
             Vibration.VibratePop();
         }
     }
+
     public void GiveObject(BoxStorage bs, bool isChuru)
     {
         Stack<GameObject> newStack = new Stack<GameObject>();
@@ -219,6 +227,7 @@ public class Player : MonoBehaviour
             Vibration.VibratePop();
         }
     }
+
     public void GiveObject(BoxPackaging bp)
     {
         if (churuStack.Count > 0)
@@ -227,6 +236,7 @@ public class Player : MonoBehaviour
             Vibration.VibratePop();
         }
     }
+
     public void GiveObject(Delivery dv)
     {
         if (dv.DeliveryStack.Count > 0 && ingredientStack.Count <= 0)
@@ -235,6 +245,7 @@ public class Player : MonoBehaviour
 
         }
     }
+
     public void GiveObject(Truck tr)
     {
         if (boxStack.Count > 0 && ingredientStack.Count <= 0)
@@ -245,4 +256,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ObjectDataSave()
+    {
+        foreach (var item in employee)
+        {
+            if(!baseCost.employeeList.Contains(item.name))
+                baseCost.employeeList.Add(item.name);
+        }
+    }
 }

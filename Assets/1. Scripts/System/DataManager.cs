@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public interface IStackCountSave
+public interface IObjectDataSave
 {
-    void StackCountSave();
+    void ObjectDataSave();
 }
 
 public class BaseCost
@@ -30,6 +30,7 @@ public class BaseCost
     public int playerMaxObjStackCount = 3;
     public int playerGold = 100;
     public int playerGoldPerBox = 50;
+    public List<string> employeeList = new List<string>();
 
     // Employee 데이터
     public float employeeBaseSpeed = 3;
@@ -52,7 +53,7 @@ public class DataManager : Singleton<DataManager>
 {
     public BaseCost baseCost = new BaseCost();
 
-    private List<IStackCountSave> objStackCountList = new List<IStackCountSave>();
+    private List<IObjectDataSave> objectDataList = new List<IObjectDataSave>();
 
     public string path;
     public string fileName = "SaveFile";
@@ -64,7 +65,7 @@ public class DataManager : Singleton<DataManager>
         base.Awake();
 
         path = Application.persistentDataPath + "/Save";
-        Debug.Log(path);
+        Debug.Log("저장 경로" + path);
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -92,16 +93,16 @@ public class DataManager : Singleton<DataManager>
         baseCost = JsonUtility.FromJson<BaseCost>(decode);
     }
 
-    public void AddObjStackCountList(IStackCountSave iStackCountSave)
+    public void AddObjStackCountList(IObjectDataSave iStackCountSave)
     {
-        objStackCountList.Add(iStackCountSave);
+        objectDataList.Add(iStackCountSave);
     }
 
     private void ObjStackCountSave()
     {
-        foreach (var item in objStackCountList)
+        foreach (var item in objectDataList)
         {
-            item.StackCountSave();
+            item.ObjectDataSave();
         }
     }
 

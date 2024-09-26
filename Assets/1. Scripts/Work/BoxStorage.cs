@@ -8,7 +8,7 @@ public enum BoxStorageType
     ChuruStorage,
     BoxStorage
 }
-public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
+public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
 {
     [TabGroup("Storage Transform"), SerializeField] private Transform[] boxTransform;
     [EnumToggleButtons] public BoxStorageType bsType;
@@ -85,7 +85,7 @@ public class BoxStorage : MonoBehaviour, IStackable, IStackCountSave
 
     public int GetTypeNum() => 1;
 
-    public void StackCountSave()
+    public void ObjectDataSave()
     {
         if (bsType == BoxStorageType.ChuruStorage)
             DataManager.Instance.baseCost.churuStorageStackCount = boxStack.Count;
