@@ -41,16 +41,12 @@ public class Guide : MonoBehaviour
         boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
         truck = GameObject.Find("Truck").GetComponent<Truck>();
 
-        if (baseCost.guideStep < 5)
-        {
-            truck.gameObject.SetActive(false);
-        }
         SetTargetsActive(false);
-
         CreateGuidePrefab();
-
-        // 테스트 완료
         SetWorkPoint();
+
+        if (baseCost.guideStep < 5)
+            truck.gameObject.SetActive(false);
     }
 
     void Update()
@@ -85,9 +81,9 @@ public class Guide : MonoBehaviour
         #endregion
 
         #region 타겟 위치 화살표
-        if (DataManager.Instance.baseCost.guideStep < targets.Length)
+        if (baseCost.guideStep < targets.Length)
         {
-            Transform target = targets[DataManager.Instance.baseCost.guideStep].transform;
+            Transform target = targets[baseCost.guideStep].transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
             guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
@@ -97,7 +93,7 @@ public class Guide : MonoBehaviour
 
     private void GuideStep()
     {
-        switch (DataManager.Instance.baseCost.guideStep)
+        switch (baseCost.guideStep)
         {
             case 0: _Step0(); break;
             case 1: _Step1(); break;
@@ -212,7 +208,7 @@ public class Guide : MonoBehaviour
 
     private void ToNextStep()
     {
-        DataManager.Instance.baseCost.guideStep++;
+        baseCost.guideStep++;
     }
 
     private void UpdateGuide(string text, string numberText, bool isCompleted)
@@ -234,9 +230,10 @@ public class Guide : MonoBehaviour
 
     private void SetWorkPoint()
     {
-        for (int i = 0; i <= DataManager.Instance.baseCost.guideStep; i++)
+        for (int i = 0; i <= baseCost.guideStep; i++)
         {
-            targets[i].SetActive(true);
+            if (targets[i].GetComponent<WorkPoint>())
+                targets[i].SetActive(true);
         }
     }
 

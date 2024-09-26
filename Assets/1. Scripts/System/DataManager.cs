@@ -43,6 +43,9 @@ public class BaseCost
     public int packagingBoxStorageStackCount = 0;
 
     public int guideStep = 0;
+    public bool unlockOffice = false;
+    public bool unlockMachine = false;
+    public bool unlockStore = false;
 }
 
 public class DataManager : Singleton<DataManager>

@@ -25,17 +25,42 @@ public class UnlockManager : MonoBehaviour
     private bool isTrigger = false;
     private bool isUnlocked = false;
 
-    private Player p;
+    private Player player;
+    private BaseCost baseCost;
     private void Awake()
     {
-        p = GameManager.Instance.P;
+        player = GameManager.Instance.P;
+        baseCost = DataManager.Instance.baseCost;
+
         _Object.SetActive(false);
-        //amount = 10;
+
+        DataCheck();
+    }
+
+    private void DataCheck()
+    {
+        if (baseCost.unlockOffice && unlockType == UnlockType.Office)
+        {
+            _Object.SetActive(true);
+            DestoryWall();
+            gameObject.SetActive(false);
+        }
+        else if (baseCost.unlockMachine && unlockType == UnlockType.Machine)
+        {
+            _Object.SetActive(true);
+            gameObject.SetActive(false);
+        }
+        else if (baseCost.unlockStore && unlockType == UnlockType.Store)
+        {
+            _Object.SetActive(true);
+            DestoryWall();
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isUnlocked && p.Gold >= amount)
+        if (other.CompareTag("Player") && !isUnlocked && player.Gold >= amount)
         {
             isTrigger = true;
             StartCoroutine(UnlockProcess(currentFill));
@@ -91,7 +116,6 @@ public class UnlockManager : MonoBehaviour
             .OnComplete(() =>
             {
                 GameManager.Instance.NowNavMeshBake();
-                //DataManager.Instance.StepOnOff(stepNum);
                 Vibration.VibratePop();
             }
             );
@@ -99,6 +123,26 @@ public class UnlockManager : MonoBehaviour
         isUnlocked = true;
 
         UIManager.Instance.SpendGold(amount);
+
+        UpdataObject();
+    }
+
+    private void UpdataObject()
+    {
+        if (unlockType == UnlockType.Office)
+        {
+            baseCost.unlockOffice = true;
+            DestoryWall();
+        }
+        else if (unlockType == UnlockType.Machine)
+        {
+            baseCost.unlockMachine = true;
+        }
+        else if (unlockType == UnlockType.Store)
+        {
+            baseCost.unlockStore = true;
+            DestoryWall();
+        }
     }
 
     private void UpdateUnlockUI(float progress)

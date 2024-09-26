@@ -4544,9 +4544,9 @@ Transform:
   m_Children:
   - {fileID: 455098772}
   - {fileID: 1639294788}
-  - {fileID: 1539618694}
   - {fileID: 554681700}
   - {fileID: 1185679930}
+  - {fileID: 1539618694}
   - {fileID: 29378351}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -4831,7 +4831,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Work Point (8)
+      value: Work Point (7)
       objectReference: {fileID: 0}
     - target: {fileID: 4542146906485703202, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -9660,7 +9660,7 @@ Transform:
   - {fileID: 9148980}
   - {fileID: 1008496165}
   m_Father: {fileID: 221933107}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558251383 stripped
 GameObject:
@@ -18615,7 +18615,7 @@ Transform:
   - {fileID: 671691506}
   - {fileID: 1275219007}
   m_Father: {fileID: 221933107}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1185679931
 MonoBehaviour:
@@ -18629,7 +18629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520e75eff21a81645953cec142ef2c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unlockType: 0
+  unlockType: 2
   _Object: {fileID: 2110337783}
   _Wall: {fileID: 29378350}
   _FillImage: {fileID: 516365080}
@@ -24324,7 +24324,7 @@ Transform:
   - {fileID: 708801386}
   - {fileID: 1600711572}
   m_Father: {fileID: 221933107}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1540581907
 GameObject:
