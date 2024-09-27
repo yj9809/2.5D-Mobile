@@ -43,22 +43,9 @@ public class Option : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (Time.time - pressedTime < exitDelay)
-            {
-                Application.Quit();
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#endif
-            }
-            else
-            {
-                pressedTime = Time.time;
-                ShowExitWarning();
-            }
-        }
+        ExitGame();
     }
+
 
     private void ShowOption()
     {
@@ -87,6 +74,26 @@ public class Option : MonoBehaviour
 
         RectTransform rt = musicOnOffImage.GetComponent<RectTransform>();
         rt.anchoredPosition = isMusicOn ? new Vector2(75, 0) : new Vector2(-75, 0);
+    }
+
+    private void ExitGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.time - pressedTime < exitDelay)
+            {
+                Application.Quit();
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#endif
+                DataManager.Instance.SaveData();
+            }
+            else
+            {
+                pressedTime = Time.time;
+                ShowExitWarning();
+            }
+        }
     }
 
     private void ShowExitWarning()
