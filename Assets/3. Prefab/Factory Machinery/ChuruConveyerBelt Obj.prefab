@@ -272,11 +272,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.25, y: 0.5, z: 1.1}
+  m_Extents: {x: 0.25, y: 0.5, z: 2}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: -1.3, y: 0, z: -1.72}
+  m_Center: {x: -1.3, y: 0, z: 1.3}
   m_TimeToStationary: 0.5
 --- !u!1 &4589677937529709442
 GameObject:
@@ -599,6 +599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4589677938100862332}
   - component: {fileID: 4589677938100862331}
+  - component: {fileID: 4854084035644343565}
   m_Layer: 10
   m_Name: Wall
   m_TagString: Untagged
@@ -634,6 +635,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 2, z: 0.1}
   m_Center: {x: 0, y: 0.48, z: 0}
+--- !u!208 &4854084035644343565
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4589677938100862333}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.25, y: 0.5, z: 1.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0.5}
+  m_TimeToStationary: 0.5
 --- !u!1 &8041840370629714338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3006,7 +3023,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.023
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -3016,7 +3033,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: 0.482
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -3073,6 +3090,16 @@ PrefabInstance:
       propertyPath: _boxStorage
       value: 
       objectReference: {fileID: 4589677937104404553}
+    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8365889305115178693, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: wpType
@@ -3083,7 +3110,9 @@ PrefabInstance:
       propertyPath: _boxStorage
       value: 
       objectReference: {fileID: 4589677937104404553}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2944756444144404592, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
+    - {fileID: 2944756444144404593, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!4 &1687776351100209905 stripped
 Transform:
