@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.AI;
+using Sirenix.OdinInspector;
 
 public enum CarType
 {
@@ -16,9 +17,11 @@ public class Truck : MonoBehaviour
 
     [SerializeField] private GameObject workPoint;
     [SerializeField] private TMP_Text boxCountTxt;
+    [SerializeField] private Animator Door;
 
     private NavMeshAgent na;
     private CarType ct = CarType.Go;
+    private bool doorOpen = false;
 
     [SerializeField] private Stack<GameObject> boxStack = new Stack<GameObject>();
     public Stack<GameObject> BoxStack
@@ -44,6 +47,7 @@ public class Truck : MonoBehaviour
         {
             workPoint.SetActive(false);
             boxCountTxt.gameObject.SetActive(false);
+            Door.SetBool("Open", true);
             ct = CarType.Come;
 
             // boxStack이 모두 채워졌을 때 골드획득
@@ -55,21 +59,39 @@ public class Truck : MonoBehaviour
             CheckPointMove();
         else
             ReturnCheckPointMove();
+            
 
     }
     private void CheckPointMove()
     {
+        //Door.SetBool("Open", true);
         if (!na.pathPending && na.remainingDistance <= na.stoppingDistance)
         {
             // 다음 체크포인트가 있으면 이동
-            if (currentCheckPoint < checkPoint.Length - 1)
+            if (currentCheckPoint < checkPoint.Length - 1 && currentCheckPoint != 2)
             {
                 currentCheckPoint++;
                 na.SetDestination(checkPoint[currentCheckPoint].position);
             }
+            else if(currentCheckPoint == 2)
+            {
+                if(!doorOpen)
+                {
+                    na.isStopped = true;
+                    Door.SetBool("Open", true);
+                }
+                else
+                {
+                    na.isStopped = false;
+                    currentCheckPoint++;
+                    na.SetDestination(checkPoint[currentCheckPoint].position);
+                }
+            }
             else
             {
                 // 모든 체크포인트를 지나면 이동 종료
+                Door.SetBool("Open", false);
+                doorOpen = false;
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 na.isStopped = true;
                 workPoint.SetActive(true);
@@ -79,22 +101,27 @@ public class Truck : MonoBehaviour
     }
     private void ReturnCheckPointMove()
     {
-        if (na.isStopped)
-            na.isStopped = false;
-
-        if (!na.pathPending && na.remainingDistance <= na.stoppingDistance)
+       if(doorOpen)
         {
-            // 다음 체크포인트가 있으면 이동
-            if (currentCheckPoint > 0)
+            if (na.isStopped)
+                na.isStopped = false;
+
+            if (!na.pathPending && na.remainingDistance <= na.stoppingDistance)
             {
-                currentCheckPoint--;
-                na.SetDestination(checkPoint[currentCheckPoint].position);
-            }
-            else
-            {
-                // 다시 갔다가 돌아온다.
-                boxCountTxt.text = "0 / 5";
-                ct = CarType.Go;
+                // 다음 체크포인트가 있으면 이동
+                if (currentCheckPoint > 0)
+                {
+                    Door.SetBool("Open", false);
+                    currentCheckPoint--;
+                    na.SetDestination(checkPoint[currentCheckPoint].position);
+                }
+                else
+                {
+                    // 다시 갔다가 돌아온다.
+                    doorOpen = false;
+                    boxCountTxt.text = "0 / 5";
+                    ct = CarType.Go;
+                }
             }
         }
     }
@@ -111,5 +138,9 @@ public class Truck : MonoBehaviour
         }
         boxStack.Clear();
         Debug.Log("boxStack Clear !");
+    }
+    public void DoorOpen()
+    {
+        doorOpen = true;
     }
 }

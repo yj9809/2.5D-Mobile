@@ -64,7 +64,6 @@ public class Npc : MonoBehaviour
                     if (value == 1)
                     {
                         npcType = NpcType.Store;
-                        Debug.Log(npcType);
                         na.SetDestination(spawnPoint.GetRandomPositionInPlaneBounds());
                     }
                     else
