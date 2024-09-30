@@ -54,7 +54,12 @@ public class IngredientMaker : MonoBehaviour, IStackable
         {
             if (ChuruStack.Count < maxObj)
             {
-                Utility.ObjectDrop(objSpawnPoint, objPrefab, null, ChuruStack, 0);
+                GameObject newChurub = PoolingManager.Instance.GetObj(objPrefab);
+                newChurub.transform.position = objSpawnPoint.position;
+                newChurub.name = objPrefab.name;
+
+                if (!newChurub.GetComponent<Rigidbody>())
+                    newChurub.AddComponent<Rigidbody>();
             }
             spawnTimer = 0f;
         }

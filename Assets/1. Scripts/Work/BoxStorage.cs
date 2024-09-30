@@ -6,7 +6,8 @@ using Sirenix.OdinInspector;
 public enum BoxStorageType
 {
     ChuruStorage,
-    BoxStorage
+    BoxStorage,
+    IngredientStorage
 }
 public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
 {
@@ -15,6 +16,7 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
 
     [TabGroup("Game Object"), SerializeField] private GameObject churu;
     [TabGroup("Game Object"), SerializeField] private GameObject box;
+    [TabGroup("Game Object"), SerializeField] private IngredientMaker ingredientMaker;
 
     private DataManager data;
 
@@ -43,6 +45,7 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
     {
         boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
     }
+
     private void OnCollisionStay(Collision collision)
     {
         if ((collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Churu")) && boxStack.Count < 40)
@@ -52,6 +55,14 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
                 Destroy(collision.transform.GetComponent<Rigidbody>());
 
             Utility.ObjectDrop(boxTransform[boxTransformNum], collision.gameObject, null, boxStack, 2);
+        }
+        else if(collision.gameObject.CompareTag("Ingredient"))
+        {
+            Rigidbody rd = collision.transform.GetComponent<Rigidbody>();
+            if (rd != null)
+                Destroy(collision.transform.GetComponent<Rigidbody>());
+
+            Utility.ObjectDrop(boxTransform[0], collision.gameObject, null, ingredientMaker.ChuruStack, 0);
         }
     }
 
