@@ -164,6 +164,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2986155824788519480}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &3409165698269358889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2219202976962654887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7179959, y: 0.81832224, z: 2}
+  m_Center: {x: 0, y: 0, z: 0.04229106}
 --- !u!208 &3725927667400903968
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -174,7 +187,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.7, y: 0.75, z: 0.355}
+  m_Extents: {x: 0.75, y: 0.45, z: 0.195}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -205,7 +218,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.677
+      value: 0.211
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -257,7 +270,19 @@ PrefabInstance:
       propertyPath: _ingredientMaker
       value: 
       objectReference: {fileID: 2986155824567841958}
-    m_RemovedComponents: []
+    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646081294353099358, guid: 0b31801d45fcc514aa711763b19e2747,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2944756444144404592, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
+    - {fileID: 2944756444144404593, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!4 &5809088000862875893 stripped
 Transform:
