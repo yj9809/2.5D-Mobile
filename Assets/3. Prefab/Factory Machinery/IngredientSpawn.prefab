@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567619255}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0.56}
+  m_LocalPosition: {x: 0, y: 0.6, z: 6.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce8df19406beed44b9099f5243cabf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objPrefab: {fileID: 8595344836929272648, guid: 947aa5b7c84940c47bfc0dffc766f34c,
+  objPrefab: {fileID: 8595344836929272648, guid: cbbccf249908c2a4f9a9ac35dc44b93b,
     type: 3}
   objSpawnPoint: {fileID: 1567619256}
   objSpawnTime: 3
@@ -218,7 +218,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.211
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2944756444144404594, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
@@ -258,7 +258,7 @@ PrefabInstance:
     - target: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}
       propertyPath: m_Name
-      value: Work Point (1)
+      value: Work Point (0)
       objectReference: {fileID: 0}
     - target: {fileID: 3740296066875838150, guid: 0b31801d45fcc514aa711763b19e2747,
         type: 3}

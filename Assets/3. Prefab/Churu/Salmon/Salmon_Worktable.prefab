@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4393003135565746725}
   - component: {fileID: 817630411157790080}
   - component: {fileID: 3223514994722023754}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Salmon_Worktable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
