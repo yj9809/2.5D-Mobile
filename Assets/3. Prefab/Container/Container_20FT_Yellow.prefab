@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3978287312659522626}
   - component: {fileID: 8124721544119517893}
   - component: {fileID: 9191563847309038896}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: door_4.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7772191704716326003}
   - component: {fileID: 5492324896783089849}
   - component: {fileID: 2049629804718948651}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Container_20FT_Yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 4951384091464284905}
   - component: {fileID: 1678753856940148553}
   - component: {fileID: 3097233200514291090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: door_3.010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
