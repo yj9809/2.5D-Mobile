@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 
+public enum ConveyorBeltType { Ingredient, Churu }
+
 public class ConveyorBelt : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
@@ -16,6 +18,9 @@ public class ConveyorBelt : MonoBehaviour
     [TabGroup("BreakEvent"),SerializeField] private Image eventGauge;
     [TabGroup("BreakEvent"), SerializeField] private Image displayImg;
     [TabGroup("BreakEvent"), SerializeField] private Sprite[] displayImgArray;
+    [TabGroup("BreakEvent"), SerializeField] private GameObject breakEventPoint;
+    [TabGroup("BreakEvent"), ProgressBar(0, 100), SerializeField] private float currentFill;
+    [EnumToggleButtons, SerializeField] private ConveyorBeltType conveyorBeltType;
 
     private GameManager gm;
 
@@ -25,14 +30,14 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0f;
+    private float breakDownProb = 0.5f;
     public float BreakDownProb
     {
         get { return breakDownProb; }
         set { breakDownProb = value; }
     }
     private bool isOn = true;
-    private bool isBreakDown = false;
+    [SerializeField] private bool isBreakDown = false;
     public Transform IngredientStorage
     {
         get { return ingredientStorage; }
@@ -86,8 +91,9 @@ public class ConveyorBelt : MonoBehaviour
     }
     private IEnumerator DisplayImgChange()
     {
-        while (true)
+        while (!isBreakDown && conveyorBeltType == ConveyorBeltType.Churu)
         {
+            Debug.Log("실행");
             if (displayImg.sprite != displayImgArray[0])
                 displayImg.sprite = displayImgArray[0];
             else
@@ -115,28 +121,21 @@ public class ConveyorBelt : MonoBehaviour
     {
         isBreakDown = true;
         StopAllCoroutines();
-        UIManager.Instance.ShowBreakDownEventUI();
+        breakEventPoint.SetActive(true);
         displayImg.sprite = displayImgArray[2];
     }
-    
+
     public void BreakDownSolution()
     {
-        UIManager.Instance.HideBreakDownEventUI();
         eventGauge.gameObject.SetActive(true);
-        SolutionInProgress();
     }
-    private void SolutionInProgress()
+
+    public void BreakDownSolutionClear()
     {
-        Image eventGaugeFill = eventGauge.transform.GetChild(0).GetComponent<Image>();
-        eventGaugeFill.DOFillAmount(1f, 3f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            eventGauge.gameObject.SetActive(false);
-            isBreakDown = false;
-            GameManager.Instance.P.PT = PlayerType.Joystick;
-            eventGaugeFill.fillAmount = 0;
-            StartCoroutine(PlaceObject());
-            StartCoroutine(DisplayImgChange());
-        });
+        isBreakDown = false;
+        eventGauge.gameObject.SetActive(false);
+        StartCoroutine(PlaceObject());
+        StartCoroutine(DisplayImgChange());
     }
     // 임시로 스택 관련 버그 발생 문제 해결 코드.
     // 컨베이어 벨트 옮길 때마다 스택 초기화 후 자식 오브젝트들을 다시 푸쉬하는 코드로 변경, 추후 메모리 문제나 다른 문제 발생 할 수 있을꺼 같음.

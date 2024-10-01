@@ -57,8 +57,6 @@ public class UIManager : Singleton<UIManager>
         breakDownButton.gameObject.SetActive(false);
 
         cameraZoomButton.onClick.AddListener(ZoomScreen);
-
-        breakDownButton.onClick.AddListener(BreakDownEventButton);
         SetUpgradeInfo();
         UpdateUI();
         //UpgradeTxtUpdate();
@@ -323,18 +321,6 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region BreakDownEventUI
-    public void ShowBreakDownEventUI()
-    {
-        breakDownButton.gameObject.SetActive(true);
-    }
-    public void HideBreakDownEventUI()
-    {
-        breakDownButton.gameObject.SetActive(false);
-    }
-    private void BreakDownEventButton()
-    {
-        GameManager.Instance.P.PlayerAutoMove(cb.transform.GetChild(0), cb.BreakDownSolution);
-    }
     public void SetConveyorBelt(ConveyorBelt cb)
     {
         this.cb = cb;
