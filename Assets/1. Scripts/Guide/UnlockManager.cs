@@ -53,13 +53,14 @@ public class UnlockManager : MonoBehaviour
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
+                ActiveFalseWall();
             }
             else if (baseCost.unlockContainer_2)
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
+                ActiveFalseWall();
             }
-            ActiveFalseWall();
         }
         else if (unlockType == UnlockType.Machine)
         {
