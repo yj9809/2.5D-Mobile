@@ -47,7 +47,10 @@ public class ConveyorBelt : MonoBehaviour
     private void Start()
     {
         gm = GameManager.Instance;
-        gm.cbTrans.Add(transform.parent.GetChild(0));
+
+        if(transform.parent.GetChild(0).GetComponent<WorkPoint>())
+            gm.cbTrans.Add(transform.parent.GetChild(0));
+
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
         eventGauge.gameObject.SetActive(false);

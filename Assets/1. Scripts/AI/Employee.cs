@@ -164,7 +164,6 @@ public class Employee : MonoBehaviour
         }
         else if (churuStack.Count > 0)
         {
-            Debug.Log(churuStack.Count);
             if (currentTarget != null)
             {
                 gm.AddTarget(currentTarget); // 대상이 없으면 추가
