@@ -17,6 +17,7 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform truckTrans;
 
     [SerializeField] private int randomTarget = 0;
+    [SerializeField] private int randomTargetCheck = 0;
 
     [EnumToggleButtons, SerializeField] private EmployeeType employeeType = EmployeeType.Cart;
 
@@ -220,16 +221,23 @@ public class Employee : MonoBehaviour
                 if (bestTarget != null)
                 {
                     target = bestTarget.GetTransform();
-                    randomTarget = Random.Range(0, gm.cbTrans.Count);
                     currentTarget = bestTarget;
                     moving = true;
+
+                    // 랜덤 타겟 체크를 한 번만 수행
+                    do
+                    {
+                        randomTargetCheck = Random.Range(0, gm.cbTrans.Count);
+                    } while (randomTargetCheck == randomTarget);
+
+                    randomTarget = randomTargetCheck;
 
                     if (currentTarget != null)
                     {
                         gm.AddTarget(currentTarget); // 대상이 없으면 추가
                         gm.SetTargetBeingUsed(currentTarget, false);
                     }
-                    
+
                     gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
