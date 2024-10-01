@@ -45,7 +45,10 @@ public class BaseCost
 
     public int guideStep = 0;
     public bool unlockOffice = false;
-    public bool unlockMachine = false;
+    public bool unlockContainer_1 = false;
+    public bool unlockMachine_1 = false;
+    public bool unlockContainer_2 = false;
+    public bool unlockMachine_2 = false;
     public bool unlockStore = false;
 }
 

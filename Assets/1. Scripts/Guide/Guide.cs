@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using Sirenix.OdinInspector;
 
 public class Guide : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class Guide : MonoBehaviour
     private bool isGuideActive = true;
     [SerializeField] private Button guideButton;
     [SerializeField] private GameObject guideUI;
-
     [SerializeField] private RectTransform guideLine;
+
+    [Title("Target")]
     [SerializeField] private GameObject[] targets;
 
+    [Title("Object")]
     [SerializeField] private GameObject _OfficeObject;
-    [SerializeField] private GameObject _MachineObject;
+    [SerializeField] private GameObject[] _ContainerObjects;
+    [SerializeField] private GameObject[] _MachineObjects;
     [SerializeField] private GameObject _StoreObject;
 
     private BaseCost baseCost;
@@ -53,6 +57,11 @@ public class Guide : MonoBehaviour
     {
         GuideLine();
         GuideStep();
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            UpdateGuide("Pass", "0", true);
+        }
     }
 
     private void GuideButton()
@@ -106,6 +115,9 @@ public class Guide : MonoBehaviour
             case 8: _Step8(); break;
             case 9: _Step9(); break;
             case 10: _Step10(); break;
+            case 11: _Step11(); break;
+            case 12: _Step12(); break;
+            case 13: _Step13(); break;
         }
     }
 
@@ -159,32 +171,50 @@ public class Guide : MonoBehaviour
         UpdateGuide($"박스 트럭 상차 작업\n", truck.BoxStack.Count.ToString() + " / 5"
             , truck.BoxStack.Count >= 5);
     }
-
     private void _Step7()
     {
         SetActiveTarget(7);
-        UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerGold.ToString() + " / 100"
-            , _OfficeObject.activeSelf);
+        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerGold.ToString() + " / 100"
+            , _ContainerObjects[0].activeSelf);
     }
 
     private void _Step8()
     {
         SetActiveTarget(8);
-        UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerGold.ToString() + " / 50"
-            , baseCost.baseEmployeeAddCount > 0);
+        UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerGold.ToString() + " / 100"
+            , _OfficeObject.activeSelf);
     }
 
     private void _Step9()
     {
         SetActiveTarget(9);
-        UpdateGuide($"지역 해금 : 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 300"
-            , _MachineObject.activeSelf);
+        UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerGold.ToString() + " / 100"
+            , baseCost.baseEmployeeAddCount > 0);
     }
 
     private void _Step10()
     {
         SetActiveTarget(10);
-        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerGold.ToString() + " / 500"
+        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 100"
+            , _MachineObjects[0].activeSelf);
+    }
+    private void _Step11()
+    {
+        SetActiveTarget(11);
+        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerGold.ToString() + " / 100"
+            , _ContainerObjects[1].activeSelf);
+    }
+    private void _Step12()
+    {
+        SetActiveTarget(12);
+        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 100"
+            , _MachineObjects[1].activeSelf);
+    }
+
+    private void _Step13()
+    {
+        SetActiveTarget(13);
+        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerGold.ToString() + " / 100"
             , _StoreObject.activeSelf);
     }
     #endregion

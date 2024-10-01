@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 public enum UnlockType
 {
     Office,
+    Container,
     Machine,
     Store
 }
@@ -16,6 +17,7 @@ public class UnlockManager : MonoBehaviour
     [EnumToggleButtons, SerializeField] private UnlockType unlockType;
     [SerializeField] private GameObject _Object;
     [SerializeField] private GameObject _Wall;
+    [SerializeField] private GameObject _SideWalk;
     [SerializeField] private Image _FillImage;
     [SerializeField] private int amount;
     [ProgressBar(0, 100), SerializeField] private float currentFill;
@@ -26,6 +28,7 @@ public class UnlockManager : MonoBehaviour
 
     private Player player;
     private BaseCost baseCost;
+
     private void Awake()
     {
         player = GameManager.Instance.P;
@@ -41,18 +44,40 @@ public class UnlockManager : MonoBehaviour
         if (baseCost.unlockOffice && unlockType == UnlockType.Office)
         {
             _Object.SetActive(true);
-            DestoryWall();
+            ActiveFalseObject();
             gameObject.SetActive(false);
         }
-        else if (baseCost.unlockMachine && unlockType == UnlockType.Machine)
+        else if (unlockType == UnlockType.Container)
         {
-            _Object.SetActive(true);
-            gameObject.SetActive(false);
+            if (baseCost.unlockContainer_1)
+            {
+                _Object.SetActive(true);
+                gameObject.SetActive(false);
+            }
+            else if (baseCost.unlockContainer_2)
+            {
+                _Object.SetActive(true);
+                gameObject.SetActive(false);
+            }
+            ActiveFalseWall();
+        }
+        else if (unlockType == UnlockType.Machine)
+        {
+            if (baseCost.unlockMachine_1)
+            {
+                _Object.SetActive(true);
+                gameObject.SetActive(false);
+            }
+            else if (baseCost.unlockMachine_2)
+            {
+                _Object.SetActive(true);
+                gameObject.SetActive(false);
+            }
         }
         else if (baseCost.unlockStore && unlockType == UnlockType.Store)
         {
             _Object.SetActive(true);
-            DestoryWall();
+            ActiveFalseObject();
             gameObject.SetActive(false);
         }
     }
@@ -94,7 +119,12 @@ public class UnlockManager : MonoBehaviour
             if (unlockType == UnlockType.Office)
             {
                 SetActiveObject();
-                DestoryWall();
+                ActiveFalseObject();
+            }
+            else if (unlockType == UnlockType.Container)
+            {
+                SetActiveObject();
+                ActiveFalseWall();
             }
             else if (unlockType == UnlockType.Machine)
             {
@@ -103,7 +133,7 @@ public class UnlockManager : MonoBehaviour
             else if (unlockType == UnlockType.Store)
             {
                 SetActiveObject();
-                DestoryWall();
+                ActiveFalseObject();
             }
         }
     }
@@ -136,16 +166,35 @@ public class UnlockManager : MonoBehaviour
         if (unlockType == UnlockType.Office)
         {
             baseCost.unlockOffice = true;
-            DestoryWall();
+            ActiveFalseObject();
+        }
+        else if (unlockType == UnlockType.Container)
+        {
+            if (!baseCost.unlockContainer_1 && !baseCost.unlockContainer_2)
+            {
+                baseCost.unlockContainer_1 = true;
+            }
+            else if (baseCost.unlockContainer_1 && !baseCost.unlockContainer_2)
+            {
+                baseCost.unlockContainer_2 = true;
+            }
+            ActiveFalseWall();
         }
         else if (unlockType == UnlockType.Machine)
         {
-            baseCost.unlockMachine = true;
+            if (!baseCost.unlockMachine_1 && !baseCost.unlockMachine_2)
+            {
+                baseCost.unlockMachine_1 = true;
+            }
+            else if (baseCost.unlockMachine_1 && !baseCost.unlockMachine_2)
+            {
+                baseCost.unlockMachine_2 = true;
+            }
         }
         else if (unlockType == UnlockType.Store)
         {
             baseCost.unlockStore = true;
-            DestoryWall();
+            ActiveFalseObject();
         }
     }
 
@@ -157,8 +206,17 @@ public class UnlockManager : MonoBehaviour
         }
     }
 
-    private void DestoryWall()
+    private void ActiveFalseWall()
     {
         _Wall.SetActive(false);
+    }
+    private void ActiveFalseSideWlk()
+    {
+        _SideWalk.SetActive(false);
+    }
+    private void ActiveFalseObject()
+    {
+        ActiveFalseWall();
+        ActiveFalseSideWlk();
     }
 }
