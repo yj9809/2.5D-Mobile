@@ -39,6 +39,7 @@ public class UIManager : Singleton<UIManager>
     ////여기부터 윤제영에 테스트 참조임
     private IngredientMaker im;
     private ConveyorBelt cb;
+    private Guide guide;
     ////여기까지 윤제영에 테스트 참조였음
 
     private Player p;
@@ -341,6 +342,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region GameTest UI
+    
     private void OnGUI()
     {
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -348,6 +350,8 @@ public class UIManager : Singleton<UIManager>
         // 폰트 사이즈 조정
         buttonStyle.fontSize = 25;
 
+        if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
+            guide.ToNextStep();
         if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
             AddGold(900);
         if (GUI.Button(new Rect(430, 360, 200, 100), "고장확률 높게", buttonStyle))
@@ -365,6 +369,10 @@ public class UIManager : Singleton<UIManager>
     public void SetIngredientMaker(IngredientMaker im)
     {
         this.im = im;
+    }
+    public void SetGuideStep(Guide guide)
+    {
+        this.guide = guide;
     }
     #endregion
 }

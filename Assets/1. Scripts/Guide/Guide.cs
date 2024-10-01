@@ -36,6 +36,7 @@ public class Guide : MonoBehaviour
 
     void Start()
     {
+        UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
 
@@ -57,11 +58,6 @@ public class Guide : MonoBehaviour
     {
         GuideLine();
         GuideStep();
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            UpdateGuide("Pass", "0", true);
-        }
     }
 
     private void GuideButton()
@@ -236,7 +232,7 @@ public class Guide : MonoBehaviour
         guideTextNum = curGuidePrefab.transform.Find("Guide_Text_Num (TMP)").GetComponent<TextMeshProUGUI>();
     }
 
-    private void ToNextStep()
+    public void ToNextStep()
     {
         baseCost.guideStep++;
     }
