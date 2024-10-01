@@ -137,7 +137,15 @@ public class UnlockManager : MonoBehaviour
                 ActiveFalseObject();
             }
         }
-        player.transform.position = new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z);
+
+        if (unlockType != UnlockType.Store)
+        {
+            player.transform.position = new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            player.transform.position = new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z);
+        }
     }
 
     private void SetActiveObject()

@@ -34,6 +34,8 @@ public class Guide : MonoBehaviour
     private Truck truck;
     private Player player;
 
+    private bool _guideDone = false;
+
     void Start()
     {
         UIManager.Instance.SetGuideStep(this);
@@ -56,8 +58,11 @@ public class Guide : MonoBehaviour
 
     void Update()
     {
-        GuideLine();
-        GuideStep();
+        if (!_guideDone)
+        {
+            GuideLine();
+            GuideStep();
+        }
     }
 
     private void GuideButton()
@@ -114,6 +119,7 @@ public class Guide : MonoBehaviour
             case 11: _Step11(); break;
             case 12: _Step12(); break;
             case 13: _Step13(); break;
+            case 14: _GuideDone(); break;
         }
     }
 
@@ -212,6 +218,14 @@ public class Guide : MonoBehaviour
         SetActiveTarget(13);
         UpdateGuide($"지역 해금 : 상점\n", baseCost.playerGold.ToString() + " / 100"
             , _StoreObject.activeSelf);
+    }
+
+    private void _GuideDone()
+    {
+        _guideDone = true;
+        gameObject.SetActive(false);
+        guideButton.gameObject.SetActive(false);
+        guideUI.gameObject.SetActive(false);
     }
     #endregion
 
