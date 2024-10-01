@@ -135,7 +135,6 @@ public class Employee : MonoBehaviour
     // 타겟 전환용 함수
     private void TargetSwitching()
     {
-        Debug.Log(Vector3.Distance(transform.position, target.position));
         if (target != null && (Vector3.Distance(transform.position, target.position) < 1.3f || 
             (ingredientStack.Count >= MaxObjStackCount || churuStack.Count >= MaxObjStackCount || boxStack.Count >= MaxObjStackCount)))
         {

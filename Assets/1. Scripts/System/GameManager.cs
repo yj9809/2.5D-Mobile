@@ -88,8 +88,9 @@ public class GameManager : Singleton<GameManager>
             {
                 if (data.baseCost.employeeList.Contains(item.name))
                 {
+                    Debug.Log(employeeNum);
                     GameObject newEmployee;
-                    if (employeeNum != 3)
+                    if (employeeNum != 4)
                     {
                         newEmployee = Instantiate(item.gameObject, Vector3.zero, Quaternion.identity);
                     }
@@ -103,8 +104,8 @@ public class GameManager : Singleton<GameManager>
                     }
 
                     newEmployee.name = item.name;
+                    P.employee.Add(newEmployee.GetComponent<Employee>());
                     employeesToRemove.Add(item);
-                    p.employee.Add(newEmployee.GetComponent<Employee>());
                     employeeNum++;
                 }
             }
