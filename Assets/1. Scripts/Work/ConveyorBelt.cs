@@ -30,7 +30,7 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0.5f;
+    private float breakDownProb = 0.03f;
     public float BreakDownProb
     {
         get { return breakDownProb; }
@@ -59,8 +59,6 @@ public class ConveyorBelt : MonoBehaviour
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
         eventGauge.gameObject.SetActive(false);
-        //테스트용
-        UIManager.Instance.SetConveyorBelt(this);
     }
     private void Update()
     {
@@ -77,8 +75,9 @@ public class ConveyorBelt : MonoBehaviour
     {
         while (true)
         {
+            float randomValue = Random.value;
             yield return new WaitForSeconds(placeObjectTime);
-            if(cbStack.Count > 0 && Random.value < breakDownProb)
+            if(cbStack.Count > 0 && randomValue < breakDownProb)
             {
                 BreakDownEvent();
             }
@@ -93,7 +92,6 @@ public class ConveyorBelt : MonoBehaviour
     {
         while (!isBreakDown && conveyorBeltType == ConveyorBeltType.Churu)
         {
-            Debug.Log("실행");
             if (displayImg.sprite != displayImgArray[0])
                 displayImg.sprite = displayImgArray[0];
             else

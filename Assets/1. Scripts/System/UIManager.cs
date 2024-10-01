@@ -320,13 +320,6 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region BreakDownEventUI
-    public void SetConveyorBelt(ConveyorBelt cb)
-    {
-        this.cb = cb;
-    }
-    #endregion
-
     #region GameTest UI
     
     private void OnGUI()
@@ -340,12 +333,6 @@ public class UIManager : Singleton<UIManager>
             guide.ToNextStep();
         if (GUI.Button(new Rect(430, 250, 200, 100), "µ∑", buttonStyle))
             AddGold(900);
-        if (GUI.Button(new Rect(430, 360, 200, 100), "∞Ì¿Â»Æ∑¸ ≥Ù∞‘", buttonStyle))
-            cb.BreakDownProb += 0.01f;
-        if (GUI.Button(new Rect(430, 470, 200, 100), "∞Ì¿Â»Æ∑¸ ≥∑∞‘", buttonStyle))
-            cb.BreakDownProb -= 0.01f;
-        string def = $"∞Ì¿Â»Æ∑¸:{cb.BreakDownProb * 100}%";
-        def = GUI.TextArea(new Rect(430, 580, 200, 100), def, buttonStyle);
 
         if (GUI.Button(new Rect(650, 250, 200, 100), "ºº¿Ã∫Í", buttonStyle))
             DataManager.Instance.SaveData();
