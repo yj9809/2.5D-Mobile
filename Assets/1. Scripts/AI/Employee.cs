@@ -33,10 +33,10 @@ public class Employee : MonoBehaviour
     Vector3 previousPosition;
     Vector3 currentPosition;
 
-    public int MaxObjStackCount
+    public float MaxObjStackCount
     {
-        get { return baseCost.employeeBaseMaxObjStackCount; }
-        set { baseCost.employeeBaseMaxObjStackCount = value; }
+        get { return baseCost.employeeData["employeeMaxObjStackCount"]; }
+        set { baseCost.employeeData["employeeMaxObjStackCount"] = value; }
     }
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();
@@ -124,12 +124,12 @@ public class Employee : MonoBehaviour
     {
         if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
-            na.speed = baseCost.employeeBaseSpeed;
+            na.speed = baseCost.employeeData["employeeSpeed"];
             cart.transform.DOScale(0, 0.2f);
         }
         else
         {
-            na.speed = baseCost.employeeBaseCartSpeed;
+            na.speed = baseCost.employeeData["employeeCartSpeed"];
             cart.transform.DOScale(Vector3.one, 0.2f);
         }
     }
@@ -156,6 +156,7 @@ public class Employee : MonoBehaviour
         {
             if (currentTarget != null)
             {
+                StopCoroutine(CheckStack());
                 gm.AddTarget(currentTarget); // 대상이 없으면 추가
                 gm.SetTargetBeingUsed(currentTarget, false);
             }
@@ -167,6 +168,7 @@ public class Employee : MonoBehaviour
         {
             if (currentTarget != null)
             {
+                StopCoroutine(CheckStack());
                 gm.AddTarget(currentTarget); // 대상이 없으면 추가
                 gm.SetTargetBeingUsed(currentTarget, false);
             }
@@ -178,6 +180,7 @@ public class Employee : MonoBehaviour
         {
             if (currentTarget != null)
             {
+                StopCoroutine(CheckStack());
                 gm.AddTarget(currentTarget); // 대상이 없으면 추가
                 gm.SetTargetBeingUsed(currentTarget, false);
             }
@@ -196,8 +199,6 @@ public class Employee : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(3f);
-
             if (!moving)
             {
                 IStackable bestTarget = null;
@@ -225,12 +226,13 @@ public class Employee : MonoBehaviour
                     moving = true;
 
                     // 랜덤 타겟 체크를 한 번만 수행
-                    do
-                    {
-                        randomTargetCheck = Random.Range(0, gm.cbTrans.Count);
-                    } while (randomTargetCheck == randomTarget);
+                    //do
+                    //{
+                    //    Debug.Log("실행");
+                    //    randomTargetCheck = Random.Range(0, gm.cbTrans.Count);
+                    //} while (randomTargetCheck == randomTarget);
 
-                    randomTarget = randomTargetCheck;
+                    //randomTarget = randomTargetCheck;
 
                     if (currentTarget != null)
                     {
@@ -241,6 +243,7 @@ public class Employee : MonoBehaviour
                     gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
+            yield return new WaitForSeconds(1.5f);
         }
     }
     // 재료 받아오는 함수

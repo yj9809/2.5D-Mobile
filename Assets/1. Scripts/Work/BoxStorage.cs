@@ -70,7 +70,7 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
     {
         if (bsType == BoxStorageType.ChuruStorage)
         {
-            for (int i = 0; i < data.baseCost.churuStorageStackCount; i++)
+            for (int i = 0; i < data.baseCost.objectData["churuStorageStackCount"]; i++)
             {
                 boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
                 GameObject churu = Instantiate(this.churu, transform);
@@ -80,7 +80,7 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
         }
         else
         {
-            for (int i = 0; i < data.baseCost.packagingBoxStorageStackCount; i++)
+            for (int i = 0; i < data.baseCost.objectData["packagingBoxStorageStackCount"]; i++)
             {
                 boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
                 GameObject box = Instantiate(this.box, transform);
@@ -99,8 +99,8 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
     public void ObjectDataSave()
     {
         if (bsType == BoxStorageType.ChuruStorage)
-            DataManager.Instance.baseCost.churuStorageStackCount = boxStack.Count;
+            DataManager.Instance.baseCost.objectData["churuStorageStackCount"]  = boxStack.Count;
         else
-            DataManager.Instance.baseCost.packagingBoxStorageStackCount = boxStack.Count;
+            DataManager.Instance.baseCost.objectData["packagingBoxStorageStackCount"] = boxStack.Count;
     }
 }

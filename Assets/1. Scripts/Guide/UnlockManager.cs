@@ -41,7 +41,7 @@ public class UnlockManager : MonoBehaviour
 
     private void DataCheck()
     {
-        if (baseCost.unlockOffice && unlockType == UnlockType.Office)
+        if (baseCost.gameProgressBool["unlockOffice"] && unlockType == UnlockType.Office)
         {
             _Object.SetActive(true);
             ActiveFalseObject();
@@ -49,13 +49,13 @@ public class UnlockManager : MonoBehaviour
         }
         else if (unlockType == UnlockType.Container)
         {
-            if (baseCost.unlockContainer_1)
+            if (baseCost.gameProgressBool["unlockContainer_1"])
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
                 ActiveFalseWall();
             }
-            else if (baseCost.unlockContainer_2)
+            else if (baseCost.gameProgressBool["unlockContainer_2"])
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
@@ -64,18 +64,18 @@ public class UnlockManager : MonoBehaviour
         }
         else if (unlockType == UnlockType.Machine)
         {
-            if (baseCost.unlockMachine_1)
+            if (baseCost.gameProgressBool["unlockMachine_1"])
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
             }
-            else if (baseCost.unlockMachine_2)
+            else if (baseCost.gameProgressBool["unlockMachine_2"])
             {
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
             }
         }
-        else if (baseCost.unlockStore && unlockType == UnlockType.Store)
+        else if (baseCost.gameProgressBool["unlockStore"] && unlockType == UnlockType.Store)
         {
             _Object.SetActive(true);
             ActiveFalseObject();
@@ -175,35 +175,35 @@ public class UnlockManager : MonoBehaviour
     {
         if (unlockType == UnlockType.Office)
         {
-            baseCost.unlockOffice = true;
+            baseCost.gameProgressBool["unlockOffice"] = true;
             ActiveFalseObject();
         }
         else if (unlockType == UnlockType.Container)
         {
-            if (!baseCost.unlockContainer_1 && !baseCost.unlockContainer_2)
+            if (!baseCost.gameProgressBool["unlockContainer_1"] && !baseCost.gameProgressBool["unlockContainer_2"])
             {
-                baseCost.unlockContainer_1 = true;
+                baseCost.gameProgressBool["unlockContainer_1"] = true;
             }
-            else if (baseCost.unlockContainer_1 && !baseCost.unlockContainer_2)
+            else if (baseCost.gameProgressBool["unlockContainer_1"] && !baseCost.gameProgressBool["unlockContainer_2"])
             {
-                baseCost.unlockContainer_2 = true;
+                baseCost.gameProgressBool["unlockContainer_2"] = true;
             }
             ActiveFalseWall();
         }
         else if (unlockType == UnlockType.Machine)
         {
-            if (!baseCost.unlockMachine_1 && !baseCost.unlockMachine_2)
+            if (!baseCost.gameProgressBool["unlockMachine_1"] && !baseCost.gameProgressBool["unlockMachine_2"])
             {
-                baseCost.unlockMachine_1 = true;
+                baseCost.gameProgressBool["unlockMachine_1"] = true;
             }
-            else if (baseCost.unlockMachine_1 && !baseCost.unlockMachine_2)
+            else if (baseCost.gameProgressBool["unlockMachine_1"] && !baseCost.gameProgressBool["unlockMachine_2"])
             {
-                baseCost.unlockMachine_2 = true;
+                baseCost.gameProgressBool["unlockMachine_2"] = true;
             }
         }
         else if (unlockType == UnlockType.Store)
         {
-            baseCost.unlockStore = true;
+            baseCost.gameProgressBool["unlockStore"] = true;
             ActiveFalseObject();
         }
     }

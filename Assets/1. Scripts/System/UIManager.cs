@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using BackEnd;
 
 [System.Serializable]
 public class UpgradeInfo
@@ -33,6 +34,8 @@ public class UIManager : Singleton<UIManager>
     [TabGroup("Upgrade"), SerializeField] private Sprite[] UpgradeStepSprite;
     [TabGroup("Upgrade"), SerializeField] private Image[] UpgradeStepImage;
     [TabGroup("Upgrade"), SerializeField] private TMP_Text[] UpgradeCostText;
+
+    [SerializeField] private Image image;
 
     [SerializeField] private Button breakDownButton;
 
@@ -153,15 +156,15 @@ public class UIManager : Singleton<UIManager>
     // 업그레이드 데이터 항목 넣어주는 함수
     private void SetUpgradeInfo()
     {
-        int maxCount = baseCost.baseUpgradeMaxCount;
+        int maxCount = baseCost.upgradeCosts["baseUpgradeMaxCount"] ;
         upgradeInfos = new List<UpgradeInfo>
         {
-            new UpgradeInfo(() => baseCost.baseSpeedUpgradeCount, () => baseCost.baseSpeedUpgradeCost, maxCount ),
-            new UpgradeInfo(() => baseCost.baseMaxObjStackCountUpgradeCount, () => baseCost.baseMaxObjStackCountUpgradeCost, maxCount),
-            new UpgradeInfo(() => baseCost.baseGoldPerBoxUpgradeCount, () => baseCost.baseGoldPerBoxUpgradeCost, maxCount),
-            new UpgradeInfo(() => baseCost.baseEmployeeSpeedUpgradeCount, () => baseCost.baseEmployeeSpeedUpgradeCost, maxCount),
-            new UpgradeInfo(() => baseCost.baseEmployeeMaxObjStackCountUpgradeCount, () => baseCost.baseEmployeeMaxObjStackCountUpgradeCost, maxCount),
-            new UpgradeInfo(() => baseCost.baseEmployeeAddCount, () => baseCost.baseEmployeeAddCost, maxCount)
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseSpeedUpgradeCount"] , () => baseCost.upgradeCosts["baseSpeedUpgradeCost"] , maxCount ),
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCount"] , () => baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCost"] , maxCount),
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] , () => baseCost.upgradeCosts["baseGoldPerBoxUpgradeCost"] , maxCount),
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] , () => baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"] , maxCount),
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCount"] , () => baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCost"] , maxCount),
+            new UpgradeInfo(() => baseCost.upgradeCosts["baseEmployeeAddCount"] , () => baseCost.upgradeCosts["baseEmployeeAddCost"] , maxCount)
         };
     }
     // 업그레이드 표시 항목 업데이트 함수
@@ -197,19 +200,19 @@ public class UIManager : Singleton<UIManager>
     public void Upgrade(int num)
     {
         int cost = 0;
-        int maxCount = baseCost.baseUpgradeMaxCount;
+        int maxCount = baseCost.upgradeCosts["baseUpgradeMaxCount"] ;
         switch (num)
         {
             case 0:
-                cost = baseCost.baseSpeedUpgradeCost;
-                if (baseCost.baseSpeedUpgradeCount < maxCount)
+                cost = baseCost.upgradeCosts["baseSpeedUpgradeCost"] ;
+                if (baseCost.upgradeCosts["baseSpeedUpgradeCount"]  < maxCount)
                 {
                     if (SpendGold(cost))
                     {
                         p.BaseSpeed += 1;
                         p.CartSpeed += 1;
-                        baseCost.baseSpeedUpgradeCount++;
-                        baseCost.baseSpeedUpgradeCost *= 2;
+                        baseCost.upgradeCosts["baseSpeedUpgradeCount"] ++;
+                        baseCost.upgradeCosts["baseSpeedUpgradeCost"]  *= 2;
                         UpgradeTextUpdate(0);
                     }
                 }
@@ -218,14 +221,14 @@ public class UIManager : Singleton<UIManager>
                 break;
 
             case 1:
-                cost = baseCost.baseMaxObjStackCountUpgradeCost;
-                if (baseCost.baseMaxObjStackCountUpgradeCount < maxCount)
+                cost = baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCost"] ;
+                if (baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCount"]  < maxCount)
                 {
                     if (SpendGold(cost))
                     {
                         p.MaxObjStackCount += 1;
-                        baseCost.baseMaxObjStackCountUpgradeCount++;
-                        baseCost.baseMaxObjStackCountUpgradeCost *= 2;
+                        baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCount"] ++;
+                        baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCost"]  *= 2;
                         UpgradeTextUpdate(1);
                     }
                 }
@@ -234,14 +237,14 @@ public class UIManager : Singleton<UIManager>
                 break;
 
             case 2:
-                cost = baseCost.baseGoldPerBoxUpgradeCost;
-                if (baseCost.baseGoldPerBoxUpgradeCount < maxCount)
+                cost = baseCost.upgradeCosts["baseGoldPerBoxUpgradeCost"] ;
+                if (baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"]  < maxCount)
                 {
                     if (SpendGold(cost))
                     {
                         p.GoldPerBox += 100;
-                        baseCost.baseGoldPerBoxUpgradeCount++;
-                        baseCost.baseGoldPerBoxUpgradeCost *= 2;
+                        baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] ++;
+                        baseCost.upgradeCosts["baseGoldPerBoxUpgradeCost"]  *= 2;
                         UpgradeTextUpdate(2);
                     }
                 }
@@ -250,15 +253,15 @@ public class UIManager : Singleton<UIManager>
                 break;
 
             case 3:
-                cost = baseCost.baseEmployeeSpeedUpgradeCost;
-                if (baseCost.baseEmployeeSpeedUpgradeCount < maxCount)
+                cost = baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"] ;
+                if (baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"]  < maxCount)
                 {
                     if (SpendGold(cost))
                     {
-                        baseCost.employeeBaseSpeed += 0.5f;
-                        baseCost.employeeBaseCartSpeed += 0.5f;
-                        baseCost.baseEmployeeSpeedUpgradeCost *= 2;
-                        baseCost.baseEmployeeSpeedUpgradeCount++;
+                        baseCost.employeeData["employeeBaseSpeed"]  += 0.5f;
+                        baseCost.employeeData["employeeBaseCartSpeed"]  += 0.5f;
+                        baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"]  *= 2;
+                        baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] ++;
                         UpgradeTextUpdate(3);
                     }
                 }
@@ -267,14 +270,14 @@ public class UIManager : Singleton<UIManager>
                 break;
 
             case 4:
-                cost = baseCost.baseEmployeeMaxObjStackCountUpgradeCost;
-                if (baseCost.baseEmployeeMaxObjStackCountUpgradeCount < maxCount)
+                cost = baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCost"] ;
+                if (baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCount"]  < maxCount)
                 {
                     if (SpendGold(cost))
                     {
-                        baseCost.employeeBaseMaxObjStackCount += 1;
-                        baseCost.baseEmployeeMaxObjStackCountUpgradeCost *= 2;
-                        baseCost.baseEmployeeMaxObjStackCountUpgradeCount++;
+                        baseCost.upgradeCosts["employeeBaseMaxObjStackCount"] += 1;
+                        baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCost"]  *= 2;
+                        baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCount"] ++;
                         UpgradeTextUpdate(4);
                     }
                 }
@@ -283,14 +286,14 @@ public class UIManager : Singleton<UIManager>
                 break;
 
             case 5:
-                cost = baseCost.baseEmployeeAddCost;
-                if (baseCost.baseEmployeeAddCount < maxCount)
+                cost = baseCost.upgradeCosts["baseEmployeeAddCost"];
+                if (baseCost.upgradeCosts["baseEmployeeAddCount"] < maxCount)
                 {
                     if (SpendGold(cost))
                     {
                         int random = Random.Range(0, gm.employee.Count);
                         Employee employee;
-                        if (baseCost.baseEmployeeAddCount == 4)
+                        if (baseCost.upgradeCosts["baseEmployeeAddCount"] == 4)
                         {
                             Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
                             employee = Instantiate(gm.employee[random]).GetComponent<Employee>();
@@ -307,8 +310,8 @@ public class UIManager : Singleton<UIManager>
                         p.employee.Add(employee);
 
 
-                        baseCost.baseEmployeeAddCost *= 2;
-                        baseCost.baseEmployeeAddCount++;
+                        baseCost.upgradeCosts["baseEmployeeAddCost"] *= 2;
+                        baseCost.upgradeCosts["baseEmployeeAddCount"]++;
                         UpgradeTextUpdate(5);
                     }
                 }
@@ -335,9 +338,12 @@ public class UIManager : Singleton<UIManager>
             AddGold(900);
 
         if (GUI.Button(new Rect(650, 250, 200, 100), "세이브", buttonStyle))
-            DataManager.Instance.SaveData();
+            DataManager.Instance.GameDataUpdate();
         if (GUI.Button(new Rect(650, 360, 200, 100), "데이터 클리어", buttonStyle))
-            DataManager.Instance.DataClear();
+        {
+            Backend.BMember.DeleteGuestInfo();
+        }
+            
     }
     public void SetIngredientMaker(IngredientMaker im)
     {

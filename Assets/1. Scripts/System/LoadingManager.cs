@@ -16,13 +16,17 @@ public class LoadingManager : MonoBehaviour
     {
         data = DataManager.Instance;
         GameManager.Instance.sceneName = gameScene;
-        StartCoroutine(LoadScene());
+        
     }
 
+    public void StartCoroutine()
+    {
+        StartCoroutine(LoadScene());
+    }
     private IEnumerator LoadScene()
     {
-        if (data.CheckFile())
-            data.LoadData();
+        //if (data.CheckFile())
+        //    data.LoadData();
 
         AsyncOperation gameLoad = SceneManager.LoadSceneAsync(gameScene);
         gameLoad.allowSceneActivation = false;

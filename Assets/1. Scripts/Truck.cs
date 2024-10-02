@@ -51,7 +51,7 @@ public class Truck : MonoBehaviour
             ct = CarType.Come;
 
             // boxStackÀÌ ¸ðµÎ Ã¤¿öÁ³À» ¶§ °ñµåÈ¹µæ
-            UIManager.Instance.AddGold(boxStack.Count * GameManager.Instance.P.GoldPerBox);
+            UIManager.Instance.AddGold(boxStack.Count * (int)GameManager.Instance.P.GoldPerBox);
             ClearBoxStack();
         }
 

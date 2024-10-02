@@ -9,17 +9,21 @@ public enum ConveyorBeltType { Ingredient, Churu }
 
 public class ConveyorBelt : MonoBehaviour
 {
-    [SerializeField] private float speed = 3f;
-    [SerializeField] private float placeObjectTime = 3f;
-    [SerializeField] private Vector3 direction = Vector3.forward;
+    [TabGroup("Setting"), SerializeField] private float speed = 3f;
+    [TabGroup("Setting"), SerializeField] private float placeObjectTime = 3f;
+    [TabGroup("Setting"), SerializeField] private Vector3 direction = Vector3.forward;
+
     [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     [TabGroup("Transform"), SerializeField] private Transform onBelt;
+
     [TabGroup("GameObj"), SerializeField] private BoxStorage boxStorage;
+
     [TabGroup("BreakEvent"),SerializeField] private Image eventGauge;
     [TabGroup("BreakEvent"), SerializeField] private Image displayImg;
     [TabGroup("BreakEvent"), SerializeField] private Sprite[] displayImgArray;
     [TabGroup("BreakEvent"), SerializeField] private GameObject breakEventPoint;
     [TabGroup("BreakEvent"), ProgressBar(0, 100), SerializeField] private float currentFill;
+
     [EnumToggleButtons, SerializeField] private ConveyorBeltType conveyorBeltType;
 
     private GameManager gm;
@@ -30,14 +34,18 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0.05f;
+    private float breakDownProb = 0.03f;
     public float BreakDownProb
     {
         get { return breakDownProb; }
         set { breakDownProb = value; }
     }
+
+    private float nonBreakDownTime = 300f;
+
     private bool isOn = true;
-    [SerializeField] private bool isBreakDown = false;
+    private bool isBreakDown = false;
+
     public Transform IngredientStorage
     {
         get { return ingredientStorage; }
@@ -70,6 +78,9 @@ public class ConveyorBelt : MonoBehaviour
         {
             isOn = true;
         }
+
+        if (nonBreakDownTime >= 0)
+            nonBreakDownTime -= Time.deltaTime;
     }
     private IEnumerator PlaceObject()
     {
@@ -77,7 +88,7 @@ public class ConveyorBelt : MonoBehaviour
         {
             float randomValue = Random.value;
             yield return new WaitForSeconds(placeObjectTime);
-            if(cbStack.Count > 0 && randomValue < breakDownProb)
+            if(cbStack.Count > 0 && randomValue < breakDownProb && nonBreakDownTime <=0)
             {
                 BreakDownEvent();
             }
@@ -132,9 +143,11 @@ public class ConveyorBelt : MonoBehaviour
     {
         isBreakDown = false;
         eventGauge.gameObject.SetActive(false);
+        nonBreakDownTime = 300f;
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
     }
+
     // 임시로 스택 관련 버그 발생 문제 해결 코드.
     // 컨베이어 벨트 옮길 때마다 스택 초기화 후 자식 오브젝트들을 다시 푸쉬하는 코드로 변경, 추후 메모리 문제나 다른 문제 발생 할 수 있을꺼 같음.
     // 추후 좋은 방법 생기면 다시 수정 예정.

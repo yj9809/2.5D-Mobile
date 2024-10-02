@@ -35,30 +35,30 @@ public class Player : MonoBehaviour, IObjectDataSave
     private Animator animator;
     private Camera mainCamera;
     private BaseCost baseCost;
-    public int MaxObjStackCount 
+    public float MaxObjStackCount 
     {
-        get { return baseCost.playerMaxObjStackCount; }
-        set { baseCost.playerMaxObjStackCount = value; }
+        get { return baseCost.playerData["maxObjStackCount"]; }
+        set { baseCost.playerData["maxObjStackCount"] = value; }
     }
     public float BaseSpeed
     {
-        get { return baseCost.playerBaseSpeed; }
-        set { baseCost.playerBaseSpeed = value; }
+        get { return baseCost.playerData["baseSpeed"]; }
+        set { baseCost.playerData["baseSpeed"] = value; }
     }
     public float CartSpeed
     {
-        get { return baseCost.playerBaseCartSpeed; }
-        set { baseCost.playerBaseCartSpeed = value; }
+        get { return baseCost.playerData["baseCartSpeed"]; }
+        set { baseCost.playerData["baseCartSpeed"] = value; }
     }
-    public int Gold
+    public float Gold
     {
-        get { return baseCost.playerGold; }
-        set { baseCost.playerGold = value; }
+        get { return baseCost.playerData["gold"]; }
+        set { baseCost.playerData["gold"] = value; }
     }
-    public int GoldPerBox
+    public float GoldPerBox
     {
-        get { return baseCost.playerGoldPerBox; }
-        set { baseCost.playerGoldPerBox = value; }
+        get { return baseCost.playerData["goldPerBox"]; }
+        set { baseCost.playerData["goldPerBox"] = value; }
     }
 
     private Stack<GameObject> ingredientStack = new Stack<GameObject>();

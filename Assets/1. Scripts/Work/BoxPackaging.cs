@@ -54,7 +54,7 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
 
     private void SetSaveStackObj()
     {
-        for (int i = 0; i < data.baseCost.packagingWaitObjCount; i++)
+        for (int i = 0; i < data.baseCost.objectData["packagingWaitObjCount"]; i++)
         {
             GameObject newChuru = Instantiate(churu, storageParent);
             churuStorage.Push(newChuru);
@@ -133,6 +133,6 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
 
     public void ObjectDataSave()
     {
-        DataManager.Instance.baseCost.packagingWaitObjCount = churuStorage.Count;
+        DataManager.Instance.baseCost.objectData["packagingWaitObjCount"] = churuStorage.Count;
     }
 }

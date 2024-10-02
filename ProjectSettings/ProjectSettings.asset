@@ -913,7 +913,12 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Purchasing: 0
+    UDP: 0
     UNet: 1
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -928,11 +933,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 8026bc50-205f-47dc-9893-1c8802a3bda8
+  cloudProjectId: c935d592-bf94-4208-a02d-02db1a708dd5
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: My project (1) 2024-08-05_12-04-32
-  organizationId: sbsgbd2
+  projectName: Churub Factory
+  organizationId: mryeen44
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

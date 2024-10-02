@@ -176,47 +176,47 @@ public class Guide : MonoBehaviour
     private void _Step7()
     {
         SetActiveTarget(7);
-        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _ContainerObjects[0].activeSelf);
     }
 
     private void _Step8()
     {
         SetActiveTarget(8);
-        UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _OfficeObject.activeSelf);
     }
 
     private void _Step9()
     {
         SetActiveTarget(9);
-        UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerGold.ToString() + " / 100"
-            , baseCost.baseEmployeeAddCount > 0);
+        UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerData["gold"].ToString() + " / 100"
+            , baseCost.upgradeCosts["baseEmployeeAddCount"] > 0);
     }
 
     private void _Step10()
     {
         SetActiveTarget(10);
-        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _MachineObjects[0].activeSelf);
     }
     private void _Step11()
     {
         SetActiveTarget(11);
-        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _ContainerObjects[1].activeSelf);
     }
     private void _Step12()
     {
         SetActiveTarget(12);
-        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _MachineObjects[1].activeSelf);
     }
 
     private void _Step13()
     {
         SetActiveTarget(13);
-        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerGold.ToString() + " / 100"
+        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _StoreObject.activeSelf);
     }
 

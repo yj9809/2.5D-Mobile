@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using BackEnd;
 
 public interface IObjectDataSave
 {
@@ -10,51 +11,100 @@ public interface IObjectDataSave
 
 public class BaseCost
 {
-    public int baseSpeedUpgradeCost = 100;
-    public int baseMaxObjStackCountUpgradeCost = 100;
-    public int baseGoldPerBoxUpgradeCost = 100;
-    public int baseSpeedUpgradeCount = 0;
-    public int baseMaxObjStackCountUpgradeCount = 0;
-    public int baseGoldPerBoxUpgradeCount = 0;
-    public int baseEmployeeSpeedUpgradeCost = 100;
-    public int baseEmployeeMaxObjStackCountUpgradeCost = 100;
-    public int baseEmployeeAddCost = 100;
-    public int baseEmployeeSpeedUpgradeCount = 0;
-    public int baseEmployeeMaxObjStackCountUpgradeCount = 0;
-    public int baseEmployeeAddCount = 0;
-    public int baseUpgradeMaxCount = 5;
+    public Dictionary<string, int> upgradeCosts = new Dictionary<string, int>
+    {
+        { "baseSpeedUpgradeCost", 100 },
+        { "baseMaxObjStackCountUpgradeCost", 100 },
+        { "baseGoldPerBoxUpgradeCost", 100 },
+        { "baseEmployeeSpeedUpgradeCost", 100 },
+        { "baseEmployeeMaxObjStackCountUpgradeCost", 100 },
+        { "baseEmployeeAddCost", 100 },
+        { "baseUpgradeMaxCount", 5 },
+        { "baseSpeedUpgradeCount", 0 },
+        { "baseMaxObjStackCountUpgradeCount", 0 },
+        { "baseGoldPerBoxUpgradeCount", 0 },
+        { "baseEmployeeSpeedUpgradeCount", 0 },
+        { "baseEmployeeMaxObjStackCountUpgradeCount", 0 },
+        { "baseEmployeeAddCount", 0 }
+    };
+
+    //public int baseSpeedUpgradeCost = 100;
+    //public int baseMaxObjStackCountUpgradeCost = 100;
+    //public int baseGoldPerBoxUpgradeCost = 100;
+    //public int baseSpeedUpgradeCount = 0;
+    //public int baseMaxObjStackCountUpgradeCount = 0;
+    //public int baseGoldPerBoxUpgradeCount = 0;
+    //public int baseEmployeeSpeedUpgradeCost = 100;
+    //public int baseEmployeeMaxObjStackCountUpgradeCost = 100;
+    //public int baseEmployeeAddCost = 100;
+    //public int baseEmployeeSpeedUpgradeCount = 0;
+    //public int baseEmployeeMaxObjStackCountUpgradeCount = 0;
+    //public int baseEmployeeAddCount = 0;
+    //public int baseUpgradeMaxCount = 5;
 
     // Player 데이터
-    public float playerBaseSpeed = 5;
-    public float playerBaseCartSpeed = 2.5f;
-    public int playerMaxObjStackCount = 3;
-    public int playerGold = 100;
-    public int playerGoldPerBox = 50;
+    public Dictionary<string, float> playerData = new Dictionary<string, float>
+    {   
+        { "baseSpeed", 5 },
+        { "baseCartSpeed", 2.5f },
+        { "maxObjStackCount", 3 },
+        { "gold", 100},
+        { "goldPerBox", 50 }
+    };
+    //public float playerBaseSpeed = 5;
+    //public float playerBaseCartSpeed = 2.5f;
+    //public int playerMaxObjStackCount = 3;
+    //public int playerGold = 100;
+    //public int playerGoldPerBox = 50;
+
     public List<string> employeeList = new List<string>();
 
     // Employee 데이터
-    public float employeeBaseSpeed = 3;
-    public float employeeBaseCartSpeed = 1.5f;
-    public int employeeBaseMaxObjStackCount = 3;
+    public Dictionary<string, float> employeeData = new Dictionary<string, float>
+    {
+        { "employeeSpeed", 3 },
+        { "employeeCartSpeed", 1.5f },
+        { "employeeMaxObjStackCount", 3 }
+    };
+    //public float employeeBaseSpeed = 3;
+    //public float employeeBaseCartSpeed = 1.5f;
+    //public int employeeBaseMaxObjStackCount = 3;
 
     // 오브젝트 데이터
-    public int conveyorBeltBoxStorageStackCount = 0;
-    public int churuStorageStackCount = 0;
-    public int packagingWaitObjCount = 0;
-    public int packagingBoxStorageStackCount = 0;
+    public Dictionary<string, int> objectData = new Dictionary<string, int>
+    {
+        { "conveyorBeltBoxStorageStackCount", 0 },
+        { "churuStorageStackCount", 0 },
+        { "packagingWaitObjCount", 0 },
+        { "packagingBoxStorageStackCount", 0 }
+    };
+    //public int conveyorBeltBoxStorageStackCount = 0;
+    //public int churuStorageStackCount = 0;
+    //public int packagingWaitObjCount = 0;
+    //public int packagingBoxStorageStackCount = 0;
 
+    public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
+    {
+        { "unlockOffice", false },
+        { "unlockContainer_1", false },
+        { "unlockMachine_1", false },
+        { "unlockContainer_2", false },
+        { "unlockMachine_2", false },
+        { "unlockStore", false }
+    };
     public int guideStep = 0;
-    public bool unlockOffice = false;
-    public bool unlockContainer_1 = false;
-    public bool unlockMachine_1 = false;
-    public bool unlockContainer_2 = false;
-    public bool unlockMachine_2 = false;
-    public bool unlockStore = false;
+
+    //public bool unlockOffice = false;
+    //public bool unlockContainer_1 = false;
+    //public bool unlockMachine_1 = false;
+    //public bool unlockContainer_2 = false;
+    //public bool unlockMachine_2 = false;
+    //public bool unlockStore = false;
 }
 
 public class DataManager : Singleton<DataManager>
 {
-    public BaseCost baseCost = new BaseCost();
+    public BaseCost baseCost;
 
     private List<IObjectDataSave> objectDataList = new List<IObjectDataSave>();
 
@@ -62,19 +112,21 @@ public class DataManager : Singleton<DataManager>
     public string fileName = "SaveFile";
     public string filePath;
 
+    private string gameDataRowInDate = string.Empty;
+
     // Start is called before the first frame update
     protected override void Awake()
     {
         base.Awake();
 
-        path = Application.persistentDataPath + "/Save";
-        Debug.Log("저장 경로" + path);
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
+        //path = Application.persistentDataPath + "/Save";
+        //Debug.Log("저장 경로" + path);
+        //if (!Directory.Exists(path))
+        //{
+        //    Directory.CreateDirectory(path);
+        //}
 
-        filePath = Path.Combine(path, fileName);
+        //filePath = Path.Combine(path, fileName);
 
     }
 
@@ -118,6 +170,142 @@ public class DataManager : Singleton<DataManager>
     public bool CheckFile()
     {
         return File.Exists(filePath);
+    }
+    public void GameDataInsert()
+    {
+        if (baseCost == null)
+            baseCost = new BaseCost();
+
+        Param param = new Param();
+        param.Add("upgradeCosts", baseCost.upgradeCosts);
+        param.Add("playerData", baseCost.playerData);
+        param.Add("employeeList", baseCost.employeeList);
+        param.Add("employeeData", baseCost.employeeData);
+        param.Add("objectData", baseCost.objectData);
+        param.Add("gameProgressBool", baseCost.gameProgressBool);
+        param.Add("guideStep", baseCost.guideStep);
+
+        Debug.Log("게임 정보 데이터 삽입을 요청합니다.");
+        var bro = Backend.GameData.Insert("UserData", param);
+
+        if (bro.IsSuccess())
+        {
+            Debug.Log("게임 정보 데이터 삽입에 성공했습니다. : " + bro);
+
+            //삽입한 게임 정보의 고유값입니다.  
+            gameDataRowInDate = bro.GetInDate();
+        }
+        else
+        {
+            GameDataInsert();
+            Debug.LogError("게임 정보 데이터 삽입에 실패했습니다. : " + bro);
+        }
+    }
+
+    public void GameDataGet()
+    {
+        // Step 3. 게임 정보 불러오기 구현하기
+        Debug.Log("게임 정보 조회 함수를 호출합니다.");
+
+        var bro = Backend.GameData.GetMyData("UserData", new Where());
+
+        if (bro.IsSuccess())
+        {
+            Debug.Log("게임 정보 조회에 성공했습니다. : " + bro);
+
+
+            LitJson.JsonData gameDataJson = bro.FlattenRows(); // Json으로 리턴된 데이터를 받아옵니다.  
+
+            // 받아온 데이터의 갯수가 0이라면 데이터가 존재하지 않는 것입니다.  
+            if (gameDataJson.Count <= 0)
+            {
+                Debug.LogWarning("데이터가 존재하지 않습니다.");
+            }
+            else
+            {
+                gameDataRowInDate = gameDataJson[0]["inDate"].ToString(); //불러온 게임 정보의 고유값입니다.  
+
+                baseCost = new BaseCost();
+
+                baseCost.guideStep = int.Parse(gameDataJson[0]["guideStep"].ToString());
+
+                foreach (string itemKey in gameDataJson[0]["upgradeCosts"].Keys)
+                {
+                    baseCost.upgradeCosts[itemKey] = int.Parse(gameDataJson[0]["upgradeCosts"][itemKey].ToString());
+                }
+                foreach (string itemKey in gameDataJson[0]["playerData"].Keys)
+                {
+                    baseCost.playerData[itemKey] = float.Parse(gameDataJson[0]["playerData"][itemKey].ToString());
+                }
+                foreach (string itemKey in gameDataJson[0]["employeeData"].Keys)
+                {
+                    baseCost.employeeData[itemKey] = float.Parse(gameDataJson[0]["employeeData"][itemKey].ToString());
+                }
+                foreach (string itemKey in gameDataJson[0]["objectData"].Keys)
+                {
+                    baseCost.objectData[itemKey] = int.Parse(gameDataJson[0]["objectData"][itemKey].ToString());
+                }
+                foreach (string itemKey in gameDataJson[0]["gameProgressBool"].Keys)
+                {
+                    baseCost.gameProgressBool[itemKey] = bool.Parse(gameDataJson[0]["gameProgressBool"][itemKey].ToString());
+                }
+
+                foreach (LitJson.JsonData equip in gameDataJson[0]["employeeList"])
+                {
+                    baseCost.employeeList.Add(equip.ToString());
+                }
+
+                Debug.Log(baseCost.ToString());
+            }
+        }
+        else
+        {
+            Debug.LogError("게임 정보 조회에 실패했습니다. : " + bro);
+        }
+    }
+
+    public void GameDataUpdate()
+    {
+        // Step 4. 게임 정보 수정 구현하기
+        if (baseCost == null)
+        {
+            Debug.LogError("서버에서 다운받거나 새로 삽입한 데이터가 존재하지 않습니다. Insert 혹은 Get을 통해 데이터를 생성해주세요.");
+            return;
+        }
+
+        ObjStackCountSave();
+        Param param = new Param();
+        param.Add("upgradeCosts", baseCost.upgradeCosts);
+        param.Add("playerData", baseCost.playerData);
+        param.Add("employeeList", baseCost.employeeList);
+        param.Add("employeeData", baseCost.employeeData);
+        param.Add("objectData", baseCost.objectData);
+        param.Add("gameProgressBool", baseCost.gameProgressBool);
+        param.Add("guideStep", baseCost.guideStep);
+
+        BackendReturnObject bro = null;
+
+        if (string.IsNullOrEmpty(gameDataRowInDate))
+        {
+            Debug.Log("내 제일 최신 게임 정보 데이터 수정을 요청합니다.");
+
+            bro = Backend.GameData.Update("UserData", new Where(), param);
+        }
+        else
+        {
+            Debug.Log($"{gameDataRowInDate}의 게임 정보 데이터 수정을 요청합니다.");
+
+            bro = Backend.GameData.UpdateV2("UserData", gameDataRowInDate, Backend.UserInDate, param);
+        }
+
+        if (bro.IsSuccess())
+        {
+            Debug.Log("게임 정보 데이터 수정에 성공했습니다. : " + bro);
+        }
+        else
+        {
+            Debug.LogError("게임 정보 데이터 수정에 실패했습니다. : " + bro);
+        }
     }
 }
 
