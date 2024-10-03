@@ -249,7 +249,7 @@ public class Employee : MonoBehaviour
     // 재료 받아오는 함수
     public void TakeObject(IngredientMaker im)
     {
-        if (im.ChuruStack.Count > 0 && maxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
+        if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
         }

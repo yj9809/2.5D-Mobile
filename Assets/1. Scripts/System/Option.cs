@@ -86,7 +86,7 @@ public class Option : MonoBehaviour
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif
-                DataManager.Instance.SaveData();
+                DataManager.Instance.GameDataUpdate();
             }
             else
             {

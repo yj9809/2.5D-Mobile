@@ -258,8 +258,8 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
-                        baseCost.employeeData["employeeBaseSpeed"]  += 0.5f;
-                        baseCost.employeeData["employeeBaseCartSpeed"]  += 0.5f;
+                        baseCost.employeeData["employeeSpeed"]  += 0.5f;
+                        baseCost.employeeData["employeeCartSpeed"]  += 0.5f;
                         baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"]  *= 2;
                         baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] ++;
                         UpgradeTextUpdate(3);
@@ -275,7 +275,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
-                        baseCost.upgradeCosts["employeeBaseMaxObjStackCount"] += 1;
+                        baseCost.employeeData["employeeMaxObjStackCount"] += 1;
                         baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCost"]  *= 2;
                         baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCount"] ++;
                         UpgradeTextUpdate(4);
