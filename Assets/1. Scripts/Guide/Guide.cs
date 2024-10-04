@@ -8,6 +8,7 @@ using Sirenix.OdinInspector;
 
 public class Guide : MonoBehaviour
 {
+    [Title("Guide")]
     [SerializeField] private GameObject guidePrefab;
     private GameObject curGuidePrefab;
     private TextMeshProUGUI guideText;
@@ -18,6 +19,8 @@ public class Guide : MonoBehaviour
     [SerializeField] private Button guideButton;
     [SerializeField] private GameObject guideUI;
     [SerializeField] private RectTransform guideLine;
+    private bool isGuideLineMoving = false;
+    private float guideLineOriginalY;
 
     [Title("Target")]
     [SerializeField] private GameObject[] targets;
@@ -36,11 +39,17 @@ public class Guide : MonoBehaviour
 
     private bool _guideDone = false;
 
-    void Start()
+    private void Awake()
     {
         UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
+    }
+
+    void Start()
+    {
+        if (baseCost.guideStep > 13)
+            return;
 
         guideButton.onClick.AddListener(GuideButton);
 
@@ -54,13 +63,17 @@ public class Guide : MonoBehaviour
 
         if (baseCost.guideStep < 5)
             truck.gameObject.SetActive(false);
+
+        if (!_guideDone)
+        {
+            GuideLine();
+        }
     }
 
     void Update()
     {
         if (!_guideDone)
         {
-            GuideLine();
             GuideStep();
         }
     }
@@ -96,9 +109,33 @@ public class Guide : MonoBehaviour
             Transform target = targets[baseCost.guideStep].transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
-            guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine);
+            guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine).OnComplete(() =>
+            {
+                if (!isGuideLineMoving)
+                {
+                    guideLineOriginalY = guideLine.localPosition.y;
+                    isGuideLineMoving = true;
+                    GuideLineMoveMent();
+                }
+            });
         }
         #endregion
+    }
+
+    private void GuideLineMoveMent()
+    {
+        guideLine.DOLocalMoveY(guideLineOriginalY + 0.35f, 0.5f)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                guideLine.DOLocalMoveY(guideLineOriginalY - 0.35f, 0.5f)
+                    .SetEase(Ease.InOutSine)
+                    .OnComplete(() =>
+                    {
+                        isGuideLineMoving = false;
+                        GuideLineMoveMent();
+                    });
+            });
     }
 
     private void GuideStep()
@@ -249,6 +286,7 @@ public class Guide : MonoBehaviour
     public void ToNextStep()
     {
         baseCost.guideStep++;
+        GuideLine();
     }
 
     private void UpdateGuide(string text, string numberText, bool isCompleted)

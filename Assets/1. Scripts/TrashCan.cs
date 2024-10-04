@@ -5,10 +5,12 @@ using UnityEngine;
 public class TrashCan : MonoBehaviour
 {
     private Player player;
+    private Animator animator;
 
     private void Start()
     {
         player = GameManager.Instance.P;
+        animator = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -26,9 +28,9 @@ public class TrashCan : MonoBehaviour
             }
         }
     }
-
     private void ClearStack(Stack<GameObject> stack)
     {
+        animator.SetTrigger("TrashCan");
         foreach (GameObject item in stack)
         {
             PoolingManager.Instance.ReturnObjecte(item);
