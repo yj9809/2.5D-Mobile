@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using BackEnd;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 
 public interface IObjectDataSave
 {
@@ -77,9 +79,7 @@ public class DataManager : Singleton<DataManager>
 
     private List<IObjectDataSave> objectDataList = new List<IObjectDataSave>();
 
-    public string path;
     public string fileName = "SaveFile";
-    public string filePath;
 
     private string gameDataRowInDate = string.Empty;
 
@@ -87,15 +87,6 @@ public class DataManager : Singleton<DataManager>
     protected override void Awake()
     {
         base.Awake();
-
-        //path = Application.persistentDataPath + "/Save";
-        //Debug.Log("저장 경로" + path);
-        //if (!Directory.Exists(path))
-        //{
-        //    Directory.CreateDirectory(path);
-        //}
-
-        //filePath = Path.Combine(path, fileName);
 
     }
 
@@ -250,6 +241,19 @@ public class DataManager : Singleton<DataManager>
         else
         {
             Debug.LogError("게임 정보 데이터 수정에 실패했습니다. : " + bro);
+        }
+    }
+
+    public void ChangeFedeartion()
+    {
+        BackendReturnObject bro = Backend.BMember.ChangeCustomToFederation("federationToken", FederationType.Google);
+        if (bro.IsSuccess())
+        {
+            Debug.Log("로그인 타입 전환에 성공했습니다");
+        }
+        else
+        {
+            Debug.Log($"로그인 타입 전환에 실패 + {bro}");
         }
     }
 }
