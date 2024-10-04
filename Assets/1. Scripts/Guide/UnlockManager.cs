@@ -138,14 +138,14 @@ public class UnlockManager : MonoBehaviour
             }
         }
 
-        if (unlockType != UnlockType.Store)
-        {
-            player.transform.position = new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z);
-        }
-        else
-        {
-            player.transform.position = new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z);
-        }
+        //if (unlockType != UnlockType.Store)
+        //{
+        //    player.transform.position = new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z);
+        //}
+        //else
+        //{
+        //    player.transform.position = new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z);
+        //}
     }
 
     private void SetActiveObject()
@@ -154,6 +154,9 @@ public class UnlockManager : MonoBehaviour
         {
             item.gameObject.SetActive(false);
         }
+
+        player.PT = PlayerType.None;
+
         _Object.gameObject.SetActive(true);
         _Object.transform.DOScale(Vector3.zero, 0f);
         _Object.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
@@ -161,6 +164,7 @@ public class UnlockManager : MonoBehaviour
             {
                 GameManager.Instance.NowNavMeshBake();
                 Vibration.VibratePop();
+                player.PT = PlayerType.Joystick;
             }
             );
 

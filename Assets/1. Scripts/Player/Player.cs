@@ -8,7 +8,7 @@ using DG.Tweening;
 public enum PlayerType
 {
     Joystick,
-    Auto
+    None
 }
 public class Player : MonoBehaviour, IObjectDataSave
 {
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, IObjectDataSave
     {
         if(ingredientStack.Count <=0 && boxStack.Count <=0 && churuStack.Count <= 0)
         {
-            pT = PlayerType.Auto;
+            pT = PlayerType.None;
             animator.SetBool("isMove", true);
 
             float distance = Vector3.Distance(transform.position, pos.position);
