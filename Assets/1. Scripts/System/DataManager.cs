@@ -11,6 +11,8 @@ public interface IObjectDataSave
 
 public class BaseCost
 {
+    public string guestID;
+
     public Dictionary<string, int> upgradeCosts = new Dictionary<string, int>
     {
         { "baseSpeedUpgradeCost", 100 },
@@ -28,20 +30,6 @@ public class BaseCost
         { "baseEmployeeAddCount", 0 }
     };
 
-    //public int baseSpeedUpgradeCost = 100;
-    //public int baseMaxObjStackCountUpgradeCost = 100;
-    //public int baseGoldPerBoxUpgradeCost = 100;
-    //public int baseSpeedUpgradeCount = 0;
-    //public int baseMaxObjStackCountUpgradeCount = 0;
-    //public int baseGoldPerBoxUpgradeCount = 0;
-    //public int baseEmployeeSpeedUpgradeCost = 100;
-    //public int baseEmployeeMaxObjStackCountUpgradeCost = 100;
-    //public int baseEmployeeAddCost = 100;
-    //public int baseEmployeeSpeedUpgradeCount = 0;
-    //public int baseEmployeeMaxObjStackCountUpgradeCount = 0;
-    //public int baseEmployeeAddCount = 0;
-    //public int baseUpgradeMaxCount = 5;
-
     // Player 데이터
     public Dictionary<string, float> playerData = new Dictionary<string, float>
     {   
@@ -51,11 +39,6 @@ public class BaseCost
         { "gold", 100},
         { "goldPerBox", 50 }
     };
-    //public float playerBaseSpeed = 5;
-    //public float playerBaseCartSpeed = 2.5f;
-    //public int playerMaxObjStackCount = 3;
-    //public int playerGold = 100;
-    //public int playerGoldPerBox = 50;
 
     public List<string> employeeList = new List<string>();
 
@@ -66,9 +49,6 @@ public class BaseCost
         { "employeeCartSpeed", 1.5f },
         { "employeeMaxObjStackCount", 3 }
     };
-    //public float employeeBaseSpeed = 3;
-    //public float employeeBaseCartSpeed = 1.5f;
-    //public int employeeBaseMaxObjStackCount = 3;
 
     // 오브젝트 데이터
     public Dictionary<string, int> objectData = new Dictionary<string, int>
@@ -78,10 +58,6 @@ public class BaseCost
         { "packagingWaitObjCount", 0 },
         { "packagingBoxStorageStackCount", 0 }
     };
-    //public int conveyorBeltBoxStorageStackCount = 0;
-    //public int churuStorageStackCount = 0;
-    //public int packagingWaitObjCount = 0;
-    //public int packagingBoxStorageStackCount = 0;
 
     public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
     {
@@ -93,13 +69,6 @@ public class BaseCost
         { "unlockStore", false }
     };
     public int guideStep = 0;
-
-    //public bool unlockOffice = false;
-    //public bool unlockContainer_1 = false;
-    //public bool unlockMachine_1 = false;
-    //public bool unlockContainer_2 = false;
-    //public bool unlockMachine_2 = false;
-    //public bool unlockStore = false;
 }
 
 public class DataManager : Singleton<DataManager>
@@ -130,23 +99,23 @@ public class DataManager : Singleton<DataManager>
 
     }
 
-    public void SaveData()
-    {
-        ObjStackCountSave();
+    //public void SaveData()
+    //{
+    //    ObjStackCountSave();
 
-        string data = JsonUtility.ToJson(baseCost);
-        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
-        string encode = System.Convert.ToBase64String(bytes);
-        File.WriteAllText(filePath, encode);
-    }
+    //    string data = JsonUtility.ToJson(baseCost);
+    //    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
+    //    string encode = System.Convert.ToBase64String(bytes);
+    //    File.WriteAllText(filePath, encode);
+    //}
 
-    public void LoadData()
-    {
-        string data = File.ReadAllText(filePath);
-        byte[] bytes = System.Convert.FromBase64String(data);
-        string decode = System.Text.Encoding.UTF8.GetString(bytes);
-        baseCost = JsonUtility.FromJson<BaseCost>(decode);
-    }
+    //public void LoadData()
+    //{
+    //    string data = File.ReadAllText(filePath);
+    //    byte[] bytes = System.Convert.FromBase64String(data);
+    //    string decode = System.Text.Encoding.UTF8.GetString(bytes);
+    //    baseCost = JsonUtility.FromJson<BaseCost>(decode);
+    //}
 
     public void AddObjStackCountList(IObjectDataSave iStackCountSave)
     {
@@ -161,22 +130,26 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    public void DataClear()
-    {
-        if (CheckFile())
-            File.Delete(filePath);
-    }
+    //public void DataClear()
+    //{
+    //    if (CheckFile())
+    //        File.Delete(filePath);
+    //}
 
-    public bool CheckFile()
-    {
-        return File.Exists(filePath);
-    }
+    //public bool CheckFile()
+    //{
+    //    return File.Exists(filePath);
+    //}
+
     public void GameDataInsert()
     {
         if (baseCost == null)
             baseCost = new BaseCost();
 
+        baseCost.guestID = Backend.BMember.GetGuestID();
+
         Param param = new Param();
+        param.Add("guestID", baseCost.guestID);
         param.Add("upgradeCosts", baseCost.upgradeCosts);
         param.Add("playerData", baseCost.playerData);
         param.Add("employeeList", baseCost.employeeList);
@@ -228,6 +201,7 @@ public class DataManager : Singleton<DataManager>
                 baseCost = new BaseCost();
 
                 baseCost.guideStep = int.Parse(gameDataJson[0]["guideStep"].ToString());
+                baseCost.guestID = gameDataJson[0]["guestID"].ToString();
 
                 foreach (string itemKey in gameDataJson[0]["upgradeCosts"].Keys)
                 {
