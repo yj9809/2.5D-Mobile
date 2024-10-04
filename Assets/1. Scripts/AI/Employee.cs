@@ -16,9 +16,6 @@ public class Employee : MonoBehaviour
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
 
-    [SerializeField] private int randomTarget = 0;
-    [SerializeField] private int randomTargetCheck = 0;
-
     [EnumToggleButtons, SerializeField] private EmployeeType employeeType = EmployeeType.Cart;
 
     [SerializeField] private bool moving = false;
@@ -59,7 +56,21 @@ public class Employee : MonoBehaviour
         get { return boxStack; }
         set { boxStack = value; }
     }
-    
+
+    [SerializeField] private int cbTransNum;
+    public int CbTransNum
+    {
+        get { return cbTransNum; }
+        set { cbTransNum = value; }
+    }
+
+    private bool cbTransNumCheck = false;
+    public bool CbTransNumCheck
+    {
+        get { return cbTransNumCheck; }
+        set { cbTransNumCheck = value; }
+    }
+
     [SerializeField] private IStackable currentTarget;
 
     private void Start()
@@ -69,6 +80,7 @@ public class Employee : MonoBehaviour
         animator = GetComponent<Animator>();
         na = GetComponent<NavMeshAgent>();
         baseCost = DataManager.Instance.baseCost;
+        cbTransNum = Random.Range(0, gm.cbTrans.Count);
 
         StartCoroutine(CheckStack());
     }
@@ -162,7 +174,11 @@ public class Employee : MonoBehaviour
             }
 
             currentTarget = null;
-            target = gm.cbTrans[randomTarget];
+            if(!cbTransNumCheck)
+            {
+                cbTransNumCheck = true;
+                target = gm.ConveyorTransform(this);
+            }
         }
         else if (churuStack.Count > 0)
         {
@@ -190,6 +206,7 @@ public class Employee : MonoBehaviour
         }
         else
         {
+            cbTransNumCheck = false;
             moving = false;
             StartCoroutine(CheckStack());
         }
@@ -225,15 +242,6 @@ public class Employee : MonoBehaviour
                     currentTarget = bestTarget;
                     moving = true;
 
-                    // 랜덤 타겟 체크를 한 번만 수행
-                    //do
-                    //{
-                    //    Debug.Log("실행");
-                    //    randomTargetCheck = Random.Range(0, gm.cbTrans.Count);
-                    //} while (randomTargetCheck == randomTarget);
-
-                    //randomTarget = randomTargetCheck;
-
                     if (currentTarget != null)
                     {
                         gm.AddTarget(currentTarget); // 대상이 없으면 추가
@@ -243,7 +251,7 @@ public class Employee : MonoBehaviour
                     gm.UpdateTargets(); // 모든 종업원에게 타겟 업데이트
                 }
             }
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
     // 재료 받아오는 함수

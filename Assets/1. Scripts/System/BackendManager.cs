@@ -75,6 +75,8 @@ public class BackendManager : MonoBehaviour
                 string googlehash = Backend.Utils.GetGoogleHash();
                 string errorCode = callback.GetErrorCode().ToString(); // 오류 코드 가져오기
                 string errorMessage = callback.GetMessage(); // 오류 메시지 가져오기
+
+                Debug.LogError($"{errorCode} + {errorMessage}");
             }
         });
     }

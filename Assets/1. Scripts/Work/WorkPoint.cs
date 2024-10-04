@@ -60,7 +60,9 @@ public class WorkPoint : MonoBehaviour
                     p.GiveObject(truck);
                     break;
                 case WorkPointType.Packaging:
-                    if(p != null || e != null)
+                    if(p != null && p.ChuruStack.Count <= 0 && p.BoxStack.Count <= 0 && p.IngredientStack.Count <= 0)
+                        _boxPackaging.Packaging(p, e);
+                    if (e != null && e.ChuruStack.Count <= 0 && e.BoxStack.Count <= 0 && e.IngredientStack.Count <= 0)
                         _boxPackaging.Packaging(p, e);
                     break;
                 case WorkPointType.Office:

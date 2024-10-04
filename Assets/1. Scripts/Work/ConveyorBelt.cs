@@ -57,6 +57,7 @@ public class ConveyorBelt : MonoBehaviour
         get { return cbStack; }
         set { cbStack = value; }
     }
+
     private void Start()
     {
         gm = GameManager.Instance;
@@ -68,6 +69,7 @@ public class ConveyorBelt : MonoBehaviour
         StartCoroutine(DisplayImgChange());
         eventGauge.gameObject.SetActive(false);
     }
+
     private void Update()
     {
         if(boxStorage.BoxStack.Count >= 40)
@@ -82,6 +84,7 @@ public class ConveyorBelt : MonoBehaviour
         if (nonBreakDownTime >= 0)
             nonBreakDownTime -= Time.deltaTime;
     }
+
     private IEnumerator PlaceObject()
     {
         while (true)
@@ -99,6 +102,7 @@ public class ConveyorBelt : MonoBehaviour
             }
         }
     }
+
     private IEnumerator DisplayImgChange()
     {
         while (!isBreakDown && conveyorBeltType == ConveyorBeltType.Churu)
@@ -110,8 +114,8 @@ public class ConveyorBelt : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
     }
+
     // 가독성을 위해 따로 함수로 빼뒀습니다.
-    
     private void OnConveyorObj()
     {
         PushStack();
@@ -125,6 +129,7 @@ public class ConveyorBelt : MonoBehaviour
             newChuru.GetComponent<Rigidbody>().freezeRotation = true;
         }
     }
+
     // 고장 이벤트를 위한 테스트 함수들입니다.
     private void BreakDownEvent()
     {
@@ -163,6 +168,7 @@ public class ConveyorBelt : MonoBehaviour
             }
         }
     }
+
     private void OnCollisionStay(Collision collision)
     {
         Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();

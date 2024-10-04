@@ -132,6 +132,7 @@ public class GameManager : Singleton<GameManager>
             stackCount.Add(stackable);
         }
     }
+    
     public void AddTarget(IStackable stackable)
     {
         if (!targetUsage.ContainsKey(stackable))
@@ -139,6 +140,7 @@ public class GameManager : Singleton<GameManager>
             targetUsage[stackable] = false; // 기본값으로 false 설정
         }
     }
+
     public bool IsTargetBeingUsed(IStackable stackable)
     {
         if (targetUsage.ContainsKey(stackable))
@@ -147,6 +149,7 @@ public class GameManager : Singleton<GameManager>
         }
         return false; // 타겟이 딕셔너리에 없으면 사용 중이 아님
     }
+
     public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
     {
         if (stackable == null)
@@ -180,5 +183,15 @@ public class GameManager : Singleton<GameManager>
     public void NowNavMeshBake()
     {
         nms.BuildNavMesh();
+    }
+
+    public Transform ConveyorTransform(Employee employee)
+    {
+        employee.CbTransNum++;
+
+        if (employee.CbTransNum == cbTrans.Count)
+            employee.CbTransNum = 0;
+
+        return cbTrans[employee.CbTransNum];
     }
 }
