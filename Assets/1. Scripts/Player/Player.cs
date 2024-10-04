@@ -200,7 +200,7 @@ public class Player : MonoBehaviour, IObjectDataSave
 
     public void TakeObject(IngredientMaker im)
     {
-        if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0)
+        if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0 && churuStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
             Vibration.VibratePop();
@@ -218,10 +218,10 @@ public class Player : MonoBehaviour, IObjectDataSave
 
     public void GiveObject(BoxStorage bs, bool isChuru)
     {
-        Stack<GameObject> newStack = new Stack<GameObject>();
-        newStack = isChuru ? churuStack : boxStack;
+        Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
+        Stack<GameObject> checkStack = isChuru ? boxStack : churuStack;
 
-        if (bs.BoxStack.Count > 0 && MaxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
+        if (bs.BoxStack.Count > 0 && MaxObjStackCount > newStack.Count && ingredientStack.Count <= 0 && checkStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
             Vibration.VibratePop();
@@ -234,15 +234,6 @@ public class Player : MonoBehaviour, IObjectDataSave
         {
             Utility.ObjectDrop(bp.churuStorageParent, null, churuStack, bp.ChuruStorage, 4);
             Vibration.VibratePop();
-        }
-    }
-
-    public void GiveObject(Delivery dv)
-    {
-        if (dv.DeliveryStack.Count > 0 && ingredientStack.Count <= 0)
-        {
-            Utility.ObjectDrop(cartTransform, null, dv.DeliveryStack, boxStack, 1);
-
         }
     }
 

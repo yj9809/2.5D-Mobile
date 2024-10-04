@@ -64,25 +64,30 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
 
     public void Packaging(Player p, Employee employee)
     {
-        if (newBox == null && churuStorage.Count != 0 && boxStorage.BoxStack.Count < 40)
-        { 
-            newBox = Instantiate(box, boxParent);
-            newBox.name = box.name;
-            boxCountTxt = newBox.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>();
-            newBox.transform.GetChild(0).gameObject.SetActive(true);
-        }
-
-        if (churuStorage.Count != 0 && newBox != null)
+        if((p.BoxStack.Count <= 0 && p.ChuruStack.Count <= 0 && p.IngredientStack.Count <= 0) || 
+            (employee != null && employee.BoxStack.Count <= 0 && employee.ChuruStack.Count <= 0 && employee.IngredientStack.Count <= 0))
         {
-            ChuruMove(p, employee);
+            if (newBox == null && churuStorage.Count != 0 && boxStorage.BoxStack.Count < 40)
+            {
+                newBox = Instantiate(box, boxParent);
+                newBox.name = box.name;
+                boxCountTxt = newBox.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>();
+                newBox.transform.GetChild(0).gameObject.SetActive(true);
+            }
+
+            if (churuStorage.Count != 0 && newBox != null)
+            {
+                ChuruMove(p, employee);
+            }
         }
         else
         {
-            if (p != null && p.BoxStack.Count <= 0 && p.ChuruStack.Count <= 0 && p.IngredientStack.Count <= 0)
+            if (p != null)
                 p.StopBoxPackagingAnimationPlayer();
-            if (employee != null && employee.BoxStack.Count <= 0 && employee.ChuruStack.Count <= 0 && employee.IngredientStack.Count <= 0)
+            if (employee != null)
                 employee.StopBoxPackagingAnimationEmployee();
         }
+
     }
     private void ChuruMove(Player p, Employee employee)
     {
