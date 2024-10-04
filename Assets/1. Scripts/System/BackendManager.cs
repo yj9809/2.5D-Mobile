@@ -22,7 +22,11 @@ public class BackendManager : MonoBehaviour
             Debug.LogError("초기화 실패 : " + bro);
         }
         //GuestLogin();
+#if !UNITY_EDITOR
         StartGoogleLogin();
+#else
+        GuestLogin();
+#endif
     }
 
     public void StartGoogleLogin()
