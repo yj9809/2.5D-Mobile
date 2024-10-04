@@ -99,24 +99,6 @@ public class DataManager : Singleton<DataManager>
 
     }
 
-    //public void SaveData()
-    //{
-    //    ObjStackCountSave();
-
-    //    string data = JsonUtility.ToJson(baseCost);
-    //    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
-    //    string encode = System.Convert.ToBase64String(bytes);
-    //    File.WriteAllText(filePath, encode);
-    //}
-
-    //public void LoadData()
-    //{
-    //    string data = File.ReadAllText(filePath);
-    //    byte[] bytes = System.Convert.FromBase64String(data);
-    //    string decode = System.Text.Encoding.UTF8.GetString(bytes);
-    //    baseCost = JsonUtility.FromJson<BaseCost>(decode);
-    //}
-
     public void AddObjStackCountList(IObjectDataSave iStackCountSave)
     {
         objectDataList.Add(iStackCountSave);
@@ -129,17 +111,6 @@ public class DataManager : Singleton<DataManager>
             item.ObjectDataSave();
         }
     }
-
-    //public void DataClear()
-    //{
-    //    if (CheckFile())
-    //        File.Delete(filePath);
-    //}
-
-    //public bool CheckFile()
-    //{
-    //    return File.Exists(filePath);
-    //}
 
     public void GameDataInsert()
     {
