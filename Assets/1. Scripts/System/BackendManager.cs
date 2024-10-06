@@ -25,6 +25,7 @@ public class BackendManager : MonoBehaviour
 #if !UNITY_EDITOR
         StartGoogleLogin();
 #else
+        //Backend.BMember.DeleteGuestInfo();
         GuestLogin();
 #endif
     }
