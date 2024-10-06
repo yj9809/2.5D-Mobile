@@ -15,6 +15,9 @@ public class PoolingManager : Singleton<PoolingManager>
             return null;
         }
         GameObject newObj = Instantiate(ObjPrefab, transform);
+        newObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        newObj.transform.localScale = Vector3.one;
+        newObj.gameObject.name = ObjPrefab.name;
         newObj.SetActive(false);
         return newObj;
     }
@@ -60,6 +63,7 @@ public class PoolingManager : Singleton<PoolingManager>
                 Destroy(returnPrefab.GetComponent<Rigidbody>());
 
             returnPrefab.transform.SetParent(transform);
+            returnPrefab.transform.localScale = Vector3.one;
             poolDictionary[returnPrefab.name].Enqueue(returnPrefab);
         }
         else

@@ -71,7 +71,12 @@ public static class Utility
             newChuru.name = churu.name;
             newChuru.transform.SetParent(parentPos);
             newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
-                .SetEase(Ease.InBack);
+                .SetEase(Ease.InBack)
+                .OnComplete(() => 
+                {
+                    newChuru.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    newChuru.transform.localScale = Vector3.one;
+                } );
         }
         else
         {
@@ -80,14 +85,22 @@ public static class Utility
                 newChuru = getChuruStack.Pop();
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
+                .OnComplete(() =>
+                {
+                    newChuru.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    newChuru.transform.localScale = Vector3.one;
+                });
             }
             else if (num == (int) CheckType.Array)
             {
                 newChuru = churu;
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * (setChuruStack.Count % 10)), 0), 0.2f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0,0,0));
+                .OnComplete(() =>
+                {
+                    newChuru.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    newChuru.transform.localScale = Vector3.one;
+                });
             }
             else if(num == (int) CheckType.Car)
             {
@@ -99,7 +112,11 @@ public static class Utility
                 newChuru = getChuruStack.Pop();
                 newChuru.transform.DOLocalMove(new Vector3(0, 0 + (ObjRendererCheck(newChuru) * setChuruStack.Count), 0), 0.2f)
                 .SetEase(Ease.InBack)
-                .OnComplete(() => newChuru.transform.localRotation = Quaternion.Euler(0, 0, 0));
+                .OnComplete(() =>
+                {
+                    newChuru.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    newChuru.transform.localScale = Vector3.one;
+                });
             }
         }
         newChuru.transform.SetParent(parentPos);

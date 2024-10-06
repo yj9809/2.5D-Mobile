@@ -36,7 +36,6 @@ public class SpawnPoint : MonoBehaviour
             newNpc.transform.position = GetRandomPositionInBounds(bounds);
             newNpc.GetComponent<Npc>().Target = target;
             newNpc.SetSpawnPoint(this);
-            newNpc.name = npc.name;
             spawnTime = 0;
         }
     }

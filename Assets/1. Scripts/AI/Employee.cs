@@ -11,7 +11,6 @@ public class Employee : MonoBehaviour
 {
     [SerializeField] private GameObject cart;
     [SerializeField] private Transform cartTransform;
-    [SerializeField] private int maxObjStackCount = 0;
 
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
@@ -148,8 +147,8 @@ public class Employee : MonoBehaviour
     // 타겟 전환용 함수
     private void TargetSwitching()
     {
-        if (target != null && (Vector3.Distance(transform.position, target.position) < 1.3f || 
-            (ingredientStack.Count >= MaxObjStackCount || churuStack.Count >= MaxObjStackCount || boxStack.Count >= MaxObjStackCount)))
+        if (target != null && (Vector3.Distance(transform.position, target.position) <= 1.3f || 
+            (ingredientStack.Count >= 0 || churuStack.Count >= 0 || boxStack.Count >= 0)))
         {
             ChangeTarget();
         }
@@ -275,7 +274,7 @@ public class Employee : MonoBehaviour
     {
         Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
 
-        if (bs.BoxStack.Count > 0 && maxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
+        if (bs.BoxStack.Count > 0 && MaxObjStackCount > newStack.Count && ingredientStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
         }

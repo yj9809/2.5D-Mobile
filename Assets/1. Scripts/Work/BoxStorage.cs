@@ -73,17 +73,19 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
             for (int i = 0; i < data.baseCost.objectData["churuStorageStackCount"]; i++)
             {
                 boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
-                GameObject churu = Instantiate(this.churu, transform);
+                GameObject churu = PoolingManager.Instance.GetObj(this.churu);
+                churu.transform.parent = transform;
 
                 Utility.ObjectDrop(boxTransform[boxTransformNum], churu, null, boxStack, 2);
             }
         }
-        else
+        else if(bsType == BoxStorageType.BoxStorage)
         {
             for (int i = 0; i < data.baseCost.objectData["packagingBoxStorageStackCount"]; i++)
             {
                 boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
-                GameObject box = Instantiate(this.box, transform);
+                GameObject box = PoolingManager.Instance.GetObj(this.box);
+                box.transform.parent = transform;
 
                 Utility.ObjectDrop(boxTransform[boxTransformNum], box, null, boxStack, 2);
             }

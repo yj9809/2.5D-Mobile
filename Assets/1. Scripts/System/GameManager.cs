@@ -92,7 +92,7 @@ public class GameManager : Singleton<GameManager>
                     GameObject newEmployee;
                     if (employeeNum != 4)
                     {
-                        newEmployee = Instantiate(item.gameObject, Vector3.zero, Quaternion.identity);
+                        newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
                     }
                     else
                     {

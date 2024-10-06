@@ -19,7 +19,6 @@ public class ChangeObject : MonoBehaviour
         if (other.CompareTag("Ingredient"))
         {
             GameObject newObject = pool.GetObj(objectB);
-            newObject.name = objectB.name;
             newObject.transform.position = newTransform.position; 
 
             Rigidbody rd = newObject.GetComponent<Rigidbody>();
