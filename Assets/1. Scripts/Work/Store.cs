@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 public class Store : MonoBehaviour
 {
     [SerializeField] private GameObject[] _gameObjects;
+    [SerializeField] private GameObject commonGameObjects;
     [SerializeField, Tooltip("초당 생산량")] private float goldPerSecond = 100f;
     [SerializeField, Tooltip("생산 주기")] private float timeInterval = 1f;
     private float timer = 0;
@@ -31,9 +32,11 @@ public class Store : MonoBehaviour
         {
             if (obj.activeSelf)
             {
+                commonGameObjects.SetActive(true);
                 return true;
             }
         }
+        commonGameObjects.SetActive(false);
         return false;
     }
 

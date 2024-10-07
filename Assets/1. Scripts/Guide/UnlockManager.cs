@@ -38,11 +38,16 @@ public class UnlockManager : MonoBehaviour
         baseCost = DataManager.Instance.baseCost;
         UIManager.Instance.storeUpgradeButton.onClick.AddListener(UnlockStore);
 
-        if (baseCost.guideStep > 14)
-            return;
-
         _Object.SetActive(false);
         CheckUnlockStatus();
+    }
+
+    private void Start()
+    {
+        if (unlockType == UnlockType.Store && _Object.activeSelf)
+        {
+            UIManager.Instance.storeUpgradeButton.gameObject.SetActive(false);
+        }
     }
 
     private void CheckUnlockStatus()
@@ -194,11 +199,17 @@ public class UnlockManager : MonoBehaviour
 
     private void DisableWall()
     {
-        _Wall.SetActive(false);
+        if (_Wall != null)
+        {
+            _Wall.SetActive(false);
+        }
     }
     private void DisableSideWalk()
     {
-        _SideWalk.SetActive(false);
+        if (_SideWalk != null)
+        {
+            _SideWalk.SetActive(false);
+        }
     }
     private void DisableObjects()
     {
