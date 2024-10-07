@@ -1,19 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Sirenix.OdinInspector;
 
 public class Store : MonoBehaviour
 {
-    [SerializeField, Tooltip("초당 생산량")] private int goldPerSecond = 1;
+    [SerializeField, Tooltip("초당 생산량")] private float goldPerSecond = 100f;
     [SerializeField, Tooltip("생산 주기")] private float timeInterval = 1f;
     private float timer = 0;
-    private Player player;
-
-    private void Start()
-    {
-        player = GameManager.Instance.P;
-    }
+    public float totalGold = 0f;
 
     void Update()
     {
@@ -27,6 +23,6 @@ public class Store : MonoBehaviour
 
     private void GetGold()
     {
-        player.Gold += goldPerSecond;
+        totalGold += goldPerSecond;
     }
 }

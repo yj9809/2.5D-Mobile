@@ -68,6 +68,9 @@ public class WorkPoint : MonoBehaviour
                 case WorkPointType.Office:
                     UIManager.Instance.ShowUpgradeUI();
                     break;
+                case WorkPointType.Store:
+                    UIManager.Instance.ShowStoreUI();
+                    break;
             }
         }
     }
@@ -78,6 +81,7 @@ public class WorkPoint : MonoBehaviour
         if (p != null)
         {
             UIManager.Instance.CloseUpgradeUI();
+            UIManager.Instance.CloseStoreUI();
             p.StopBoxPackagingAnimationPlayer();
         }
         

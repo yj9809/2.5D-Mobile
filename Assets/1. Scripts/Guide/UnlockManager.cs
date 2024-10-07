@@ -9,6 +9,7 @@ public enum UnlockType
     Office,
     Container,
     Machine,
+    Stall,
     Store
 }
 
@@ -33,6 +34,7 @@ public class UnlockManager : MonoBehaviour
     {
         player = GameManager.Instance.P;
         baseCost = DataManager.Instance.baseCost;
+        UIManager.Instance.storeUpgradeButton.onClick.AddListener(UnlockStore);
 
         _Object.SetActive(false);
 
@@ -74,6 +76,11 @@ public class UnlockManager : MonoBehaviour
                 _Object.SetActive(true);
                 gameObject.SetActive(false);
             }
+        }
+        else if (baseCost.gameProgressBool["unlockStall"] && unlockType == UnlockType.Stall)
+        {
+            _Object.SetActive(true);
+            gameObject.SetActive(false);
         }
         else if (baseCost.gameProgressBool["unlockStore"] && unlockType == UnlockType.Store)
         {
@@ -120,32 +127,20 @@ public class UnlockManager : MonoBehaviour
             if (unlockType == UnlockType.Office)
             {
                 SetActiveObject();
-                ActiveFalseObject();
             }
             else if (unlockType == UnlockType.Container)
             {
                 SetActiveObject();
-                ActiveFalseWall();
             }
             else if (unlockType == UnlockType.Machine)
             {
                 SetActiveObject();
             }
-            else if (unlockType == UnlockType.Store)
+            else if (unlockType == UnlockType.Stall)
             {
                 SetActiveObject();
-                ActiveFalseObject();
             }
         }
-
-        //if (unlockType != UnlockType.Store)
-        //{
-        //    player.transform.position = new Vector3(transform.position.x - 3f, transform.position.y, transform.position.z);
-        //}
-        //else
-        //{
-        //    player.transform.position = new Vector3(transform.position.x + 3f, transform.position.y, transform.position.z);
-        //}
     }
 
     private void SetActiveObject()
@@ -205,6 +200,10 @@ public class UnlockManager : MonoBehaviour
                 baseCost.gameProgressBool["unlockMachine_2"] = true;
             }
         }
+        else if (unlockType == UnlockType.Stall)
+        {
+            baseCost.gameProgressBool["unlockStall"] = true;
+        }
         else if (unlockType == UnlockType.Store)
         {
             baseCost.gameProgressBool["unlockStore"] = true;
@@ -217,6 +216,25 @@ public class UnlockManager : MonoBehaviour
         if (_FillImage != null)
         {
             _FillImage.fillAmount = progress;
+        }
+    }
+
+    private void UnlockStore()
+    {
+        if (player.Gold >= amount)
+        {
+            if (unlockType == UnlockType.Stall)
+            {
+                GameObject.Find("Stall").gameObject.SetActive(false);
+                if (unlockType == UnlockType.Store)
+                {
+                    SetActiveObject();
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("µ·¾ø¾î");
         }
     }
 

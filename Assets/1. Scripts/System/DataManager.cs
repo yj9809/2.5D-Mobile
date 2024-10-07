@@ -68,6 +68,7 @@ public class BaseCost
         { "unlockMachine_1", false },
         { "unlockContainer_2", false },
         { "unlockMachine_2", false },
+        { "unlockStall", false },
         { "unlockStore", false }
     };
     public int guideStep = 0;

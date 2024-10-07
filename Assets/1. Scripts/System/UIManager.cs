@@ -31,11 +31,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI goldTxt;
 
     [TabGroup("Upgrade"), SerializeField] private GameObject upgradePanel;
-    [TabGroup("Upgrade"), SerializeField] private Sprite[] UpgradeStepSprite;
-    [TabGroup("Upgrade"), SerializeField] private Image[] UpgradeStepImage;
-    [TabGroup("Upgrade"), SerializeField] private TMP_Text[] UpgradeCostText;
+    [TabGroup("Upgrade"), SerializeField] private Sprite[] upgradeStepSprite;
+    [TabGroup("Upgrade"), SerializeField] private Image[] upgradeStepImage;
+    [TabGroup("Upgrade"), SerializeField] private TMP_Text[] upgradeCostText;
 
-    [SerializeField] private Image image;
+    [TabGroup("Store"), SerializeField] private Store store;
+    [TabGroup("Store"), SerializeField] private GameObject storePanel;
+    [TabGroup("Store"), SerializeField] private Button storeGetGoldButton;
+    [TabGroup("Store")] public Button storeUpgradeButton;
 
     [SerializeField] private Button breakDownButton;
 
@@ -57,9 +60,12 @@ public class UIManager : Singleton<UIManager>
         baseCost = DataManager.Instance.baseCost;
         gm = GameManager.Instance;
         upgradePanel.SetActive(false);
+        storePanel.SetActive(false);
         breakDownButton.gameObject.SetActive(false);
 
         cameraZoomButton.onClick.AddListener(ZoomScreen);
+        storeGetGoldButton.onClick.AddListener(GetGold);
+
         SetUpgradeInfo();
         UpdateUI();
         //UpgradeTxtUpdate();
@@ -171,16 +177,16 @@ public class UIManager : Singleton<UIManager>
     private void UpgradeTextUpdate(int num)
     {
         if (upgradeInfos[num].count() == 5)
-            UpgradeCostText[num].text = "Max";
+            upgradeCostText[num].text = "Max";
         else
-            UpgradeCostText[num].text = upgradeInfos[num].cost().ToString();
+            upgradeCostText[num].text = upgradeInfos[num].cost().ToString();
 
-        UpgradeStepImage[num].sprite = UpgradeStepSprite[upgradeInfos[num].count()];
+        upgradeStepImage[num].sprite = upgradeStepSprite[upgradeInfos[num].count()];
     }
     // 시작 시 업그레이드 항목 초기화 해주는 함수
     private void StartUpgradeTextUpdate()
     {
-        for (int i = 0; i < UpgradeCostText.Length; i++)
+        for (int i = 0; i < upgradeCostText.Length; i++)
         {
             UpgradeTextUpdate(i);
         }
@@ -323,8 +329,24 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
+    #region StoreUI
+    public void ShowStoreUI()
+    {
+        storePanel.SetActive(true);
+    }
+    public void CloseStoreUI()
+    {
+        storePanel.SetActive(false);
+    }
+
+    private void GetGold()
+    {
+        p.Gold += store.totalGold;
+    }
+    #endregion
+
     #region GameTest UI
-    
+
     private void OnGUI()
     {
         GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);

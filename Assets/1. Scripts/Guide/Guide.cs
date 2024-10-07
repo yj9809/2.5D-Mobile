@@ -29,6 +29,7 @@ public class Guide : MonoBehaviour
     [SerializeField] private GameObject _OfficeObject;
     [SerializeField] private GameObject[] _ContainerObjects;
     [SerializeField] private GameObject[] _MachineObjects;
+    [SerializeField] private GameObject _StallObject;
     [SerializeField] private GameObject _StoreObject;
 
     private BaseCost baseCost;
@@ -48,7 +49,7 @@ public class Guide : MonoBehaviour
 
     void Start()
     {
-        if (baseCost.guideStep > 13)
+        if (baseCost.guideStep > 14)
             return;
 
         guideButton.onClick.AddListener(GuideButton);
@@ -156,7 +157,8 @@ public class Guide : MonoBehaviour
             case 11: _Step11(); break;
             case 12: _Step12(); break;
             case 13: _Step13(); break;
-            case 14: _GuideDone(); break;
+            case 14: _Step14(); break;
+            case 15: _GuideDone(); break;
         }
     }
 
@@ -167,35 +169,30 @@ public class Guide : MonoBehaviour
         UpdateGuide("재료 보관소로 이동 하자 !", ""
             , player.IngredientStack.Count > 0);
     }
-
     private void _Step1()
     {
         SetActiveTarget(1);
         UpdateGuide("재료를\n컨베이어 벨트로 옮기자 !", ""
             , player.IngredientStack.Count <= 0);
     }
-
     private void _Step2()
     {
         SetActiveTarget(2);
         UpdateGuide("완성된 츄룹을\n포장작업대 창고로 옮기자 !", ""
             , player.ChuruStack.Count > 0);
     }
-
     private void _Step3()
     {
         SetActiveTarget(3);
         UpdateGuide($"츄룹 창고 이동 작업\n", boxPackaging.ChuruStorage.Count.ToString() + " / 5"
             , player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5);
     }
-
     private void _Step4()
     {
         SetActiveTarget(4);
         UpdateGuide("포장작업대에서\n박스포장을 진행하자 !", ""
             , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1);
     }
-
     private void _Step5()
     {
         truck.gameObject.SetActive(true);
@@ -203,7 +200,6 @@ public class Guide : MonoBehaviour
         UpdateGuide("완성한 박스를\n트럭에 싣자 !", ""
             , player.BoxStack.Count > 0);
     }
-
     private void _Step6()
     {
         SetActiveTarget(6);
@@ -216,21 +212,18 @@ public class Guide : MonoBehaviour
         UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _ContainerObjects[0].activeSelf);
     }
-
     private void _Step8()
     {
         SetActiveTarget(8);
         UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _OfficeObject.activeSelf);
     }
-
     private void _Step9()
     {
         SetActiveTarget(9);
         UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerData["gold"].ToString() + " / 100"
             , baseCost.upgradeCosts["baseEmployeeAddCount"] > 0);
     }
-
     private void _Step10()
     {
         SetActiveTarget(10);
@@ -249,14 +242,18 @@ public class Guide : MonoBehaviour
         UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _MachineObjects[1].activeSelf);
     }
-
     private void _Step13()
     {
         SetActiveTarget(13);
         UpdateGuide($"지역 해금 : 상점\n", baseCost.playerData["gold"].ToString() + " / 100"
+            , _StallObject.activeSelf);
+    }
+    private void _Step14()
+    {
+        SetActiveTarget(14);
+        UpdateGuide($"지역 해금 : 상점 업그레이드\n", baseCost.playerData["gold"].ToString() + " / 100"
             , _StoreObject.activeSelf);
     }
-
     private void _GuideDone()
     {
         _guideDone = true;
