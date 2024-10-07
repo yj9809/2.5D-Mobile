@@ -63,13 +63,13 @@ public class BaseCost
 
     public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
     {
-        { "unlockOffice", false },
-        { "unlockContainer_1", false },
-        { "unlockMachine_1", false },
-        { "unlockContainer_2", false },
-        { "unlockMachine_2", false },
-        { "unlockStall", false },
-        { "unlockStore", false }
+        { "Office", false },
+        { "Container1", false },
+        { "Machine1", false },
+        { "Container2", false },
+        { "Machine2", false },
+        { "Stall", false },
+        { "Store", false }
     };
     public int guideStep = 0;
 }

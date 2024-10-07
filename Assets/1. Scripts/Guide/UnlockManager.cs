@@ -7,8 +7,10 @@ using Sirenix.OdinInspector;
 public enum UnlockType
 {
     Office,
-    Container,
-    Machine,
+    Container1,
+    Machine1,
+    Container2,
+    Machine2,
     Stall,
     Store
 }
@@ -23,7 +25,7 @@ public class UnlockManager : MonoBehaviour
     [SerializeField] private int amount;
     [ProgressBar(0, 100), SerializeField] private float currentFill;
 
-    private float unlockTime = 3.0f;
+    private const float unlockTime = 3.0f;
     private bool isTrigger = false;
     private bool isUnlocked = false;
 
@@ -36,56 +38,19 @@ public class UnlockManager : MonoBehaviour
         baseCost = DataManager.Instance.baseCost;
         UIManager.Instance.storeUpgradeButton.onClick.AddListener(UnlockStore);
 
-        _Object.SetActive(false);
+        if (baseCost.guideStep > 14)
+            return;
 
-        DataCheck();
+        _Object.SetActive(false);
+        CheckUnlockStatus();
     }
 
-    private void DataCheck()
+    private void CheckUnlockStatus()
     {
-        if (baseCost.gameProgressBool["unlockOffice"] && unlockType == UnlockType.Office)
+        if (baseCost.gameProgressBool[unlockType.ToString()])
         {
             _Object.SetActive(true);
-            ActiveFalseObject();
-            gameObject.SetActive(false);
-        }
-        else if (unlockType == UnlockType.Container)
-        {
-            if (baseCost.gameProgressBool["unlockContainer_1"])
-            {
-                _Object.SetActive(true);
-                gameObject.SetActive(false);
-                ActiveFalseWall();
-            }
-            else if (baseCost.gameProgressBool["unlockContainer_2"])
-            {
-                _Object.SetActive(true);
-                gameObject.SetActive(false);
-                ActiveFalseWall();
-            }
-        }
-        else if (unlockType == UnlockType.Machine)
-        {
-            if (baseCost.gameProgressBool["unlockMachine_1"])
-            {
-                _Object.SetActive(true);
-                gameObject.SetActive(false);
-            }
-            else if (baseCost.gameProgressBool["unlockMachine_2"])
-            {
-                _Object.SetActive(true);
-                gameObject.SetActive(false);
-            }
-        }
-        else if (baseCost.gameProgressBool["unlockStall"] && unlockType == UnlockType.Stall)
-        {
-            _Object.SetActive(true);
-            gameObject.SetActive(false);
-        }
-        else if (baseCost.gameProgressBool["unlockStore"] && unlockType == UnlockType.Store)
-        {
-            _Object.SetActive(true);
-            ActiveFalseObject();
+            DisableObjects();
             gameObject.SetActive(false);
         }
     }
@@ -111,39 +76,21 @@ public class UnlockManager : MonoBehaviour
     {
         currentFill = updateProcess;
         float fillRate = 100f / unlockTime;
-        while (currentFill < 100)
+
+        while (currentFill < 100 && isTrigger)
         {
-            if (isTrigger)
-            {
-                currentFill += fillRate * Time.deltaTime;
-                UpdateUnlockUI(currentFill / 100);
-            }
+            currentFill += fillRate * Time.deltaTime;
+            UpdateUnlockUI(currentFill / 100);
             yield return null;
         }
 
-        // 오브젝트 생성구간
         if (currentFill >= 100)
         {
-            if (unlockType == UnlockType.Office)
-            {
-                SetActiveObject();
-            }
-            else if (unlockType == UnlockType.Container)
-            {
-                SetActiveObject();
-            }
-            else if (unlockType == UnlockType.Machine)
-            {
-                SetActiveObject();
-            }
-            else if (unlockType == UnlockType.Stall)
-            {
-                SetActiveObject();
-            }
+            ActivateObject();
         }
     }
 
-    private void SetActiveObject()
+    private void ActivateObject()
     {
         foreach (Transform item in transform)
         {
@@ -151,8 +98,16 @@ public class UnlockManager : MonoBehaviour
         }
 
         player.PT = PlayerType.None;
+        _Object.SetActive(true);
+        AnimateObject();
 
-        _Object.gameObject.SetActive(true);
+        isUnlocked = true;
+        UIManager.Instance.SpendGold(amount);
+        UpdateProgress();
+    }
+
+    private void AnimateObject()
+    {
         _Object.transform.DOScale(Vector3.zero, 0f);
         _Object.transform.DOScale(Vector3.one, 1f).SetEase(Ease.InBounce)
             .OnComplete(() =>
@@ -160,54 +115,57 @@ public class UnlockManager : MonoBehaviour
                 GameManager.Instance.NowNavMeshBake();
                 Vibration.VibratePop();
                 player.PT = PlayerType.Joystick;
-            }
-            );
-
-        isUnlocked = true;
-
-        UIManager.Instance.SpendGold(amount);
-
-        UpdataObject();
+            });
     }
 
-    private void UpdataObject()
+    private void UpdateProgress()
     {
-        if (unlockType == UnlockType.Office)
+        switch (unlockType)
         {
-            baseCost.gameProgressBool["unlockOffice"] = true;
-            ActiveFalseObject();
+            case UnlockType.Office:
+                baseCost.gameProgressBool["Office"] = true;
+                DisableObjects();
+                break;
+            case UnlockType.Container1:
+            case UnlockType.Container2:
+                UpdateContainerProgress();
+                DisableWall();
+                break;
+            case UnlockType.Machine1:
+            case UnlockType.Machine2:
+                UpdateMachineProgress();
+                break;
+            case UnlockType.Stall:
+                baseCost.gameProgressBool["Stall"] = true;
+                break;
+            case UnlockType.Store:
+                baseCost.gameProgressBool["Store"] = true;
+                DisableObjects();
+                break;
         }
-        else if (unlockType == UnlockType.Container)
+    }
+
+    private void UpdateContainerProgress()
+    {
+        if (!baseCost.gameProgressBool["Container1"])
         {
-            if (!baseCost.gameProgressBool["unlockContainer_1"] && !baseCost.gameProgressBool["unlockContainer_2"])
-            {
-                baseCost.gameProgressBool["unlockContainer_1"] = true;
-            }
-            else if (baseCost.gameProgressBool["unlockContainer_1"] && !baseCost.gameProgressBool["unlockContainer_2"])
-            {
-                baseCost.gameProgressBool["unlockContainer_2"] = true;
-            }
-            ActiveFalseWall();
+            baseCost.gameProgressBool["Container1"] = true;
         }
-        else if (unlockType == UnlockType.Machine)
+        else if (!baseCost.gameProgressBool["Container2"])
         {
-            if (!baseCost.gameProgressBool["unlockMachine_1"] && !baseCost.gameProgressBool["unlockMachine_2"])
-            {
-                baseCost.gameProgressBool["unlockMachine_1"] = true;
-            }
-            else if (baseCost.gameProgressBool["unlockMachine_1"] && !baseCost.gameProgressBool["unlockMachine_2"])
-            {
-                baseCost.gameProgressBool["unlockMachine_2"] = true;
-            }
+            baseCost.gameProgressBool["Container2"] = true;
         }
-        else if (unlockType == UnlockType.Stall)
+    }
+
+    private void UpdateMachineProgress()
+    {
+        if (!baseCost.gameProgressBool["Machine1"])
         {
-            baseCost.gameProgressBool["unlockStall"] = true;
+            baseCost.gameProgressBool["Machine1"] = true;
         }
-        else if (unlockType == UnlockType.Store)
+        else if (!baseCost.gameProgressBool["Machine2"])
         {
-            baseCost.gameProgressBool["unlockStore"] = true;
-            ActiveFalseObject();
+            baseCost.gameProgressBool["Machine2"] = true;
         }
     }
 
@@ -227,24 +185,24 @@ public class UnlockManager : MonoBehaviour
             {
                 _Object.SetActive(false);
             }
-            if (unlockType == UnlockType.Store)
+            else if (unlockType == UnlockType.Store)
             {
-                SetActiveObject();
+                ActivateObject();
             }
         }
     }
 
-    private void ActiveFalseWall()
+    private void DisableWall()
     {
         _Wall.SetActive(false);
     }
-    private void ActiveFalseSideWlk()
+    private void DisableSideWalk()
     {
         _SideWalk.SetActive(false);
     }
-    private void ActiveFalseObject()
+    private void DisableObjects()
     {
-        ActiveFalseWall();
-        ActiveFalseSideWlk();
+        DisableWall();
+        DisableSideWalk();
     }
 }
