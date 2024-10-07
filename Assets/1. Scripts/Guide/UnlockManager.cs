@@ -225,16 +225,12 @@ public class UnlockManager : MonoBehaviour
         {
             if (unlockType == UnlockType.Stall)
             {
-                GameObject.Find("Stall").gameObject.SetActive(false);
-                if (unlockType == UnlockType.Store)
-                {
-                    SetActiveObject();
-                }
+                _Object.SetActive(false);
             }
-        }
-        else
-        {
-            Debug.LogWarning("µ·¾ø¾î");
+            if (unlockType == UnlockType.Store)
+            {
+                SetActiveObject();
+            }
         }
     }
 

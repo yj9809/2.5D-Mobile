@@ -342,6 +342,10 @@ public class UIManager : Singleton<UIManager>
     private void GetGold()
     {
         p.Gold += store.totalGold;
+        UpdateUI();
+        Debug.Log($"°ñµå È¹µæ: {store.totalGold}, ÇöÀç °ñµå: {p.Gold}");
+
+        store.totalGold = 0;
     }
     #endregion
 
