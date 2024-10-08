@@ -57,6 +57,7 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
         for (int i = 0; i < data.baseCost.objectData["packagingWaitObjCount"]; i++)
         {
             GameObject newChuru = PoolingManager.Instance.GetObj(churu);
+            newChuru.transform.parent = churuStorageParent;
             churuStorage.Push(newChuru);
             newChuru.transform.localPosition = new Vector3(0, 0 + (Utility.ObjRendererCheck(newChuru) * churuStorage.Count), 0);
         }
