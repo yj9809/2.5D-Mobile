@@ -13,8 +13,6 @@ public interface IObjectDataSave
 
 public class BaseCost
 {
-    public string guestID;
-
     public Dictionary<string, int> upgradeCosts = new Dictionary<string, int>
     {
         { "baseSpeedUpgradeCost", 100 },
@@ -72,6 +70,7 @@ public class BaseCost
         { "Store", false }
     };
     public int guideStep = 0;
+    public string googleID;
 }
 
 public class DataManager : Singleton<DataManager>
@@ -88,6 +87,7 @@ public class DataManager : Singleton<DataManager>
     protected override void Awake()
     {
         base.Awake();
+        Debug.Log($"구글 아이디 : {Social.localUser.userName}");
     }
 
     public void AddObjStackCountList(IObjectDataSave iStackCountSave)
@@ -108,10 +108,10 @@ public class DataManager : Singleton<DataManager>
         if (baseCost == null)
             baseCost = new BaseCost();
 
-        baseCost.guestID = Backend.BMember.GetGuestID();
+        baseCost.googleID = Social.localUser.userName;
 
         Param param = new Param();
-        param.Add("guestID", baseCost.guestID);
+        param.Add("guestID", baseCost.googleID);
         param.Add("upgradeCosts", baseCost.upgradeCosts);
         param.Add("playerData", baseCost.playerData);
         param.Add("employeeList", baseCost.employeeList);
@@ -163,7 +163,7 @@ public class DataManager : Singleton<DataManager>
                 baseCost = new BaseCost();
 
                 baseCost.guideStep = int.Parse(gameDataJson[0]["guideStep"].ToString());
-                baseCost.guestID = gameDataJson[0]["guestID"].ToString();
+                baseCost.googleID = gameDataJson[0]["googleID"].ToString();
 
                 foreach (string itemKey in gameDataJson[0]["upgradeCosts"].Keys)
                 {

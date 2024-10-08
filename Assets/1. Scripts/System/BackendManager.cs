@@ -45,7 +45,9 @@ public class BackendManager : MonoBehaviour
 
         Debug.Log("구글 토큰 : " + token);
         var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
+
         DataManager.Instance.GameDataGet();
+
         if (DataManager.Instance.baseCost == null)
         {
             DataManager.Instance.GameDataInsert();

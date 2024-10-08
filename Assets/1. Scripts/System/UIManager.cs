@@ -29,6 +29,7 @@ public class UIManager : Singleton<UIManager>
     [TabGroup("Camera Zoom"), SerializeField] private Sprite[] cameraZoomButtonImg;
 
     [SerializeField] private TextMeshProUGUI goldTxt;
+    [SerializeField] private TMP_Text userNameText;
 
     [TabGroup("Upgrade"), SerializeField] private GameObject upgradePanel;
     [TabGroup("Upgrade"), SerializeField] private Sprite[] upgradeStepSprite;
@@ -67,6 +68,7 @@ public class UIManager : Singleton<UIManager>
         cameraZoomButton.onClick.AddListener(ZoomScreen);
         storeGetGoldButton.onClick.AddListener(GetGold);
 
+        userNameText.text = DataManager.Instance.baseCost.googleID;
         SetUpgradeInfo();
         UpdateUI();
         StoreUI();
