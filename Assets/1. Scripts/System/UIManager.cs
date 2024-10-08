@@ -37,6 +37,7 @@ public class UIManager : Singleton<UIManager>
 
     [TabGroup("Store"), SerializeField] private Store store;
     [TabGroup("Store"), SerializeField] private GameObject storePanel;
+    [TabGroup("Store"), SerializeField] private TextMeshProUGUI storeGoldTxt;
     [TabGroup("Store"), SerializeField] private Button storeGetGoldButton;
     [TabGroup("Store")] public Button storeUpgradeButton;
 
@@ -68,6 +69,7 @@ public class UIManager : Singleton<UIManager>
 
         SetUpgradeInfo();
         UpdateUI();
+        StoreUI();
         //UpgradeTxtUpdate();
     }
 
@@ -86,7 +88,6 @@ public class UIManager : Singleton<UIManager>
    
     private void UpdateUI()
     {
-        Debug.Log(baseCost);
         goldTxt.text = ChangeNumbet(p.Gold.ToString());
     }
 
@@ -338,6 +339,14 @@ public class UIManager : Singleton<UIManager>
     {
         storePanel.SetActive(false);
     }
+    public void StoreUI()
+    {
+        storeGoldTxt.text = ChangeNumbet(store.totalGold.ToString());
+    }
+    public void StoreUI(TextMeshProUGUI text)
+    {
+        text.text = ChangeNumbet(store.totalGold.ToString());
+    }
 
     private void GetGold()
     {
@@ -346,6 +355,7 @@ public class UIManager : Singleton<UIManager>
         Debug.Log($"°ñµå È¹µæ: {store.totalGold}, ÇöÀç °ñµå: {p.Gold}");
 
         store.totalGold = 0;
+        StoreUI();
     }
     #endregion
 

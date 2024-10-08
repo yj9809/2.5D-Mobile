@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Sirenix.OdinInspector;
 
 public class Store : MonoBehaviour
 {
     [SerializeField] private GameObject[] _gameObjects;
     [SerializeField] private GameObject commonGameObjects;
+    [SerializeField] private TextMeshProUGUI goldTxt;
     [SerializeField, Tooltip("초당 생산량")] private float goldPerSecond = 100f;
     [SerializeField, Tooltip("생산 주기")] private float timeInterval = 1f;
     private float timer = 0;
@@ -43,5 +45,7 @@ public class Store : MonoBehaviour
     private void GetGold()
     {
         totalGold += goldPerSecond;
+        UIManager.Instance.StoreUI();
+        UIManager.Instance.StoreUI(goldTxt);
     }
 }
