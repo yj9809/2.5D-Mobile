@@ -1,0 +1,1 @@
+https://docs.unity.com/ads/ko-kr/manual/ImplementingRewardedAdsUnity
