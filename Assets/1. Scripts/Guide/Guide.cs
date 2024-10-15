@@ -32,10 +32,11 @@ public class Guide : MonoBehaviour
     [SerializeField] private GameObject _StallObject;
     [SerializeField] private GameObject _StoreObject;
 
+    public bool _Scripts = true;
+    [HideIfGroup("_Scripts"), SerializeField] private BoxPackaging boxPackaging;
+    [HideIfGroup("_Scripts"), SerializeField] private BoxStorage boxStorage;
+    [HideIfGroup("_Scripts"), SerializeField] private Truck truck;
     private BaseCost baseCost;
-    private BoxPackaging boxPackaging;
-    private BoxStorage boxStorage;
-    private Truck truck;
     private Player player;
 
     private bool _guideDone = false;
@@ -53,10 +54,6 @@ public class Guide : MonoBehaviour
             return;
 
         guideButton.onClick.AddListener(GuideButton);
-
-        boxPackaging = FindObjectOfType<BoxPackaging>();
-        boxStorage = GameObject.Find("BoxStorage").GetComponent<BoxStorage>();
-        truck = GameObject.Find("Truck").GetComponent<Truck>();
 
         SetTargetsActive(false);
         CreateGuidePrefab();
