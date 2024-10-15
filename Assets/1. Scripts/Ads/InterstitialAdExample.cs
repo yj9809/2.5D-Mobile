@@ -9,59 +9,59 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
 
     void Awake()
     {
-        // Get the Ad Unit ID for the current platform:
+        // 현재 플랫폼에 대한 광고 단위 ID 가져오기
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
             ? _iOsAdUnitId
             : _androidAdUnitId;
     }
 
-   void Start()
+    void Start()
     {
-        // Load the initial ad
+        // 초기 광고 로드
         LoadAd();
-        // Show the ad immediately when the app starts
+        // 앱 시작 시 광고 즉시 표시
         ShowAd();
-        // Start showing ads every 5 minutes (300 seconds)
+        // 5분(300초)마다 광고 표시 시작
         InvokeRepeating("ShowAd", 300f, 300f);
     }
 
-    // Load content to the Ad Unit:
+    // 광고 단위에 콘텐츠 로드:
     public void LoadAd()
     {
-        // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
-        Debug.Log("Loading Ad: " + _adUnitId);
+        // 중요! 초기화 이후에만 콘텐츠를 로드하세요 (이 예제에서는 초기화가 다른 스크립트에서 처리됨).
+        Debug.Log("광고 로드 중: " + _adUnitId);
         Advertisement.Load(_adUnitId, this);
     }
 
-    // Show the loaded content in the Ad Unit:
+    // 광고 단위에서 로드된 콘텐츠 표시:
     public void ShowAd()
     {
-        // Note that if the ad content wasn't previously loaded, this method will fail
-        Debug.Log("Showing Ad: " + _adUnitId);
+        // 광고 콘텐츠가 이전에 로드되지 않은 경우 이 메서드는 실패합니다.
+        Debug.Log("광고 표시 중: " + _adUnitId);
         Advertisement.Show(_adUnitId, this);
     }
 
-    // Implement Load Listener and Show Listener interface methods: 
+    // Load Listener 및 Show Listener 인터페이스 메서드 구현:
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
-        // Optionally execute code if the Ad Unit successfully loads content.
+        // 광고 단위가 콘텐츠를 성공적으로 로드했을 때 실행할 코드를 선택적으로 작성할 수 있습니다.
     }
 
     public void OnUnityAdsFailedToLoad(string _adUnitId, UnityAdsLoadError error, string message)
     {
-        Debug.Log($"Error loading Ad Unit: {_adUnitId} - {error.ToString()} - {message}");
-        // Optionally execute code if the Ad Unit fails to load, such as attempting to try again.
+        Debug.Log($"광고 단위 로드 오류: {_adUnitId} - {error.ToString()} - {message}");
+        // 광고 단위가 로드 실패할 경우 선택적으로 다시 시도하는 등의 코드를 실행할 수 있습니다.
     }
 
     public void OnUnityAdsShowFailure(string _adUnitId, UnityAdsShowError error, string message)
     {
-        Debug.Log($"Error showing Ad Unit {_adUnitId}: {error.ToString()} - {message}");
-        // Optionally execute code if the Ad Unit fails to show, such as loading another ad.
+        Debug.Log($"광고 단위 표시 오류 {_adUnitId}: {error.ToString()} - {message}");
+        // 광고 단위가 표시 실패할 경우 선택적으로 다른 광고를 로드하는 등의 코드를 실행할 수 있습니다.
     }
 
     public void OnUnityAdsShowStart(string _adUnitId) { }
     public void OnUnityAdsShowClick(string _adUnitId) { }
-    public void OnUnityAdsShowComplete(string _adUnitId, UnityAdsShowCompletionState showCompletionState) 
+    public void OnUnityAdsShowComplete(string _adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
         LoadAd();
     }
