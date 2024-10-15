@@ -144,6 +144,7 @@ public class UnlockManager : MonoBehaviour
                 baseCost.gameProgressBool["Stall"] = true;
                 break;
             case UnlockType.Store:
+                baseCost.gameProgressBool["Stall"] = false;
                 baseCost.gameProgressBool["Store"] = true;
                 DisableObjects();
                 break;
