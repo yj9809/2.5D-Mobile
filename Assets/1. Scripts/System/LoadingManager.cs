@@ -25,9 +25,6 @@ public class LoadingManager : MonoBehaviour
     }
     private IEnumerator LoadScene()
     {
-        //if (data.CheckFile())
-        //    data.LoadData();
-
         AsyncOperation gameLoad = SceneManager.LoadSceneAsync(gameScene);
         gameLoad.allowSceneActivation = false;
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.IO;
 using BackEnd;
 using GooglePlayGames;
@@ -241,6 +242,24 @@ public class DataManager : Singleton<DataManager>
         else
         {
             Debug.LogError("게임 정보 데이터 수정에 실패했습니다. : " + bro);
+        }
+    }
+
+    public void DeleteData()
+    {
+        BackendReturnObject bro = Backend.GameData.DeleteV2("UserData", gameDataRowInDate, Backend.UserInDate);
+
+        if(bro.IsSuccess())
+        {
+            Debug.Log("정보 삭제 완료");
+            Application.Quit();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
+        else
+        {
+            Debug.Log("삭제 실패");
         }
     }
 

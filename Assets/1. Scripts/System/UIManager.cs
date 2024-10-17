@@ -98,6 +98,11 @@ public class UIManager : Singleton<UIManager>
             cameraZoomButton.image.sprite == cameraZoomButtonImg[0] ? cameraZoomButtonImg[1] : cameraZoomButtonImg[0];
     }
 
+    public void DeleteData()
+    {
+        DataManager.Instance.DeleteData();
+    }
+
     #region GoldUI
     // 재화 단위 변경
     private string ChangeNumbet(string number)
