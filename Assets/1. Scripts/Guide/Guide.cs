@@ -46,7 +46,7 @@ public class Guide : MonoBehaviour
 
     private void Awake()
     {
-        UIManager.Instance.SetGuideStep(this);
+        //UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
     }
