@@ -8,6 +8,17 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using BackEnd;
 
+// 이것도 권오석 작품 맞을껄?
+// 이거 보면 양심적으로 주석처리 해주겠지 싶음
+// Ui에 문제 생겼다 하면 바로 권오석한테 문의
+
+// 근데 지금 자세히 보니까 이 밑에 있는건 내꺼 같음
+// 그래서 주석 처리 남기겠음
+// 이 부부에서 UpgradeInfo 클래스는 그냥 단순하게 텍스트 배열로 받아서 처리하려고 했는데
+// 새로운 방법에 도전해보고 싶어 만들었던 클래스임
+// system.func<자료형> 이렇게 선언해둔 변수는 액션이랑 살짝 비슷하게 활용할 수 있는거 같음
+// 값이 바뀌면 알아서 업데이트 된달까? 그런 느낌으로 활용한거임 
+// 그래서 만약 값 추가하고 싶고 업데이트도 필요하다 싶으면 똑같이 처리해서 써보셈
 [System.Serializable]
 public class UpgradeInfo
 {
@@ -15,6 +26,12 @@ public class UpgradeInfo
     public System.Func<int> cost;
     public int maxCount; // 최대 업그레이드 횟수
 
+    /// <summary>
+    /// 이게 텍스트 업데이트 해주는 부분
+    /// </summary>
+    /// <param name="count"> 업그레이드 한 횟수</param>
+    /// <param name="cost"> 업그레이드 가격 2배씩 올라가게 설정해뒀을껄? </param>
+    /// <param name="maxCount"> 최대 가능횟수 (솔직히 전부 5로 통일되어 있어서 필요한가 싶어) </param>
     public UpgradeInfo(System.Func<int> count, System.Func<int> cost, int maxCount)
     {
         this.count = count;
@@ -54,6 +71,7 @@ public class UIManager : Singleton<UIManager>
     private GameManager gm;
 
     private List<UpgradeInfo> upgradeInfos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,22 +88,8 @@ public class UIManager : Singleton<UIManager>
         SetUpgradeInfo();
         UpdateUI();
         StoreUI();
-        //UpgradeTxtUpdate();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            SellItem();
-        }
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            Upgrade(5);
-        }
-    }
-   
     private void UpdateUI()
     {
         goldTxt.text = ChangeNumbet(p.Gold.ToString());
@@ -169,6 +173,10 @@ public class UIManager : Singleton<UIManager>
     private void SetUpgradeInfo()
     {
         int maxCount = baseCost.upgradeCosts["baseUpgradeMaxCount"] ;
+        // 이게 새로운 방식으로 적용한 텍스트 업데이트임 
+        // 이렇게 새로운 클래스 리스트에 미리 데이터에 정보를 입력할 수 있게 미리 넣어둠
+        // 만약 새로운 텍스트 정보 값 필요하면 밑쪽 보고 포멧 똑같이 해서 넣으면 됨
+        // 데이터 딕셔너리 키 값 잘 입력하고 문제 생기면 이쪽도 확인 필요
         upgradeInfos = new List<UpgradeInfo>
         {
             new UpgradeInfo(() => baseCost.upgradeCosts["baseSpeedUpgradeCount"] , () => baseCost.upgradeCosts["baseSpeedUpgradeCost"] , maxCount ),
@@ -213,6 +221,8 @@ public class UIManager : Singleton<UIManager>
     {
         int cost = 0;
         int maxCount = baseCost.upgradeCosts["baseUpgradeMaxCount"] ;
+        // 이건 Switch 문 말고 다른걸로 해보고 싶었는데 방법이 잘 생각안났음
+        // 추후 새로운 방법 떠오르면 이쪽 바꾸면 될꺼임
         switch (num)
         {
             case 0:

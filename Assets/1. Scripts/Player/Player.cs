@@ -25,11 +25,6 @@ public class Player : MonoBehaviour, IObjectDataSave
         get { return pT; }
         set { pT = value; }
     }
-    //[SerializeField] private int maxObjStackCount = 5;
-    //[SerializeField] private float baseSpeed = 5f;
-    //[SerializeField] private float cartSpeed = 2.5f;
-    //[SerializeField] private int gold = 0;
-    //[SerializeField] private int goldPerBox = 5;
 
     private CharacterController cc;
     private Animator animator;

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+// 이건 권오석?? 작품 일꺼임 아마도 그럼
+// 그러니까 문제 생기면 권오석 쪽으로 문의 부탁
 public class MainCamera : MonoBehaviour
 {
     [SerializeField] private Player p;

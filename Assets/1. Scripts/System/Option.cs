@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using TMPro;
 
+// 이것도 권오석 작품 여기서 내가 건든게 없어서 찾기 힘듬
+// 문제 생기면 역시나 동일하게 권오석한테 문의 부탁
 public class Option : MonoBehaviour
 {
     [SerializeField] private Button showOptionButton;

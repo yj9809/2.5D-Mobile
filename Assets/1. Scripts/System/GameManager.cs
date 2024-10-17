@@ -50,6 +50,7 @@ public class GameManager : Singleton<GameManager>
 
     public string sceneName;
 
+    //게임 종료 시 저장 코드
     private void OnApplicationQuit()
     {
         DataManager.Instance.GameDataUpdate();
@@ -66,7 +67,6 @@ public class GameManager : Singleton<GameManager>
     {
         SceneManager.activeSceneChanged += OnSceneLoaded;
         employees.AddRange(FindObjectsOfType<Employee>());
-        //nms.BuildNavMesh();
         foreach (var stackable in stackCount)
         {
             targetUsage[stackable] = false; // 모든 타겟의 사용 상태를 초기화
@@ -88,6 +88,7 @@ public class GameManager : Singleton<GameManager>
             List<GameObject> employeesToRemove = new List<GameObject>();
             int employeeNum = 0;
 
+            // 게임 실행 시 저장되어 있던 종업원 정보를 불러오는 부분
             foreach (var item in employee)
             {
                 if (data.baseCost.employeeList.Contains(item.name))
@@ -113,22 +114,15 @@ public class GameManager : Singleton<GameManager>
                     employeeNum++;
                 }
             }
-
+            // 불러오기 끝나고 리스트 삭제
             foreach (var item in employeesToRemove)
             {
                 employee.Remove(item);
             }
         }
-
-        // 오브젝트 단계를 설정하기 위해 임시로 넣어둠
-        //if (data.baseCost.step1)
-        //{
-        //    Debug.Log("실행");
-        //    StepSystem.Instance.Step1Obj[0].gameObject.SetActive(false);
-        //    StepSystem.Instance.Step1Obj[1].gameObject.SetActive(true);
-        //}
     }
 
+    // 스택 저장하기 위해 인터페이스를 활용하여 스택 저장값 등록
     public void AddStackable(IStackable stackable)
     {
         if (!stackCount.Contains(stackable))
@@ -137,6 +131,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
     
+    //종업원이 찾을 타겟 인터페이스를 활용하여 타겟 등록
     public void AddTarget(IStackable stackable)
     {
         if (!targetUsage.ContainsKey(stackable))
@@ -145,6 +140,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // 종업원이 쓰고 있는 타겟 활용을 겹치지 않게 하기 위해 Bool값을 통해 조정
     public bool IsTargetBeingUsed(IStackable stackable)
     {
         if (targetUsage.ContainsKey(stackable))
@@ -154,6 +150,7 @@ public class GameManager : Singleton<GameManager>
         return false; // 타겟이 딕셔너리에 없으면 사용 중이 아님
     }
 
+    // 종업원이 타겟을 쓰고 있는 경우 딕셔너리 Bool 값 변경을 통해 쓰고 있는지 확인
     public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
     {
         if (stackable == null)
@@ -172,6 +169,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // 종업원이 타겟을 다른 종업원에게 뺏기면 다른 타겟을 찾기
     public void UpdateTargets()
     {
         foreach (var employee in employees)
@@ -184,11 +182,13 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    // 네비매쉬 빌드
     public void NowNavMeshBake()
     {
         nms.BuildNavMesh();
     }
 
+    // 컨베이어 벨트를 순차적으로 방문하기 위해 만든 함수
     public Transform ConveyorTransform(Employee employee)
     {
         employee.CbTransNum++;

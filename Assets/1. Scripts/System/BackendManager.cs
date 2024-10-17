@@ -9,6 +9,7 @@ public class BackendManager : MonoBehaviour
     [SerializeField] private LoadingManager loadingManager;
     [SerializeField] private Image image;
 
+    // 게임 실행 시 뒤끝 서버 초기화
     void Awake()
     {
         var bro = Backend.Initialize();
@@ -30,11 +31,13 @@ public class BackendManager : MonoBehaviour
 #endif
     }
 
+    // 구글 로그인 함수
     public void StartGoogleLogin()
     {
         TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
     }
 
+    // 구글 로그인이 가능한지 확인 후 결과 반환
     private void GoogleLoginCallback(bool isSuccess, string errorMessage, string token)
     {
         if (isSuccess == false)
@@ -56,6 +59,8 @@ public class BackendManager : MonoBehaviour
         Debug.Log("페데레이션 로그인 결과 : " + bro);
     }
 
+    // 게스트 로그인 함수
+    // 실제 출시 후에는 활용할 일이 없어 삭제 예정
     private void GuestLogin()
     {
         Backend.BMember.GuestLogin("게스트 로그인으로 로그인함", (callback) => {

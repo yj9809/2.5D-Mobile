@@ -7,11 +7,15 @@ using BackEnd;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
+// 각종 스택, 종업원 정보를 담기 위한 인터페이스
 public interface IObjectDataSave
 {
     void ObjectDataSave();
 }
 
+// 플레이 시 저장 값 확인 용 Base 데이터 
+// 데이터 추가 할 경우 딕셔너리<string, (int & float & bool)> 값 활용하여 만들고 
+// 밑에 있는 dataupdata 함수에서 param 값도 추가해줘야함
 public class BaseCost
 {
     public string guestID;
@@ -86,10 +90,6 @@ public class DataManager : Singleton<DataManager>
     private string gameDataRowInDate = string.Empty;
 
     // Start is called before the first frame update
-    protected override void Awake()
-    {
-        base.Awake();
-    }
 
     public void AddObjStackCountList(IObjectDataSave iStackCountSave)
     {
@@ -103,7 +103,7 @@ public class DataManager : Singleton<DataManager>
             item.ObjectDataSave();
         }
     }
-
+    // 데이터 추가
     public void GameDataInsert()
     {
         if (baseCost == null)
@@ -111,6 +111,10 @@ public class DataManager : Singleton<DataManager>
 
         baseCost.guestID = Backend.BMember.GetGuestID();
 
+        // 데이터를 추가할 경우 위쪽 BaseCost 클래스에서 딕셔너리로 추가 후
+        // 해당 부분 param.Add를 통해 정보를 추가해 줘야함
+        // 불러오는 부분에서도 각종 정보를 직접 넣어주는 코드를 작성해야함
+        // 불러오기 부분에서 따로 주석 처리 해두겠음
         Param param = new Param();
         param.Add("guestID", baseCost.guestID);
         param.Add("upgradeCosts", baseCost.upgradeCosts);
@@ -138,9 +142,9 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    // 데이터가 존재 할 경우 데이터 가져오기
     public void GameDataGet()
     {
-        // Step 3. 게임 정보 불러오기 구현하기
         Debug.Log("게임 정보 조회 함수를 호출합니다.");
 
         var bro = Backend.GameData.GetMyData("UserData", new Where());
@@ -166,6 +170,8 @@ public class DataManager : Singleton<DataManager>
                 baseCost.guideStep = int.Parse(gameDataJson[0]["guideStep"].ToString());
                 baseCost.guestID = gameDataJson[0]["guestID"].ToString();
 
+                //데이터 추가할 경우 해당 부분에 반복문을 통해 데이터 정보를 넣어줘야함
+                // 밑에 foreach 형식이나 for 문 사용하여 해당 형식으로 해당 데이터를 잘 넣어줘야함
                 foreach (string itemKey in gameDataJson[0]["upgradeCosts"].Keys)
                 {
                     baseCost.upgradeCosts[itemKey] = int.Parse(gameDataJson[0]["upgradeCosts"][itemKey].ToString());
@@ -201,6 +207,7 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    // 게임 정보를 업데이트 하는 함수
     public void GameDataUpdate()
     {
         // Step 4. 게임 정보 수정 구현하기
@@ -210,6 +217,8 @@ public class DataManager : Singleton<DataManager>
             return;
         }
 
+        // 해당 부분도 마찬가지로 데이터 추가할 때 
+        // 밑 param.Add로 해당 딕셔너리를 제대로 추가해줘야함
         ObjStackCountSave();
         Param param = new Param();
         param.Add("upgradeCosts", baseCost.upgradeCosts);
@@ -245,10 +254,12 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    // 데이터 삭제 함수
     public void DeleteData()
     {
         BackendReturnObject bro = Backend.GameData.DeleteV2("UserData", gameDataRowInDate, Backend.UserInDate);
-
+        
+        // 데이터를 삭제하고 게임을 꺼버림
         if(bro.IsSuccess())
         {
             Debug.Log("정보 삭제 완료");
@@ -260,19 +271,6 @@ public class DataManager : Singleton<DataManager>
         else
         {
             Debug.Log("삭제 실패");
-        }
-    }
-
-    public void ChangeFedeartion()
-    {
-        BackendReturnObject bro = Backend.BMember.ChangeCustomToFederation("federationToken", FederationType.Google);
-        if (bro.IsSuccess())
-        {
-            Debug.Log("로그인 타입 전환에 성공했습니다");
-        }
-        else
-        {
-            Debug.Log($"로그인 타입 전환에 실패 + {bro}");
         }
     }
 }

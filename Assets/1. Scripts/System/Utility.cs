@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Android;
 using DG.Tweening;
 
+// 여기는 재료 타입 나눠서 움직임 결정해줄려고 만든 enum임
+// create는 재료 생산할 때, Drop은 물건 가져갈 때, Array는 박스 스토리지에 옮길 때
+// Car는 트럭에 박스 옮길 때, Box는 말 그대로 박스를 플레이어 카트에 옮길 때 
+// 어느 부분 오브젝트 움직임이 이상하다 싶으면 여기 확인해서 밑에 움직임 처리하는 부분에 해당 enum 번호 찾아서 확인하면 됨
 public enum CheckType
 {
     Create,
@@ -53,6 +57,7 @@ public static class Utility
     }
     // parentPos 이동 시킬 곳, churu 만들 오브젝트(처음 재료 만들어주는 곳에서만 사용하면 될꺼 같아서 나머지는 다 Null)
     // getChuruStack 가져올 스택(a에서 b로 옮길 때 a를 말함), setChuruStack 받을 스택(마찬가지로 b를 말함), num 타입 구분을 위한 인트
+    // 막 재료들 이상하게 크게나 적게 나올 때나 재료들이 이상하게 움직일 때 대부분 여기서 확인하면 됨
     /// <summary>
     /// 오브젝트 이동 시킬 함수.
     /// </summary>

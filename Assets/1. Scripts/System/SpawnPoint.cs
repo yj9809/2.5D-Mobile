@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 이건 아마 권오석 작품일텐데? 맞을꺼임
+// 그래서 솔직히 나도 잘 모르니까
+// 문제 생기면 바로 권오석한테 문의 부탁.
 public class SpawnPoint : MonoBehaviour
 {
     [SerializeField] private GameObject npc;

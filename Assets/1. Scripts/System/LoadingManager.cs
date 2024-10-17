@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// 권오석 작품 내꺼 아님 추가 설명 필요한 경우
+// 권오석한테 문의 바람
 public class LoadingManager : MonoBehaviour
 {
     private DataManager data;
