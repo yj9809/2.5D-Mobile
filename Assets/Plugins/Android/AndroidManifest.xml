@@ -16,7 +16,8 @@
 			<meta-data android:name="unityplayer.UnityActivity" android:value="true" />
 		</activity>
 	</application>
-
+	
+	<uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<!-- INTERNET 권한 추가 -->
