@@ -23,7 +23,6 @@ public class WorkPoint : MonoBehaviour
     [HideIfGroup("_Scripts"), SerializeField] private BoxStorage _boxStorage;
     [HideIfGroup("_Scripts"), SerializeField] private BoxPackaging _boxPackaging;
     [HideIfGroup("_Scripts"), SerializeField] private Truck truck;
-    [HideIfGroup("_Scripts"), SerializeField] private InterstitialAdExample adExample;
 
     [Title("WorkPointType")]
     [EnumToggleButtons, SerializeField] private WorkPointType wpType;
@@ -87,27 +86,5 @@ public class WorkPoint : MonoBehaviour
             p.StopBoxPackagingAnimationPlayer();
         }
         
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Player p = other.GetComponent<Player>();
-        if (p != null)
-        {
-            switch (wpType)
-            {
-                case WorkPointType.Truck:
-                    if (DataManager.Instance.baseCost.guideStep == 6)
-                    {
-                        Ads();
-                    }
-                    break;
-            }
-        }
-    }
-
-    private void Ads()
-    {
-        adExample.ShowAd();
     }
 }

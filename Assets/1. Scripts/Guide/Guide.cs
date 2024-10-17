@@ -36,14 +36,17 @@ public class Guide : MonoBehaviour
     [HideIfGroup("_Scripts"), SerializeField] private BoxPackaging boxPackaging;
     [HideIfGroup("_Scripts"), SerializeField] private BoxStorage boxStorage;
     [HideIfGroup("_Scripts"), SerializeField] private Truck truck;
+    [HideIfGroup("_Scripts"), SerializeField] private InterstitialAdExample adExample;
     private BaseCost baseCost;
     private Player player;
 
     private bool _guideDone = false;
 
+    private bool _ShowAd = false;
+
     private void Awake()
     {
-        //UIManager.Instance.SetGuideStep(this);
+        UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
     }
@@ -74,6 +77,31 @@ public class Guide : MonoBehaviour
         {
             GuideStep();
         }
+
+        // ±¤°í
+        if (!_ShowAd)
+        {
+            if (baseCost.guideStep == 6 && truck.BoxStack.Count == 1)
+            {
+                Ads();
+                _ShowAd = true;
+            }
+            else if (baseCost.guideStep == 10)
+            {
+                Ads();
+                _ShowAd = true;
+            }
+            else if (_guideDone)
+            {
+                Ads();
+                _ShowAd = true;
+            }
+        }
+    }
+    private void Ads()
+    {
+        adExample.ShowAd();
+        Debug.LogWarning("1");
     }
 
     private void GuideButton()
@@ -281,6 +309,7 @@ public class Guide : MonoBehaviour
     {
         baseCost.guideStep++;
         GuideLine();
+        _ShowAd = false;
     }
 
     private void UpdateGuide(string text, string numberText, bool isCompleted)
