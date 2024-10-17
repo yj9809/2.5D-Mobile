@@ -50,6 +50,10 @@ public class GameManager : Singleton<GameManager>
 
     public string sceneName;
 
+    private void OnApplicationQuit()
+    {
+        DataManager.Instance.GameDataUpdate();
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -194,4 +198,6 @@ public class GameManager : Singleton<GameManager>
 
         return cbTrans[employee.CbTransNum];
     }
+
+    
 }
