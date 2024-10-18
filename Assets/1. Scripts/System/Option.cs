@@ -14,15 +14,19 @@ public class Option : MonoBehaviour
 
     [SerializeField] private GameObject blurPanel;
 
-    [SerializeField] private AudioSource musicSource;
     [SerializeField] private Button musicButton;
+    [SerializeField] private Button effectButton;
     [SerializeField] private Image musicBGImage;
     [SerializeField] private Image musicOnOffImage;
     [SerializeField] private Image musicTextImage;
-    [SerializeField] private Sprite[] musicBGSprites;
+    [SerializeField] private Image effectBGImage;
+    [SerializeField] private Image effectOnOffImage;
+    [SerializeField] private Image effectTextImage;
     [SerializeField] private Sprite[] musicOnOffSprites;
-    [SerializeField] private Sprite[] musicTextSprites;
-    private bool isMusicOn = true;
+    [SerializeField] private Sprite[] effectOnOffSprites;
+    [SerializeField] private Sprite[] audioBGSprites;
+    [SerializeField] private Sprite[] audioTextSprites;
+    private AudioManager audioManager;
 
     [TitleGroup("Exit")] 
     [SerializeField] private TextMeshProUGUI exitText;
@@ -32,22 +36,21 @@ public class Option : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioManager = AudioManager.Instance;
         blurPanel.SetActive(false);
-
-        isMusicOn = PlayerPrefs.GetInt("MusicState", 1) == 1;
-        musicSource.mute = !isMusicOn;
-        UpdateMusicUI();
 
         showOptionButton.onClick.AddListener(ShowOption);
         closeOptionButton.onClick.AddListener(CloseOption);
         musicButton.onClick.AddListener(ToggleMusic);
+        effectButton.onClick.AddListener(ToggleEffect);
+
+        LoadUIState();
     }
 
     private void Update()
     {
         ExitGame();
     }
-
 
     private void ShowOption()
     {
@@ -61,21 +64,55 @@ public class Option : MonoBehaviour
 
     private void ToggleMusic()
     {
-        isMusicOn = !isMusicOn;
-        musicSource.mute = !isMusicOn;
-        PlayerPrefs.SetInt("MusicState", isMusicOn ? 1 : 0);
-        PlayerPrefs.Save();
+        audioManager.ToggleMusic();
         UpdateMusicUI();
+        SaveUIState();
+    }
+    private void ToggleEffect()
+    {
+        audioManager.ToggleEffect();
+        UpdateEffectUI();
+        SaveUIState();
     }
 
     private void UpdateMusicUI()
     {
-        musicBGImage.sprite = isMusicOn ? musicBGSprites[1] : musicBGSprites[0];
+        bool isMusicOn = audioManager.IsMusicOn();
         musicOnOffImage.sprite = isMusicOn ? musicOnOffSprites[1] : musicOnOffSprites[0];
-        musicTextImage.sprite = isMusicOn ? musicTextSprites[1] : musicTextSprites[0];
+        musicBGImage.sprite = isMusicOn ? audioBGSprites[1] : audioBGSprites[0];
+        musicTextImage.sprite = isMusicOn ? audioTextSprites[1] : audioTextSprites[0];
 
         RectTransform rt = musicOnOffImage.GetComponent<RectTransform>();
         rt.anchoredPosition = isMusicOn ? new Vector2(75, 0) : new Vector2(-75, 0);
+    }
+    private void UpdateEffectUI()
+    {
+        bool isEffectOn = audioManager.IsEffectOn();
+        effectOnOffImage.sprite = isEffectOn ? effectOnOffSprites[1] : effectOnOffSprites[0];
+        effectBGImage.sprite = isEffectOn ? audioBGSprites[1] : audioBGSprites[0];
+        effectTextImage.sprite = isEffectOn ? audioTextSprites[1] : audioTextSprites[0];
+
+        RectTransform rt = effectOnOffImage.GetComponent<RectTransform>();
+        rt.anchoredPosition = isEffectOn ? new Vector2(75, 0) : new Vector2(-75, 0);
+    }
+
+    private void SaveUIState()
+    {
+        PlayerPrefs.SetInt("MusicUIState", audioManager.IsMusicOn() ? 1 : 0);
+        PlayerPrefs.SetInt("EffectUIState", audioManager.IsEffectOn() ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadUIState()
+    {
+        bool musicState = PlayerPrefs.GetInt("MusicUIState", 1) == 1;
+        bool effectState = PlayerPrefs.GetInt("EffectUIState", 1) == 1;
+
+        audioManager.SetMusicState(musicState);
+        audioManager.SetEffectState(effectState);
+
+        UpdateMusicUI();
+        UpdateEffectUI();
     }
 
     private void ExitGame()

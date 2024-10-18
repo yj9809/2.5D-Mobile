@@ -27,7 +27,21 @@ public class WorkPoint : MonoBehaviour
     [Title("WorkPointType")]
     [EnumToggleButtons, SerializeField] private WorkPointType wpType;
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
+    {
+        Player p = other.GetComponent<Player>();
+        if (p != null)
+        {
+            switch (wpType)
+            {
+                case WorkPointType.Store:
+                    AudioManager.Instance.PlayEffect(EffectType.Store);
+                    break;
+            }
+        }
+    }
+
+        private void OnTriggerStay(Collider other)
     {
         Player p = other.GetComponent<Player>();
         Employee e = other.GetComponent<Employee>();
@@ -84,6 +98,12 @@ public class WorkPoint : MonoBehaviour
             UIManager.Instance.CloseUpgradeUI();
             UIManager.Instance.CloseStoreUI();
             p.StopBoxPackagingAnimationPlayer();
+            switch (wpType)
+            {
+                case WorkPointType.Store:
+                    AudioManager.Instance.PlayEffect(EffectType.Store);
+                    break;
+            }
         }
         
     }

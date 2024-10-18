@@ -58,8 +58,6 @@ public class UIManager : Singleton<UIManager>
     [TabGroup("Store"), SerializeField] private Button storeGetGoldButton;
     [TabGroup("Store")] public Button storeUpgradeButton;
 
-    [SerializeField] private Button breakDownButton;
-
     ////여기부터 윤제영에 테스트 참조임
     private IngredientMaker im;
     private ConveyorBelt cb;
@@ -80,7 +78,6 @@ public class UIManager : Singleton<UIManager>
         gm = GameManager.Instance;
         upgradePanel.SetActive(false);
         storePanel.SetActive(false);
-        breakDownButton.gameObject.SetActive(false);
 
         cameraZoomButton.onClick.AddListener(ZoomScreen);
         storeGetGoldButton.onClick.AddListener(GetGold);
@@ -158,6 +155,7 @@ public class UIManager : Singleton<UIManager>
             p.Gold -= amount;
             UpdateUI();
             Debug.Log($"골드 사용: {amount}, 남은 골드: {p.Gold}");
+            AudioManager.Instance.PlayEffect(EffectType.Upgrade);
             return true;
         }
         else
@@ -376,29 +374,21 @@ public class UIManager : Singleton<UIManager>
 
     #region GameTest UI
 
-    //private void OnGUI()
-    //{
-    //    GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+    private void OnGUI()
+    {
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-    //    // 폰트 사이즈 조정
-    //    buttonStyle.fontSize = 25;
+        // 폰트 사이즈 조정
+        buttonStyle.fontSize = 25;
 
-    //    if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
-    //        guide.ToNextStep();
-    //    if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-    //        AddGold(900);
-
-    //    if (GUI.Button(new Rect(650, 250, 200, 100), "세이브", buttonStyle))
-    //        DataManager.Instance.GameDataUpdate();
-    //    if (GUI.Button(new Rect(650, 360, 200, 100), "데이터 클리어", buttonStyle))
-    //    {
-    //        Backend.BMember.DeleteGuestInfo();
-    //    }
-
-    //}
-    //public void SetGuideStep(Guide guide)
-    //{
-    //    this.guide = guide;
-    //}
+        if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
+            guide.ToNextStep();
+        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
+            AddGold(900);
+    }
+    public void SetGuideStep(Guide guide)
+    {
+        this.guide = guide;
+    }
     #endregion
 }
