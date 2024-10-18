@@ -51,10 +51,7 @@ public class WorkPoint : MonoBehaviour
             {
                 case WorkPointType.Ingredient:
                     if (p != null) p.TakeObject(_ingredientMaker);
-                    if (e != null)
-                    {
-                        e.TakeObject(_ingredientMaker);
-                    }
+                    if (e != null) e.TakeObject(_ingredientMaker);
                     break;
                 case WorkPointType.ConveyorBelt_ingredient :
                     if (p != null) p.GiveObject(_conveyorBelt);
@@ -65,14 +62,14 @@ public class WorkPoint : MonoBehaviour
                     if(e != null) e.GiveObject(_boxStorage, true);
                     break;
                 case WorkPointType.BoxStorage:
-                    p.GiveObject(_boxStorage, false);
+                    if(p != null) p.GiveObject(_boxStorage, false);
                     break;
                 case WorkPointType.BoxPackaging_churu:
                     if (p != null) p.GiveObject(_boxPackaging);
                     if (e != null) e.GiveObject(_boxPackaging);
                     break;
                 case WorkPointType.Truck:
-                    p.GiveObject(truck);
+                    if(p != null) p.GiveObject(truck);
                     break;
                 case WorkPointType.Packaging:
                     if(p != null && p.ChuruStack.Count <= 0 && p.BoxStack.Count <= 0 && p.IngredientStack.Count <= 0)
@@ -81,10 +78,10 @@ public class WorkPoint : MonoBehaviour
                         _boxPackaging.Packaging(p, e);
                     break;
                 case WorkPointType.Office:
-                    UIManager.Instance.ShowUpgradeUI();
+                    if(p != null) UIManager.Instance.ShowUpgradeUI();
                     break;
                 case WorkPointType.Store:
-                    UIManager.Instance.ShowStoreUI();
+                    if(p != null) UIManager.Instance.ShowStoreUI();
                     break;
             }
         }
