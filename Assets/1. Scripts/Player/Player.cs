@@ -144,30 +144,6 @@ public class Player : MonoBehaviour, IObjectDataSave
         transform.position = currentPosition;
     }
 
-    public void PlayerAutoMove(Transform pos, Action action)
-    {
-        if(ingredientStack.Count <=0 && boxStack.Count <=0 && churuStack.Count <= 0)
-        {
-            pT = PlayerType.None;
-            animator.SetBool("isMove", true);
-
-            float distance = Vector3.Distance(transform.position, pos.position);
-            float moveDuration = distance / BaseSpeed;
-
-            Vector3 direction = (pos.position - transform.position).normalized;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            transform.DOMove(pos.position, moveDuration).SetEase(Ease.Linear).OnUpdate(() =>
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-            }).OnComplete(() =>
-            {
-                animator.SetBool("isMove", false);
-                action();
-            });
-        }
-    }
-
     public void OnCart()
     {
         if (ingredientStack.Count <= 0 && boxStack.Count <= 0 && churuStack.Count <= 0)
@@ -193,6 +169,8 @@ public class Player : MonoBehaviour, IObjectDataSave
         animator.SetLayerWeight(1, 0);
     }
 
+    #region 물건 주고 받는 코드들
+    // 이건 재료 받는 코드
     public void TakeObject(IngredientMaker im)
     {
         if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0 && churuStack.Count <= 0)
@@ -202,6 +180,7 @@ public class Player : MonoBehaviour, IObjectDataSave
         }
     }
 
+    // 이건 컨베이어에 올리는 코드
     public void GiveObject(ConveyorBelt cb)
     {
         if (ingredientStack.Count > 0)
@@ -211,6 +190,7 @@ public class Player : MonoBehaviour, IObjectDataSave
         }
     }
 
+    // 이건 츄룹이나 박스 받을 때 쓰는 코드 bool 값에 따라 츄룹 받을건지 박스 받을건지 달라짐
     public void GiveObject(BoxStorage bs, bool isChuru)
     {
         Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
@@ -223,6 +203,7 @@ public class Player : MonoBehaviour, IObjectDataSave
         }
     }
 
+    // 이건 츄룹을 박스 포장하는 곳으로 옮길 때 쓰는 코드
     public void GiveObject(BoxPackaging bp)
     {
         if (churuStack.Count > 0)
@@ -232,6 +213,7 @@ public class Player : MonoBehaviour, IObjectDataSave
         }
     }
 
+    // 이건 트럭에 박스 옮기는 코드
     public void GiveObject(Truck tr)
     {
         if (boxStack.Count > 0 && ingredientStack.Count <= 0)
@@ -241,7 +223,10 @@ public class Player : MonoBehaviour, IObjectDataSave
             Vibration.VibratePop();
         }
     }
+    #endregion
 
+    // 이건 사용중인 종업원들 정보를 플레이어가 가지고 있어서
+    // 게임 저장할 때 플레이어에서 데이터 매니저로 처리하는 코드
     public void ObjectDataSave()
     {
         foreach (var item in employee)

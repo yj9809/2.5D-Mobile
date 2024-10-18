@@ -63,7 +63,6 @@ public class IngredientMaker : MonoBehaviour, IStackable
     }
 
     public int GetStackCount() => churuStack.Count;
-
     public Transform GetTransform() => transform.GetChild(0).transform;
     public int GetTypeNum() => 0;
 }
