@@ -20,6 +20,8 @@ public class InAppUpdate : MonoBehaviour
 
     private IEnumerator CheckForUpdate()
     {
+        yield return new WaitForSeconds(0.5f);
+
         appUpdateManager = new AppUpdateManager();
 
         PlayAsyncOperation<AppUpdateInfo, AppUpdateErrorCode> appUpdateInfoOperation =
