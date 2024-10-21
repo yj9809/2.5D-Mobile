@@ -6,15 +6,15 @@ using Google.Play.AppUpdate;
 
 public class InAppUpdate : MonoBehaviour
 {
-    [SerializeField] private BackendManager backendManager;
-
-    private AppUpdateManager appUpdateManager = new AppUpdateManager();
+    private AppUpdateManager appUpdateManager;
 
     private void Start()
     {
 #if UNITY_EDITOR
+        Debug.LogWarning("인앱 업데이트는 에디터에서는 지원되지 않습니다.");
 #else
-    StartCoroutine(CheckForUpdate());
+        appUpdateManager = new AppUpdateManager();
+        StartCoroutine(CheckForUpdate());
 #endif
     }
 
@@ -22,11 +22,7 @@ public class InAppUpdate : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        appUpdateManager = new AppUpdateManager();
-
-        PlayAsyncOperation<AppUpdateInfo, AppUpdateErrorCode> appUpdateInfoOperation =
-            appUpdateManager.GetAppUpdateInfo();
-
+        var appUpdateInfoOperation = appUpdateManager.GetAppUpdateInfo();
         yield return appUpdateInfoOperation;
 
         if (appUpdateInfoOperation.IsSuccessful)
@@ -61,29 +57,21 @@ public class InAppUpdate : MonoBehaviour
                 {
                     yield return new WaitForEndOfFrame();
                 }
-                yield return (int)startUpdateRequest.Status;
+                Debug.Log("업데이트가 성공적으로 완료되었습니다.");
+                // 필요 시 앱 재시작 또는 추가 처리
             }
-            // 업데이트 없을 경우
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
-                Debug.LogWarning("ㅋㅋ없데이트");
-                yield return (int)UpdateAvailability.UpdateNotAvailable;
+                Debug.LogWarning("업데이트 없음");
             }
             else
             {
-                Debug.LogWarning("몰?루");
-                yield return (int)UpdateAvailability.Unknown;
+                Debug.LogWarning("업데이트 상태 알 수 없음");
             }
         }
         else
         {
-            // Log appUpdateInfoOperation.Error.
-            Debug.LogError("In_AppUptates 스크립트 에러");
+            Debug.LogError($"In-App Update Error: {appUpdateInfoOperation.Error}");
         }
-#if UNITY_EDITOR
-        backendManager.GuestLogin();
-#else
-        backendManager.StartGoogleLogin();
-#endif
     }
 }
