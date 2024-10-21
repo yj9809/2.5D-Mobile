@@ -14,6 +14,7 @@ public class InAppUpdate : MonoBehaviour
     [Header("Manager")]
     [SerializeField] private BackendManager backendManager;
     private AppUpdateManager appUpdateManager;
+    private AppUpdateInfo appUpdateInfoResult;
 
     private void Start()
     {
@@ -37,46 +38,16 @@ public class InAppUpdate : MonoBehaviour
 
         if (appUpdateInfoOperation.IsSuccessful)
         {
-            var appUpdateInfoResult = appUpdateInfoOperation.GetResult();
-            // 업데이트 가능한 상태
+            appUpdateInfoResult = appUpdateInfoOperation.GetResult();
+
             if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateAvailable)
             {
-                // 유연한 업데이트
-                var appUpdateOptions = AppUpdateOptions.FlexibleAppUpdateOptions();
-                var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
-
-                // 즉시 업데이트
-                /* var appUpdateOptions = AppUpdateOptions.ImmediateAppUpdateOptions();
-                var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
-                yield return startUpdateRequest; */
-
-                while (!startUpdateRequest.IsDone)
-                {
-                    if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
-                    {
-                        LogMessage("업데이트 다운로드가 진행 중입니다...");
-                    }
-                    else if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
-                    {
-                        LogMessage("업데이트가 다운로드 완료되었습니다 !");
-                    }
-                    yield return null;
-                }
-                var result = appUpdateManager.CompleteUpdate();
-                while (!result.IsDone)
-                {
-                    yield return new WaitForEndOfFrame();
-                }
-                LogMessage("업데이트가 성공적으로 완료되었습니다.");
-                // 필요 시 앱 재시작 또는 추가 처리
+                LogMessage("업데이트가 필요합니다.\n자동으로 업데이트를 진행합니다.");
+                yield return StartCoroutine(StartUpdate());
             }
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
                 LogMessage("업데이트 없음");
-            }
-            else
-            {
-                LogMessage("업데이트 상태 알 수 없음");
             }
         }
         else
@@ -89,7 +60,33 @@ public class InAppUpdate : MonoBehaviour
 #endif
     }
 
-    // 로그 메시지를 출력하는 메서드
+    private IEnumerator StartUpdate()
+    {
+        var appUpdateOptions = AppUpdateOptions.ImmediateAppUpdateOptions();
+        var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
+        yield return startUpdateRequest;
+
+        if (startUpdateRequest.IsDone && startUpdateRequest.Status == AppUpdateStatus.Downloading)
+        {
+            while (!startUpdateRequest.IsDone)
+            {
+                LogMessage("업데이트 다운로드가 진행 중입니다...");
+                yield return null;
+            }
+
+            var result = appUpdateManager.CompleteUpdate();
+            while (!result.IsDone)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            LogMessage("업데이트가 성공적으로 완료되었습니다.");
+        }
+        else if (startUpdateRequest.Status == AppUpdateStatus.Failed)
+        {
+            LogMessage("업데이트 실패: " + startUpdateRequest.Error);
+        }
+    }
+
     private void LogMessage(string message)
     {
         logText.text = "";
