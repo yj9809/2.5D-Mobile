@@ -6,14 +6,16 @@ using Google.Play.AppUpdate;
 
 public class InAppUpdate : MonoBehaviour
 {
-    AppUpdateManager appUpdateManager = new AppUpdateManager();
+    [SerializeField] private BackendManager backendManager;
+
+    private AppUpdateManager appUpdateManager = new AppUpdateManager();
 
     private void Start()
     {
-        #if UNITY_EDITOR
-        #else
-            StartCoroutine(CheckForUpdate());
-        #endif
+#if UNITY_EDITOR
+#else
+    StartCoroutine(CheckForUpdate());
+#endif
     }
 
     private IEnumerator CheckForUpdate()
@@ -44,11 +46,11 @@ public class InAppUpdate : MonoBehaviour
                 {
                     if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
                     {
-                        Debug.Log("업데이트 다운로드가 진행 중입니다...");
+                        Debug.LogWarning("업데이트 다운로드가 진행 중입니다...");
                     }
                     else if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
                     {
-                        Debug.Log("업데이트가 다운로드 완료되었습니다 !");
+                        Debug.LogWarning("업데이트가 다운로드 완료되었습니다 !");
                     }
                     yield return null;
                 }
@@ -62,12 +64,12 @@ public class InAppUpdate : MonoBehaviour
             // 업데이트 없을 경우
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
-                Debug.Log("ㅋㅋ없데이트");
+                Debug.LogWarning("ㅋㅋ없데이트");
                 yield return (int)UpdateAvailability.UpdateNotAvailable;
             }
             else
             {
-                Debug.Log("몰?루");
+                Debug.LogWarning("몰?루");
                 yield return (int)UpdateAvailability.Unknown;
             }
         }
@@ -76,5 +78,10 @@ public class InAppUpdate : MonoBehaviour
             // Log appUpdateInfoOperation.Error.
             Debug.LogError("In_AppUptates 스크립트 에러");
         }
+#if UNITY_EDITOR
+        backendManager.GuestLogin();
+#else
+        backendManager.StartGoogleLogin();
+#endif
     }
 }

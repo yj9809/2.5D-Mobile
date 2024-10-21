@@ -61,7 +61,7 @@ public class BackendManager : MonoBehaviour
 
     // 게스트 로그인 함수
     // 실제 출시 후에는 활용할 일이 없어 삭제 예정
-    private void GuestLogin()
+    public void GuestLogin()
     {
         Backend.BMember.GuestLogin("게스트 로그인으로 로그인함", (callback) => {
             if (callback.IsSuccess())
