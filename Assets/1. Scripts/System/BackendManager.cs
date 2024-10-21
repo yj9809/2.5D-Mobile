@@ -22,13 +22,12 @@ public class BackendManager : MonoBehaviour
         {
             Debug.LogError("초기화 실패 : " + bro);
         }
-        //GuestLogin();
-#if !UNITY_EDITOR
-        StartGoogleLogin();
-#else
-        //Backend.BMember.DeleteGuestInfo();
-        GuestLogin();
-#endif
+
+//#if !UNITY_EDITOR
+//        StartGoogleLogin();
+//#else
+//        GuestLogin();
+//#endif
     }
 
     // 구글 로그인 함수
