@@ -85,6 +85,15 @@ public class GameManager : Singleton<GameManager>
                 nms.BuildNavMesh();
             }
 
+            #if !UNITY_EDITOR
+             if(!data.baseCost.gameProgressBool["NewGame"])
+                        {
+                            data.baseCost.gameProgressBool["NewGame"] = true;
+                            Social.ReportProgress(GPGSIds.achievement, 100f, null);
+                            data.GameDataUpdate();
+                        }
+            #endif
+
             List<GameObject> employeesToRemove = new List<GameObject>();
             int employeeNum = 0;
 

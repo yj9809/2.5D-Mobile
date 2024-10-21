@@ -68,6 +68,7 @@ public class BaseCost
 
     public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
     {
+        { "NewGame", false},
         { "Office", false },
         { "Container1", false },
         { "Machine1", false },

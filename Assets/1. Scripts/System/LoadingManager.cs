@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 // 권오석한테 문의 바람
 public class LoadingManager : MonoBehaviour
 {
-    private DataManager data;
     private static float loadingTime = 3f;
     private static string gameScene = "Game";
 
@@ -16,7 +15,6 @@ public class LoadingManager : MonoBehaviour
 
     private void Start()
     {
-        data = DataManager.Instance;
         GameManager.Instance.sceneName = gameScene;
         
     }
