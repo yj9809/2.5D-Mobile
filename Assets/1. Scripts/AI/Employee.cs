@@ -14,6 +14,7 @@ public class Employee : MonoBehaviour
 
     [SerializeField] private Transform boxTrans;
     [SerializeField] private Transform truckTrans;
+    [SerializeField] private Transform target;
 
     [EnumToggleButtons, SerializeField] private EmployeeType employeeType = EmployeeType.Cart;
 
@@ -23,7 +24,6 @@ public class Employee : MonoBehaviour
     private GameManager gm;
     private Animator animator;
     private NavMeshAgent na;
-    [SerializeField] private Transform target;
     private BaseCost baseCost;
 
     Vector3 previousPosition;

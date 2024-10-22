@@ -39,10 +39,6 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
     private PackagingType packaging = PackagingType.On;
 
     private int count = 0;
-    public int Count
-    {
-        get { return count; }
-    }
     private const int maxCount = 5;
 
     private void Start()
@@ -72,7 +68,6 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
             boxCountTxt = newBox.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>();
             newBox.transform.GetChild(0).gameObject.SetActive(true);
         }
-
 
         if (churuStorage.Count != 0 && newBox != null)
         {
@@ -106,13 +101,13 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
                     PoolingManager.Instance.ReturnObjecte(churu);
                     count++;
                     boxCountTxt.text = $"{count}/{maxCount}";
-                    BoxMove(newBox, count);
+                    BoxMove();
                 }
                 );
             packaging = PackagingType.Off;
         }
     }
-    private void BoxMove(GameObject newBox, int count)
+    private void BoxMove()
     {
         if(count == 5)
         {
@@ -120,9 +115,9 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
             newBox.transform.DOMove(packagingBoxParent.position, 0.3f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
-                    this.newBox.transform.GetChild(0).gameObject.SetActive(false);
-                    this.newBox = null;
-                    this.count = 0;
+                    newBox.transform.GetChild(0).gameObject.SetActive(false);
+                    newBox = null;
+                    count = 0;
                     packaging = PackagingType.On;
                 });
             

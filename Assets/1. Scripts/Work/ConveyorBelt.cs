@@ -13,7 +13,6 @@ public class ConveyorBelt : MonoBehaviour
     [TabGroup("Setting"), SerializeField] private float placeObjectTime = 3f;
     [TabGroup("Setting"), SerializeField] private Vector3 direction = Vector3.forward;
 
-    [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     [TabGroup("Transform"), SerializeField] private Transform onBelt;
 
     [TabGroup("GameObj"), SerializeField] private BoxStorage boxStorage;
@@ -46,6 +45,7 @@ public class ConveyorBelt : MonoBehaviour
     private bool isOn = true;
     private bool isBreakDown = false;
 
+    [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     public Transform IngredientStorage
     {
         get { return ingredientStorage; }

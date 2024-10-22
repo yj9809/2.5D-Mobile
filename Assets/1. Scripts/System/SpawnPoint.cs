@@ -7,9 +7,11 @@ using UnityEngine;
 // 문제 생기면 바로 권오석한테 문의 부탁.
 public class SpawnPoint : MonoBehaviour
 {
-    [SerializeField] private GameObject npc;
+    [SerializeField] private GameObject[] npc;
     [SerializeField] private Transform[] target;
     [SerializeField] private Collider planeCollider;
+
+    public Transform[] GetTarget { get { return target; } }
 
     private PoolingManager pool;
     private Bounds bounds;
@@ -35,10 +37,10 @@ public class SpawnPoint : MonoBehaviour
 
         if(spawnTime >= spawnTimer)
         {
-            Npc newNpc = pool.GetObj(npc).GetComponent<Npc>();
-            newNpc.transform.position = GetRandomPositionInBounds(bounds);
-            newNpc.GetComponent<Npc>().Target = target;
+            int npcRandom = Random.Range(0, npc.Length);
+            Npc newNpc = pool.GetObj(npc[npcRandom]).GetComponent<Npc>();
             newNpc.SetSpawnPoint(this);
+            newNpc.transform.position = GetRandomPositionInBounds(bounds);
             spawnTime = 0;
         }
     }
@@ -53,7 +55,6 @@ public class SpawnPoint : MonoBehaviour
     public Vector3 GetRandomPositionInPlaneBounds()
     {
         float randomX = Random.Range(planeBounds.min.x, planeBounds.max.x);
-        //float randomY = Random.Range(planeBounds.min.y, planeBounds.max.y);
         float randomZ = Random.Range(planeBounds.min.z, planeBounds.max.z);
 
         return new Vector3(randomX, bounds.size.y, randomZ);

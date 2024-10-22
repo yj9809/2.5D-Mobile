@@ -94,40 +94,43 @@ public class GameManager : Singleton<GameManager>
                         }
             #endif
 
-            List<GameObject> employeesToRemove = new List<GameObject>();
-            int employeeNum = 0;
-
             // 게임 실행 시 저장되어 있던 종업원 정보를 불러오는 부분
-            foreach (var item in employee)
-            {
-                if (data.baseCost.employeeList.Contains(item.name))
-                {
-                    Debug.Log(employeeNum);
-                    GameObject newEmployee;
-                    if (employeeNum != 4)
-                    {
-                        newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
-                    }
-                    else
-                    {
-                        Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
-                        newEmployee = Instantiate(item.gameObject);
-                        Destroy(newEmployee.GetComponent<NavMeshAgent>());
-                        newEmployee.transform.position = pos;
-                        newEmployee.GetComponent<Employee>().PackaingEmployee();
-                    }
+            EmployeeAdd();
+        }
+    }
 
-                    newEmployee.name = item.name;
-                    P.employee.Add(newEmployee.GetComponent<Employee>());
-                    employeesToRemove.Add(item);
-                    employeeNum++;
-                }
-            }
-            // 불러오기 끝나고 리스트 삭제
-            foreach (var item in employeesToRemove)
+    private void EmployeeAdd()
+    {
+        List<GameObject> employeesToRemove = new List<GameObject>();
+        int employeeNum = 0;
+        foreach (var item in employee)
+        {
+            if (data.baseCost.employeeList.Contains(item.name))
             {
-                employee.Remove(item);
+                GameObject newEmployee;
+                if (employeeNum != 4)
+                {
+                    newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
+                }
+                else
+                {
+                    Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
+                    newEmployee = Instantiate(item.gameObject);
+                    Destroy(newEmployee.GetComponent<NavMeshAgent>());
+                    newEmployee.transform.position = pos;
+                    newEmployee.GetComponent<Employee>().PackaingEmployee();
+                }
+
+                newEmployee.name = item.name;
+                P.employee.Add(newEmployee.GetComponent<Employee>());
+                employeesToRemove.Add(item);
+                employeeNum++;
             }
+        }
+        // 불러오기 끝나고 리스트 삭제
+        foreach (var item in employeesToRemove)
+        {
+            employee.Remove(item);
         }
     }
 

@@ -5,10 +5,17 @@ using Sirenix.OdinInspector;
 
 public class IngredientMaker : MonoBehaviour, IStackable
 {
-    [TabGroup("IngredientMaker")] [SerializeField] private GameObject objPrefab;
-    [TabGroup("IngredientMaker")] [SerializeField] private Transform objSpawnPoint;
-    [TabGroup("IngredientMaker")] [SerializeField] private float objSpawnTime = 2f;
-    [TabGroup("IngredientMaker")] [SerializeField] private int maxObj = 10;
+    [TabGroup("IngredientMaker"), SerializeField] private GameObject objPrefab;
+    [TabGroup("IngredientMaker"), SerializeField] private Transform objSpawnPoint;
+    [TabGroup("IngredientMaker"), SerializeField] private float objSpawnTime = 2f;
+    [TabGroup("IngredientMaker"), SerializeField] private int maxObj = 10;
+
+    private Stack<GameObject> churuStack = new Stack<GameObject>();
+    public Stack<GameObject> ChuruStack
+    {
+        get { return churuStack; }
+        set { churuStack = value; }
+    }
 
     private float spawnTimer = 0f;
 
@@ -16,13 +23,6 @@ public class IngredientMaker : MonoBehaviour, IStackable
     {
         get { return objSpawnTime; }
         set { objSpawnTime = value; }
-    }
-
-    private Stack<GameObject> churuStack = new Stack<GameObject>();
-    public Stack<GameObject> ChuruStack
-    {
-        get { return churuStack; }
-        set { churuStack = value; }
     }
 
     private GameManager gm;

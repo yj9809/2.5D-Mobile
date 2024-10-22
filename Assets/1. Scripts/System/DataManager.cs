@@ -63,7 +63,8 @@ public class BaseCost
         { "conveyorBeltBoxStorageStackCount", 0 },
         { "churuStorageStackCount", 0 },
         { "packagingWaitObjCount", 0 },
-        { "packagingBoxStorageStackCount", 0 }
+        { "packagingBoxStorageStackCount", 0 },
+        { "truckBoxStackCount", 0 }
     };
 
     public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
@@ -104,6 +105,7 @@ public class DataManager : Singleton<DataManager>
             item.ObjectDataSave();
         }
     }
+    #region 서버 데이터 입출력 함수들
     // 데이터 추가
     public void GameDataInsert()
     {
@@ -211,7 +213,6 @@ public class DataManager : Singleton<DataManager>
     // 게임 정보를 업데이트 하는 함수
     public void GameDataUpdate()
     {
-        // Step 4. 게임 정보 수정 구현하기
         if (baseCost == null)
         {
             Debug.LogError("서버에서 다운받거나 새로 삽입한 데이터가 존재하지 않습니다. Insert 혹은 Get을 통해 데이터를 생성해주세요.");
@@ -274,6 +275,7 @@ public class DataManager : Singleton<DataManager>
             Debug.Log("삭제 실패");
         }
     }
+    #endregion
 }
 
 

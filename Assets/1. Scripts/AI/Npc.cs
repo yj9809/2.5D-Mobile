@@ -8,14 +8,8 @@ public enum NpcType { Store, Home}
 
 public class Npc : MonoBehaviour
 {
-    [SerializeField] private Transform[] target;
     [SerializeField] private SpawnPoint spawnPoint;
     [EnumToggleButtons, SerializeField] private NpcType npcType = NpcType.Home;
-    public Transform[] Target
-    {
-        get { return target; }
-        set { target = value; }
-    }
 
     private NavMeshAgent na;
 
@@ -38,8 +32,7 @@ public class Npc : MonoBehaviour
     private void Start()
     {
         na = GetComponent<NavMeshAgent>();
-        na.SetDestination(target[currentTargetNum].position);
-        //value = Random.Range(0, 2);
+        na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
     }
 
     // Update is called once per frame
@@ -57,7 +50,7 @@ public class Npc : MonoBehaviour
     {
         if (!na.pathPending && na.remainingDistance <= na.stoppingDistance)
         {
-            if (currentTargetNum < target.Length - 1)
+            if (currentTargetNum < spawnPoint.GetTarget.Length - 1)
             {
                 if (currentTargetNum == 1)
                 {
@@ -69,13 +62,13 @@ public class Npc : MonoBehaviour
                     else
                     {
                         currentTargetNum++;
-                        na.SetDestination(target[currentTargetNum].position);
+                        na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
                     }
                 }
                 else
                 {
                     currentTargetNum++;
-                    na.SetDestination(target[currentTargetNum].position);
+                    na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
                 }
 
             }
@@ -104,7 +97,7 @@ public class Npc : MonoBehaviour
         {
             value = 0;
             npcType = NpcType.Home;
-            na.SetDestination(target[currentTargetNum].position);
+            na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
             returnHome = 15f;
         }
     }

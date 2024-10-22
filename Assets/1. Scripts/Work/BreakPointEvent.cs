@@ -48,7 +48,7 @@ public class BreakPointEvent : MonoBehaviour
             eventGauge.fillAmount = 0;
             currentFill = 0;
             conveyorBelt.BreakDownSolutionClear();
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
     private void UpdateUnlockUI(float progress)

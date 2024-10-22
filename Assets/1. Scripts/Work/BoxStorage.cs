@@ -43,15 +43,11 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
             GameManager.Instance.stackCount.Add(this);
     }
 
-    private void Update()
-    {
-        boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
-    }
-
     private void OnCollisionStay(Collision collision)
     {
         if ((collision.gameObject.CompareTag("Box") || collision.gameObject.CompareTag("Churu")) && boxStack.Count < 40)
         {
+            boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
             Rigidbody rd = collision.transform.GetComponent<Rigidbody>();
             if(rd != null)
                 Destroy(collision.transform.GetComponent<Rigidbody>());
@@ -60,10 +56,11 @@ public class BoxStorage : MonoBehaviour, IStackable, IObjectDataSave
         }
         else if(collision.gameObject.CompareTag("Ingredient"))
         {
+            boxTransformNum = Mathf.Clamp(boxStack.Count / 10, 0, boxTransform.Length - 1);
             Rigidbody rd = collision.transform.GetComponent<Rigidbody>();
             if (rd != null)
                 Destroy(collision.transform.GetComponent<Rigidbody>());
-
+            
             Utility.ObjectDrop(boxTransform[0], collision.gameObject, null, ingredientMaker.ChuruStack, 0);
         }
     }
