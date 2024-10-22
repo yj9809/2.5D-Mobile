@@ -48,7 +48,6 @@ public class InAppUpdate : MonoBehaviour
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
                 LogMessage("업데이트 없음");
-                backendManager.StartGoogleLogin();
             }
         }
         else
