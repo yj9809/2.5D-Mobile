@@ -48,6 +48,7 @@ public class InAppUpdate : MonoBehaviour
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
                 LogMessage("업데이트 없음");
+                backendManager.StartGoogleLogin();
             }
         }
         else
@@ -62,29 +63,39 @@ public class InAppUpdate : MonoBehaviour
 
     private IEnumerator StartUpdate()
     {
-        var appUpdateOptions = AppUpdateOptions.ImmediateAppUpdateOptions();
+        var appUpdateOptions = AppUpdateOptions.FlexibleAppUpdateOptions(); // 유연한 업데이트 옵션
         var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
-        yield return startUpdateRequest;
 
-        if (startUpdateRequest.IsDone && startUpdateRequest.Status == AppUpdateStatus.Downloading)
+        LogMessage("업데이트가 시작되었습니다. 다운로드 진행 중입니다...");
+
+        // 다운로드 진행 중 상태 확인
+        while (!startUpdateRequest.IsDone)
         {
-            while (!startUpdateRequest.IsDone)
-            {
-                LogMessage("업데이트 다운로드가 진행 중입니다...");
-                yield return null;
-            }
+            yield return null; // 프레임 대기
+        }
 
+        if (startUpdateRequest.Status == AppUpdateStatus.Failed)
+        {
+            LogMessage("업데이트 실패: " + startUpdateRequest.Error);
+        }
+        else if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
+        {
+            // 다운로드 완료 후 처리
             var result = appUpdateManager.CompleteUpdate();
             while (!result.IsDone)
             {
                 yield return new WaitForEndOfFrame();
             }
             LogMessage("업데이트가 성공적으로 완료되었습니다.");
+            Application.Quit();
         }
-        else if (startUpdateRequest.Status == AppUpdateStatus.Failed)
-        {
-            LogMessage("업데이트 실패: " + startUpdateRequest.Error);
-        }
+    }
+
+    private void RestartApp()
+    {
+        LogMessage("앱을 재시작합니다...");
+        // 현재 씬을 다시 로드하여 앱을 재시작합니다.
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     private void LogMessage(string message)
