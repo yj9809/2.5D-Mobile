@@ -19,20 +19,24 @@ public class InAppUpdate : MonoBehaviour
     private void Start()
     {
         textPanel.SetActive(false);
-
+        
 #if UNITY_EDITOR
         LogMessage("인앱 업데이트는 에디터에서는\n지원되지 않습니다.");
         backendManager.GuestLogin();
 #else
-        appUpdateManager = new AppUpdateManager();
-        StartCoroutine(CheckForUpdate());
+StartCoroutine(Init());
 #endif
     }
-
-    private IEnumerator CheckForUpdate()
+    IEnumerator Init()
     {
         yield return new WaitForSeconds(0.5f);
 
+        appUpdateManager = new AppUpdateManager();
+        LogMessage("실행");
+        StartCoroutine(CheckForUpdate());
+    }
+    private IEnumerator CheckForUpdate()
+    {
         var appUpdateInfoOperation = appUpdateManager.GetAppUpdateInfo();
         yield return appUpdateInfoOperation;
 
