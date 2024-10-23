@@ -13,21 +13,6 @@ public class BackendManager : MonoBehaviour
     void Awake()
     {
         var bro = Backend.Initialize();
-
-        if (bro.IsSuccess())
-        {
-            Debug.Log("초기화 성공 : " + bro);
-        }
-        else
-        {
-            Debug.LogError("초기화 실패 : " + bro);
-        }
-
-//#if !UNITY_EDITOR
-//        StartGoogleLogin();
-//#else
-//        GuestLogin();
-//#endif
     }
 
     // 구글 로그인 함수
@@ -41,11 +26,9 @@ public class BackendManager : MonoBehaviour
     {
         if (isSuccess == false)
         {
-            Debug.LogError(errorMessage);
             return;
         }
 
-        Debug.Log("구글 토큰 : " + token);
         var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
         DataManager.Instance.GameDataGet();
         if (DataManager.Instance.baseCost == null)
@@ -54,8 +37,6 @@ public class BackendManager : MonoBehaviour
         }
 
         loadingManager.StartCoroutine();
-
-        Debug.Log("페데레이션 로그인 결과 : " + bro);
     }
 
     // 게스트 로그인 함수
@@ -65,7 +46,6 @@ public class BackendManager : MonoBehaviour
         Backend.BMember.GuestLogin("게스트 로그인으로 로그인함", (callback) => {
             if (callback.IsSuccess())
             {
-                Debug.Log("게스트 로그인에 성공했습니다");
                 DataManager.Instance.GameDataGet();
 
                 if (DataManager.Instance.baseCost == null)
@@ -80,8 +60,6 @@ public class BackendManager : MonoBehaviour
                 string googlehash = Backend.Utils.GetGoogleHash();
                 string errorCode = callback.GetErrorCode().ToString(); // 오류 코드 가져오기
                 string errorMessage = callback.GetMessage(); // 오류 메시지 가져오기
-
-                Debug.LogError($"{errorCode} + {errorMessage}");
             }
         });
     }

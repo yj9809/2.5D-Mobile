@@ -167,17 +167,12 @@ public class GameManager : Singleton<GameManager>
     {
         if (stackable == null)
         {
-            Debug.LogError("stackable is null");
             return;
         }
 
         if (targetUsage.ContainsKey(stackable))
         {
             targetUsage[stackable] = isUsed;
-        }
-        else
-        {
-            Debug.LogWarning("The specified stackable is not in the dictionary.");
         }
     }
 

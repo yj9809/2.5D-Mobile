@@ -113,7 +113,6 @@ StartCoroutine(Init());
     private void LogMessage(string message)
     {
         logText.text = "";
-        Debug.LogWarning(message);
         if (logText != null && textPanel != null)
         {
             textPanel.SetActive(true);

@@ -31,7 +31,6 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
     public void LoadAd()
     {
         // 중요! 초기화 이후에만 콘텐츠를 로드하세요 (이 예제에서는 초기화가 다른 스크립트에서 처리됨).
-        Debug.Log("광고 로드 중: " + _adUnitId);
         Advertisement.Load(_adUnitId, this);
     }
 
@@ -39,7 +38,6 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
     public void ShowAd()
     {
         // 광고 콘텐츠가 이전에 로드되지 않은 경우 이 메서드는 실패합니다.
-        Debug.Log("광고 표시 중: " + _adUnitId);
         Advertisement.Show(_adUnitId, this);
     }
 
@@ -51,13 +49,13 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
 
     public void OnUnityAdsFailedToLoad(string _adUnitId, UnityAdsLoadError error, string message)
     {
-        Debug.Log($"광고 단위 로드 오류: {_adUnitId} - {error.ToString()} - {message}");
+        Debug.LogWarning($"광고 단위 로드 오류: {_adUnitId} - {error.ToString()} - {message}");
         // 광고 단위가 로드 실패할 경우 선택적으로 다시 시도하는 등의 코드를 실행할 수 있습니다.
     }
 
     public void OnUnityAdsShowFailure(string _adUnitId, UnityAdsShowError error, string message)
     {
-        Debug.Log($"광고 단위 표시 오류 {_adUnitId}: {error.ToString()} - {message}");
+        Debug.LogWarning($"광고 단위 표시 오류 {_adUnitId}: {error.ToString()} - {message}");
         // 광고 단위가 표시 실패할 경우 선택적으로 다른 광고를 로드하는 등의 코드를 실행할 수 있습니다.
     }
 

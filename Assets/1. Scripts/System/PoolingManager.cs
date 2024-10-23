@@ -15,7 +15,6 @@ public class PoolingManager : Singleton<PoolingManager>
     {
         if(ObjPrefab == null)
         {
-            Debug.LogError("만들 오브젝트가 없습니다.");
             return null;
         }
         GameObject newObj = Instantiate(ObjPrefab, transform);
@@ -35,7 +34,6 @@ public class PoolingManager : Singleton<PoolingManager>
     {
         if(prefab == null)
         {
-            Debug.LogError("가져올 오브젝트가 없습니다.");
             return null;
         }
         if(!poolDictionary.ContainsKey(prefab.name))
@@ -64,7 +62,6 @@ public class PoolingManager : Singleton<PoolingManager>
     {
         if(returnPrefab == null)
         {
-            Debug.LogError("반환할 오브젝트가 없습니다.");
             return;
         }
 
@@ -82,10 +79,6 @@ public class PoolingManager : Singleton<PoolingManager>
         }
         else
         {
-            // 없으면 에러 띄우면서 그냥 삭제 처리 해버리는데
-            // 솔직히 위에서 처리하고 싶은데 굳이 잘 돌아가는데 뭔가 위험하게 바꿀 필요없다 생각함
-            Debug.LogError($"{returnPrefab.name} 에 해당하는 큐가 없습니다.");
-
             // 만약 잘 바꿀 자신 있다 하면 이 부분을 위쪽에서 처리해보는것도 좋을꺼 같음
             poolDictionary.Add($"{returnPrefab.name}", new Queue<GameObject>());
             

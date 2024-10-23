@@ -58,6 +58,8 @@ public class UIManager : Singleton<UIManager>
     [TabGroup("Store"), SerializeField] private Button storeGetGoldButton;
     [TabGroup("Store")] public Button storeUpgradeButton;
 
+    [Title("Debug"), SerializeField] private TextMeshProUGUI logText;
+
     ////여기부터 윤제영에 테스트 참조임
     private IngredientMaker im;
     private ConveyorBelt cb;
@@ -85,6 +87,15 @@ public class UIManager : Singleton<UIManager>
         SetUpgradeInfo();
         UpdateUI();
         StoreUI();
+    }
+
+    private void LogMessage(string message)
+    {
+        logText.text = "";
+        if (logText != null)
+        {
+            logText.text += message + "\n";
+        }
     }
 
     private void UpdateUI()
@@ -144,7 +155,6 @@ public class UIManager : Singleton<UIManager>
     {
         p.Gold += amount;
         UpdateUI();
-        Debug.Log($"골드 획득: {amount}, 현재 골드: {p.Gold}");
     }
 
     //골드 사용 함수
@@ -154,13 +164,11 @@ public class UIManager : Singleton<UIManager>
         {
             p.Gold -= amount;
             UpdateUI();
-            Debug.Log($"골드 사용: {amount}, 남은 골드: {p.Gold}");
             AudioManager.Instance.PlayEffect(EffectType.Upgrade);
             return true;
         }
         else
         {
-            Debug.Log("골드가 부족합니다 !");
             return false;
         }
     }
@@ -237,7 +245,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("최대 업그레이드 입니다.");
+                    LogMessage("최대 업그레이드 입니다.");
                 break;
 
             case 1:
@@ -253,7 +261,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("최대 업그레이드 입니다.");
+                    LogMessage("최대 업그레이드 입니다.");
                 break;
 
             case 2:
@@ -269,7 +277,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("최대 업그레이드 입니다.");
+                    LogMessage("최대 업그레이드 입니다.");
                 break;
 
             case 3:
@@ -286,7 +294,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("최대 업그레이드 입니다.");
+                    LogMessage("최대 업그레이드 입니다.");
                 break;
 
             case 4:
@@ -302,7 +310,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("최대 업그레이드 입니다.");
+                    LogMessage("최대 업그레이드 입니다.");
                 break;
 
             case 5:
@@ -343,7 +351,7 @@ public class UIManager : Singleton<UIManager>
                     }
                 }
                 else
-                    Debug.Log("종업원이 최대입니다.");
+                    LogMessage("종업원이 최대입니다.");
                 break;
 
         }
@@ -372,7 +380,6 @@ public class UIManager : Singleton<UIManager>
     {
         p.Gold += store.totalGold;
         UpdateUI();
-        Debug.Log($"골드 획득: {store.totalGold}, 현재 골드: {p.Gold}");
 
         store.totalGold = 0;
         StoreUI();

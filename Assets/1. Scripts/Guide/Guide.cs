@@ -101,7 +101,6 @@ public class Guide : MonoBehaviour
     private void Ads()
     {
         adExample.ShowAd();
-        Debug.LogWarning("1");
     }
 
     private void GuideButton()
