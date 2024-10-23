@@ -627,8 +627,8 @@ struct U3CCheckStackU3Ed__45_tC4021A1336E2ED7124A74515A2D3F80B22788A6D;
 struct SkinChangedDelegate_tA6D456E853D58AD2EF8A599F543C7E5BA8E94B98;
 // InAppUpdate/<CheckForUpdate>d__6
 struct U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9;
-// InAppUpdate/<StartUpdate>d__7
-struct U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC;
+// InAppUpdate/<Init>d__5
+struct U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB;
 // LoadingManager/<LoadScene>d__5
 struct U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05;
 // UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
@@ -662,6 +662,7 @@ IL2CPP_EXTERN_C RuntimeClass* Dictionary_2_t4BFE5EA99BCC17ACB71B8A995FF54C16DC92
 IL2CPP_EXTERN_C RuntimeClass* Dictionary_2_t5C8F46F5D57502270DD9E1DA8303B23C7FE85588_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Dictionary_2_tDB49FAA1B72D2C21C656FDDF58FCCC3B54AB9DA6_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Dictionary_2_tFF5BAE20C79FF62D8212212465EDB4D26909FFE9_il2cpp_TypeInfo_var;
+IL2CPP_EXTERN_C RuntimeClass* Exception_t_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Func_1_tC288CCB64EFD1F5FD49C3F8DE91FE62905E44BCD_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* GUIStyle_t20BA2F9F3FE9D13AAA607EEEBE5547835A6F6580_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* GUI_tA9CDB3D69DB13D51AD83ABDB587EF95947EC2D2A_il2cpp_TypeInfo_var;
@@ -702,10 +703,10 @@ IL2CPP_EXTERN_C RuntimeClass* TweenCallback_t7C8B8A38E7B30905FF1B83C943256EF2361
 IL2CPP_EXTERN_C RuntimeClass* U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CCheckStackU3Ed__45_tC4021A1336E2ED7124A74515A2D3F80B22788A6D_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CDisplayImgChangeU3Ed__32_t14155D50AF46340868C64DB6E2F519929A709A81_il2cpp_TypeInfo_var;
+IL2CPP_EXTERN_C RuntimeClass* U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CPlaceObjectU3Ed__31_tC8DBB71F701B0E75B77138A353C4C3083BBFCBD2_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CSolutionInProgressU3Ed__6_t8750C0512E9DCAD8880AC156EFFFBA109B2635B1_il2cpp_TypeInfo_var;
-IL2CPP_EXTERN_C RuntimeClass* U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CU3Ec__DisplayClass1_0_tE8CF652F90D39BD1E61D87785FA2ADF0516F1044_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CU3Ec__DisplayClass21_0_tBEED1C00F42082E28A6D3763D75ED6B840EC39DE_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* U3CUnlockProcessU3Ed__17_t6D230B7333D8647D304EA6090D0257D04F4FE8DF_il2cpp_TypeInfo_var;
@@ -715,6 +716,7 @@ IL2CPP_EXTERN_C RuntimeClass* UnityAdsInitializationError_t7710E0659C1D799AD891D
 IL2CPP_EXTERN_C RuntimeClass* UnityAdsLoadError_tB6550E28188DE4BB11BDA67CC987095C6B10575A_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* UnityAdsShowError_t1CD1E4BAEEDB40B5D7B7CD76EB96F27A61909F91_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* UnlockType_t05DFFB31BC39CB242141BF8D3F395BB0B126E971_il2cpp_TypeInfo_var;
+IL2CPP_EXTERN_C RuntimeClass* UpdateAvailability_t9DAB4CB4F92C3A9EEEA1E7FAC1CBE0507B983EA0_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* UpgradeInfo_tF88B24495F9678C35D793B5D9C8156E1FCF8142C_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Vector2_t1FD6F485C871E832B347AB2DC8CBA08B739D8DF7_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2_il2cpp_TypeInfo_var;
@@ -730,6 +732,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral043AD86DE7236C952FFF7522707959C9AAD62BF7
 IL2CPP_EXTERN_C String_t* _stringLiteral068098E8ED25D5C79E0FD64B73EE96E145A9030E;
 IL2CPP_EXTERN_C String_t* _stringLiteral07726F2C6E0B175B48A4556F13EDA1328A0F085B;
 IL2CPP_EXTERN_C String_t* _stringLiteral079998E3393B6BDC1FAFFA63A54F724488AE5306;
+IL2CPP_EXTERN_C String_t* _stringLiteral0C8429FB662A4FAEF33F91D615C06BB8215FAA4A;
 IL2CPP_EXTERN_C String_t* _stringLiteral0EB633D66F4B5F79A0877E1406708EC320C6D8E6;
 IL2CPP_EXTERN_C String_t* _stringLiteral1168E92C164109D6220480DEDA987085B2A21155;
 IL2CPP_EXTERN_C String_t* _stringLiteral1238B7B8356934E0F072AC06B91D776DEFC5A0C1;
@@ -741,7 +744,6 @@ IL2CPP_EXTERN_C String_t* _stringLiteral1B285AEC457283E64D4BBC6BE16B8FB29757134B
 IL2CPP_EXTERN_C String_t* _stringLiteral1BB3CD745CF2B6232A16B5BC9917C190A93560F1;
 IL2CPP_EXTERN_C String_t* _stringLiteral1E3FF337200516F7A2DE9B0F6760983A79E8FBDE;
 IL2CPP_EXTERN_C String_t* _stringLiteral21D2F3791AE764977FA83DE63D8233BCAB9EB36E;
-IL2CPP_EXTERN_C String_t* _stringLiteral2324B8219382D74A696C6CE381D811EB56F3CD3E;
 IL2CPP_EXTERN_C String_t* _stringLiteral2480CD045338ACBF65D284142A0F4AA492416998;
 IL2CPP_EXTERN_C String_t* _stringLiteral26FE11225D9B285BB678D703CAF80EB0B9785D06;
 IL2CPP_EXTERN_C String_t* _stringLiteral2E6D7460C6F82C2E1D89634908E3379E02538814;
@@ -771,6 +773,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral4BA0E432CFF19DD7E7CD2B11CA135499BC4F5A17
 IL2CPP_EXTERN_C String_t* _stringLiteral4BC93CA4EB5A33570570D1722150BBB74746B171;
 IL2CPP_EXTERN_C String_t* _stringLiteral4D613657609485AE586A3379BA0E3FC13C1E1078;
 IL2CPP_EXTERN_C String_t* _stringLiteral4D80F1B5B1D15F9D6225DBA070FCA42CF5637480;
+IL2CPP_EXTERN_C String_t* _stringLiteral515C802236CA5931DF10D12707A31EE7B27B86B1;
 IL2CPP_EXTERN_C String_t* _stringLiteral52474AE185F9B75C24C70FAA75B1DCE1FA74D047;
 IL2CPP_EXTERN_C String_t* _stringLiteral52B6CE629771C8C79844B737FEC316F360C9EBE3;
 IL2CPP_EXTERN_C String_t* _stringLiteral52C8E2125CC93BD41D5910DE8E1C612E2E910E57;
@@ -786,6 +789,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral5CCD3FDFE85E898EBB1B222865C4B27D748B06F2
 IL2CPP_EXTERN_C String_t* _stringLiteral5CD2A20E35DC33B0765D0642FD56156E32095252;
 IL2CPP_EXTERN_C String_t* _stringLiteral5D79F759FC065372F80614DC1B44F04ABCA0B777;
 IL2CPP_EXTERN_C String_t* _stringLiteral5E8F97BF1C825928C363E8E080FF9571ED9251D3;
+IL2CPP_EXTERN_C String_t* _stringLiteral653C5ACA2A66026B3E01AF978D81F766FB2A1FF5;
 IL2CPP_EXTERN_C String_t* _stringLiteral65B35574AE5E160D9F07D12975BEAD8A38B94187;
 IL2CPP_EXTERN_C String_t* _stringLiteral6658E9B84C063631A533ED3AB072E6318AD27562;
 IL2CPP_EXTERN_C String_t* _stringLiteral68B5E29851C6A3D6284519D00CB4423C8B97431D;
@@ -813,6 +817,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteral91AC711D36A8D982BF55EE2F79800EBA1E924981
 IL2CPP_EXTERN_C String_t* _stringLiteral921ABCC82B8D98F5910CEC32E5BC5CB925EC1BC8;
 IL2CPP_EXTERN_C String_t* _stringLiteral943C8FF538819688439782F2AEDB69F222317B17;
 IL2CPP_EXTERN_C String_t* _stringLiteral948CA60EC336CB9B1F067E5D259FC0083E365F09;
+IL2CPP_EXTERN_C String_t* _stringLiteral94AF4212BE33DDC91AD695C783EA4DA3EE75F43D;
 IL2CPP_EXTERN_C String_t* _stringLiteral960E5E7F211EFF3243DF14EDD1901DC9EF314D62;
 IL2CPP_EXTERN_C String_t* _stringLiteral972A12635F417C668652A9219FCCD64045DCA8C8;
 IL2CPP_EXTERN_C String_t* _stringLiteral9A053A49693D46963A63E83B4F75CF40EED8D8FD;
@@ -844,13 +849,15 @@ IL2CPP_EXTERN_C String_t* _stringLiteralC8C6FFED85E2BCA00BDE98F9F57918B89905E179
 IL2CPP_EXTERN_C String_t* _stringLiteralC9BEE367E584B7AE77FA66FAD52FB4F7D1AE0833;
 IL2CPP_EXTERN_C String_t* _stringLiteralCAF8804297181FF007CA835529DD4477CFD94A70;
 IL2CPP_EXTERN_C String_t* _stringLiteralCB53F782E1BA266CFFA4456DE966A403DDF214E3;
+IL2CPP_EXTERN_C String_t* _stringLiteralCD9D97065C68756BF7E3B488AC90126339044728;
 IL2CPP_EXTERN_C String_t* _stringLiteralD0930EAEDCFDEBBAC7E4CB43E3438AFEFC7221DD;
+IL2CPP_EXTERN_C String_t* _stringLiteralD28856D061D1C1CCAEB34AA78E4440B933A08290;
 IL2CPP_EXTERN_C String_t* _stringLiteralD2D331E28DC5426DE6E6763D3601184C56FC73F3;
 IL2CPP_EXTERN_C String_t* _stringLiteralD780EDA687A22DE18C1C6A4670664042EC002E7F;
 IL2CPP_EXTERN_C String_t* _stringLiteralDA39A3EE5E6B4B0D3255BFEF95601890AFD80709;
-IL2CPP_EXTERN_C String_t* _stringLiteralDC1AD55C49C5D9698F19C88554CD411AD715CDEB;
 IL2CPP_EXTERN_C String_t* _stringLiteralDDD65464ACB4E7409194B52243C837ADB76EE24C;
 IL2CPP_EXTERN_C String_t* _stringLiteralDE0ADC2B17BB38CF781F7CCB0090204F98F234D7;
+IL2CPP_EXTERN_C String_t* _stringLiteralDE9DE2FB99B901275C84E56CBBF9626DA14B1DCD;
 IL2CPP_EXTERN_C String_t* _stringLiteralDEA9933AEA637696C28967097859DC522E6B344D;
 IL2CPP_EXTERN_C String_t* _stringLiteralDFAFC10A28D301F805796B219C0EC5A4764CC66D;
 IL2CPP_EXTERN_C String_t* _stringLiteralE008D45BEFD1CE74BE7CA011843E47B33F99FEF0;
@@ -867,6 +874,7 @@ IL2CPP_EXTERN_C String_t* _stringLiteralF0ED35FA5806AB8D8490378961383EFA86581244
 IL2CPP_EXTERN_C String_t* _stringLiteralF1609853B16FE97E210C9EF6139C9922DACC3D68;
 IL2CPP_EXTERN_C String_t* _stringLiteralF217FCBDE9EEF4D94F0A64D08063C1C70F83EA2B;
 IL2CPP_EXTERN_C String_t* _stringLiteralF4A7518DD5B5E3CCEA61848B6379FBA95B188A2E;
+IL2CPP_EXTERN_C String_t* _stringLiteralF4F3DFE4359C353DD0DA4A821908B17937AAFE9F;
 IL2CPP_EXTERN_C String_t* _stringLiteralF89BE8ABB2848544DF80255A7A49A052A4306187;
 IL2CPP_EXTERN_C String_t* _stringLiteralFB4AE4F77150C3A8E8E4F8B23E734E0C7277B7D9;
 IL2CPP_EXTERN_C String_t* _stringLiteralFC4D5F72A9232DCFCCA0D0E427A48093B39A387F;
@@ -1017,10 +1025,10 @@ IL2CPP_EXTERN_C const RuntimeMethod* TweenSettingsExtensions_SetEase_TisTweenerC
 IL2CPP_EXTERN_C const RuntimeMethod* U3CCheckForUpdateU3Ed__6_System_Collections_IEnumerator_Reset_m41E8115DBD1BD4E6AD533DA9FEA17BCA9748647A_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CCheckStackU3Ed__45_System_Collections_IEnumerator_Reset_mDFC17A5D025C5CF861D5FF2F4A44260C129CAAE7_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CDisplayImgChangeU3Ed__32_System_Collections_IEnumerator_Reset_mC612DEA3C6498708569D2099E34D007B9041213A_RuntimeMethod_var;
+IL2CPP_EXTERN_C const RuntimeMethod* U3CInitU3Ed__5_System_Collections_IEnumerator_Reset_m3AAAE7AB4312A576E8AF990F380033EBCEA2BC90_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CLoadSceneU3Ed__5_System_Collections_IEnumerator_Reset_mB3C600273109F57F93E8FA465E42038D52F28B1E_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CPlaceObjectU3Ed__31_System_Collections_IEnumerator_Reset_m0FA24F9DCE651C91A697D0A5AB10712494CCD6E5_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CSolutionInProgressU3Ed__6_System_Collections_IEnumerator_Reset_mCCC152B31A7D9A272035B4C8B3556240B60B9C15_RuntimeMethod_var;
-IL2CPP_EXTERN_C const RuntimeMethod* U3CStartUpdateU3Ed__7_System_Collections_IEnumerator_Reset_m0EE7C7753D4E976A68ED74E87E7CD58B688F8394_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CU3Ec__DisplayClass1_0_U3CObjectDropU3Eb__0_m312AC62F02D3616C88979555E8C31EC96FC899DF_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CU3Ec__DisplayClass1_0_U3CObjectDropU3Eb__1_m98356CBDD320CD1BB4C32106E3AA326AE3A2769F_RuntimeMethod_var;
 IL2CPP_EXTERN_C const RuntimeMethod* U3CU3Ec__DisplayClass1_0_U3CObjectDropU3Eb__2_mC135FD25A0728805AC4445B90EE82FAF4CBCCA59_RuntimeMethod_var;
@@ -1684,21 +1692,21 @@ struct U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9  : pub
 	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* ___U3CU3E4__this_2;
 	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<CheckForUpdate>d__6::<appUpdateInfoOperation>5__2
 	PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* ___U3CappUpdateInfoOperationU3E5__2_3;
+	// Google.Play.AppUpdate.AppUpdateRequest InAppUpdate/<CheckForUpdate>d__6::<startUpdateRequest>5__3
+	AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* ___U3CstartUpdateRequestU3E5__3_4;
+	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.Common.VoidResult,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<CheckForUpdate>d__6::<result>5__4
+	PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* ___U3CresultU3E5__4_5;
 };
 
-// InAppUpdate/<StartUpdate>d__7
-struct U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC  : public RuntimeObject
+// InAppUpdate/<Init>d__5
+struct U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB  : public RuntimeObject
 {
-	// System.Int32 InAppUpdate/<StartUpdate>d__7::<>1__state
+	// System.Int32 InAppUpdate/<Init>d__5::<>1__state
 	int32_t ___U3CU3E1__state_0;
-	// System.Object InAppUpdate/<StartUpdate>d__7::<>2__current
+	// System.Object InAppUpdate/<Init>d__5::<>2__current
 	RuntimeObject* ___U3CU3E2__current_1;
-	// InAppUpdate InAppUpdate/<StartUpdate>d__7::<>4__this
+	// InAppUpdate InAppUpdate/<Init>d__5::<>4__this
 	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* ___U3CU3E4__this_2;
-	// Google.Play.AppUpdate.AppUpdateRequest InAppUpdate/<StartUpdate>d__7::<startUpdateRequest>5__2
-	AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* ___U3CstartUpdateRequestU3E5__2_3;
-	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.Common.VoidResult,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<StartUpdate>d__7::<result>5__3
-	PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* ___U3CresultU3E5__3_4;
 };
 
 // LoadingManager/<LoadScene>d__5
@@ -4163,8 +4171,6 @@ struct InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A  : public MonoBehav
 	BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* ___backendManager_6;
 	// Google.Play.AppUpdate.AppUpdateManager InAppUpdate::appUpdateManager
 	AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* ___appUpdateManager_7;
-	// Google.Play.AppUpdate.AppUpdateInfo InAppUpdate::appUpdateInfoResult
-	AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* ___appUpdateInfoResult_8;
 };
 
 // IngredientMaker
@@ -5505,9 +5511,9 @@ struct Vibrations_tD80C9527222E8F961C4D11867867ABF4760C193B_StaticFields
 
 // InAppUpdate/<CheckForUpdate>d__6
 
-// InAppUpdate/<StartUpdate>d__7
+// InAppUpdate/<Init>d__5
 
-// InAppUpdate/<StartUpdate>d__7
+// InAppUpdate/<Init>d__5
 
 // LoadingManager/<LoadScene>d__5
 
@@ -5745,6 +5751,15 @@ struct Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2_StaticFields
 // UnityEngine.Coroutine
 
 // UnityEngine.Coroutine
+
+// System.Exception
+struct Exception_t_StaticFields
+{
+	// System.Object System.Exception::s_EDILock
+	RuntimeObject* ___s_EDILock_0;
+};
+
+// System.Exception
 
 // UnityEngine.Object
 struct Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_StaticFields
@@ -6797,10 +6812,10 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Dictionary_2_ContainsKey_mBEDE43E001DFC2
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* List_1_get_Item_m33561245D64798C2AB07584C0EC4F240E4839A38_gshared (List_1_tA239CB83DE5615F348BB0507E45F490F4F7C9A8D* __this, int32_t ___0_index, const RuntimeMethod* method) ;
 // TResult Google.Play.Common.PlayAsyncOperation`2<System.Object,System.Int32Enum>::GetResult()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* PlayAsyncOperation_2_GetResult_m57E9155F21FFB3A9A697C72EA9C0E834FDF810E2_gshared (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) ;
-// TError Google.Play.Common.PlayAsyncOperation`2<System.Object,System.Int32Enum>::get_Error()
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) ;
 // System.Boolean Google.Play.Common.PlayAsyncOperation`2<System.Object,System.Int32Enum>::get_IsDone()
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool PlayAsyncOperation_2_get_IsDone_mF5CF3A791FA08972A3632070A32E810C7CBC493E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) ;
+// TError Google.Play.Common.PlayAsyncOperation`2<System.Object,System.Int32Enum>::get_Error()
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) ;
 // System.Boolean System.Collections.Generic.Dictionary`2<System.Object,System.Object>::ContainsKey(TKey)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Dictionary_2_ContainsKey_m703047C213F7AB55C9DC346596287773A1F670CD_gshared (Dictionary_2_t14FE4A752A83D53771C584E4C8D14E01F2AFD7BA* __this, RuntimeObject* ___0_key, const RuntimeMethod* method) ;
 // System.Void System.Collections.Generic.Queue`1<System.Object>::.ctor()
@@ -7755,14 +7770,24 @@ inline void Singleton_1__ctor_mFD940A60BFF417DE575BBFAE67006E1D442B9CB8 (Singlet
 {
 	((  void (*) (Singleton_1_t3D2F23D966DBD653F6411E976BD4A5A33E9DD1B7*, const RuntimeMethod*))Singleton_1__ctor_mD821C051D84F31B82CD3EC80D5174ADD3F038B14_gshared)(__this, method);
 }
+// System.Collections.IEnumerator InAppUpdate::Init()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_Init_m91A04D1220ACBB038D33C19776F2814397F249EF (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) ;
+// System.Void InAppUpdate/<Init>d__5::.ctor(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CInitU3Ed__5__ctor_m8CC899ACA4495737C8A7A539DE2F50F0FCE20E5A (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) ;
+// System.Void InAppUpdate/<CheckForUpdate>d__6::.ctor(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CCheckForUpdateU3Ed__6__ctor_m906E43998CB1E63E5FBCFB147DB1D6DA6029C093 (U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) ;
+// System.Void InAppUpdate::LogMessage(System.String)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, String_t* ___0_message, const RuntimeMethod* method) ;
+// UnityEngine.SceneManagement.Scene UnityEngine.SceneManagement.SceneManager::GetActiveScene()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Scene_tA1DC762B79745EB5140F054C884855B922318356 SceneManager_GetActiveScene_m0B320EC4302F51A71495D1CCD1A0FF9C2ED1FDC8 (const RuntimeMethod* method) ;
+// System.String UnityEngine.SceneManagement.Scene::get_name()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Scene_get_name_m3C818DFA663E159274DAD823B780C7616C5E2A8C (Scene_tA1DC762B79745EB5140F054C884855B922318356* __this, const RuntimeMethod* method) ;
+// System.Void UnityEngine.SceneManagement.SceneManager::LoadScene(System.String)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void SceneManager_LoadScene_mBB3DBC1601A21F8F4E8A5D68FED30EA9412F218E (String_t* ___0_sceneName, const RuntimeMethod* method) ;
 // System.Void Google.Play.AppUpdate.AppUpdateManager::.ctor()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void AppUpdateManager__ctor_m3299B5AE8FD3F15C77C7DB9B992B8613BA0AEB7C (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* __this, const RuntimeMethod* method) ;
 // System.Collections.IEnumerator InAppUpdate::CheckForUpdate()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_CheckForUpdate_m14D10F02CDDDA606BEBDDF171D60171BF6333F87 (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) ;
-// System.Void InAppUpdate/<CheckForUpdate>d__6::.ctor(System.Int32)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CCheckForUpdateU3Ed__6__ctor_m906E43998CB1E63E5FBCFB147DB1D6DA6029C093 (U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) ;
-// System.Void InAppUpdate/<StartUpdate>d__7::.ctor(System.Int32)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CStartUpdateU3Ed__7__ctor_m8F1457979CC524E2E78CC9A8F28DD73F53D280AE (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) ;
 // Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode> Google.Play.AppUpdate.AppUpdateManager::GetAppUpdateInfo()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* AppUpdateManager_GetAppUpdateInfo_m2387A02DF7B1127CFCEBD16834EE85A2EEFA5D4D (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* __this, const RuntimeMethod* method) ;
 // TResult Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode>::GetResult()
@@ -7772,27 +7797,14 @@ inline AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* PlayAsyncOperati
 }
 // Google.Play.AppUpdate.UpdateAvailability Google.Play.AppUpdate.AppUpdateInfo::get_UpdateAvailability()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2 (AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* __this, const RuntimeMethod* method) ;
-// System.Void InAppUpdate::LogMessage(System.String)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, String_t* ___0_message, const RuntimeMethod* method) ;
-// System.Collections.IEnumerator InAppUpdate::StartUpdate()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_StartUpdate_mBAA71B10C4E4CA09DFD4C9A3E152E4F4B595D07D (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) ;
-// TError Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode>::get_Error()
-inline int32_t PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_inline (PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* __this, const RuntimeMethod* method)
-{
-	return ((  int32_t (*) (PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA*, const RuntimeMethod*))PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline)(__this, method);
-}
-// System.String System.String::Format(System.String,System.Object)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* String_Format_mA8DBB4C2516B9723C5A41E6CB1E2FAF4BBE96DD8 (String_t* ___0_format, RuntimeObject* ___1_arg0, const RuntimeMethod* method) ;
-// System.Void BackendManager::StartGoogleLogin()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void BackendManager_StartGoogleLogin_mE4D1B0305C20CC49B61C2D4D7C73FF6C89074D5B (BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* __this, const RuntimeMethod* method) ;
-// Google.Play.AppUpdate.AppUpdateOptions Google.Play.AppUpdate.AppUpdateOptions::ImmediateAppUpdateOptions(System.Boolean)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* AppUpdateOptions_ImmediateAppUpdateOptions_m1474744F2B5A50DA9EA318E2696B15A5A030DEE6 (bool ___0_allowAssetPackDeletion, const RuntimeMethod* method) ;
+// Google.Play.AppUpdate.AppUpdateOptions Google.Play.AppUpdate.AppUpdateOptions::FlexibleAppUpdateOptions(System.Boolean)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* AppUpdateOptions_FlexibleAppUpdateOptions_m2FAD843D34CCA1E316BD96E408028CC337918EA4 (bool ___0_allowAssetPackDeletion, const RuntimeMethod* method) ;
 // Google.Play.AppUpdate.AppUpdateRequest Google.Play.AppUpdate.AppUpdateManager::StartUpdate(Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateOptions)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* AppUpdateManager_StartUpdate_mA6CB776AEE490486D327C8F1216E147FCDCE0909 (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* __this, AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* ___0_appUpdateInfo, AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* ___1_appUpdateOptions, const RuntimeMethod* method) ;
-// System.Boolean Google.Play.AppUpdate.AppUpdateRequest::get_IsDone()
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) ;
 // Google.Play.AppUpdate.AppUpdateStatus Google.Play.AppUpdate.AppUpdateRequest::get_Status()
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) ;
+// System.Boolean Google.Play.AppUpdate.AppUpdateRequest::get_IsDone()
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) ;
 // Google.Play.Common.PlayAsyncOperation`2<Google.Play.Common.VoidResult,Google.Play.AppUpdate.AppUpdateErrorCode> Google.Play.AppUpdate.AppUpdateManager::CompleteUpdate()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* AppUpdateManager_CompleteUpdate_m6F79D7A593DBE5BD0E4B0FF5904CA93731775DE5 (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* __this, const RuntimeMethod* method) ;
 // System.Void UnityEngine.WaitForEndOfFrame::.ctor()
@@ -7802,8 +7814,15 @@ inline bool PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38E
 {
 	return ((  bool (*) (PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE*, const RuntimeMethod*))PlayAsyncOperation_2_get_IsDone_mF5CF3A791FA08972A3632070A32E810C7CBC493E_gshared_inline)(__this, method);
 }
-// Google.Play.AppUpdate.AppUpdateErrorCode Google.Play.AppUpdate.AppUpdateRequest::get_Error()
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t AppUpdateRequest_get_Error_m1A0B539295AC0B3C4FD132CC111043B2D7EB1131_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) ;
+// TError Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode>::get_Error()
+inline int32_t PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_inline (PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* __this, const RuntimeMethod* method)
+{
+	return ((  int32_t (*) (PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA*, const RuntimeMethod*))PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline)(__this, method);
+}
+// System.String System.String::Format(System.String,System.Object)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* String_Format_mA8DBB4C2516B9723C5A41E6CB1E2FAF4BBE96DD8 (String_t* ___0_format, RuntimeObject* ___1_arg0, const RuntimeMethod* method) ;
+// System.Void BackendManager::StartGoogleLogin()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void BackendManager_StartGoogleLogin_mE4D1B0305C20CC49B61C2D4D7C73FF6C89074D5B (BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* __this, const RuntimeMethod* method) ;
 // System.Collections.IEnumerator LoadingManager::LoadScene()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* LoadingManager_LoadScene_m2B7D98EB959EB2FE7110B6EDACAEC97C8AB8F86A (LoadingManager_tD9AE06049907FF29AD8E789E3D7F4AA3CD9C1DA0* __this, const RuntimeMethod* method) ;
 // System.Void LoadingManager/<LoadScene>d__5::.ctor(System.Int32)
@@ -18334,30 +18353,38 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GameManager__ctor_mF453CED520617BFB65C52
 // System.Void InAppUpdate::Start()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void InAppUpdate_Start_m075428C8B837DF7CAA20A5E6786C8692182F30FD (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) 
 {
-	static bool s_Il2CppMethodInitialized;
-	if (!s_Il2CppMethodInitialized)
-	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275_il2cpp_TypeInfo_var);
-		s_Il2CppMethodInitialized = true;
-	}
 	{
 		// textPanel.SetActive(false);
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = __this->___textPanel_5;
 		NullCheck(L_0);
 		GameObject_SetActive_m638E92E1E75E519E5B24CF150B08CA8E0CDFAB92(L_0, (bool)0, NULL);
-		// appUpdateManager = new AppUpdateManager();
-		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_1 = (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275*)il2cpp_codegen_object_new(AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275_il2cpp_TypeInfo_var);
-		NullCheck(L_1);
-		AppUpdateManager__ctor_m3299B5AE8FD3F15C77C7DB9B992B8613BA0AEB7C(L_1, NULL);
-		__this->___appUpdateManager_7 = L_1;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___appUpdateManager_7), (void*)L_1);
-		// StartCoroutine(CheckForUpdate());
-		RuntimeObject* L_2;
-		L_2 = InAppUpdate_CheckForUpdate_m14D10F02CDDDA606BEBDDF171D60171BF6333F87(__this, NULL);
-		Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* L_3;
-		L_3 = MonoBehaviour_StartCoroutine_m4CAFF732AA28CD3BDC5363B44A863575530EC812(__this, L_2, NULL);
+		// StartCoroutine(Init());
+		RuntimeObject* L_1;
+		L_1 = InAppUpdate_Init_m91A04D1220ACBB038D33C19776F2814397F249EF(__this, NULL);
+		Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* L_2;
+		L_2 = MonoBehaviour_StartCoroutine_m4CAFF732AA28CD3BDC5363B44A863575530EC812(__this, L_1, NULL);
 		// }
 		return;
+	}
+}
+// System.Collections.IEnumerator InAppUpdate::Init()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_Init_m91A04D1220ACBB038D33C19776F2814397F249EF (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB_il2cpp_TypeInfo_var);
+		s_Il2CppMethodInitialized = true;
+	}
+	{
+		U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* L_0 = (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB*)il2cpp_codegen_object_new(U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB_il2cpp_TypeInfo_var);
+		NullCheck(L_0);
+		U3CInitU3Ed__5__ctor_m8CC899ACA4495737C8A7A539DE2F50F0FCE20E5A(L_0, 0, NULL);
+		U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* L_1 = L_0;
+		NullCheck(L_1);
+		L_1->___U3CU3E4__this_2 = __this;
+		Il2CppCodeGenWriteBarrier((void**)(&L_1->___U3CU3E4__this_2), (void*)__this);
+		return L_1;
 	}
 }
 // System.Collections.IEnumerator InAppUpdate::CheckForUpdate()
@@ -18380,24 +18407,31 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_CheckForUpdate_m14
 		return L_1;
 	}
 }
-// System.Collections.IEnumerator InAppUpdate::StartUpdate()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* InAppUpdate_StartUpdate_mBAA71B10C4E4CA09DFD4C9A3E152E4F4B595D07D (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) 
+// System.Void InAppUpdate::RestartApp()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void InAppUpdate_RestartApp_m9EDF5491EB3B7148BBF8236F99AB7647BA5A770C (InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* __this, const RuntimeMethod* method) 
 {
 	static bool s_Il2CppMethodInitialized;
 	if (!s_Il2CppMethodInitialized)
 	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&SceneManager_tA0EF56A88ACA4A15731AF7FDC10A869FA4C698FA_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral515C802236CA5931DF10D12707A31EE7B27B86B1);
 		s_Il2CppMethodInitialized = true;
 	}
+	Scene_tA1DC762B79745EB5140F054C884855B922318356 V_0;
+	memset((&V_0), 0, sizeof(V_0));
 	{
-		U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* L_0 = (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC*)il2cpp_codegen_object_new(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC_il2cpp_TypeInfo_var);
-		NullCheck(L_0);
-		U3CStartUpdateU3Ed__7__ctor_m8F1457979CC524E2E78CC9A8F28DD73F53D280AE(L_0, 0, NULL);
-		U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* L_1 = L_0;
-		NullCheck(L_1);
-		L_1->___U3CU3E4__this_2 = __this;
-		Il2CppCodeGenWriteBarrier((void**)(&L_1->___U3CU3E4__this_2), (void*)__this);
-		return L_1;
+		// LogMessage("???? ?????????...");
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(__this, _stringLiteral515C802236CA5931DF10D12707A31EE7B27B86B1, NULL);
+		// UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+		il2cpp_codegen_runtime_class_init_inline(SceneManager_tA0EF56A88ACA4A15731AF7FDC10A869FA4C698FA_il2cpp_TypeInfo_var);
+		Scene_tA1DC762B79745EB5140F054C884855B922318356 L_0;
+		L_0 = SceneManager_GetActiveScene_m0B320EC4302F51A71495D1CCD1A0FF9C2ED1FDC8(NULL);
+		V_0 = L_0;
+		String_t* L_1;
+		L_1 = Scene_get_name_m3C818DFA663E159274DAD823B780C7616C5E2A8C((&V_0), NULL);
+		SceneManager_LoadScene_mBB3DBC1601A21F8F4E8A5D68FED30EA9412F218E(L_1, NULL);
+		// }
+		return;
 	}
 }
 // System.Void InAppUpdate::LogMessage(System.String)
@@ -18537,6 +18571,181 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void InAppUpdate__ctor_m41CDE8D4F8EAEF94BF1E5
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
+// System.Void InAppUpdate/<Init>d__5::.ctor(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CInitU3Ed__5__ctor_m8CC899ACA4495737C8A7A539DE2F50F0FCE20E5A (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) 
+{
+	{
+		Object__ctor_mE837C6B9FA8C6D5D109F4B2EC885D79919AC0EA2(__this, NULL);
+		int32_t L_0 = ___0_U3CU3E1__state;
+		__this->___U3CU3E1__state_0 = L_0;
+		return;
+	}
+}
+// System.Void InAppUpdate/<Init>d__5::System.IDisposable.Dispose()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CInitU3Ed__5_System_IDisposable_Dispose_m28E3C4158142D9C4877A85A91E4096A5AED4A972 (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, const RuntimeMethod* method) 
+{
+	{
+		return;
+	}
+}
+// System.Boolean InAppUpdate/<Init>d__5::MoveNext()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CInitU3Ed__5_MoveNext_mD9F9AF7A3D34379DA643D4BF2BA9C7576098375B (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, const RuntimeMethod* method) 
+{
+	static bool s_Il2CppMethodInitialized;
+	if (!s_Il2CppMethodInitialized)
+	{
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral0C8429FB662A4FAEF33F91D615C06BB8215FAA4A);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralCD9D97065C68756BF7E3B488AC90126339044728);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralDE9DE2FB99B901275C84E56CBBF9626DA14B1DCD);
+		s_Il2CppMethodInitialized = true;
+	}
+	int32_t V_0 = 0;
+	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* V_1 = NULL;
+	Exception_t* V_2 = NULL;
+	il2cpp::utils::ExceptionSupportStack<RuntimeObject*, 1> __active_exceptions;
+	{
+		int32_t L_0 = __this->___U3CU3E1__state_0;
+		V_0 = L_0;
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_1 = __this->___U3CU3E4__this_2;
+		V_1 = L_1;
+		int32_t L_2 = V_0;
+		if (!L_2)
+		{
+			goto IL_0017;
+		}
+	}
+	{
+		int32_t L_3 = V_0;
+		if ((((int32_t)L_3) == ((int32_t)1)))
+		{
+			goto IL_0037;
+		}
+	}
+	{
+		return (bool)0;
+	}
+
+IL_0017:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+		// yield return new WaitForSeconds(0.5f);
+		WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3* L_4 = (WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3*)il2cpp_codegen_object_new(WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3_il2cpp_TypeInfo_var);
+		NullCheck(L_4);
+		WaitForSeconds__ctor_m579F95BADEDBAB4B3A7E302C6EE3995926EF2EFC(L_4, (0.5f), NULL);
+		__this->___U3CU3E2__current_1 = L_4;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_4);
+		__this->___U3CU3E1__state_0 = 1;
+		return (bool)1;
+	}
+
+IL_0037:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+	}
+	try
+	{// begin try (depth: 1)
+		// LogMessage("????");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_5 = V_1;
+		NullCheck(L_5);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_5, _stringLiteralCD9D97065C68756BF7E3B488AC90126339044728, NULL);
+		// appUpdateManager = new AppUpdateManager();
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_6 = V_1;
+		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_7 = (AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275*)il2cpp_codegen_object_new(AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275_il2cpp_TypeInfo_var);
+		NullCheck(L_7);
+		AppUpdateManager__ctor_m3299B5AE8FD3F15C77C7DB9B992B8613BA0AEB7C(L_7, NULL);
+		NullCheck(L_6);
+		L_6->___appUpdateManager_7 = L_7;
+		Il2CppCodeGenWriteBarrier((void**)(&L_6->___appUpdateManager_7), (void*)L_7);
+		// LogMessage("?? ??????? ????? ???? ????");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_8 = V_1;
+		NullCheck(L_8);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_8, _stringLiteral0C8429FB662A4FAEF33F91D615C06BB8215FAA4A, NULL);
+		// StartCoroutine(CheckForUpdate());
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_9 = V_1;
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_10 = V_1;
+		NullCheck(L_10);
+		RuntimeObject* L_11;
+		L_11 = InAppUpdate_CheckForUpdate_m14D10F02CDDDA606BEBDDF171D60171BF6333F87(L_10, NULL);
+		NullCheck(L_9);
+		Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* L_12;
+		L_12 = MonoBehaviour_StartCoroutine_m4CAFF732AA28CD3BDC5363B44A863575530EC812(L_9, L_11, NULL);
+		// LogMessage("?? ??????? ???? ???? ????");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_13 = V_1;
+		NullCheck(L_13);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_13, _stringLiteralDE9DE2FB99B901275C84E56CBBF9626DA14B1DCD, NULL);
+		// }
+		goto IL_0088;
+	}// end try (depth: 1)
+	catch(Il2CppExceptionWrapper& e)
+	{
+		if(il2cpp_codegen_class_is_assignable_from (((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&Exception_t_il2cpp_TypeInfo_var)), il2cpp_codegen_object_class(e.ex)))
+		{
+			IL2CPP_PUSH_ACTIVE_EXCEPTION(e.ex);
+			goto CATCH_0079;
+		}
+		throw e;
+	}
+
+CATCH_0079:
+	{// begin catch(System.Exception)
+		Exception_t* L_14 = ((Exception_t*)IL2CPP_GET_ACTIVE_EXCEPTION(Exception_t*));;
+		// catch(Exception err)
+		V_2 = L_14;
+		// LogMessage(err.Message);
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_15 = V_1;
+		Exception_t* L_16 = V_2;
+		NullCheck(L_16);
+		String_t* L_17;
+		L_17 = VirtualFuncInvoker0< String_t* >::Invoke(5 /* System.String System.Exception::get_Message() */, L_16);
+		NullCheck(L_15);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_15, L_17, NULL);
+		// }
+		IL2CPP_POP_ACTIVE_EXCEPTION(Exception_t*);
+		goto IL_0088;
+	}// end catch (depth: 1)
+
+IL_0088:
+	{
+		// }
+		return (bool)0;
+	}
+}
+// System.Object InAppUpdate/<Init>d__5::System.Collections.Generic.IEnumerator<System.Object>.get_Current()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* U3CInitU3Ed__5_System_Collections_Generic_IEnumeratorU3CSystem_ObjectU3E_get_Current_m00A2552A3F5DE6686B19C13E93DBE46264A52278 (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, const RuntimeMethod* method) 
+{
+	{
+		RuntimeObject* L_0 = __this->___U3CU3E2__current_1;
+		return L_0;
+	}
+}
+// System.Void InAppUpdate/<Init>d__5::System.Collections.IEnumerator.Reset()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CInitU3Ed__5_System_Collections_IEnumerator_Reset_m3AAAE7AB4312A576E8AF990F380033EBCEA2BC90 (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, const RuntimeMethod* method) 
+{
+	{
+		NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A* L_0 = (NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A*)il2cpp_codegen_object_new(((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A_il2cpp_TypeInfo_var)));
+		NullCheck(L_0);
+		NotSupportedException__ctor_m1398D0CDE19B36AA3DE9392879738C1EA2439CDF(L_0, NULL);
+		IL2CPP_RAISE_MANAGED_EXCEPTION(L_0, ((RuntimeMethod*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&U3CInitU3Ed__5_System_Collections_IEnumerator_Reset_m3AAAE7AB4312A576E8AF990F380033EBCEA2BC90_RuntimeMethod_var)));
+	}
+}
+// System.Object InAppUpdate/<Init>d__5::System.Collections.IEnumerator.get_Current()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* U3CInitU3Ed__5_System_Collections_IEnumerator_get_Current_m13BABC26F8695AE638A292F8D1454FC82AB4252B (U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB* __this, const RuntimeMethod* method) 
+{
+	{
+		RuntimeObject* L_0 = __this->___U3CU3E2__current_1;
+		return L_0;
+	}
+}
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winvalid-offsetof"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#endif
 // System.Void InAppUpdate/<CheckForUpdate>d__6::.ctor(System.Int32)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CCheckForUpdateU3Ed__6__ctor_m906E43998CB1E63E5FBCFB147DB1D6DA6029C093 (U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) 
 {
@@ -18561,16 +18770,27 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CCheckForUpdateU3Ed__6_MoveNext_mE767F
 	if (!s_Il2CppMethodInitialized)
 	{
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&AppUpdateErrorCode_t8B3AEF150192AC490413CC7BFFA2C7D9F6F5FE5A_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Int32_t680FF22E76F6EFAD4375103CBBFFA0421349384C_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&PlayAsyncOperation_2_GetResult_mC865A0A6B75023C8BE84BC5A01841C67B6BA0626_RuntimeMethod_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_RuntimeMethod_var);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&UpdateAvailability_t9DAB4CB4F92C3A9EEEA1E7FAC1CBE0507B983EA0_il2cpp_TypeInfo_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral068098E8ED25D5C79E0FD64B73EE96E145A9030E);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral0EB633D66F4B5F79A0877E1406708EC320C6D8E6);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral21D2F3791AE764977FA83DE63D8233BCAB9EB36E);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral653C5ACA2A66026B3E01AF978D81F766FB2A1FF5);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral94AF4212BE33DDC91AD695C783EA4DA3EE75F43D);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralC8C6FFED85E2BCA00BDE98F9F57918B89905E179);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralD28856D061D1C1CCAEB34AA78E4440B933A08290);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralF4F3DFE4359C353DD0DA4A821908B17937AAFE9F);
 		s_Il2CppMethodInitialized = true;
 	}
 	int32_t V_0 = 0;
 	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* V_1 = NULL;
+	AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* V_2 = NULL;
+	AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* V_3 = NULL;
+	int32_t V_4 = 0;
 	{
 		int32_t L_0 = __this->___U3CU3E1__state_0;
 		V_0 = L_0;
@@ -18581,19 +18801,31 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CCheckForUpdateU3Ed__6_MoveNext_mE767F
 		{
 			case 0:
 			{
-				goto IL_0026;
+				goto IL_0032;
 			}
 			case 1:
 			{
-				goto IL_0046;
+				goto IL_006a;
 			}
 			case 2:
 			{
-				goto IL_0073;
+				goto IL_010f;
 			}
 			case 3:
 			{
-				goto IL_00cc;
+				goto IL_014a;
+			}
+			case 4:
+			{
+				goto IL_017d;
+			}
+			case 5:
+			{
+				goto IL_01c0;
+			}
+			case 6:
+			{
+				goto IL_0203;
 			}
 		}
 	}
@@ -18601,23 +18833,15 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CCheckForUpdateU3Ed__6_MoveNext_mE767F
 		return (bool)0;
 	}
 
-IL_0026:
+IL_0032:
 	{
 		__this->___U3CU3E1__state_0 = (-1);
-		// yield return new WaitForSeconds(0.5f);
-		WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3* L_3 = (WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3*)il2cpp_codegen_object_new(WaitForSeconds_tF179DF251655B8DF044952E70A60DF4B358A3DD3_il2cpp_TypeInfo_var);
+		// LogMessage("??????? ?????? ???????? ??...");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_3 = V_1;
 		NullCheck(L_3);
-		WaitForSeconds__ctor_m579F95BADEDBAB4B3A7E302C6EE3995926EF2EFC(L_3, (0.5f), NULL);
-		__this->___U3CU3E2__current_1 = L_3;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_3);
-		__this->___U3CU3E1__state_0 = 1;
-		return (bool)1;
-	}
-
-IL_0046:
-	{
-		__this->___U3CU3E1__state_0 = (-1);
-		// var appUpdateInfoOperation = appUpdateManager.GetAppUpdateInfo();
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_3, _stringLiteralD28856D061D1C1CCAEB34AA78E4440B933A08290, NULL);
+		// PlayAsyncOperation<AppUpdateInfo, AppUpdateErrorCode> appUpdateInfoOperation =
+		//     appUpdateManager.GetAppUpdateInfo();
 		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_4 = V_1;
 		NullCheck(L_4);
 		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_5 = L_4->___appUpdateManager_7;
@@ -18630,11 +18854,11 @@ IL_0046:
 		PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* L_7 = __this->___U3CappUpdateInfoOperationU3E5__2_3;
 		__this->___U3CU3E2__current_1 = L_7;
 		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_7);
-		__this->___U3CU3E1__state_0 = 2;
+		__this->___U3CU3E1__state_0 = 1;
 		return (bool)1;
 	}
 
-IL_0073:
+IL_006a:
 	{
 		__this->___U3CU3E1__state_0 = (-1);
 		// if (appUpdateInfoOperation.IsSuccessful)
@@ -18644,103 +18868,272 @@ IL_0073:
 		L_9 = VirtualFuncInvoker0< bool >::Invoke(9 /* System.Boolean Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode>::get_IsSuccessful() */, L_8);
 		if (!L_9)
 		{
-			goto IL_00f0;
+			goto IL_020c;
 		}
 	}
 	{
-		// appUpdateInfoResult = appUpdateInfoOperation.GetResult();
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_10 = V_1;
-		PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* L_11 = __this->___U3CappUpdateInfoOperationU3E5__2_3;
-		NullCheck(L_11);
-		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_12;
-		L_12 = PlayAsyncOperation_2_GetResult_mC865A0A6B75023C8BE84BC5A01841C67B6BA0626(L_11, PlayAsyncOperation_2_GetResult_mC865A0A6B75023C8BE84BC5A01841C67B6BA0626_RuntimeMethod_var);
+		// var appUpdateInfoResult = appUpdateInfoOperation.GetResult();
+		PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* L_10 = __this->___U3CappUpdateInfoOperationU3E5__2_3;
 		NullCheck(L_10);
-		L_10->___appUpdateInfoResult_8 = L_12;
-		Il2CppCodeGenWriteBarrier((void**)(&L_10->___appUpdateInfoResult_8), (void*)L_12);
+		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_11;
+		L_11 = PlayAsyncOperation_2_GetResult_mC865A0A6B75023C8BE84BC5A01841C67B6BA0626(L_10, PlayAsyncOperation_2_GetResult_mC865A0A6B75023C8BE84BC5A01841C67B6BA0626_RuntimeMethod_var);
+		V_2 = L_11;
+		// LogMessage("??????? ???? ???? ????");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_12 = V_1;
+		NullCheck(L_12);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_12, _stringLiteral653C5ACA2A66026B3E01AF978D81F766FB2A1FF5, NULL);
 		// if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateAvailable)
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_13 = V_1;
+		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_13 = V_2;
 		NullCheck(L_13);
-		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_14 = L_13->___appUpdateInfoResult_8;
-		NullCheck(L_14);
-		int32_t L_15;
-		L_15 = AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2(L_14, NULL);
-		if ((!(((uint32_t)L_15) == ((uint32_t)2))))
+		int32_t L_14;
+		L_14 = AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2(L_13, NULL);
+		if ((!(((uint32_t)L_14) == ((uint32_t)2))))
 		{
-			goto IL_00d5;
+			goto IL_0197;
 		}
 	}
 	{
 		// LogMessage("????????? ???????.\n??????? ????????? ????????.");
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_16 = V_1;
-		NullCheck(L_16);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_16, _stringLiteral068098E8ED25D5C79E0FD64B73EE96E145A9030E, NULL);
-		// yield return StartCoroutine(StartUpdate());
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_15 = V_1;
+		NullCheck(L_15);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_15, _stringLiteral068098E8ED25D5C79E0FD64B73EE96E145A9030E, NULL);
+		// var appUpdateOptions = AppUpdateOptions.FlexibleAppUpdateOptions();
+		AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* L_16;
+		L_16 = AppUpdateOptions_FlexibleAppUpdateOptions_m2FAD843D34CCA1E316BD96E408028CC337918EA4((bool)0, NULL);
+		V_3 = L_16;
+		// var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
 		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_17 = V_1;
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_18 = V_1;
-		NullCheck(L_18);
-		RuntimeObject* L_19;
-		L_19 = InAppUpdate_StartUpdate_mBAA71B10C4E4CA09DFD4C9A3E152E4F4B595D07D(L_18, NULL);
 		NullCheck(L_17);
-		Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* L_20;
-		L_20 = MonoBehaviour_StartCoroutine_m4CAFF732AA28CD3BDC5363B44A863575530EC812(L_17, L_19, NULL);
-		__this->___U3CU3E2__current_1 = L_20;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_20);
+		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_18 = L_17->___appUpdateManager_7;
+		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_19 = V_2;
+		AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* L_20 = V_3;
+		NullCheck(L_18);
+		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_21;
+		L_21 = AppUpdateManager_StartUpdate_mA6CB776AEE490486D327C8F1216E147FCDCE0909(L_18, L_19, L_20, NULL);
+		__this->___U3CstartUpdateRequestU3E5__3_4 = L_21;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CstartUpdateRequestU3E5__3_4), (void*)L_21);
+		goto IL_0116;
+	}
+
+IL_00cb:
+	{
+		// if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
+		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_22 = __this->___U3CstartUpdateRequestU3E5__3_4;
+		NullCheck(L_22);
+		int32_t L_23;
+		L_23 = AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline(L_22, NULL);
+		if ((!(((uint32_t)L_23) == ((uint32_t)2))))
+		{
+			goto IL_00e6;
+		}
+	}
+	{
+		// LogMessage("??????? ????? ???? ??????...");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_24 = V_1;
+		NullCheck(L_24);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_24, _stringLiteralC8C6FFED85E2BCA00BDE98F9F57918B89905E179, NULL);
+		goto IL_00ff;
+	}
+
+IL_00e6:
+	{
+		// else if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
+		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_25 = __this->___U3CstartUpdateRequestU3E5__3_4;
+		NullCheck(L_25);
+		int32_t L_26;
+		L_26 = AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline(L_25, NULL);
+		if ((!(((uint32_t)L_26) == ((uint32_t)3))))
+		{
+			goto IL_00ff;
+		}
+	}
+	{
+		// LogMessage("??????? ????? ?????????? !");
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_27 = V_1;
+		NullCheck(L_27);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_27, _stringLiteralF4F3DFE4359C353DD0DA4A821908B17937AAFE9F, NULL);
+	}
+
+IL_00ff:
+	{
+		// yield return null;
+		__this->___U3CU3E2__current_1 = NULL;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)NULL);
+		__this->___U3CU3E1__state_0 = 2;
+		return (bool)1;
+	}
+
+IL_010f:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+	}
+
+IL_0116:
+	{
+		// while (!startUpdateRequest.IsDone)
+		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_28 = __this->___U3CstartUpdateRequestU3E5__3_4;
+		NullCheck(L_28);
+		bool L_29;
+		L_29 = AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline(L_28, NULL);
+		if (!L_29)
+		{
+			goto IL_00cb;
+		}
+	}
+	{
+		// var result = appUpdateManager.CompleteUpdate();
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_30 = V_1;
+		NullCheck(L_30);
+		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_31 = L_30->___appUpdateManager_7;
+		NullCheck(L_31);
+		PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* L_32;
+		L_32 = AppUpdateManager_CompleteUpdate_m6F79D7A593DBE5BD0E4B0FF5904CA93731775DE5(L_31, NULL);
+		__this->___U3CresultU3E5__4_5 = L_32;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CresultU3E5__4_5), (void*)L_32);
+		goto IL_0151;
+	}
+
+IL_0136:
+	{
+		// yield return new WaitForEndOfFrame();
+		WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663* L_33 = (WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663*)il2cpp_codegen_object_new(WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663_il2cpp_TypeInfo_var);
+		NullCheck(L_33);
+		WaitForEndOfFrame__ctor_m4AF7E576C01E6B04443BB898B1AE5D645F7D45AB(L_33, NULL);
+		__this->___U3CU3E2__current_1 = L_33;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_33);
 		__this->___U3CU3E1__state_0 = 3;
 		return (bool)1;
 	}
 
-IL_00cc:
+IL_014a:
 	{
 		__this->___U3CU3E1__state_0 = (-1);
-		goto IL_0110;
 	}
 
-IL_00d5:
+IL_0151:
+	{
+		// while (!result.IsDone)
+		PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* L_34 = __this->___U3CresultU3E5__4_5;
+		NullCheck(L_34);
+		bool L_35;
+		L_35 = PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_inline(L_34, PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_RuntimeMethod_var);
+		if (!L_35)
+		{
+			goto IL_0136;
+		}
+	}
+	{
+		// yield return (int)startUpdateRequest.Status;
+		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_36 = __this->___U3CstartUpdateRequestU3E5__3_4;
+		NullCheck(L_36);
+		int32_t L_37;
+		L_37 = AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline(L_36, NULL);
+		int32_t L_38 = ((int32_t)L_37);
+		RuntimeObject* L_39 = Box(Int32_t680FF22E76F6EFAD4375103CBBFFA0421349384C_il2cpp_TypeInfo_var, &L_38);
+		__this->___U3CU3E2__current_1 = L_39;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_39);
+		__this->___U3CU3E1__state_0 = 4;
+		return (bool)1;
+	}
+
+IL_017d:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+		// }
+		__this->___U3CstartUpdateRequestU3E5__3_4 = (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D*)NULL;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CstartUpdateRequestU3E5__3_4), (void*)(AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D*)NULL);
+		__this->___U3CresultU3E5__4_5 = (PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE*)NULL;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CresultU3E5__4_5), (void*)(PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE*)NULL);
+		goto IL_022c;
+	}
+
+IL_0197:
 	{
 		// else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_21 = V_1;
-		NullCheck(L_21);
-		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_22 = L_21->___appUpdateInfoResult_8;
-		NullCheck(L_22);
-		int32_t L_23;
-		L_23 = AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2(L_22, NULL);
-		if ((!(((uint32_t)L_23) == ((uint32_t)1))))
+		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_40 = V_2;
+		NullCheck(L_40);
+		int32_t L_41;
+		L_41 = AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2(L_40, NULL);
+		if ((!(((uint32_t)L_41) == ((uint32_t)1))))
 		{
-			goto IL_0110;
+			goto IL_01c9;
 		}
 	}
 	{
 		// LogMessage("??????? ????");
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_24 = V_1;
-		NullCheck(L_24);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_24, _stringLiteral0EB633D66F4B5F79A0877E1406708EC320C6D8E6, NULL);
-		goto IL_0110;
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_42 = V_1;
+		NullCheck(L_42);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_42, _stringLiteral0EB633D66F4B5F79A0877E1406708EC320C6D8E6, NULL);
+		// yield return (int)UpdateAvailability.UpdateNotAvailable;
+		int32_t L_43 = 1;
+		RuntimeObject* L_44 = Box(Int32_t680FF22E76F6EFAD4375103CBBFFA0421349384C_il2cpp_TypeInfo_var, &L_43);
+		__this->___U3CU3E2__current_1 = L_44;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_44);
+		__this->___U3CU3E1__state_0 = 5;
+		return (bool)1;
 	}
 
-IL_00f0:
+IL_01c0:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+		goto IL_022c;
+	}
+
+IL_01c9:
+	{
+		// LogMessage("??????? ????: " + appUpdateInfoResult.UpdateAvailability);
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_45 = V_1;
+		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_46 = V_2;
+		NullCheck(L_46);
+		int32_t L_47;
+		L_47 = AppUpdateInfo_get_UpdateAvailability_m9D791BC6AD2F144905B9BB11623A9F5FF83B37D2(L_46, NULL);
+		V_4 = L_47;
+		Il2CppFakeBox<int32_t> L_48(UpdateAvailability_t9DAB4CB4F92C3A9EEEA1E7FAC1CBE0507B983EA0_il2cpp_TypeInfo_var, (&V_4));
+		String_t* L_49;
+		L_49 = Enum_ToString_m946B0B83C4470457D0FF555D862022C72BB55741((Enum_t2A1A94B24E3B776EEF4E5E485E290BB9D4D072E2*)(&L_48), NULL);
+		String_t* L_50;
+		L_50 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteral94AF4212BE33DDC91AD695C783EA4DA3EE75F43D, L_49, NULL);
+		NullCheck(L_45);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_45, L_50, NULL);
+		// yield return (int)UpdateAvailability.Unknown;
+		int32_t L_51 = 0;
+		RuntimeObject* L_52 = Box(Int32_t680FF22E76F6EFAD4375103CBBFFA0421349384C_il2cpp_TypeInfo_var, &L_51);
+		__this->___U3CU3E2__current_1 = L_52;
+		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_52);
+		__this->___U3CU3E1__state_0 = 6;
+		return (bool)1;
+	}
+
+IL_0203:
+	{
+		__this->___U3CU3E1__state_0 = (-1);
+		goto IL_022c;
+	}
+
+IL_020c:
 	{
 		// LogMessage($"In-App Update Error: {appUpdateInfoOperation.Error}");
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_25 = V_1;
-		PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* L_26 = __this->___U3CappUpdateInfoOperationU3E5__2_3;
-		NullCheck(L_26);
-		int32_t L_27;
-		L_27 = PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_inline(L_26, PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_RuntimeMethod_var);
-		int32_t L_28 = L_27;
-		RuntimeObject* L_29 = Box(AppUpdateErrorCode_t8B3AEF150192AC490413CC7BFFA2C7D9F6F5FE5A_il2cpp_TypeInfo_var, &L_28);
-		String_t* L_30;
-		L_30 = String_Format_mA8DBB4C2516B9723C5A41E6CB1E2FAF4BBE96DD8(_stringLiteral21D2F3791AE764977FA83DE63D8233BCAB9EB36E, L_29, NULL);
-		NullCheck(L_25);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_25, L_30, NULL);
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_53 = V_1;
+		PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* L_54 = __this->___U3CappUpdateInfoOperationU3E5__2_3;
+		NullCheck(L_54);
+		int32_t L_55;
+		L_55 = PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_inline(L_54, PlayAsyncOperation_2_get_Error_m7E119BB157528B6749632055C045FFF049593519_RuntimeMethod_var);
+		int32_t L_56 = L_55;
+		RuntimeObject* L_57 = Box(AppUpdateErrorCode_t8B3AEF150192AC490413CC7BFFA2C7D9F6F5FE5A_il2cpp_TypeInfo_var, &L_56);
+		String_t* L_58;
+		L_58 = String_Format_mA8DBB4C2516B9723C5A41E6CB1E2FAF4BBE96DD8(_stringLiteral21D2F3791AE764977FA83DE63D8233BCAB9EB36E, L_57, NULL);
+		NullCheck(L_53);
+		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_53, L_58, NULL);
 	}
 
-IL_0110:
+IL_022c:
 	{
 		// backendManager.StartGoogleLogin();
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_31 = V_1;
-		NullCheck(L_31);
-		BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* L_32 = L_31->___backendManager_6;
-		NullCheck(L_32);
-		BackendManager_StartGoogleLogin_mE4D1B0305C20CC49B61C2D4D7C73FF6C89074D5B(L_32, NULL);
+		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_59 = V_1;
+		NullCheck(L_59);
+		BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* L_60 = L_59->___backendManager_6;
+		NullCheck(L_60);
+		BackendManager_StartGoogleLogin_mE4D1B0305C20CC49B61C2D4D7C73FF6C89074D5B(L_60, NULL);
 		// }
 		return (bool)0;
 	}
@@ -18765,278 +19158,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CCheckForUpdateU3Ed__6_System_Collecti
 }
 // System.Object InAppUpdate/<CheckForUpdate>d__6::System.Collections.IEnumerator.get_Current()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* U3CCheckForUpdateU3Ed__6_System_Collections_IEnumerator_get_Current_mA5158C058B8BCD02C679137133D05B6DEA85D5A6 (U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9* __this, const RuntimeMethod* method) 
-{
-	{
-		RuntimeObject* L_0 = __this->___U3CU3E2__current_1;
-		return L_0;
-	}
-}
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Winvalid-offsetof"
-#pragma clang diagnostic ignored "-Wunused-variable"
-#endif
-// System.Void InAppUpdate/<StartUpdate>d__7::.ctor(System.Int32)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CStartUpdateU3Ed__7__ctor_m8F1457979CC524E2E78CC9A8F28DD73F53D280AE (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, int32_t ___0_U3CU3E1__state, const RuntimeMethod* method) 
-{
-	{
-		Object__ctor_mE837C6B9FA8C6D5D109F4B2EC885D79919AC0EA2(__this, NULL);
-		int32_t L_0 = ___0_U3CU3E1__state;
-		__this->___U3CU3E1__state_0 = L_0;
-		return;
-	}
-}
-// System.Void InAppUpdate/<StartUpdate>d__7::System.IDisposable.Dispose()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CStartUpdateU3Ed__7_System_IDisposable_Dispose_m16557C6B24B8C69D0AD2E9A4046FD18994B33AC7 (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, const RuntimeMethod* method) 
-{
-	{
-		return;
-	}
-}
-// System.Boolean InAppUpdate/<StartUpdate>d__7::MoveNext()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool U3CStartUpdateU3Ed__7_MoveNext_m450CD53B196731E6A6823D96726D2643F98F39C6 (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, const RuntimeMethod* method) 
-{
-	static bool s_Il2CppMethodInitialized;
-	if (!s_Il2CppMethodInitialized)
-	{
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&AppUpdateErrorCode_t8B3AEF150192AC490413CC7BFFA2C7D9F6F5FE5A_il2cpp_TypeInfo_var);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_RuntimeMethod_var);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663_il2cpp_TypeInfo_var);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral2324B8219382D74A696C6CE381D811EB56F3CD3E);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralC8C6FFED85E2BCA00BDE98F9F57918B89905E179);
-		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteralDC1AD55C49C5D9698F19C88554CD411AD715CDEB);
-		s_Il2CppMethodInitialized = true;
-	}
-	int32_t V_0 = 0;
-	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* V_1 = NULL;
-	AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* V_2 = NULL;
-	int32_t V_3 = 0;
-	{
-		int32_t L_0 = __this->___U3CU3E1__state_0;
-		V_0 = L_0;
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_1 = __this->___U3CU3E4__this_2;
-		V_1 = L_1;
-		int32_t L_2 = V_0;
-		switch (L_2)
-		{
-			case 0:
-			{
-				goto IL_0026;
-			}
-			case 1:
-			{
-				goto IL_0061;
-			}
-			case 2:
-			{
-				goto IL_00a6;
-			}
-			case 3:
-			{
-				goto IL_00e1;
-			}
-		}
-	}
-	{
-		return (bool)0;
-	}
-
-IL_0026:
-	{
-		__this->___U3CU3E1__state_0 = (-1);
-		// var appUpdateOptions = AppUpdateOptions.ImmediateAppUpdateOptions();
-		AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* L_3;
-		L_3 = AppUpdateOptions_ImmediateAppUpdateOptions_m1474744F2B5A50DA9EA318E2696B15A5A030DEE6((bool)0, NULL);
-		V_2 = L_3;
-		// var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_4 = V_1;
-		NullCheck(L_4);
-		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_5 = L_4->___appUpdateManager_7;
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_6 = V_1;
-		NullCheck(L_6);
-		AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* L_7 = L_6->___appUpdateInfoResult_8;
-		AppUpdateOptions_tDC21EB2E3657957ED85AD00AF2F4D2F67BAB6DA8* L_8 = V_2;
-		NullCheck(L_5);
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_9;
-		L_9 = AppUpdateManager_StartUpdate_mA6CB776AEE490486D327C8F1216E147FCDCE0909(L_5, L_7, L_8, NULL);
-		__this->___U3CstartUpdateRequestU3E5__2_3 = L_9;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CstartUpdateRequestU3E5__2_3), (void*)L_9);
-		// yield return startUpdateRequest;
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_10 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		__this->___U3CU3E2__current_1 = L_10;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_10);
-		__this->___U3CU3E1__state_0 = 1;
-		return (bool)1;
-	}
-
-IL_0061:
-	{
-		__this->___U3CU3E1__state_0 = (-1);
-		// if (startUpdateRequest.IsDone && startUpdateRequest.Status == AppUpdateStatus.Downloading)
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_11 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		NullCheck(L_11);
-		bool L_12;
-		L_12 = AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline(L_11, NULL);
-		if (!L_12)
-		{
-			goto IL_0109;
-		}
-	}
-	{
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_13 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		NullCheck(L_13);
-		int32_t L_14;
-		L_14 = AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline(L_13, NULL);
-		if ((!(((uint32_t)L_14) == ((uint32_t)2))))
-		{
-			goto IL_0109;
-		}
-	}
-	{
-		goto IL_00ad;
-	}
-
-IL_008b:
-	{
-		// LogMessage("??????? ????? ???? ??????...");
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_15 = V_1;
-		NullCheck(L_15);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_15, _stringLiteralC8C6FFED85E2BCA00BDE98F9F57918B89905E179, NULL);
-		// yield return null;
-		__this->___U3CU3E2__current_1 = NULL;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)NULL);
-		__this->___U3CU3E1__state_0 = 2;
-		return (bool)1;
-	}
-
-IL_00a6:
-	{
-		__this->___U3CU3E1__state_0 = (-1);
-	}
-
-IL_00ad:
-	{
-		// while (!startUpdateRequest.IsDone)
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_16 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		NullCheck(L_16);
-		bool L_17;
-		L_17 = AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline(L_16, NULL);
-		if (!L_17)
-		{
-			goto IL_008b;
-		}
-	}
-	{
-		// var result = appUpdateManager.CompleteUpdate();
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_18 = V_1;
-		NullCheck(L_18);
-		AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* L_19 = L_18->___appUpdateManager_7;
-		NullCheck(L_19);
-		PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* L_20;
-		L_20 = AppUpdateManager_CompleteUpdate_m6F79D7A593DBE5BD0E4B0FF5904CA93731775DE5(L_19, NULL);
-		__this->___U3CresultU3E5__3_4 = L_20;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CresultU3E5__3_4), (void*)L_20);
-		goto IL_00e8;
-	}
-
-IL_00cd:
-	{
-		// yield return new WaitForEndOfFrame();
-		WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663* L_21 = (WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663*)il2cpp_codegen_object_new(WaitForEndOfFrame_tE38D80923E3F8380069B423968C25ABE50A46663_il2cpp_TypeInfo_var);
-		NullCheck(L_21);
-		WaitForEndOfFrame__ctor_m4AF7E576C01E6B04443BB898B1AE5D645F7D45AB(L_21, NULL);
-		__this->___U3CU3E2__current_1 = L_21;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CU3E2__current_1), (void*)L_21);
-		__this->___U3CU3E1__state_0 = 3;
-		return (bool)1;
-	}
-
-IL_00e1:
-	{
-		__this->___U3CU3E1__state_0 = (-1);
-	}
-
-IL_00e8:
-	{
-		// while (!result.IsDone)
-		PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* L_22 = __this->___U3CresultU3E5__3_4;
-		NullCheck(L_22);
-		bool L_23;
-		L_23 = PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_inline(L_22, PlayAsyncOperation_2_get_IsDone_mAC7A074B7D16FE3475D0FE19CBC69F2C38EF6E2E_RuntimeMethod_var);
-		if (!L_23)
-		{
-			goto IL_00cd;
-		}
-	}
-	{
-		// LogMessage("????????? ?????????? ??????????.");
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_24 = V_1;
-		NullCheck(L_24);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_24, _stringLiteralDC1AD55C49C5D9698F19C88554CD411AD715CDEB, NULL);
-		// }
-		__this->___U3CresultU3E5__3_4 = (PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE*)NULL;
-		Il2CppCodeGenWriteBarrier((void**)(&__this->___U3CresultU3E5__3_4), (void*)(PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE*)NULL);
-		goto IL_0140;
-	}
-
-IL_0109:
-	{
-		// else if (startUpdateRequest.Status == AppUpdateStatus.Failed)
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_25 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		NullCheck(L_25);
-		int32_t L_26;
-		L_26 = AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline(L_25, NULL);
-		if ((!(((uint32_t)L_26) == ((uint32_t)6))))
-		{
-			goto IL_0140;
-		}
-	}
-	{
-		// LogMessage("??????? ????: " + startUpdateRequest.Error);
-		InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* L_27 = V_1;
-		AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* L_28 = __this->___U3CstartUpdateRequestU3E5__2_3;
-		NullCheck(L_28);
-		int32_t L_29;
-		L_29 = AppUpdateRequest_get_Error_m1A0B539295AC0B3C4FD132CC111043B2D7EB1131_inline(L_28, NULL);
-		V_3 = L_29;
-		Il2CppFakeBox<int32_t> L_30(AppUpdateErrorCode_t8B3AEF150192AC490413CC7BFFA2C7D9F6F5FE5A_il2cpp_TypeInfo_var, (&V_3));
-		String_t* L_31;
-		L_31 = Enum_ToString_m946B0B83C4470457D0FF555D862022C72BB55741((Enum_t2A1A94B24E3B776EEF4E5E485E290BB9D4D072E2*)(&L_30), NULL);
-		String_t* L_32;
-		L_32 = String_Concat_m9E3155FB84015C823606188F53B47CB44C444991(_stringLiteral2324B8219382D74A696C6CE381D811EB56F3CD3E, L_31, NULL);
-		NullCheck(L_27);
-		InAppUpdate_LogMessage_m9EFF1F9A3BFB9C66285B2B15933123537A18933C(L_27, L_32, NULL);
-	}
-
-IL_0140:
-	{
-		// }
-		return (bool)0;
-	}
-}
-// System.Object InAppUpdate/<StartUpdate>d__7::System.Collections.Generic.IEnumerator<System.Object>.get_Current()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* U3CStartUpdateU3Ed__7_System_Collections_Generic_IEnumeratorU3CSystem_ObjectU3E_get_Current_mFDDD751034411D3ED3F254D07D9F300876300028 (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, const RuntimeMethod* method) 
-{
-	{
-		RuntimeObject* L_0 = __this->___U3CU3E2__current_1;
-		return L_0;
-	}
-}
-// System.Void InAppUpdate/<StartUpdate>d__7::System.Collections.IEnumerator.Reset()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void U3CStartUpdateU3Ed__7_System_Collections_IEnumerator_Reset_m0EE7C7753D4E976A68ED74E87E7CD58B688F8394 (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, const RuntimeMethod* method) 
-{
-	{
-		NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A* L_0 = (NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A*)il2cpp_codegen_object_new(((RuntimeClass*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&NotSupportedException_t1429765983D409BD2986508963C98D214E4EBF4A_il2cpp_TypeInfo_var)));
-		NullCheck(L_0);
-		NotSupportedException__ctor_m1398D0CDE19B36AA3DE9392879738C1EA2439CDF(L_0, NULL);
-		IL2CPP_RAISE_MANAGED_EXCEPTION(L_0, ((RuntimeMethod*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&U3CStartUpdateU3Ed__7_System_Collections_IEnumerator_Reset_m0EE7C7753D4E976A68ED74E87E7CD58B688F8394_RuntimeMethod_var)));
-	}
-}
-// System.Object InAppUpdate/<StartUpdate>d__7::System.Collections.IEnumerator.get_Current()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR RuntimeObject* U3CStartUpdateU3Ed__7_System_Collections_IEnumerator_get_Current_mC2DA71B84647DE2614DD8969363CE2C3E046C0D2 (U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC* __this, const RuntimeMethod* method) 
 {
 	{
 		RuntimeObject* L_0 = __this->___U3CU3E2__current_1;
@@ -29849,14 +29970,6 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR void Employee_set_CbTransNum_m075
 		return;
 	}
 }
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) 
-{
-	{
-		// public bool IsDone { get; protected set; }
-		bool L_0 = __this->___U3CIsDoneU3Ek__BackingField_1;
-		return L_0;
-	}
-}
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t AppUpdateRequest_get_Status_m4DBFC4F05DA0FB8491ED1196747A7A52BD0F8E40_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) 
 {
 	{
@@ -29865,11 +29978,11 @@ IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t AppUpdateRequest_get_Stat
 		return L_0;
 	}
 }
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t AppUpdateRequest_get_Error_m1A0B539295AC0B3C4FD132CC111043B2D7EB1131_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) 
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool AppUpdateRequest_get_IsDone_m47229A623C28AF1EBBC64FAEFFB827B8B15BE03E_inline (AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* __this, const RuntimeMethod* method) 
 {
 	{
-		// public AppUpdateErrorCode Error { get; protected set; }
-		int32_t L_0 = __this->___U3CErrorU3Ek__BackingField_3;
+		// public bool IsDone { get; protected set; }
+		bool L_0 = __this->___U3CIsDoneU3Ek__BackingField_1;
 		return L_0;
 	}
 }
@@ -30552,19 +30665,19 @@ IL_0034:
 		return;
 	}
 }
-IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) 
-{
-	{
-		// public TError Error { get; protected set; }
-		int32_t L_0 = __this->___U3CErrorU3Ek__BackingField_1;
-		return L_0;
-	}
-}
 IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR bool PlayAsyncOperation_2_get_IsDone_mF5CF3A791FA08972A3632070A32E810C7CBC493E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) 
 {
 	{
 		// public bool IsDone { get; protected set; }
 		bool L_0 = __this->___U3CIsDoneU3Ek__BackingField_0;
+		return L_0;
+	}
+}
+IL2CPP_MANAGED_FORCE_INLINE IL2CPP_METHOD_ATTR int32_t PlayAsyncOperation_2_get_Error_mB61CF943D83082432D5CA19D778859724CCEA42E_gshared_inline (PlayAsyncOperation_2_tAA336484128A0F72EF0E51819AC1CD0B80554C54* __this, const RuntimeMethod* method) 
+{
+	{
+		// public TError Error { get; protected set; }
+		int32_t L_0 = __this->___U3CErrorU3Ek__BackingField_1;
 		return L_0;
 	}
 }

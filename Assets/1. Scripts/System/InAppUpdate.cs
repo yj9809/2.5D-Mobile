@@ -15,7 +15,6 @@ public class InAppUpdate : MonoBehaviour
     [Header("Manager")]
     [SerializeField] private BackendManager backendManager;
     private AppUpdateManager appUpdateManager;
-    private AppUpdateInfo appUpdateInfoResult;
 
     private void Start()
     {
@@ -48,21 +47,50 @@ StartCoroutine(Init());
     }
     private IEnumerator CheckForUpdate()
     {
-        var appUpdateInfoOperation = appUpdateManager.GetAppUpdateInfo();
+        LogMessage("업데이트 정보를 가져오는 중...");
+        PlayAsyncOperation<AppUpdateInfo, AppUpdateErrorCode> appUpdateInfoOperation =
+            appUpdateManager.GetAppUpdateInfo();
         yield return appUpdateInfoOperation;
 
         if (appUpdateInfoOperation.IsSuccessful)
         {
-            appUpdateInfoResult = appUpdateInfoOperation.GetResult();
+            var appUpdateInfoResult = appUpdateInfoOperation.GetResult();
+            LogMessage("업데이트 정보 수신 성공");
 
             if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateAvailable)
             {
                 LogMessage("업데이트가 필요합니다.\n자동으로 업데이트를 진행합니다.");
-                yield return StartCoroutine(StartUpdate());
+                var appUpdateOptions = AppUpdateOptions.FlexibleAppUpdateOptions();
+                var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
+
+                while (!startUpdateRequest.IsDone)
+                {
+                    if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
+                    {
+                        LogMessage("업데이트 다운로드가 진행 중입니다...");
+                    }
+                    else if (startUpdateRequest.Status == AppUpdateStatus.Downloaded)
+                    {
+                        LogMessage("업데이트 다운로드가 완료되었습니다 !");
+                    }
+                    yield return null;
+                }
+                var result = appUpdateManager.CompleteUpdate();
+                while (!result.IsDone)
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                yield return (int)startUpdateRequest.Status;
             }
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
                 LogMessage("업데이트 없음");
+                yield return (int)UpdateAvailability.UpdateNotAvailable;
+            }
+            else
+            {
+                LogMessage("업데이트 상태: " + appUpdateInfoResult.UpdateAvailability);
+                yield return (int)UpdateAvailability.Unknown;
             }
         }
         else
@@ -73,36 +101,6 @@ StartCoroutine(Init());
 #if !UNITY_EDITOR
         backendManager.StartGoogleLogin();
 #endif
-    }
-
-    private IEnumerator StartUpdate()
-    {
-        var appUpdateOptions = AppUpdateOptions.FlexibleAppUpdateOptions(); // 유연한 업데이트 옵션
-        var startUpdateRequest = appUpdateManager.StartUpdate(appUpdateInfoResult, appUpdateOptions);
-
-        LogMessage("업데이트가 시작되었습니다. 다운로드 진행 중입니다...");
-
-        // 다운로드 진행 중 상태 확인
-        while (!startUpdateRequest.IsDone)
-        {
-            yield return null; // 프레임 대기
-        }
-
-        if (startUpdateRequest.Status == AppUpdateStatus.Failed)
-        {
-            LogMessage("업데이트 실패: " + startUpdateRequest.Error);
-        }
-        else if (startUpdateRequest.Status == AppUpdateStatus.Downloading)
-        {
-            // 다운로드 완료 후 처리
-            var result = appUpdateManager.CompleteUpdate();
-            while (!result.IsDone)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-            LogMessage("업데이트가 성공적으로 완료되었습니다.");
-            Application.Quit();
-        }
     }
 
     private void RestartApp()

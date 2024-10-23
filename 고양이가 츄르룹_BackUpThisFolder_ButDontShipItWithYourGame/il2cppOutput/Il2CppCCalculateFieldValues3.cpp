@@ -448,8 +448,6 @@ struct AnimationState_tC704F25A20169025B6CFDC2F00DC84152B5B73CE;
 struct Animator_t8A52E42AE54F76681838FE9E632683EF3952E883;
 // Google.Play.AppUpdate.Internal.AppUpdateHandler
 struct AppUpdateHandler_t483542F597AF9EB8A992629274F7CB10DDF1BA95;
-// Google.Play.AppUpdate.AppUpdateInfo
-struct AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D;
 // Google.Play.AppUpdate.AppUpdateManager
 struct AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275;
 // Google.Play.AppUpdate.Internal.AppUpdateManagerInternal
@@ -3857,21 +3855,21 @@ struct U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9  : pub
 	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* ___U3CU3E4__this_2;
 	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.AppUpdate.AppUpdateInfo,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<CheckForUpdate>d__6::<appUpdateInfoOperation>5__2
 	PlayAsyncOperation_2_tACAAAC06DD9E3A1431F789CBAD675CBAE25447EA* ___U3CappUpdateInfoOperationU3E5__2_3;
+	// Google.Play.AppUpdate.AppUpdateRequest InAppUpdate/<CheckForUpdate>d__6::<startUpdateRequest>5__3
+	AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* ___U3CstartUpdateRequestU3E5__3_4;
+	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.Common.VoidResult,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<CheckForUpdate>d__6::<result>5__4
+	PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* ___U3CresultU3E5__4_5;
 };
 
-// InAppUpdate/<StartUpdate>d__7
-struct U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC  : public RuntimeObject
+// InAppUpdate/<Init>d__5
+struct U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB  : public RuntimeObject
 {
-	// System.Int32 InAppUpdate/<StartUpdate>d__7::<>1__state
+	// System.Int32 InAppUpdate/<Init>d__5::<>1__state
 	int32_t ___U3CU3E1__state_0;
-	// System.Object InAppUpdate/<StartUpdate>d__7::<>2__current
+	// System.Object InAppUpdate/<Init>d__5::<>2__current
 	RuntimeObject* ___U3CU3E2__current_1;
-	// InAppUpdate InAppUpdate/<StartUpdate>d__7::<>4__this
+	// InAppUpdate InAppUpdate/<Init>d__5::<>4__this
 	InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A* ___U3CU3E4__this_2;
-	// Google.Play.AppUpdate.AppUpdateRequest InAppUpdate/<StartUpdate>d__7::<startUpdateRequest>5__2
-	AppUpdateRequest_tB40E0DB4954CAFCDBDB8473EB30BBB550A82984D* ___U3CstartUpdateRequestU3E5__2_3;
-	// Google.Play.Common.PlayAsyncOperation`2<Google.Play.Common.VoidResult,Google.Play.AppUpdate.AppUpdateErrorCode> InAppUpdate/<StartUpdate>d__7::<result>5__3
-	PlayAsyncOperation_2_t0BFC51D1A10260E30FBAABA0AFAE28B08BA085AE* ___U3CresultU3E5__3_4;
 };
 
 // UnityEngine.Advertisements.Utilities.Json/Parser
@@ -11179,8 +11177,6 @@ struct InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A  : public MonoBehav
 	BackendManager_t182348D4921545332DFE9F21AC7BAB4E83DD6F06* ___backendManager_6;
 	// Google.Play.AppUpdate.AppUpdateManager InAppUpdate::appUpdateManager
 	AppUpdateManager_t041904EA67BD3A4D3B86AF5BF678120F59FE4275* ___appUpdateManager_7;
-	// Google.Play.AppUpdate.AppUpdateInfo InAppUpdate::appUpdateInfoResult
-	AppUpdateInfo_t840EEAAE85BC24996A689F222B57817993DA0B1D* ___appUpdateInfoResult_8;
 };
 
 // IngredientMaker
@@ -13758,9 +13754,9 @@ struct U3CU3Ec_t37D6644E370F5122DF7821FAB090FD2E2D6AC66A_StaticFields
 
 // InAppUpdate/<CheckForUpdate>d__6
 
-// InAppUpdate/<StartUpdate>d__7
+// InAppUpdate/<Init>d__5
 
-// InAppUpdate/<StartUpdate>d__7
+// InAppUpdate/<Init>d__5
 
 // UnityEngine.Advertisements.Utilities.Json/Parser
 
@@ -16845,15 +16841,15 @@ IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9442[4] =
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9444[10] = 
 {
 	static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___p_5)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___mainCamera_6)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___employee_7)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___nms_8)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___data_9)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___stackCount_10)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___cbTrans_11)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___employees_12)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___targetUsage_13)),static_cast<int32_t>(offsetof(GameManager_tFE129A0017AF5BBD30FDCD4403B9CCEAE064C6B6, ___sceneName_14)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9445[4] = 
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9445[3] = 
 {
-	static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E1__state_0)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E2__current_1)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E4__this_2)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CappUpdateInfoOperationU3E5__2_3)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9446[5] = 
+	static_cast<int32_t>(offsetof(U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB, ___U3CU3E1__state_0)),static_cast<int32_t>(offsetof(U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB, ___U3CU3E2__current_1)),static_cast<int32_t>(offsetof(U3CInitU3Ed__5_t80EF4CF9A35ADBA69A187FD5ED51C8248321E8EB, ___U3CU3E4__this_2)),};
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9446[6] = 
 {
-	static_cast<int32_t>(offsetof(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC, ___U3CU3E1__state_0)),static_cast<int32_t>(offsetof(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC, ___U3CU3E2__current_1)),static_cast<int32_t>(offsetof(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC, ___U3CU3E4__this_2)),static_cast<int32_t>(offsetof(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC, ___U3CstartUpdateRequestU3E5__2_3)),static_cast<int32_t>(offsetof(U3CStartUpdateU3Ed__7_t26D7CC968C9642FBD38380DA21223435A30A8EDC, ___U3CresultU3E5__3_4)),};
-IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9447[5] = 
+	static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E1__state_0)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E2__current_1)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CU3E4__this_2)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CappUpdateInfoOperationU3E5__2_3)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CstartUpdateRequestU3E5__3_4)),static_cast<int32_t>(offsetof(U3CCheckForUpdateU3Ed__6_t1056834D504C94A5106F13880B1A8A7DCFCBF4B9, ___U3CresultU3E5__4_5)),};
+IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9447[4] = 
 {
-	static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___logText_4)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___textPanel_5)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___backendManager_6)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___appUpdateManager_7)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___appUpdateInfoResult_8)),};
+	static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___logText_4)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___textPanel_5)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___backendManager_6)),static_cast<int32_t>(offsetof(InAppUpdate_tE574472F99515A09A44EF872E4EB702E9C18269A, ___appUpdateManager_7)),};
 IL2CPP_EXTERN_C const int32_t g_FieldOffsetTable9448[5] = 
 {
 	static_cast<int32_t>(offsetof(U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05, ___U3CU3E1__state_0)),static_cast<int32_t>(offsetof(U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05, ___U3CU3E2__current_1)),static_cast<int32_t>(offsetof(U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05, ___U3CU3E4__this_2)),static_cast<int32_t>(offsetof(U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05, ___U3CgameLoadU3E5__2_3)),static_cast<int32_t>(offsetof(U3CLoadSceneU3Ed__5_t044996A05B327725AF6A8B54CF2FB0CCA24A2F05, ___U3CelapsedTimeU3E5__3_4)),};
