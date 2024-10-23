@@ -79,6 +79,7 @@ public class BaseCost
         { "Store", false }
     };
     public int guideStep = 0;
+    public bool newGame = true;
 }
 
 public class DataManager : Singleton<DataManager>
@@ -127,8 +128,9 @@ public class DataManager : Singleton<DataManager>
         param.Add("objectData", baseCost.objectData);
         param.Add("gameProgressBool", baseCost.gameProgressBool);
         param.Add("guideStep", baseCost.guideStep);
+        param.Add("newGame", baseCost.newGame);
 
-        var bro = Backend.GameData.Insert("UserData", param);
+        var bro = Backend.GameData.Insert("TestUserData", param);
 
         if (bro.IsSuccess())
         {
@@ -144,24 +146,21 @@ public class DataManager : Singleton<DataManager>
     // 데이터가 존재 할 경우 데이터 가져오기
     public void GameDataGet()
     {
-        var bro = Backend.GameData.GetMyData("UserData", new Where());
+        var bro = Backend.GameData.GetMyData("TestUserData", new Where());
 
         if (bro.IsSuccess())
         {
             LitJson.JsonData gameDataJson = bro.FlattenRows(); // Json으로 리턴된 데이터를 받아옵니다.  
 
-            // 받아온 데이터의 갯수가 0이라면 데이터가 존재하지 않는 것입니다.  
-            if (gameDataJson.Count <= 0)
-            {
-
-            }
-            else
+            // 받아온 데이터의 갯수가 0이라면 데이터가 존재하지 않는 것입니다. 
+            if(gameDataJson.Count > 0)
             {
                 gameDataRowInDate = gameDataJson[0]["inDate"].ToString(); //불러온 게임 정보의 고유값입니다.  
 
                 baseCost = new BaseCost();
 
                 baseCost.guideStep = int.Parse(gameDataJson[0]["guideStep"].ToString());
+                baseCost.newGame = bool.Parse(gameDataJson[0]["newGame"].ToString());
                 baseCost.guestID = gameDataJson[0]["guestID"].ToString();
 
                 //데이터 추가할 경우 해당 부분에 반복문을 통해 데이터 정보를 넣어줘야함
@@ -214,23 +213,24 @@ public class DataManager : Singleton<DataManager>
         param.Add("objectData", baseCost.objectData);
         param.Add("gameProgressBool", baseCost.gameProgressBool);
         param.Add("guideStep", baseCost.guideStep);
+        param.Add("newGame", baseCost.newGame);
 
         BackendReturnObject bro = null;
 
         if (string.IsNullOrEmpty(gameDataRowInDate))
         {
-            bro = Backend.GameData.Update("UserData", new Where(), param);
+            bro = Backend.GameData.Update("TestUserData", new Where(), param);
         }
         else
         {
-            bro = Backend.GameData.UpdateV2("UserData", gameDataRowInDate, Backend.UserInDate, param);
+            bro = Backend.GameData.UpdateV2("TestUserData", gameDataRowInDate, Backend.UserInDate, param);
         }
     }
 
     // 데이터 삭제 함수
     public void DeleteData()
     {
-        BackendReturnObject bro = Backend.GameData.DeleteV2("UserData", gameDataRowInDate, Backend.UserInDate);
+        BackendReturnObject bro = Backend.GameData.DeleteV2("TestUserData", gameDataRowInDate, Backend.UserInDate);
         
         // 데이터를 삭제하고 게임을 꺼버림
         if(bro.IsSuccess())
