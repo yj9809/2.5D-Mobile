@@ -38,12 +38,13 @@ StartCoroutine(Init());
             LogMessage("실행");
             appUpdateManager = new AppUpdateManager();
             LogMessage("앱 업데이트 매니저 참조 성공");
+            StartCoroutine(CheckForUpdate());
+            LogMessage("앱 업데이트 코루틴 실행 성공");
         }
         catch(Exception err)
         {
             LogMessage(err.Message);
         }
-        StartCoroutine(CheckForUpdate());
     }
     private IEnumerator CheckForUpdate()
     {
