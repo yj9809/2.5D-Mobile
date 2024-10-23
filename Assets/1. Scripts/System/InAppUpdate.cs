@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,12 +28,21 @@ public class InAppUpdate : MonoBehaviour
 StartCoroutine(Init());
 #endif
     }
-    IEnumerator Init()
+    private IEnumerator Init()
     {
+        
         yield return new WaitForSeconds(0.5f);
 
-        appUpdateManager = new AppUpdateManager();
-        LogMessage("실행");
+        try
+        {
+            LogMessage("실행");
+            appUpdateManager = new AppUpdateManager();
+            LogMessage("앱 업데이트 매니저 참조 성공");
+        }
+        catch(Exception err)
+        {
+            LogMessage(err.Message);
+        }
         StartCoroutine(CheckForUpdate());
     }
     private IEnumerator CheckForUpdate()
