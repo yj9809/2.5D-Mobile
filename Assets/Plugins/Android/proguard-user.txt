@@ -1,1 +1,3 @@
 -keep class com.google.** { *; }
+-keep class io.thebackend.googlelogin.** {*;}
+-keep class io.thebackend.unity.** { *; }

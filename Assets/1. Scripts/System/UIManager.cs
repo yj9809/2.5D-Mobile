@@ -325,7 +325,14 @@ public class UIManager : Singleton<UIManager>
                         {
                             employee = Instantiate(gm.employee[random], Vector3.zero, Quaternion.identity).GetComponent<Employee>();
                         }
-                        employee.name = gm.employee[random].name;
+                        try
+                        {
+                            employee.name = gm.employee[random].name;
+                        }
+                        catch (System.Exception err)
+                        {
+                            Debug.Log(err);
+                        }
                         gm.employee.RemoveAt(random);
                         p.employee.Add(employee);
 

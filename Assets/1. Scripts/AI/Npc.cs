@@ -12,6 +12,7 @@ public class Npc : MonoBehaviour
     [EnumToggleButtons, SerializeField] private NpcType npcType = NpcType.Home;
 
     private NavMeshAgent na;
+    private Animator anime;
 
     private int currentTargetNum = 0;
     private float randomTransformTime = 5;
@@ -32,12 +33,14 @@ public class Npc : MonoBehaviour
     private void Start()
     {
         na = GetComponent<NavMeshAgent>();
+        anime = GetComponent<Animator>();
         na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
     }
 
     // Update is called once per frame
     void Update()
     {
+        anime.SetBool("isMove", true);
         if (npcType == NpcType.Home)
             CheckPointMove();
         else
@@ -46,6 +49,9 @@ public class Npc : MonoBehaviour
             RetrunHome();
         }
     }
+
+
+
     private void CheckPointMove()
     {
         if (!na.pathPending && na.remainingDistance <= na.stoppingDistance)
