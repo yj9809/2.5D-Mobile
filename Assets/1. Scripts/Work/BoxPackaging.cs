@@ -97,7 +97,8 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
             churu.transform.DOLocalMove(Vector3.zero, 0.3f).SetEase(Ease.InBack)
                 .OnComplete(() =>
                 {
-                    Vibration.VibratePop();
+                    if (p != null) Vibration.VibratePop();
+                    
                     PoolingManager.Instance.ReturnObjecte(churu);
                     count++;
                     boxCountTxt.text = $"{count}/{maxCount}";
