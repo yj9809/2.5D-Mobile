@@ -21,15 +21,14 @@ public class InAppUpdate : MonoBehaviour
         textPanel.SetActive(false);
         
 #if UNITY_EDITOR
-        LogMessage("인앱 업데이트는 에디터에서는\n지원되지 않습니다.");
         backendManager.GuestLogin();
+        LogMessage("인앱 업데이트는 에디터에서는\n지원되지 않습니다.");
 #else
 StartCoroutine(Init());
 #endif
     }
     private IEnumerator Init()
     {
-        
         yield return new WaitForSeconds(0.5f);
 
         try
@@ -101,13 +100,6 @@ StartCoroutine(Init());
 #if !UNITY_EDITOR
         backendManager.StartGoogleLogin();
 #endif
-    }
-
-    private void RestartApp()
-    {
-        LogMessage("앱을 재시작합니다...");
-        // 현재 씬을 다시 로드하여 앱을 재시작합니다.
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
 
     private void LogMessage(string message)

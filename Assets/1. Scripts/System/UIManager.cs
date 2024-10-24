@@ -169,9 +169,9 @@ public class UIManager : Singleton<UIManager>
     {
         if (p.Gold >= amount)
         {
+            AudioManager.Instance.PlayEffect(EffectType.Upgrade);
             p.Gold -= amount;
             UpdateUI();
-            AudioManager.Instance.PlayEffect(EffectType.Upgrade);
             return true;
         }
         else

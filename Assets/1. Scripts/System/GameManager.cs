@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 
 public interface IStackable
 {
@@ -79,7 +81,7 @@ public class GameManager : Singleton<GameManager>
         {
             if(data.baseCost.newGame)
             {
-                Social.ReportProgress(GPGSIds.achievement, 100f, null);
+                Social.Active.ReportProgress(GPGSIds.achievement, 100f, null);
                 data.baseCost.newGame = false;
                 data.GameDataUpdate();
             }
@@ -91,16 +93,6 @@ public class GameManager : Singleton<GameManager>
                 nms = FindObjectOfType<NavMeshSurface>();
                 nms.BuildNavMesh();
             }
-
-            #if !UNITY_EDITOR
-             if(!data.baseCost.gameProgressBool["NewGame"])
-                        {
-                            data.baseCost.gameProgressBool["NewGame"] = true;
-                            Social.ReportProgress(GPGSIds.achievement, 100f, null);
-                            data.GameDataUpdate();
-                        }
-            #endif
-
             // 게임 실행 시 저장되어 있던 종업원 정보를 불러오는 부분
             EmployeeAdd();
         }

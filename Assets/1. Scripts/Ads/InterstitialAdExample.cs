@@ -13,16 +13,11 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
             ? _iOsAdUnitId
             : _androidAdUnitId;
-
-        // 초기 광고 로드
-        LoadAd();
     }
 
     void Start()
     {
-       
-        // 앱 시작 시 광고 즉시 표시
-        ShowAd();
+        LoadAd();
         // 5분(300초)마다 광고 표시 시작
         InvokeRepeating("ShowAd", 300f, 300f);
     }
