@@ -69,6 +69,7 @@ public class UIManager : Singleton<UIManager>
     private Player p;
     private BaseCost baseCost;
     private GameManager gm;
+    private AudioManager audioManager;
 
     private List<UpgradeInfo> upgradeInfos;
 
@@ -78,6 +79,7 @@ public class UIManager : Singleton<UIManager>
         p = GameManager.Instance.P;
         baseCost = DataManager.Instance.baseCost;
         gm = GameManager.Instance;
+        audioManager = AudioManager.Instance;
         upgradePanel.SetActive(false);
         storePanel.SetActive(false);
 
@@ -169,7 +171,6 @@ public class UIManager : Singleton<UIManager>
     {
         if (p.Gold >= amount)
         {
-            AudioManager.Instance.PlayEffect(EffectType.Upgrade);
             p.Gold -= amount;
             UpdateUI();
             return true;
@@ -244,6 +245,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         p.BaseSpeed += 1;
                         p.CartSpeed += 1;
                         baseCost.upgradeCosts["baseSpeedUpgradeCount"] ++;
@@ -261,6 +263,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         p.MaxObjStackCount += 1;
                         baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCount"] ++;
                         baseCost.upgradeCosts["baseMaxObjStackCountUpgradeCost"]  *= 2;
@@ -277,6 +280,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         p.GoldPerBox += 100;
                         baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] ++;
                         baseCost.upgradeCosts["baseGoldPerBoxUpgradeCost"]  *= 2;
@@ -293,6 +297,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         baseCost.employeeData["employeeSpeed"]  += 0.5f;
                         baseCost.employeeData["employeeCartSpeed"]  += 0.5f;
                         baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"]  *= 2;
@@ -310,6 +315,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         baseCost.employeeData["employeeMaxObjStackCount"] += 1;
                         baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCost"]  *= 2;
                         baseCost.upgradeCosts["baseEmployeeMaxObjStackCountUpgradeCount"] ++;
@@ -326,6 +332,7 @@ public class UIManager : Singleton<UIManager>
                 {
                     if (SpendGold(cost))
                     {
+                        audioManager.PlayEffect(EffectType.Upgrade);
                         int random = Random.Range(0, gm.employee.Count);
                         Employee employee;
                         if (baseCost.upgradeCosts["baseEmployeeAddCount"] == 4)
@@ -360,7 +367,6 @@ public class UIManager : Singleton<UIManager>
                 else
                     LogMessage("종업원이 최대입니다.");
                 break;
-
         }
     }
     #endregion
