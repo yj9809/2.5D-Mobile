@@ -95,7 +95,14 @@ public class UIManager : Singleton<UIManager>
         if (logText != null)
         {
             logText.text += message + "\n";
+            StartCoroutine(MessageClear(3f));
         }
+    }
+
+    private IEnumerator MessageClear(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        logText.text = "";
     }
 
     private void UpdateUI()
