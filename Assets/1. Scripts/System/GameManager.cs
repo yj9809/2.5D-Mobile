@@ -52,7 +52,7 @@ public class GameManager : Singleton<GameManager>
 
     public string sceneName;
 
-    //°ÔÀÓ Á¾·á ½Ã ÀúÀå ÄÚµå
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
     private void OnApplicationQuit()
     {
         DataManager.Instance.GameDataUpdate();
@@ -71,7 +71,7 @@ public class GameManager : Singleton<GameManager>
         employees.AddRange(FindObjectsOfType<Employee>());
         foreach (var stackable in stackCount)
         {
-            targetUsage[stackable] = false; // ¸ðµç Å¸°ÙÀÇ »ç¿ë »óÅÂ¸¦ ÃÊ±âÈ­
+            targetUsage[stackable] = false; // ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ê±ï¿½È­
         }
     }
 
@@ -90,7 +90,7 @@ public class GameManager : Singleton<GameManager>
                     Debug.LogError(err);
                 }
 
-                Debug.Log("½ÇÇà");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
@@ -103,16 +103,18 @@ public class GameManager : Singleton<GameManager>
                 {
                     Debug.LogError(err);
                 }
-                Debug.Log("½ÇÇà 2");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ 2");
             }
 
-            if (data.baseCost.newGame)
+#if !UNITY_EDITOR
+            if(data.baseCost.newGame)
             {
                 Social.Active.ReportProgress(GPGSIds.achievement, 100f, null);
                 data.baseCost.newGame = false;
                 data.GameDataUpdate();
             }
-            // °ÔÀÓ ½ÇÇà ½Ã ÀúÀåµÇ¾î ÀÖ´ø Á¾¾÷¿ø Á¤º¸¸¦ ºÒ·¯¿À´Â ºÎºÐ
+#endif
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½
             EmployeeAdd();
         }
     }
@@ -145,14 +147,14 @@ public class GameManager : Singleton<GameManager>
                 employeeNum++;
             }
         }
-        // ºÒ·¯¿À±â ³¡³ª°í ¸®½ºÆ® »èÁ¦
+        // ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         foreach (var item in employeesToRemove)
         {
             employee.Remove(item);
         }
     }
 
-    // ½ºÅÃ ÀúÀåÇÏ±â À§ÇØ ÀÎÅÍÆäÀÌ½º¸¦ È°¿ëÇÏ¿© ½ºÅÃ ÀúÀå°ª µî·Ï
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ È°ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½å°ª ï¿½ï¿½ï¿½
     public void AddStackable(IStackable stackable)
     {
         if (!stackCount.Contains(stackable))
@@ -161,26 +163,26 @@ public class GameManager : Singleton<GameManager>
         }
     }
     
-    //Á¾¾÷¿øÀÌ Ã£À» Å¸°Ù ÀÎÅÍÆäÀÌ½º¸¦ È°¿ëÇÏ¿© Å¸°Ù µî·Ï
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ È°ï¿½ï¿½ï¿½Ï¿ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½
     public void AddTarget(IStackable stackable)
     {
         if (!targetUsage.ContainsKey(stackable))
         {
-            targetUsage[stackable] = false; // ±âº»°ªÀ¸·Î false ¼³Á¤
+            targetUsage[stackable] = false; // ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ false ï¿½ï¿½ï¿½ï¿½
         }
     }
 
-    // Á¾¾÷¿øÀÌ ¾²°í ÀÖ´Â Å¸°Ù È°¿ëÀ» °ãÄ¡Áö ¾Ê°Ô ÇÏ±â À§ÇØ Bool°ªÀ» ÅëÇØ Á¶Á¤
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ Å¸ï¿½ï¿½ È°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Boolï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public bool IsTargetBeingUsed(IStackable stackable)
     {
         if (targetUsage.ContainsKey(stackable))
         {
-            return targetUsage[stackable]; // µñ¼Å³Ê¸®¿¡¼­ Å¸°ÙÀÇ »ç¿ë »óÅÂ ¹ÝÈ¯
+            return targetUsage[stackable]; // ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         }
-        return false; // Å¸°ÙÀÌ µñ¼Å³Ê¸®¿¡ ¾øÀ¸¸é »ç¿ë ÁßÀÌ ¾Æ´Ô
+        return false; // Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½
     }
 
-    // Á¾¾÷¿øÀÌ Å¸°ÙÀ» ¾²°í ÀÖ´Â °æ¿ì µñ¼Å³Ê¸® Bool °ª º¯°æÀ» ÅëÇØ ¾²°í ÀÖ´ÂÁö È®ÀÎ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Å³Ê¸ï¿½ Bool ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
     {
         if (stackable == null)
@@ -194,26 +196,26 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    // Á¾¾÷¿øÀÌ Å¸°ÙÀ» ´Ù¸¥ Á¾¾÷¿ø¿¡°Ô »¯±â¸é ´Ù¸¥ Å¸°ÙÀ» Ã£±â
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½
     public void UpdateTargets()
     {
         foreach (var employee in employees)
         {
             if (employee != null)
             {
-                // ÇöÀç ¸ñÇ¥°¡ ÀÖ´Â °æ¿ì »õ·Î¿î ¸ñÇ¥·Î ¾÷µ¥ÀÌÆ®
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
                 employee.StartCoroutine(employee.CheckStack());
             }
         }
     }
 
-    // ³×ºñ¸Å½¬ ºôµå
+    // ï¿½×ºï¿½Å½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void NowNavMeshBake()
     {
         nms.BuildNavMesh();
     }
 
-    // ÄÁº£ÀÌ¾î º§Æ®¸¦ ¼øÂ÷ÀûÀ¸·Î ¹æ¹®ÇÏ±â À§ÇØ ¸¸µç ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æ¹®ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     public Transform ConveyorTransform(Employee employee)
     {
         employee.CbTransNum++;
