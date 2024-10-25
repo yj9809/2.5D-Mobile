@@ -79,12 +79,14 @@ public class GameManager : Singleton<GameManager>
     {
         if(sceneName == "Game")
         {
+#if !UNITY_EDITOR
             if(data.baseCost.newGame)
             {
                 Social.Active.ReportProgress(GPGSIds.achievement, 100f, null);
                 data.baseCost.newGame = false;
                 data.GameDataUpdate();
             }
+#endif
 
             if (nms != null)
                 nms.BuildNavMesh();
