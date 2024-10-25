@@ -58,7 +58,6 @@ public class BackendManager : MonoBehaviour
                       {
                           accessToken = googleCallback.GetReturnValuetoJSON()["access_token"].ToString();
                           TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
-                          loadingManager.StartCoroutine();
                       }
                   });
               }

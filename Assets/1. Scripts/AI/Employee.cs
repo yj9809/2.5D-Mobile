@@ -99,13 +99,6 @@ public class Employee : MonoBehaviour
             cart.SetActive(false);
             return;
         }
-        if (boxTrans == null)
-        {
-            boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
-            Debug.LogError("실행~");
-        }
-        Debug.Log(target + "   1");
-
         OnCart();
         Move();
         MovementDetection();
@@ -113,10 +106,6 @@ public class Employee : MonoBehaviour
 
         if (target != null)
             na.SetDestination(target.position);
-        else
-        {
-            ChangeTarget();
-        }
     }
 
     private void Move()
@@ -181,7 +170,6 @@ public class Employee : MonoBehaviour
     }
     private void ChangeTarget()
     {
-        Debug.LogError("씰행");
         if (ingredientStack.Count > 0)
         {
             if (currentTarget != null)
@@ -209,7 +197,6 @@ public class Employee : MonoBehaviour
             if(boxTrans == null)
             {
                 boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
-                Debug.LogError("실행~");
             }
 
             target = boxTrans;

@@ -89,8 +89,6 @@ public class GameManager : Singleton<GameManager>
                 {
                     Debug.LogError(err);
                 }
-
-                Debug.Log("����");
             }
             else
             {
@@ -103,7 +101,6 @@ public class GameManager : Singleton<GameManager>
                 {
                     Debug.LogError(err);
                 }
-                Debug.Log("���� 2");
             }
 
 #if !UNITY_EDITOR
@@ -176,7 +173,6 @@ public class GameManager : Singleton<GameManager>
     // �������� ���� �ִ� Ÿ�� Ȱ���� ��ġ�� �ʰ� �ϱ� ���� Bool���� ���� ����
     public bool IsTargetBeingUsed(IStackable stackable)
     {
-        Debug.LogError(targetUsage + " 222222");
         if (targetUsage.ContainsKey(stackable))
         {
             return targetUsage[stackable]; // ��ųʸ����� Ÿ���� ��� ���� ��ȯ
@@ -221,7 +217,6 @@ public class GameManager : Singleton<GameManager>
     public Transform ConveyorTransform(Employee employee)
     {
         employee.CbTransNum++;
-        Debug.LogError(cbTrans);
         if (employee.CbTransNum == cbTrans.Count)
             employee.CbTransNum = 0;
 
