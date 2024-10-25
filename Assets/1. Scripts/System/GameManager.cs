@@ -114,7 +114,7 @@ public class GameManager : Singleton<GameManager>
                 data.GameDataUpdate();
             }
 #endif
-            // ���� ���� �� ����Ǿ� �ִ� ������ ������ �ҷ����� �κ�
+            //직원 추가 후 적절히 초기화하여 관리
             EmployeeAdd();
         }
     }
@@ -131,6 +131,7 @@ public class GameManager : Singleton<GameManager>
                 if (employeeNum != 4)
                 {
                     newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
+                    
                 }
                 else
                 {
@@ -140,7 +141,7 @@ public class GameManager : Singleton<GameManager>
                     newEmployee.transform.position = pos;
                     newEmployee.GetComponent<Employee>().PackaingEmployee();
                 }
-
+                DontDestroyOnLoad(newEmployee);
                 newEmployee.name = item.name;
                 P.employee.Add(newEmployee.GetComponent<Employee>());
                 employeesToRemove.Add(item);
@@ -175,6 +176,7 @@ public class GameManager : Singleton<GameManager>
     // �������� ���� �ִ� Ÿ�� Ȱ���� ��ġ�� �ʰ� �ϱ� ���� Bool���� ���� ����
     public bool IsTargetBeingUsed(IStackable stackable)
     {
+        Debug.LogError(targetUsage + " 222222");
         if (targetUsage.ContainsKey(stackable))
         {
             return targetUsage[stackable]; // ��ųʸ����� Ÿ���� ��� ���� ��ȯ
@@ -219,7 +221,7 @@ public class GameManager : Singleton<GameManager>
     public Transform ConveyorTransform(Employee employee)
     {
         employee.CbTransNum++;
-
+        Debug.LogError(cbTrans);
         if (employee.CbTransNum == cbTrans.Count)
             employee.CbTransNum = 0;
 
