@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: -6371520166388229442}
   - component: {fileID: 2143668640931555117}
   - component: {fileID: -5889995117198511491}
-  - component: {fileID: 7065407553050916281}
+  - component: {fileID: 266739384400995855}
   m_Layer: 0
   m_Name: Cat_Employee_3color
   m_TagString: Untagged
@@ -414,7 +414,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.55, z: 0}
---- !u!195 &7065407553050916281
+--- !u!195 &266739384400995855
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

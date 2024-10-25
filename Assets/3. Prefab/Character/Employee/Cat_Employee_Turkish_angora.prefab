@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 5747306485734364779}
   - component: {fileID: 2814129640492115592}
   - component: {fileID: -1141988266194257850}
-  - component: {fileID: 329076808944288500}
+  - component: {fileID: -6627594571432383074}
   m_Layer: 0
   m_Name: Cat_Employee_Turkish_angora
   m_TagString: Untagged
@@ -162,7 +162,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.55, z: 0}
---- !u!195 &329076808944288500
+--- !u!195 &-6627594571432383074
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

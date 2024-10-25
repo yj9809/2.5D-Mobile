@@ -19,8 +19,8 @@ public class BackendManager : MonoBehaviour
     public void StartGoogleLogin()
     {
         PlayGamesPlatform.Activate();
-        TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
-        //PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+        //TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, GoogleLoginCallback);
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
     void ProcessAuthentication(SignInStatus status)
     {
@@ -31,11 +31,12 @@ public class BackendManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("실패");
-            loadingManager.StartCoroutine();
-            // Disable your integration with Play Games Services or show a login button
-            // to ask users to sign-in. Clicking it should call
+            PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication);
+            // Play Games Services와의 통합을 비활성화하거나
+            // 사용자에게 로그인을 요청하는 버튼을 표시하세요.
+            // 버튼 클릭 시 아래를 호출해야 합니다:
             // PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthentication).
+
         }
     }
 
@@ -65,10 +66,7 @@ public class BackendManager : MonoBehaviour
               {
                   Debug.LogError(err);
               }
-              
           });
-
-        
     }
 
     // 구글 로그인이 가능한지 확인 후 결과 반환
@@ -80,12 +78,20 @@ public class BackendManager : MonoBehaviour
         }
 
         var bro = Backend.BMember.AuthorizeFederation(token, FederationType.Google);
-        DataManager.Instance.GameDataGet();
-        if (DataManager.Instance.baseCost == null)
-        {
-            DataManager.Instance.GameDataInsert();
-        }
 
+        try
+        {
+            DataManager.Instance.GameDataGet();
+            if (DataManager.Instance.baseCost == null)
+            {
+                DataManager.Instance.GameDataInsert();
+            }
+
+        }
+        catch (System.Exception err)
+        {
+            Debug.LogError(err);
+        }
         loadingManager.StartCoroutine();
     }
 

@@ -570,7 +570,7 @@ GameObject:
   - component: {fileID: -7115119255185793582}
   - component: {fileID: -6665948820755754847}
   - component: {fileID: -1128701294515933795}
-  - component: {fileID: 3099807161183467681}
+  - component: {fileID: 7665472568553495373}
   m_Layer: 0
   m_Name: Cat_Employee_Russian_blue
   m_TagString: Untagged
@@ -656,7 +656,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.55, z: 0}
---- !u!195 &3099807161183467681
+--- !u!195 &7665472568553495373
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

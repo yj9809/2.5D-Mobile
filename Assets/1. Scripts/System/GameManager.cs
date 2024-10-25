@@ -79,19 +79,38 @@ public class GameManager : Singleton<GameManager>
     {
         if(sceneName == "Game")
         {
-            if(data.baseCost.newGame)
+            if (nms != null)
+            {
+                try
+                {
+                    nms.BuildNavMesh();
+                }
+                catch (System.Exception err)
+                {
+                    Debug.LogError(err);
+                }
+
+                Debug.Log("실행");
+            }
+            else
+            {
+                try
+                {
+                    nms = FindObjectOfType<NavMeshSurface>();
+                    nms.BuildNavMesh();
+                }
+                catch (System.Exception err)
+                {
+                    Debug.LogError(err);
+                }
+                Debug.Log("실행 2");
+            }
+
+            if (data.baseCost.newGame)
             {
                 Social.Active.ReportProgress(GPGSIds.achievement, 100f, null);
                 data.baseCost.newGame = false;
                 data.GameDataUpdate();
-            }
-
-            if (nms != null)
-                nms.BuildNavMesh();
-            else
-            {
-                nms = FindObjectOfType<NavMeshSurface>();
-                nms.BuildNavMesh();
             }
             // 게임 실행 시 저장되어 있던 종업원 정보를 불러오는 부분
             EmployeeAdd();

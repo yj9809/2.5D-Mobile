@@ -74,12 +74,20 @@ public class Employee : MonoBehaviour
 
     private void Start()
     {
-        gm = GameManager.Instance;
-        boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
-        animator = GetComponent<Animator>();
-        na = GetComponent<NavMeshAgent>();
-        baseCost = DataManager.Instance.baseCost;
-        cbTransNum = Random.Range(0, gm.cbTrans.Count);
+        try
+        {
+            gm = GameManager.Instance;
+            boxTrans = GameObject.Find("Box Packaging").transform.GetChild(0);
+            animator = GetComponent<Animator>();
+            na = GetComponent<NavMeshAgent>();
+            baseCost = DataManager.Instance.baseCost;
+            cbTransNum = Random.Range(0, gm.cbTrans.Count);
+        }
+        catch(System.Exception err)
+        {
+            Debug.LogError(err);
+        }
+
 
         StartCoroutine(CheckStack());
     }
@@ -91,6 +99,7 @@ public class Employee : MonoBehaviour
             cart.SetActive(false);
             return;
         }
+        Debug.Log(transform.position);
 
         OnCart();
         Move();
