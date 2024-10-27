@@ -52,6 +52,12 @@ public class Option : MonoBehaviour
         ExitGame();
     }
 
+    // 옵션 버튼 (비)활성화
+    public void OptionButtonActive(bool isActive)
+    {
+        showOptionButton.interactable = isActive;
+    }
+
     private void ShowOption()
     {
         blurPanel.SetActive(true);

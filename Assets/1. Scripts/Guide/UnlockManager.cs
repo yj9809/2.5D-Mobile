@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -18,12 +19,14 @@ public enum UnlockType
 public class UnlockManager : MonoBehaviour
 {
     [EnumToggleButtons, SerializeField] private UnlockType unlockType;
+    [SerializeField] private Dictionary<UnlockType, int> unlockAmount;
     [SerializeField] private GameObject _Object;
     [SerializeField] private GameObject _Wall;
     [SerializeField] private GameObject _SideWalk;
-    [SerializeField] private Image _FillImage;
-    [SerializeField] private int amount;
-    [ProgressBar(0, 100), SerializeField] private float currentFill;
+
+    [TitleGroup("UI"), SerializeField] private Image _FillImage;
+    [TitleGroup("UI"), ProgressBar(0, 100), SerializeField] private float currentFill;
+    private int amount;
 
     private const float unlockTime = 3.0f;
     private bool isTrigger = false;
@@ -40,6 +43,19 @@ public class UnlockManager : MonoBehaviour
 
         _Object.SetActive(false);
         CheckUnlockStatus();
+
+        unlockAmount = new Dictionary<UnlockType, int>
+        {
+            { UnlockType.Office, 2500 },
+            { UnlockType.Container1, 1000 },
+            { UnlockType.Machine1, 5000 },
+            { UnlockType.Container2, 5000 },
+            { UnlockType.Machine2, 10000 },
+            { UnlockType.Stall, 10000 },
+            { UnlockType.Store, 20000 }
+        };
+
+        amount = unlockAmount[unlockType];
     }
 
     private void Start()

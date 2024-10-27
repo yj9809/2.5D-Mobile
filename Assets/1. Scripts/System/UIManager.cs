@@ -224,11 +224,25 @@ public class UIManager : Singleton<UIManager>
     {
         upgradePanel.SetActive(true);
         StartUpgradeTextUpdate();
+
+        // 옵션 버튼 비활성화
+        Option option = FindObjectOfType<Option>();
+        if (option != null)
+        {
+            option.OptionButtonActive(false);
+        }
     }
     // 오피스 강화 패널 닫는 함수
     public void CloseUpgradeUI()
     {
         upgradePanel.SetActive(false);
+
+        // 옵션 버튼 활성화
+        Option option = FindObjectOfType<Option>();
+        if (option != null)
+        {
+            option.OptionButtonActive(true);
+        }
     }
     // 업그레이드 수치 올리기 위한 버튼에 연결한 함수
     public void Upgrade(int num)
