@@ -30,16 +30,27 @@ public class Store : MonoBehaviour
 
     private bool IsObjectActive()
     {
+        bool isActive = false;
         foreach (GameObject obj in _gameObjects)
         {
             if (obj.activeSelf)
             {
-                commonGameObjects.SetActive(true);
-                return true;
+                isActive = true;
+                break;
             }
         }
-        commonGameObjects.SetActive(false);
-        return false;
+        commonGameObjects.SetActive(isActive);
+        return isActive;
+        //foreach (GameObject obj in _gameObjects)
+        //{
+        //    if (obj.activeSelf)
+        //    {
+        //        commonGameObjects.SetActive(true);
+        //        return true;
+        //    }
+        //}
+        //commonGameObjects.SetActive(false);
+        //return false;
     }
 
     private void GetGold()
