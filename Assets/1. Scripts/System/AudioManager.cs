@@ -18,8 +18,7 @@ public class AudioManager : Singleton<AudioManager>
     [SerializeField] private AudioClip[] effectClips;
     private AudioSource musicSource;
     private AudioSource[] effectSources;
-    private float[] effectVolumes;
-    [ProgressBar(0, 2), SerializeField] private float[] defaultEffectVolumes = { 1.5f, 0.7f, 1.0f };
+    [ProgressBar(0, 1), SerializeField] private float[] defaultEffectVolumes = { 1f, 0.5f, 1f };
 
     private bool isMusicOn = true;
     private bool isEffectOn = true;
@@ -33,13 +32,12 @@ public class AudioManager : Singleton<AudioManager>
         musicSource.Play();
 
         effectSources = new AudioSource[effectClips.Length];
-        effectVolumes = new float[effectClips.Length];
         for (int i = 0; i < effectClips.Length; i++)
         {
             effectSources[i] = gameObject.AddComponent<AudioSource>();
             effectSources[i].outputAudioMixerGroup = audioMixer.FindMatchingGroups("Effect")[0];
             effectSources[i].clip = effectClips[i];
-            effectVolumes[i] = defaultEffectVolumes[i];
+            effectSources[i].volume = defaultEffectVolumes[i];
         }
 
         isMusicOn = PlayerPrefs.GetInt("MusicState", 1) == 1;
@@ -74,7 +72,6 @@ public class AudioManager : Singleton<AudioManager>
         int index = (int)effectType;
         if (isEffectOn && index >= 0 && index < effectSources.Length)
         {
-            effectSources[index].volume = effectVolumes[index]; // 타입별 음량 설정
             effectSources[index].Play();
         }
     }
@@ -99,26 +96,4 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     public bool IsEffectOn() => isEffectOn;
-
-    // 효과음 타입별 음량 설정 메서드
-    public void SetEffectVolume(EffectType effectType, float volume)
-    {
-        int index = (int)effectType;
-        if (index >= 0 && index < effectVolumes.Length)
-        {
-            effectVolumes[index] = volume;
-            effectSources[index].volume = volume; // 현재 효과음 소스의 음량 설정
-        }
-    }
-
-    // 효과음 타입별 음량 가져오기
-    public float GetEffectVolume(EffectType effectType)
-    {
-        int index = (int)effectType;
-        if (index >= 0 && index < effectVolumes.Length)
-        {
-            return effectVolumes[index];
-        }
-        return 0; // 기본값
-    }
 }

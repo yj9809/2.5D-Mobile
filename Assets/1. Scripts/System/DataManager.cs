@@ -22,12 +22,12 @@ public class BaseCost
 
     public Dictionary<string, int> upgradeCosts = new Dictionary<string, int>
     {
-        { "baseSpeedUpgradeCost", 100 },
-        { "baseMaxObjStackCountUpgradeCost", 100 },
-        { "baseGoldPerBoxUpgradeCost", 100 },
-        { "baseEmployeeSpeedUpgradeCost", 100 },
-        { "baseEmployeeMaxObjStackCountUpgradeCost", 100 },
-        { "baseEmployeeAddCost", 100 },
+        { "baseSpeedUpgradeCost", 500 },
+        { "baseMaxObjStackCountUpgradeCost", 500 },
+        { "baseGoldPerBoxUpgradeCost", 5000 },
+        { "baseEmployeeSpeedUpgradeCost", 500 },
+        { "baseEmployeeMaxObjStackCountUpgradeCost", 500 },
+        { "baseEmployeeAddCost", 5000 },
         { "baseUpgradeMaxCount", 5 },
         { "baseSpeedUpgradeCount", 0 },
         { "baseMaxObjStackCountUpgradeCount", 0 },
