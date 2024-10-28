@@ -60,11 +60,14 @@ public class UIManager : Singleton<UIManager>
 
     [Title("Debug"), SerializeField] private TextMeshProUGUI logText;
 
-    ////여기부터 윤제영에 테스트 참조임
-    private IngredientMaker im;
-    private ConveyorBelt cb;
+    //여기부터 윤제영에 테스트 참조임
     private Guide guide;
-    ////여기까지 윤제영에 테스트 참조였음
+    //여기까지 윤제영에 테스트 참조였음
+
+    // 업그레이드용 배열들
+    private float[] speedUpgradeValue = { 1.1f, 1.2f, 1.3f, 1.4f, 1.5f };
+    private int[] speedUpgradeCostValue = { 500, 1000, 3000, 5000, 10000 };
+    private float[] goldPerBoxValue = { 1.2f, 1.4f, 1.6f, 1.8f, 2f };
 
     private Player p;
     private BaseCost baseCost;
@@ -207,7 +210,7 @@ public class UIManager : Singleton<UIManager>
         if (upgradeInfos[num].count() == 5)
             upgradeCostText[num].text = "Max";
         else
-            upgradeCostText[num].text = upgradeInfos[num].cost().ToString();
+            upgradeCostText[num].text = ChangeNumbet(upgradeInfos[num].cost().ToString());
 
         upgradeStepImage[num].sprite = upgradeStepSprite[upgradeInfos[num].count()];
     }
@@ -260,10 +263,14 @@ public class UIManager : Singleton<UIManager>
                     if (SpendGold(cost))
                     {
                         audioManager.PlayEffect(EffectType.Upgrade);
-                        p.BaseSpeed += 1;
-                        p.CartSpeed += 1;
+                        // 플레이어 이동속도
+                        p.BaseSpeed = 5 * speedUpgradeValue[baseCost.upgradeCosts["baseSpeedUpgradeCount"]];
+                        p.CartSpeed = 2.5f * speedUpgradeValue[baseCost.upgradeCosts["baseSpeedUpgradeCount"]];
+                        //플레이어 코스트
+                        if(baseCost.upgradeCosts["baseSpeedUpgradeCount"] <= 3)
+                            baseCost.upgradeCosts["baseSpeedUpgradeCost"]  = speedUpgradeCostValue[baseCost.upgradeCosts["baseSpeedUpgradeCount"] + 1];
+                        
                         baseCost.upgradeCosts["baseSpeedUpgradeCount"] ++;
-                        baseCost.upgradeCosts["baseSpeedUpgradeCost"]  *= 2;
                         UpgradeTextUpdate(0);
                     }
                 }
@@ -295,9 +302,10 @@ public class UIManager : Singleton<UIManager>
                     if (SpendGold(cost))
                     {
                         audioManager.PlayEffect(EffectType.Upgrade);
-                        p.GoldPerBox += 100;
+                        // 골드 증가량
+                        p.GoldPerBox = 50 * goldPerBoxValue[baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"]];
+                        
                         baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] ++;
-                        baseCost.upgradeCosts["baseGoldPerBoxUpgradeCost"]  *= 2;
                         UpgradeTextUpdate(2);
                     }
                 }
@@ -312,9 +320,16 @@ public class UIManager : Singleton<UIManager>
                     if (SpendGold(cost))
                     {
                         audioManager.PlayEffect(EffectType.Upgrade);
-                        baseCost.employeeData["employeeSpeed"]  += 0.5f;
-                        baseCost.employeeData["employeeCartSpeed"]  += 0.5f;
-                        baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"]  *= 2;
+                        // 종업원 기본 이동속도
+                        baseCost.employeeData["employeeSpeed"]  = 
+                            3 * speedUpgradeValue[baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"]];
+                        // 종업원 카트 이동속도
+                        baseCost.employeeData["employeeCartSpeed"] = 
+                            1.5f * speedUpgradeValue[baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"]];
+                        // 종업원 코스트
+                        if(baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] <= 3)
+                            baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCost"]  = speedUpgradeCostValue[baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] + 1];
+
                         baseCost.upgradeCosts["baseEmployeeSpeedUpgradeCount"] ++;
                         UpgradeTextUpdate(3);
                     }

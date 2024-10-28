@@ -102,7 +102,6 @@ public class GameManager : Singleton<GameManager>
                     Debug.LogError(err);
                 }
             }
-
 #if !UNITY_EDITOR
             if(data.baseCost.newGame)
             {
