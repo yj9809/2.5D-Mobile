@@ -34,11 +34,13 @@ public class UnlockManager : MonoBehaviour
 
     private Player player;
     private BaseCost baseCost;
+    private AudioManager audioManager;
 
     private void Awake()
     {
         player = GameManager.Instance.P;
         baseCost = DataManager.Instance.baseCost;
+        audioManager = AudioManager.Instance;
         UIManager.Instance.storeUpgradeButton.onClick.AddListener(UnlockStore);
 
         _Object.SetActive(false);
@@ -117,7 +119,7 @@ public class UnlockManager : MonoBehaviour
         {
             item.gameObject.SetActive(false);
         }
-
+        audioManager.PlayEffect(EffectType.UnLock);
         player.PT = PlayerType.None;
         _Object.SetActive(true);
         AnimateObject();
