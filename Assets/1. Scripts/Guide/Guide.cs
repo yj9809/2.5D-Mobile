@@ -11,6 +11,7 @@ public class Guide : MonoBehaviour
     [Title("Guide")]
     [SerializeField] private GameObject guidePrefab;
     private GameObject curGuidePrefab;
+    private TextMeshProUGUI guideTitle;
     private TextMeshProUGUI guideText;
     private TextMeshProUGUI guideTextNum;
     [SerializeField] private Sprite guideClearImage;
@@ -190,92 +191,92 @@ public class Guide : MonoBehaviour
     private void _Step0()
     {
         SetActiveTarget(0);
-        UpdateGuide("재료 보관소로 이동 하자 !", ""
+        UpdateGuide("공장냥의 첫걸음 1", "원재료 창고로 이동", ""
             , player.IngredientStack.Count > 0);
     }
     private void _Step1()
     {
         SetActiveTarget(1);
-        UpdateGuide("재료를\n컨베이어 벨트로 옮기자 !", ""
+        UpdateGuide("공장냥의 첫걸음 2", "원재료를 컨베이어 벨트로 옮기기", ""
             , player.IngredientStack.Count <= 0);
     }
     private void _Step2()
     {
         SetActiveTarget(2);
-        UpdateGuide("완성된 츄룹을\n포장작업대 창고로 옮기자 !", ""
+        UpdateGuide("공장냥의 첫걸음 3", "완성된 츄릅을 박스 포장대로 옮기기", ""
             , player.ChuruStack.Count > 0);
     }
     private void _Step3()
     {
         SetActiveTarget(3);
-        UpdateGuide($"츄룹 창고 이동 작업\n", boxPackaging.ChuruStorage.Count.ToString() + " / 5"
+        UpdateGuide("공장냥의 첫걸음 4", "츄룹 창고 이동 작업", boxPackaging.ChuruStorage.Count.ToString() + " / 5"
             , player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5);
     }
     private void _Step4()
     {
         SetActiveTarget(4);
-        UpdateGuide("포장작업대에서\n박스포장을 진행하자 !", ""
+        UpdateGuide("공장냥의 첫걸음 5", "박스 포장대에서 박스 포장하기", ""
             , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1);
     }
     private void _Step5()
     {
         truck.gameObject.SetActive(true);
         SetActiveTarget(5);
-        UpdateGuide("완성한 박스를\n트럭에 싣자 !", ""
+        UpdateGuide("공장냥의 첫걸음 6", "츄릅박스를 트럭에 싣기", ""
             , player.BoxStack.Count > 0);
     }
     private void _Step6()
     {
         SetActiveTarget(6);
-        UpdateGuide($"박스 트럭 상차 작업\n", truck.BoxStack.Count.ToString() + " / 5"
+        UpdateGuide("공장냥의 첫걸음 fin", "츄릅박스 5개를 트럭에 실어 판매하기", truck.BoxStack.Count.ToString() + " / 5"
             , truck.BoxStack.Count >= 5);
     }
     private void _Step7()
     {
         SetActiveTarget(7);
-        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerData["gold"].ToString() + " / 1000"
+        UpdateGuide("공장 확장 1", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 1000"
             , _ContainerObjects[0].activeSelf);
     }
     private void _Step8()
     {
         SetActiveTarget(8);
-        UpdateGuide($"지역 해금 : 사무실\n", baseCost.playerData["gold"].ToString() + " / 2500"
+        UpdateGuide("공장엔 사무실이 필요하지", "사무실 건설하기", baseCost.playerData["gold"].ToString() + " / 2500"
             , _OfficeObject.activeSelf);
     }
     private void _Step9()
     {
         SetActiveTarget(9);
-        UpdateGuide($"사무실 : 직원 고용\n", baseCost.playerData["gold"].ToString() + " / 5000"
+        UpdateGuide("이젠 혼자하기 힘들어", "사무실에서 직원 고용하기", baseCost.playerData["gold"].ToString() + " / 5000"
             , baseCost.upgradeCosts["baseEmployeeAddCount"] > 0);
     }
     private void _Step10()
     {
         SetActiveTarget(10);
-        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerData["gold"].ToString() + " / 5000"
+        UpdateGuide("공장 확장 2", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
             , _MachineObjects[0].activeSelf);
     }
     private void _Step11()
     {
         SetActiveTarget(11);
-        UpdateGuide($"지역 해금 : 추가 재료 창고\n", baseCost.playerData["gold"].ToString() + " / 5000"
+        UpdateGuide("공장 확장 3", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
             , _ContainerObjects[1].activeSelf);
     }
     private void _Step12()
     {
         SetActiveTarget(12);
-        UpdateGuide($"지역 해금 : 추가 컨베이어 벨트\n", baseCost.playerData["gold"].ToString() + " / 10000"
+        UpdateGuide("공장 확장 4", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 10000"
             , _MachineObjects[1].activeSelf);
     }
     private void _Step13()
     {
         SetActiveTarget(13);
-        UpdateGuide($"지역 해금 : 상점\n", baseCost.playerData["gold"].ToString() + " / 10000"
+        UpdateGuide("츄릅 플리마켓 오픈 !", "상점 설치하기", baseCost.playerData["gold"].ToString() + " / 10000"
             , _StallObject.activeSelf);
     }
     private void _Step14()
     {
         SetActiveTarget(14);
-        UpdateGuide($"지역 해금 : 상점 업그레이드\n", baseCost.playerData["gold"].ToString() + " / 20000"
+        UpdateGuide("츄릅 스토어 오픈 !", "상점 업그레이드 하기", baseCost.playerData["gold"].ToString() + " / 20000"
             , _StoreObject.activeSelf);
     }
     private void _GuideDone()
@@ -300,7 +301,8 @@ public class Guide : MonoBehaviour
 
         curGuidePrefab = Instantiate(guidePrefab, guideUI.transform);
 
-        guideText = curGuidePrefab.GetComponentInChildren<TextMeshProUGUI>();
+        guideTitle = curGuidePrefab.transform.Find("Guide_Text_Title (TMP)").GetComponent<TextMeshProUGUI>();
+        guideText = curGuidePrefab.transform.Find("Guide_Text (TMP)").GetComponent<TextMeshProUGUI>();
         guideTextNum = curGuidePrefab.transform.Find("Guide_Text_Num (TMP)").GetComponent<TextMeshProUGUI>();
     }
 
@@ -311,12 +313,12 @@ public class Guide : MonoBehaviour
         _ShowAd = false;
     }
 
-    private void UpdateGuide(string text, string numberText, bool isCompleted)
+    private void UpdateGuide(string title, string text, string numberText, bool isCompleted)
     {
-        if (guideText != null && guideTextNum != null)
+        if (guideTitle != null && guideText != null && guideTextNum != null)
         {
+            guideTitle.text = title;
             guideText.text = text;
-
             guideTextNum.color = isCompleted ? Color.yellow : Color.black;
             guideTextNum.text = numberText;
         }
