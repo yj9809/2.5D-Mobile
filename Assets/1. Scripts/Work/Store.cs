@@ -7,13 +7,15 @@ using Sirenix.OdinInspector;
 
 public class Store : MonoBehaviour
 {
-    [SerializeField] private GameObject[] _gameObjects;
+    [SerializeField] private GameObject stall;
+    [SerializeField] private GameObject store;
     [SerializeField] private GameObject commonGameObjects;
     [SerializeField] private TextMeshProUGUI goldTxt;
-    [SerializeField, Tooltip("초당 생산량")] private float goldPerSecond = 100f;
-    [SerializeField, Tooltip("생산 주기")] private float timeInterval = 1f;
+
+    private float goldPerSecond; // 초당 생산량
+    private float timeInterval = 1f; // 생산 주기
     private float timer = 0;
-    public float totalGold = 0f;
+    [HideInInspector]public float totalGold = 0f;
 
     void Update()
     {
@@ -31,26 +33,29 @@ public class Store : MonoBehaviour
     private bool IsObjectActive()
     {
         bool isActive = false;
-        foreach (GameObject obj in _gameObjects)
+
+        if (stall.activeSelf)
         {
-            if (obj.activeSelf)
-            {
-                isActive = true;
-                break;
-            }
+            isActive = true;
+            goldPerSecond = 5f;
+            store.SetActive(false);
         }
+        else if (store.activeSelf)
+        {
+            isActive = true;
+            goldPerSecond = 10f;
+            stall.SetActive(false);
+            UIManager.Instance.storeUpgradeButton.gameObject.SetActive(false);
+        }
+        
+        if (!isActive)
+        {
+            stall.SetActive(false);
+            store.SetActive(false);
+        }
+
         commonGameObjects.SetActive(isActive);
         return isActive;
-        //foreach (GameObject obj in _gameObjects)
-        //{
-        //    if (obj.activeSelf)
-        //    {
-        //        commonGameObjects.SetActive(true);
-        //        return true;
-        //    }
-        //}
-        //commonGameObjects.SetActive(false);
-        //return false;
     }
 
     private void GetGold()
