@@ -187,6 +187,104 @@ public class Guide : MonoBehaviour
         }
     }
 
+    private void CreateGuidePrefab()
+    {
+        if (curGuidePrefab != null)
+        {
+            if (guideClearImage != null)
+            {
+                curGuidePrefab.GetComponent<Image>().sprite = guideClearImage;
+            }
+            Destroy(curGuidePrefab, 2f);
+        }
+
+        curGuidePrefab = Instantiate(guidePrefab, guideUI.transform);
+
+        guideTitle = curGuidePrefab.transform.Find("Guide_Text_Title (TMP)").GetComponent<TextMeshProUGUI>();
+        guideText = curGuidePrefab.transform.Find("Guide_Text (TMP)").GetComponent<TextMeshProUGUI>();
+        guideTextNum = curGuidePrefab.transform.Find("Guide_Text_Num (TMP)").GetComponent<TextMeshProUGUI>();
+    }
+
+    public void ToNextStep()
+    {
+        baseCost.guideStep++;
+        GuideLine();
+        _ShowAd = false;
+    }
+
+    private void UpdateGuide(string title, string text, string numberText, bool isCompleted)
+    {
+        if (guideTitle != null && guideText != null && guideTextNum != null)
+        {
+            guideTitle.text = title;
+            guideText.text = text;
+            guideTextNum.color = isCompleted ? Color.yellow : Color.black;
+            guideTextNum.text = numberText;
+        }
+
+        if (isCompleted)
+        {
+            CreateGuidePrefab();
+            GiveReward(baseCost.guideStep);
+            ToNextStep();
+        }
+    }
+
+    private void SetWorkPoint()
+    {
+        for (int i = 0; i <= baseCost.guideStep; i++)
+        {
+            if (targets[i].GetComponent<WorkPoint>())
+                targets[i].SetActive(true);
+        }
+    }
+
+    private void SetTargetsActive(bool isActive)
+    {
+        foreach (var target in targets)
+        {
+            target.SetActive(isActive);
+        }
+    }
+
+    private void SetActiveTarget(int index)
+    {
+        if (index >= 0 && index < targets.Length)
+        {
+            targets[index].SetActive(true);
+        }
+    }
+
+    private void GiveReward(int step)
+    {
+        int reward = 0;
+
+        switch (step)
+        {
+            case 0: reward = 100; break;
+            case 1: reward = 200; break;
+            case 2: reward = 200; break;
+            case 3: reward = 300; break;
+            case 4: reward = 300; break;
+            case 5: reward = 500; break;
+            case 6: reward = 500; break;
+            case 7: reward = 1000; break;
+            case 8: reward = 1000; break;
+            case 9: reward = 1000; break;
+            case 10: reward = 1000; break;
+            case 11: reward = 1000; break;
+            case 12: reward = 1000; break;
+            case 13: reward = 1000; break;
+            case 14: reward = 1000; break;
+        }
+
+        if (reward > 0)
+        {
+            player.Gold += reward;
+            UIManager.Instance.UpdateGoldUI();
+        }
+    }
+
     #region GuideSteps
     private void _Step0()
     {
@@ -288,70 +386,4 @@ public class Guide : MonoBehaviour
     }
     #endregion
 
-    private void CreateGuidePrefab()
-    {
-        if (curGuidePrefab != null)
-        {
-            if (guideClearImage != null)
-            {
-                curGuidePrefab.GetComponent<Image>().sprite = guideClearImage;
-            }
-            Destroy(curGuidePrefab, 2f);
-        }
-
-        curGuidePrefab = Instantiate(guidePrefab, guideUI.transform);
-
-        guideTitle = curGuidePrefab.transform.Find("Guide_Text_Title (TMP)").GetComponent<TextMeshProUGUI>();
-        guideText = curGuidePrefab.transform.Find("Guide_Text (TMP)").GetComponent<TextMeshProUGUI>();
-        guideTextNum = curGuidePrefab.transform.Find("Guide_Text_Num (TMP)").GetComponent<TextMeshProUGUI>();
-    }
-
-    public void ToNextStep()
-    {
-        baseCost.guideStep++;
-        GuideLine();
-        _ShowAd = false;
-    }
-
-    private void UpdateGuide(string title, string text, string numberText, bool isCompleted)
-    {
-        if (guideTitle != null && guideText != null && guideTextNum != null)
-        {
-            guideTitle.text = title;
-            guideText.text = text;
-            guideTextNum.color = isCompleted ? Color.yellow : Color.black;
-            guideTextNum.text = numberText;
-        }
-
-        if (isCompleted)
-        {
-            CreateGuidePrefab();
-            ToNextStep();
-        }
-    }
-
-    private void SetWorkPoint()
-    {
-        for (int i = 0; i <= baseCost.guideStep; i++)
-        {
-            if (targets[i].GetComponent<WorkPoint>())
-                targets[i].SetActive(true);
-        }
-    }
-
-    private void SetTargetsActive(bool isActive)
-    {
-        foreach (var target in targets)
-        {
-            target.SetActive(isActive);
-        }
-    }
-
-    private void SetActiveTarget(int index)
-    {
-        if (index >= 0 && index < targets.Length)
-        {
-            targets[index].SetActive(true);
-        }
-    }
 }

@@ -92,7 +92,7 @@ public class UIManager : Singleton<UIManager>
         logText.text = "";
 
         SetUpgradeInfo();
-        UpdateUI();
+        UpdateGoldUI();
         StoreUI();
     }
 
@@ -112,7 +112,7 @@ public class UIManager : Singleton<UIManager>
         logText.text = "";
     }
 
-    private void UpdateUI()
+    public void UpdateGoldUI()
     {
         goldTxt.text = ChangeNumbet(p.Gold.ToString());
     }
@@ -168,7 +168,7 @@ public class UIManager : Singleton<UIManager>
     public void AddGold(int amount)
     {
         p.Gold += amount;
-        UpdateUI();
+        UpdateGoldUI();
     }
 
     //골드 사용 함수
@@ -177,7 +177,7 @@ public class UIManager : Singleton<UIManager>
         if (p.Gold >= amount)
         {
             p.Gold -= amount;
-            UpdateUI();
+            UpdateGoldUI();
             return true;
         }
         else
@@ -430,7 +430,7 @@ public class UIManager : Singleton<UIManager>
     private void GetGold()
     {
         p.Gold += store.totalGold;
-        UpdateUI();
+        UpdateGoldUI();
 
         store.totalGold = 0;
         StoreUI();
