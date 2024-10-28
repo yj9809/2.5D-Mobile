@@ -63,6 +63,7 @@ public class BaseCost
         { "conveyorBeltBoxStorageStackCount", 0 },
         { "churuStorageStackCount", 0 },
         { "packagingWaitObjCount", 0 },
+        { "boxPackagingCount", 0},
         { "packagingBoxStorageStackCount", 0 },
         { "truckBoxStackCount", 0 }
     };

@@ -89,6 +89,8 @@ public class UIManager : Singleton<UIManager>
         cameraZoomButton.onClick.AddListener(ZoomScreen);
         storeGetGoldButton.onClick.AddListener(GetGold);
 
+        logText.text = "";
+
         SetUpgradeInfo();
         UpdateUI();
         StoreUI();
@@ -100,7 +102,7 @@ public class UIManager : Singleton<UIManager>
         if (logText != null)
         {
             logText.text += message + "\n";
-            StartCoroutine(MessageClear(3f));
+            StartCoroutine(MessageClear(0.7f));
         }
     }
 
@@ -207,11 +209,16 @@ public class UIManager : Singleton<UIManager>
     // 업그레이드 표시 항목 업데이트 함수
     private void UpgradeTextUpdate(int num)
     {
-        if (upgradeInfos[num].count() == 5)
+        if (upgradeInfos[num].count() == 5 && num != 5)
             upgradeCostText[num].text = "Max";
+        else if(upgradeInfos[num].count() == 3 && num == 5)
+        {
+            upgradeCostText[num].text = "Max";
+        }
         else
+        {
             upgradeCostText[num].text = ChangeNumbet(upgradeInfos[num].cost().ToString());
-
+        }
         upgradeStepImage[num].sprite = upgradeStepSprite[upgradeInfos[num].count()];
     }
     // 시작 시 업그레이드 항목 초기화 해주는 함수
@@ -357,14 +364,16 @@ public class UIManager : Singleton<UIManager>
 
             case 5:
                 cost = baseCost.upgradeCosts["baseEmployeeAddCost"];
-                if (baseCost.upgradeCosts["baseEmployeeAddCount"] < maxCount)
+                
+                if (baseCost.upgradeCosts["baseEmployeeAddCount"] < 3)
                 {
+                    Debug.Log(baseCost.upgradeCosts["baseEmployeeAddCount"]);
                     if (SpendGold(cost))
                     {
                         audioManager.PlayEffect(EffectType.Upgrade);
                         int random = Random.Range(0, gm.employee.Count);
                         Employee employee;
-                        if (baseCost.upgradeCosts["baseEmployeeAddCount"] == 4)
+                        if (baseCost.upgradeCosts["baseEmployeeAddCount"] == 2)
                         {
                             Vector3 pos = FindObjectOfType<BoxPackaging>().transform.GetChild(1).transform.position;
                             employee = Instantiate(gm.employee[random]).GetComponent<Employee>();

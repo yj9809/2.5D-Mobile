@@ -57,6 +57,16 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
             churuStorage.Push(newChuru);
             newChuru.transform.localPosition = new Vector3(0, 0 + (Utility.ObjRendererCheck(newChuru) * churuStorage.Count), 0);
         }
+
+        count = data.baseCost.objectData["boxPackagingCount"];
+        if(count != 0 && count < maxCount)
+        {
+            newBox = Instantiate(box, boxParent);
+            newBox.name = box.name;
+            boxCountTxt = newBox.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>();
+            boxCountTxt.text = $"{count}/{maxCount}";
+            newBox.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void Packaging(Player p, Employee employee)
@@ -131,6 +141,7 @@ public class BoxPackaging : MonoBehaviour, IObjectDataSave
 
     public void ObjectDataSave()
     {
-        DataManager.Instance.baseCost.objectData["packagingWaitObjCount"] = churuStorage.Count;
+        data.baseCost.objectData["packagingWaitObjCount"] = churuStorage.Count;
+        data.baseCost.objectData["boxPackagingCount"] = count;
     }
 }

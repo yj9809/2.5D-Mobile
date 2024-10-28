@@ -124,7 +124,7 @@ public class GameManager : Singleton<GameManager>
             if (data.baseCost.employeeList.Contains(item.name))
             {
                 GameObject newEmployee;
-                if (employeeNum != 4)
+                if (employeeNum != 2)
                 {
                     newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
                     
