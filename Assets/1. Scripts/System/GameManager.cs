@@ -63,6 +63,10 @@ public class GameManager : Singleton<GameManager>
         data = DataManager.Instance;
         Application.targetFrameRate = 60;
         nms = FindObjectOfType<NavMeshSurface>();
+
+#if UNITY_ANDROID
+        Application.runInBackground = true;
+#endif
     }
 
     private void Start()
