@@ -226,5 +226,26 @@ public class GameManager : Singleton<GameManager>
         return cbTrans[employee.CbTransNum];
     }
 
-    
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+            if(GameObject.Find("Option"))
+            {
+                Option option = GameObject.Find("Option").GetComponent<Option>();
+                option.ShowOption();
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
+        }
+        else
+        {
+            if(!GameObject.Find("Option"))
+            {
+                Time.timeScale = 1;
+            }
+        }
+    }
 }

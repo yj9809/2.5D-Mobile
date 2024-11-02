@@ -58,14 +58,18 @@ public class Option : MonoBehaviour
         showOptionButton.interactable = isActive;
     }
 
-    private void ShowOption()
+    public void ShowOption()
     {
         blurPanel.SetActive(true);
+        // 타임 스케일 추가
+        Time.timeScale = 0;
     }
 
     private void CloseOption()
     {
         blurPanel.SetActive(false);
+        // 타임 스케일 추가
+        Time.timeScale = 1;
     }
 
     private void ToggleMusic()

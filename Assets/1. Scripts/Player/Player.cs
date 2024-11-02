@@ -235,4 +235,17 @@ public class Player : MonoBehaviour, IObjectDataSave
                 baseCost.employeeList.Add(item.name);
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Ingredient"))
+        {
+            Debug.Log("½ÇÇà");
+            Rigidbody rd = collision.transform.GetComponent<Rigidbody>();
+            if (rd != null)
+                Destroy(collision.transform.GetComponent<Rigidbody>());
+            Utility.ObjectDrop(cartTransform, collision.gameObject, null, ingredientStack, 0);
+            Vibration.VibratePop();
+        }
+    }
 }
