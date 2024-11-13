@@ -14,7 +14,6 @@ public class SpawnPoint : MonoBehaviour
     public Transform[] GetTarget { get { return target; } }
 
     private PoolingManager pool;
-    private Bounds bounds;
     private Bounds planeBounds;
 
     private float spawnTime = 0;
@@ -23,7 +22,6 @@ public class SpawnPoint : MonoBehaviour
     private void Awake()
     {
         pool = PoolingManager.Instance;
-        bounds = transform.GetComponent<Collider>().bounds;
         planeBounds = planeCollider.bounds;
     }
     // Update is called once per frame
@@ -39,8 +37,7 @@ public class SpawnPoint : MonoBehaviour
         {
             int npcRandom = Random.Range(0, npc.Length);
             Npc newNpc = pool.GetObj(npc[npcRandom]).GetComponent<Npc>();
-            newNpc.SetSpawnPoint(this);
-            newNpc.transform.position = GetRandomPositionInBounds(bounds);
+            newNpc.transform.position = transform.position;
             spawnTime = 0;
         }
     }
@@ -57,6 +54,6 @@ public class SpawnPoint : MonoBehaviour
         float randomX = Random.Range(planeBounds.min.x, planeBounds.max.x);
         float randomZ = Random.Range(planeBounds.min.z, planeBounds.max.z);
 
-        return new Vector3(randomX, bounds.size.y, randomZ);
+        return new Vector3(randomX, planeBounds.size.y, randomZ);
     }
 }

@@ -34,7 +34,7 @@ public class Npc : MonoBehaviour
     {
         na = GetComponent<NavMeshAgent>();
         anime = GetComponent<Animator>();
-        na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
+        spawnPoint = FindObjectOfType<SpawnPoint>();
     }
 
     // Update is called once per frame
@@ -49,8 +49,6 @@ public class Npc : MonoBehaviour
             RetrunHome();
         }
     }
-
-
 
     private void CheckPointMove()
     {
