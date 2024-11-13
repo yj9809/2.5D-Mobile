@@ -5,12 +5,15 @@ using UnityEngine.Advertisements;
 
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] Button _speedBuffButton;
-    [SerializeField] Button _goldBuffButton;
-    [SerializeField] Button _machineSpeedBuffButton;
-    [SerializeField] string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
-    string _adUnitId = null;
+    [SerializeField] private Button _speedBuffButton;
+    [SerializeField] private Button _maxObjStackCountBuffButton;
+    [SerializeField] private Button _goldBuffButton;
+    [SerializeField] private Image[] buffOffImage;
+    [SerializeField] private string _androidAdUnitId = "Rewarded_Android";
+    [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS";
+
+    private GameManager gm;
+    private string _adUnitId = null;
 
     void Awake()
     {
@@ -21,9 +24,10 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         //#endif
 
         _speedBuffButton.interactable = false;
+        _maxObjStackCountBuffButton.interactable = false;
         _goldBuffButton.interactable = false;
-        _machineSpeedBuffButton.interactable = false;
         _adUnitId = _androidAdUnitId;
+        gm = GameManager.Instance;
     }
     private void Start()
     {
@@ -39,12 +43,12 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     {
         if (adUnitId.Equals(_adUnitId))
         {
-            _speedBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("speed"));
-            _goldBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("gold"));
-            _machineSpeedBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("machineSpeed"));
+            _speedBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("Speed"));
+            _maxObjStackCountBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("MaxObjStackCount"));
+            _goldBuffButton.onClick.AddListener(() => ShowAdAndApplyBuff("Gold"));
             _speedBuffButton.interactable = true;
             _goldBuffButton.interactable = true;
-            _machineSpeedBuffButton.interactable = true;
+            _maxObjStackCountBuffButton.interactable = true;
         }
     }
 
@@ -52,14 +56,17 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     {
         switch (buffType)
         {
-            case "speed":
+            case "Speed":
                 _speedBuffButton.interactable = false;
+                buffOffImage[0].gameObject.SetActive(true);
                 break;
-            case "gold":
+            case "MaxObjStackCount":
+                _maxObjStackCountBuffButton.interactable = false;
+                buffOffImage[1].gameObject.SetActive(true);
+                break;
+            case "Gold":
                 _goldBuffButton.interactable = false;
-                break;
-            case "machineSpeed":
-                _machineSpeedBuffButton.interactable = false;
+                buffOffImage[2].gameObject.SetActive(true);
                 break;
         }
         Advertisement.Show(_adUnitId, this);
@@ -72,15 +79,15 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             if (_speedBuffButton.interactable == false)
             {
                 // 테스트 중이니까 테스트 끝난 후 5 -> 30초로 바꾸기
-                StartCoroutine(ApplyBuff("speed", 5));
+                StartCoroutine(ApplyBuff("Speed", 5));
             }
-            else if (_goldBuffButton.interactable == false)
+            if (_maxObjStackCountBuffButton.interactable == false)
             {
-                StartCoroutine(ApplyBuff("gold", 30));
+                StartCoroutine(ApplyBuff("MaxObjStackCount", 30));
             }
-            else if (_machineSpeedBuffButton.interactable == false)
+            if (_goldBuffButton.interactable == false)
             {
-                StartCoroutine(ApplyBuff("machineSpeed", 30));
+                StartCoroutine(ApplyBuff("Gold", 30));
             }
         }
     }
@@ -93,88 +100,83 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     private IEnumerator ApplyBuff(string buffType, float duration)
     {
         float originalStat = 0;
-        float cartSpeed = 0;
         float buffedStat = 0;
-        float buffedStat2 = 0;
 
         switch (buffType)
         {
-            case "speed":
-                originalStat = GetPlayerSpeed(out cartSpeed);
-                buffedStat = originalStat + 1f;
-                buffedStat2 = cartSpeed + 1f;
-                SetPlayerSpeed(buffedStat, buffedStat2);
+            case "Speed":
+                originalStat = GetPlayerSpeed();
+                buffedStat = originalStat + 10f;
+                SetPlayerSpeed(buffedStat);
                 _speedBuffButton.interactable = false;
+                buffOffImage[0].gameObject.SetActive(false);
                 break;
-
-            case "gold":
+            case "MaxObjStackCount":
+                originalStat = GetMaxObjCount();
+                buffedStat = originalStat + 3f;
+                SetMaxObjCountSpeed(buffedStat);
+                _maxObjStackCountBuffButton.interactable = false;
+                buffOffImage[1].gameObject.SetActive(false);
+                Debug.Log($"오브젝트 버프");
+                break;
+            case "Gold":
                 originalStat = GetPlayerGold();
-                buffedStat = originalStat * 1.5f;
+                buffedStat = originalStat + 1.5f;
                 SetPlayerGold(buffedStat);
+                Debug.Log("골드 버프");
                 _goldBuffButton.interactable = false;
-                break;
-
-            case "machineSpeed":
-                originalStat = GetMachineSpeed();
-                buffedStat = originalStat - 1.5f;
-                SetMachineSpeed(buffedStat);
-                _machineSpeedBuffButton.interactable = false;
+                buffOffImage[2].gameObject.SetActive(false);
                 break;
         }
 
         yield return new WaitForSeconds(duration);
         switch (buffType)
         {
-            case "speed":
-                SetPlayerSpeed(originalStat, cartSpeed);
+            case "Speed":
+                SetPlayerSpeed(originalStat);
                 _speedBuffButton.interactable = true;
                 break;
-            case "gold":
+            case "MaxObjStackCount":
+                SetMaxObjCountSpeed(originalStat);
+                _maxObjStackCountBuffButton.interactable = true;
+                break;
+            case "Gold":
                 SetPlayerGold(originalStat);
                 _goldBuffButton.interactable = true;
-                break;
-            case "machineSpeed":
-                SetMachineSpeed(originalStat);
-                _machineSpeedBuffButton.interactable = true;
                 break;
         }
         LoadAd();
         Clear();
     }
 
-    private float GetPlayerSpeed(out float cartSpeed)
+    private float GetPlayerSpeed()
     {
-        cartSpeed = GameManager.Instance.P.CartSpeed;
-        return GameManager.Instance.P.BaseSpeed;
+        return gm.P.buffSpeed;
     }
 
     private float GetPlayerGold()
     {
-        return GameManager.Instance.P.GoldPerBox;
+        return gm.P.buffGold;
     }
 
-    private float GetMachineSpeed()
+    private float GetMaxObjCount()
     {
-        return GameManager.Instance.cbTrans[0].parent.GetChild(3).GetComponent<ConveyorBelt>().PlaceObjectTime;
+        return gm.P.buffMaxObjStackCount;
     }
 
-    private void SetPlayerSpeed(float stat, float stat2)
+    private void SetPlayerSpeed(float stat)
     {
-        GameManager.Instance.P.BaseSpeed = stat;
-        GameManager.Instance.P.CartSpeed = stat2;
+        gm.P.buffSpeed = stat;
     }
 
     private void SetPlayerGold(float stat)
     {
-        GameManager.Instance.P.GoldPerBox = stat;
+        gm.P.buffGold = stat;
     }
 
-    private void SetMachineSpeed(float stat)
+    private void SetMaxObjCountSpeed(float stat)
     {
-        foreach (var item in GameManager.Instance.cbTrans)
-        {
-            item.parent.GetChild(3).GetComponent<ConveyorBelt>().PlaceObjectTime = stat;
-        }
+        gm.P.buffMaxObjStackCount = stat;
     }
 
     public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message) { }
@@ -186,7 +188,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     void Clear()
     {
         _speedBuffButton.onClick.RemoveAllListeners();
+        _maxObjStackCountBuffButton.onClick.RemoveAllListeners();
         _goldBuffButton.onClick.RemoveAllListeners();
-        _machineSpeedBuffButton.onClick.RemoveAllListeners();
     }
 }

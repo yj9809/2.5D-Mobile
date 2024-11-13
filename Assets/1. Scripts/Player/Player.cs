@@ -30,6 +30,28 @@ public class Player : MonoBehaviour, IObjectDataSave
     private Animator animator;
     private Camera mainCamera;
     private BaseCost baseCost;
+
+    private Stack<GameObject> ingredientStack = new Stack<GameObject>();
+    public Stack<GameObject> IngredientStack
+    {
+        get { return ingredientStack; }
+        set { ingredientStack = value; }
+    }
+
+    private Stack<GameObject> churuStack = new Stack<GameObject>();
+    public Stack<GameObject> ChuruStack
+    {
+        get { return churuStack; }
+        set { churuStack = value; }
+    }
+
+    private Stack<GameObject> boxStack = new Stack<GameObject>();
+    public Stack<GameObject> BoxStack
+    {
+        get { return boxStack; }
+        set { boxStack = value; }
+    }
+
     public float MaxObjStackCount 
     {
         get { return baseCost.playerData["maxObjStackCount"]; }
@@ -56,26 +78,9 @@ public class Player : MonoBehaviour, IObjectDataSave
         set { baseCost.playerData["goldPerBox"] = value; }
     }
 
-    private Stack<GameObject> ingredientStack = new Stack<GameObject>();
-    public Stack<GameObject> IngredientStack
-    {
-        get { return ingredientStack; }
-        set { ingredientStack = value; }
-    }
-
-    private Stack<GameObject> churuStack = new Stack<GameObject>();
-    public Stack<GameObject> ChuruStack
-    {
-        get { return churuStack; }
-        set { churuStack = value; }
-    }
-
-    private Stack<GameObject> boxStack = new Stack<GameObject>();
-    public Stack<GameObject> BoxStack
-    {
-        get { return boxStack; }
-        set { boxStack = value; }
-    }
+    public float buffSpeed = 0;
+    public float buffMaxObjStackCount = 0;
+    public float buffGold = 0;
 
     private void Awake()
     {
@@ -126,7 +131,7 @@ public class Player : MonoBehaviour, IObjectDataSave
 
             Vector3 adjustedDirection = (moveDirection.z * cameraForward + moveDirection.x * cameraRight).normalized;
 
-            float currentSpeed = animator.GetFloat("Blend") == 1? CartSpeed : BaseSpeed;
+            float currentSpeed = animator.GetFloat("Blend") == 1? CartSpeed + buffSpeed : BaseSpeed + buffSpeed;
             animator.SetBool("isMove", true);
 
             cc.Move(adjustedDirection * currentSpeed * Time.deltaTime);
@@ -173,7 +178,9 @@ public class Player : MonoBehaviour, IObjectDataSave
     // 이건 재료 받는 코드
     public void TakeObject(IngredientMaker im)
     {
-        if (im.ChuruStack.Count > 0 && MaxObjStackCount > ingredientStack.Count && boxStack.Count <= 0 && churuStack.Count <= 0)
+        if (im.ChuruStack.Count > 0 && 
+            MaxObjStackCount + buffMaxObjStackCount > ingredientStack.Count && 
+            boxStack.Count <= 0 && churuStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, im.ChuruStack, ingredientStack, 1);
             Vibration.VibratePop();
@@ -196,7 +203,9 @@ public class Player : MonoBehaviour, IObjectDataSave
         Stack<GameObject> newStack = isChuru ? churuStack : boxStack;
         Stack<GameObject> checkStack = isChuru ? boxStack : churuStack;
 
-        if (bs.BoxStack.Count > 0 && MaxObjStackCount > newStack.Count && ingredientStack.Count <= 0 && checkStack.Count <= 0)
+        if (bs.BoxStack.Count > 0 && 
+            MaxObjStackCount + buffMaxObjStackCount > newStack.Count && 
+            ingredientStack.Count <= 0 && checkStack.Count <= 0)
         {
             Utility.ObjectDrop(cartTransform, null, bs.BoxStack, newStack, 1);
             Vibration.VibratePop();

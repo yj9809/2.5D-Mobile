@@ -20,6 +20,7 @@ public class Truck : MonoBehaviour, IObjectDataSave
 
     private NavMeshAgent na;
     private DataManager data;
+    private GameManager gm;
 
     private CarType ct = CarType.Go;
 
@@ -43,6 +44,7 @@ public class Truck : MonoBehaviour, IObjectDataSave
     {
         data = DataManager.Instance;
         na = GetComponent<NavMeshAgent>();
+        gm = GameManager.Instance;
         na.SetDestination(checkPoint[currentCheckPoint].position);
         data.AddObjStackCountList(this);
         workPoint.SetActive(false);
@@ -60,7 +62,8 @@ public class Truck : MonoBehaviour, IObjectDataSave
             ct = CarType.Come;
 
             // boxStackÀÌ ¸ðµÎ Ã¤¿öÁ³À» ¶§ °ñµåÈ¹µæ
-            UIManager.Instance.AddGold(boxStack.Count * (int)GameManager.Instance.P.GoldPerBox);
+            Debug.Log($"gold : {gm.P.GoldPerBox}, buff : {gm.P.buffGold}");
+            UIManager.Instance.AddGold(boxStack.Count * (int)(gm.P.GoldPerBox + (gm.P.GoldPerBox * gm.P.buffGold)));
             ClearBoxStack();
         }
 

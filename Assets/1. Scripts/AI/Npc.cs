@@ -35,6 +35,7 @@ public class Npc : MonoBehaviour
         na = GetComponent<NavMeshAgent>();
         anime = GetComponent<Animator>();
         spawnPoint = FindObjectOfType<SpawnPoint>();
+        na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
     }
 
     // Update is called once per frame
