@@ -449,7 +449,7 @@ public class UIManager : Singleton<UIManager>
         if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
             guide.ToNextStep();
         if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-            AddGold(900);
+            AddGold(9000);
     }
     public void SetGuideStep(Guide guide)
     {
