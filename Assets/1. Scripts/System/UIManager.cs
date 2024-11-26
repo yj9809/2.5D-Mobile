@@ -135,29 +135,28 @@ public class UIManager : Singleton<UIManager>
     {
         char[] unitAlphabet = new char[3] { 'K', 'M', 'B' };
         int unit = 0;
+
+        // 입력된 number가 6자리보다 클 경우 단위 변환
         while (number.Length > 6)
         {
             unit++;
             number = number.Substring(0, number.Length - 3);
         }
+
         if (number.Length > 3)
         {
-            int newInt = int.Parse(number);
-            if (number.Length > 4)
-            {
-                return (newInt / 1000).ToString() + unitAlphabet[unit];
-            }
-            else
-            {
-                return (newInt / 1000f).ToString("0.0") + unitAlphabet[unit];
-            }
+            // 숫자로 변환
+            double newInt = double.Parse(number);
+            // 소수점 이하를 두 자리까지 표시
+            return (newInt / 1000).ToString("0.##") + unitAlphabet[unit];
         }
         else
         {
             int newInt = int.Parse(number);
-            return (newInt).ToString();
+            return newInt.ToString();
         }
     }
+
 
     public void SellItem()
     {
