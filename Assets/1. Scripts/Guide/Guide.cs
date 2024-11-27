@@ -33,6 +33,10 @@ public class Guide : MonoBehaviour
     [SerializeField] private GameObject _StallObject;
     [SerializeField] private GameObject _StoreObject;
 
+    [Title("Employee")]
+    [SerializeField] private Button employeeAddButton;
+
+    [Title("Scripts")]
     public bool _Scripts = true;
     [HideIfGroup("_Scripts"), SerializeField] private BoxPackaging boxPackaging;
     [HideIfGroup("_Scripts"), SerializeField] private BoxStorage boxStorage;
@@ -70,6 +74,8 @@ public class Guide : MonoBehaviour
         {
             GuideLine();
         }
+
+        EmployeeActive();
     }
 
     void Update()
@@ -99,6 +105,7 @@ public class Guide : MonoBehaviour
             }
         }
     }
+
     private void Ads()
     {
         adExample.ShowAd();
@@ -332,8 +339,8 @@ public class Guide : MonoBehaviour
     private void _Step7()
     {
         SetActiveTarget(7);
-        UpdateGuide("공장 확장 1", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 1000"
-            , _ContainerObjects[0].activeSelf);
+        UpdateGuide("공장 확장 1", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
+            , _MachineObjects[0].activeSelf); 
     }
     private void _Step8()
     {
@@ -346,24 +353,27 @@ public class Guide : MonoBehaviour
         SetActiveTarget(9);
         UpdateGuide("이젠 혼자하기 힘들어", "사무실에서 직원 고용하기", baseCost.playerData["gold"].ToString() + " / 5000"
             , baseCost.upgradeCosts["baseEmployeeAddCount"] > 0);
+        employeeAddButton.interactable = true;
     }
     private void _Step10()
     {
         SetActiveTarget(10);
-        UpdateGuide("공장 확장 2", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
-            , _MachineObjects[0].activeSelf);
+        UpdateGuide("공장 확장 2", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 1000"
+            , _ContainerObjects[0].activeSelf);
+
+        EmployeeActive();
     }
     private void _Step11()
     {
         SetActiveTarget(11);
-        UpdateGuide("공장 확장 3", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
-            , _ContainerObjects[1].activeSelf);
+        UpdateGuide("공장 확장 3", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 10000"
+            , _MachineObjects[1].activeSelf);
     }
     private void _Step12()
     {
         SetActiveTarget(12);
-        UpdateGuide("공장 확장 4", "컨베이어 벨트 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 10000"
-            , _MachineObjects[1].activeSelf);
+        UpdateGuide("공장 확장 4", "원재료 컨테니어 추가 건설하기", baseCost.playerData["gold"].ToString() + " / 5000"
+            , _ContainerObjects[1].activeSelf);
     }
     private void _Step13()
     {
@@ -386,4 +396,8 @@ public class Guide : MonoBehaviour
     }
     #endregion
 
+    private void EmployeeActive()
+    {
+        employeeAddButton.interactable = _ContainerObjects[0].activeSelf && _MachineObjects[0].activeSelf;
+    }
 }
