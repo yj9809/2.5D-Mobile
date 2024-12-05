@@ -9,18 +9,18 @@ public class CameraResolution : MonoBehaviour
         Camera camera = GetComponent<Camera>();
         Rect rect = camera.rect;
 
-        float scaleheight = ((float)Screen.width / Screen.height) / ((float)10 / 16);
-        float scalewidth = 1f / scaleheight;
+        double scaleheight = ((float)Screen.width / Screen.height) / ((float)9 / 19.5);
+        double scalewidth = 1f / scaleheight;
 
         if(scaleheight < 1)
         {
-            rect.height = scaleheight;
-            rect.y = (1f - scaleheight) / 2f;
+            rect.height = (float)scaleheight;
+            rect.y = (float)(1f - scaleheight) / 2f;
         }
         else
         {
-            rect.width = scalewidth;
-            rect.x = (1f - scalewidth) / 2f;
+            rect.width = (float)scalewidth;
+            rect.x = (float)(1f - scalewidth) / 2f;
         }
 
         camera.rect = rect;
