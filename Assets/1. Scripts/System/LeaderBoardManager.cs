@@ -3,10 +3,12 @@ using GooglePlayGames.BasicApi;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using TMPro;
 
 public class LeaderBoardManager : MonoBehaviour
 {
     [SerializeField] private Button leaderBoardButton;
+    [SerializeField] private TextMeshProUGUI leaderBoardDebugText;
 
     private void Start()
     {
@@ -14,27 +16,35 @@ public class LeaderBoardManager : MonoBehaviour
         {
             leaderBoardButton.onClick.AddListener(ShowLeaderBoardUI);
         }
+
+        // 자동 로그인 시도
+        AuthenticateUser();
+    }
+
+    // 사용자 인증
+    private void AuthenticateUser()
+    {
+        PlayGamesPlatform.Activate();
+        Social.localUser.Authenticate((bool success) => {
+            UpdateDebugText(success ? "로그인 성공" : "로그인 실패");
+        });
     }
 
     // 로그인 상태 확인
-    private bool IsAuthenticated()
-    {
-        return Social.localUser.authenticated;
-    }
+    private bool IsAuthenticated() => Social.localUser.authenticated;
 
     // 리더보드 UI 표시
     public void ShowLeaderBoardUI()
     {
         if (IsAuthenticated())
         {
-            LoadTopScores(); // 리더보드 열기 전에 상위 점수 불러오기
-            UpdateAndRecordScore(); // 리더보드 열기 전에 점수 갱신
-            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard); // 리더보드 UI 표시
+            LoadTopScores(); // 상위 점수 불러오기
+            UpdateAndRecordScore(); // 점수 갱신
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_one); // 리더보드 UI 표시
         }
         else
         {
-            // 로그인되지 않은 경우 로그인 요청 추가 (혹은 알림)
-            Debug.LogWarning("사용자가 인증되지 않았습니다.");
+            UpdateDebugText("사용자가 인증되지 않았습니다.");
         }
     }
 
@@ -44,7 +54,7 @@ public class LeaderBoardManager : MonoBehaviour
         if (IsAuthenticated())
         {
             PlayGamesPlatform.Instance.LoadScores(
-                GPGSIds.leaderboard, // 리더보드 ID
+                GPGSIds.leaderboard_one, // 리더보드 ID
                 LeaderboardStart.TopScores, // 상위 점수부터 시작
                 10, // 불러올 점수의 개수
                 LeaderboardCollection.Public, // 공개 리더보드
@@ -52,32 +62,30 @@ public class LeaderBoardManager : MonoBehaviour
                 (LeaderboardScoreData data) => {
                     if (data.Valid)
                     {
-                        int numScores = data.Scores.Length;
-
-                        // 상위 점수 목록을 처리하는 코드
-                        for (int i = 0; i < numScores; i++)
+                        foreach (var score in data.Scores)
                         {
-                            string playerId = data.Scores[i].userID;
-                            long playerScore = data.Scores[i].value;
-
-                            // 필요한 처리 로직 작성
+                            UpdateDebugText($"플레이어 ID: {score.userID}, 점수: {score.value}");
                         }
+                    }
+                    else
+                    {
+                        UpdateDebugText("리더보드 데이터가 유효하지 않습니다.");
                     }
                 });
         }
         else
         {
-            Debug.LogWarning("사용자가 인증되지 않았습니다.");
+            UpdateDebugText("사용자가 인증되지 않았습니다.");
         }
     }
 
     // 나의 랭킹과 점수 보기
-    public void myRank()
+    public void MyRank()
     {
         if (IsAuthenticated())
         {
             PlayGamesPlatform.Instance.LoadScores(
-                GPGSIds.leaderboard, // 리더보드 ID
+                GPGSIds.leaderboard_one, // 리더보드 ID
                 LeaderboardStart.PlayerCentered, // 플레이어 중심 모드
                 1, // 1개의 점수만 불러오기
                 LeaderboardCollection.Public, // 공개 리더보드
@@ -90,10 +98,7 @@ public class LeaderBoardManager : MonoBehaviour
                         // 점수 갱신 확인
                         if (playerScore != DataManager.Instance.baseCost.playerData["gold"])
                         {
-                            if (DataManager.Instance.baseCost.playerData["gold"] < playerScore)
-                            {
-                                DataManager.Instance.baseCost.playerData["gold"] = (int)playerScore;
-                            }
+                            DataManager.Instance.baseCost.playerData["gold"] = (int)playerScore;
                             RecordScore(true); // 점수 저장 후 UI 갱신
                         }
                     }
@@ -101,33 +106,31 @@ public class LeaderBoardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("사용자가 인증되지 않았습니다.");
+            UpdateDebugText("사용자가 인증되지 않았습니다.");
         }
     }
 
     // 점수 등록
     private void RecordScore(bool UI = false)
     {
-        // gold 값으로 MaxScore 설정
         int MaxScore = (int)DataManager.Instance.baseCost.playerData["gold"];
 
-        // gold 값이 제대로 설정되었는지 확인
         if (MaxScore > 0)
         {
-            PlayGamesPlatform.Instance.ReportScore(MaxScore, GPGSIds.leaderboard, (bool success) => {
+            PlayGamesPlatform.Instance.ReportScore(MaxScore, GPGSIds.leaderboard_one, (bool success) => {
                 if (success && UI)
                 {
-                    myRank(); // 리더보드 갱신
+                    MyRank(); // 리더보드 갱신
                 }
                 else
                 {
-                    Debug.LogWarning("점수 등록에 실패했습니다.");
+                    UpdateDebugText("점수 등록에 실패했습니다.");
                 }
             });
         }
         else
         {
-            Debug.LogWarning("Gold 값이 설정되지 않았거나 유효하지 않습니다.");
+            UpdateDebugText("Gold 값이 설정되지 않았거나 유효하지 않습니다.");
         }
     }
 
@@ -135,7 +138,7 @@ public class LeaderBoardManager : MonoBehaviour
     private void UpdateAndRecordScore()
     {
         PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard,
+            GPGSIds.leaderboard_one,
             LeaderboardStart.PlayerCentered,
             1,
             LeaderboardCollection.Public,
@@ -147,20 +150,28 @@ public class LeaderBoardManager : MonoBehaviour
                     long leaderboardScore = data.PlayerScore.value;
                     int playerScore = (int)DataManager.Instance.baseCost.playerData["gold"];
 
-                    // 새로운 점수가 리더보드 점수보다 클 경우 업데이트
                     if (playerScore > leaderboardScore)
                     {
                         RecordScore(false); // 점수만 등록하고 UI는 갱신하지 않음
                     }
                     else
                     {
-                        Debug.LogWarning("플레이어 점수가 리더보드 점수보다 높지 않습니다.");
+                        UpdateDebugText("플레이어 점수가 리더보드 점수보다 높지 않습니다.");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("리더보드 점수 데이터를 불러오는 데 실패했습니다.");
+                    UpdateDebugText("리더보드 점수 데이터를 불러오는 데 실패했습니다.");
                 }
             });
+    }
+
+    // 디버그 메시지를 UI에 업데이트
+    private void UpdateDebugText(string message)
+    {
+        if (leaderBoardDebugText != null)
+        {
+            leaderBoardDebugText.text = message;
+        }
     }
 }
