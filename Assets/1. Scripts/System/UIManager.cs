@@ -46,6 +46,7 @@ public class UIManager : Singleton<UIManager>
     [TabGroup("Camera Zoom"), SerializeField] private Sprite[] cameraZoomButtonImg;
 
     [SerializeField] private TextMeshProUGUI goldTxt;
+    [SerializeField] private RectTransform gameSceneImageRect;
 
     [TabGroup("Upgrade"), SerializeField] private GameObject upgradePanel;
     [TabGroup("Upgrade"), SerializeField] private Sprite[] upgradeStepSprite;
@@ -94,6 +95,20 @@ public class UIManager : Singleton<UIManager>
         SetUpgradeInfo();
         UpdateGoldUI();
         StoreUI();
+        AdjustImageHeight();
+    }
+    void AdjustImageHeight()
+    {
+        float targetHeight = 2340f; // 기준 높이
+        float screenHeight = Screen.height;
+        Debug.Log(screenHeight);
+
+        // 화면 비율에 맞춰 이미지 높이 조정
+        if (screenHeight < targetHeight)
+        {
+            float scaleFactor = screenHeight / targetHeight;
+            gameSceneImageRect.sizeDelta = new Vector2(gameSceneImageRect.sizeDelta.x, screenHeight);
+        }
     }
 
     private void LogMessage(string message)
