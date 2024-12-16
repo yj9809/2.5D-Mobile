@@ -69,6 +69,7 @@ public class UIManager : Singleton<UIManager>
     private float[] speedUpgradeValue = { 1.1f, 1.2f, 1.3f, 1.4f, 1.5f };
     private int[] speedUpgradeCostValue = { 500, 1000, 3000, 5000, 10000 };
     private float[] goldPerBoxValue = { 1.2f, 1.4f, 1.6f, 1.8f, 2f };
+    private int[] gPBUpgradeCostVaule = { 5000, 7000, 10000, 20000, 30000 };
 
     private Player p;
     private BaseCost baseCost;
@@ -311,7 +312,11 @@ public class UIManager : Singleton<UIManager>
                         audioManager.PlayEffect(EffectType.Upgrade);
                         // °ρµε Αυ°΅·®
                         p.GoldPerBox = 50 * goldPerBoxValue[baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"]];
-                        
+
+                        if (baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] <= 3)
+                            baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] = gPBUpgradeCostVaule[baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] + 1];
+
+
                         baseCost.upgradeCosts["baseGoldPerBoxUpgradeCount"] ++;
                         UpgradeTextUpdate(2);
                     }
@@ -396,8 +401,15 @@ public class UIManager : Singleton<UIManager>
                         gm.employee.RemoveAt(random);
                         p.employee.Add(employee);
 
+                        if (baseCost.upgradeCosts["baseEmployeeAddCount"] == 2)
+                        {
+                            baseCost.upgradeCosts["baseEmployeeAddCost"] = 25000;
+                        }
+                        else
+                        {
+                            baseCost.upgradeCosts["baseEmployeeAddCost"] *= 2;
+                        }
 
-                        baseCost.upgradeCosts["baseEmployeeAddCost"] *= 2;
                         baseCost.upgradeCosts["baseEmployeeAddCount"]++;
                         UpgradeTextUpdate(5);
                     }
