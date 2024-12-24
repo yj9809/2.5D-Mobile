@@ -18,9 +18,7 @@ public class Minimap : MonoBehaviour
         miniMapPanel.SetActive(isMiniMapOn);
 
         if (miniMapOnButton != null)
-            miniMapOnButton.onClick.AddListener(ActivateMiniMap);
-        if (miniMapOffButton != null)
-            miniMapOffButton.onClick.AddListener(DeactivateMiniMap);
+            miniMapOnButton.onClick.AddListener(ToggleMiniMap);
 
         player = GameManager.Instance.P.transform;
 
@@ -39,15 +37,9 @@ public class Minimap : MonoBehaviour
         }
     }
 
-    public void ActivateMiniMap()
+    public void ToggleMiniMap()
     {
-        isMiniMapOn = true;
-        miniMapPanel.SetActive(true);
-    }
-
-    public void DeactivateMiniMap()
-    {
-        isMiniMapOn = false;
-        miniMapPanel.SetActive(false);
+        isMiniMapOn = !isMiniMapOn;
+        miniMapPanel.SetActive(isMiniMapOn);
     }
 }
