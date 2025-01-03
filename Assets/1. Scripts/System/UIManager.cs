@@ -451,21 +451,21 @@ public class UIManager : Singleton<UIManager>
 
     #region GameTest UI
 
-    private void OnGUI()
-    {
-        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+    //private void OnGUI()
+    //{
+    //    GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
 
-        // 폰트 사이즈 조정
-        buttonStyle.fontSize = 25;
+    //    // 폰트 사이즈 조정
+    //    buttonStyle.fontSize = 25;
 
-        if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
-            guide.ToNextStep();
-        if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
-            AddGold(9000);
-    }
-    public void SetGuideStep(Guide guide)
-    {
-        this.guide = guide;
-    }
+    //    if (GUI.Button(new Rect(200, 250, 200, 100), "가이드 넘기기", buttonStyle))
+    //        guide.ToNextStep();
+    //    if (GUI.Button(new Rect(430, 250, 200, 100), "돈", buttonStyle))
+    //        AddGold(9000);
+    //}
+    //public void SetGuideStep(Guide guide)
+    //{
+    //    this.guide = guide;
+    //}
     #endregion
 }
