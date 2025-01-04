@@ -9,7 +9,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     [SerializeField] private Button _maxObjStackCountBuffButton;
     [SerializeField] private Button _goldBuffButton;
     [SerializeField] private Image[] buffOffImage;
-    [SerializeField] private string _androidAdUnitId = "Rewarded_Android";
+    [SerializeField] private string _androidAdUnitId = "Reword_Android";
     [SerializeField] private string _iOSAdUnitId = "Rewarded_iOS";
 
     private GameManager gm;
