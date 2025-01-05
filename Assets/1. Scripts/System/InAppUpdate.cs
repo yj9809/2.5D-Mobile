@@ -83,7 +83,7 @@ StartCoroutine(Init());
             }
             else if (appUpdateInfoResult.UpdateAvailability == UpdateAvailability.UpdateNotAvailable)
             {
-                LogMessage("업데이트 없음");
+                LogMessage("환영합니다 !"); // 업데이트 없을 시
                 yield return (int)UpdateAvailability.UpdateNotAvailable;
             }
             else
