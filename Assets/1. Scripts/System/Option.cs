@@ -135,7 +135,6 @@ public class Option : MonoBehaviour
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif
-                DataManager.Instance.GameDataUpdate();
             }
             else
             {
@@ -143,6 +142,11 @@ public class Option : MonoBehaviour
                 ShowExitWarning();
             }
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        DataManager.Instance.GameDataUpdate();
     }
 
     private void ShowExitWarning()
