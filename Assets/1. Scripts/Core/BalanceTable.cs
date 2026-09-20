@@ -95,6 +95,17 @@ namespace Churub.Core
             }
         }
 
+        public static int FacilityInvestment(GameDataState state, string key)
+        {
+            if (state == null) throw new ArgumentNullException(nameof(state));
+            return Math.Min(FacilityCost(key), state.GetFacilityInvestment(key));
+        }
+
+        public static int FacilityRemainingCost(GameDataState state, string key)
+        {
+            return FacilityCost(key) - FacilityInvestment(state, key);
+        }
+
         public static bool IsFacilityUnlocked(GameDataState s, string key)
         {
             if (s == null) throw new ArgumentNullException(nameof(s));

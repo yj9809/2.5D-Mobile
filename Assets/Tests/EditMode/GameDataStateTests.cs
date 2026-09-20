@@ -16,6 +16,7 @@ public sealed class GameDataStateTests
         Assert.That(state.EmployeeSpeed, Is.EqualTo(3f));
         Assert.That(state.EmployeeCartSpeed, Is.EqualTo(1.5f));
         Assert.That(state.EmployeeMaxStackCount, Is.EqualTo(3f));
+        Assert.That(state.GetFacilityInvestment(GameDataSchema.Progress.Office), Is.Zero);
         Assert.That(state.newGame, Is.True);
     }
 
@@ -60,10 +61,34 @@ public sealed class GameDataStateTests
     }
 
     [Test]
+    public void FacilityInvestment_PersistsByProgressKeyAndClampsInvalidValues()
+    {
+        var state = new GameDataState();
+
+        state.SetFacilityInvestment(GameDataSchema.Progress.Office, 125);
+        state.SetFacilityInvestment(GameDataSchema.Progress.Container1, -10);
+
+        Assert.That(state.GetFacilityInvestment(GameDataSchema.Progress.Office), Is.EqualTo(125));
+        Assert.That(state.GetFacilityInvestment(GameDataSchema.Progress.Container1), Is.Zero);
+        Assert.That(BalanceTable.FacilityRemainingCost(state, GameDataSchema.Progress.Office), Is.EqualTo(175));
+    }
+
+    [Test]
+    public void FacilityInvestment_NeverExceedsFacilityCostWhenReadByGameplay()
+    {
+        var state = new GameDataState();
+        state.SetFacilityInvestment(GameDataSchema.Progress.Office, 999);
+
+        Assert.That(BalanceTable.FacilityInvestment(state, GameDataSchema.Progress.Office), Is.EqualTo(300));
+        Assert.That(BalanceTable.FacilityRemainingCost(state, GameDataSchema.Progress.Office), Is.Zero);
+    }
+
+    [Test]
     public void BackendSchemaConstants_PreserveReleasedFieldNames()
     {
         Assert.That(GameDataSchema.TableName, Is.EqualTo("TestUserData"));
         Assert.That(GameDataSchema.Fields.GuestId, Is.EqualTo("guestID"));
         Assert.That(GameDataSchema.Fields.GameProgress, Is.EqualTo("gameProgressBool"));
+        Assert.That(GameDataSchema.Fields.FacilityInvestments, Is.EqualTo("facilityInvestments"));
     }
 }

@@ -13,6 +13,7 @@ namespace Churub.Core
             public const string EmployeeData = "employeeData";
             public const string ObjectData = "objectData";
             public const string GameProgress = "gameProgressBool";
+            public const string FacilityInvestments = "facilityInvestments";
             public const string GuideStep = "guideStep";
             public const string NewGame = "newGame";
             public const string SaveRevision = "saveRevision";

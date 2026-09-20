@@ -62,6 +62,17 @@ namespace Churub.Core
             { GameDataSchema.Progress.Store, false }
         };
 
+        public Dictionary<string, int> facilityInvestments = new Dictionary<string, int>
+        {
+            { GameDataSchema.Progress.Office, 0 },
+            { GameDataSchema.Progress.Container1, 0 },
+            { GameDataSchema.Progress.Machine1, 0 },
+            { GameDataSchema.Progress.Container2, 0 },
+            { GameDataSchema.Progress.Machine2, 0 },
+            { GameDataSchema.Progress.Stall, 0 },
+            { GameDataSchema.Progress.Store, 0 }
+        };
+
         public int guideStep;
         public bool newGame = true;
         // Bumped on every local capture. Lets Apply() tell an unsaved local snapshot
@@ -234,6 +245,18 @@ namespace Churub.Core
         public void SetUnlocked(string progressKey, bool unlocked)
         {
             gameProgressBool[progressKey] = unlocked;
+        }
+
+        public int GetFacilityInvestment(string progressKey)
+        {
+            return facilityInvestments.TryGetValue(progressKey, out int amount)
+                ? System.Math.Max(0, amount)
+                : 0;
+        }
+
+        public void SetFacilityInvestment(string progressKey, int amount)
+        {
+            facilityInvestments[progressKey] = System.Math.Max(0, amount);
         }
     }
 }

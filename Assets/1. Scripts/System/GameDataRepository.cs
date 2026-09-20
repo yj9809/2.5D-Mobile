@@ -224,6 +224,7 @@ public static class GameDataCodec
             [GameDataSchema.Fields.EmployeeData] = data.employeeData,
             [GameDataSchema.Fields.ObjectData] = data.objectData,
             [GameDataSchema.Fields.GameProgress] = data.gameProgressBool,
+            [GameDataSchema.Fields.FacilityInvestments] = data.facilityInvestments,
             [GameDataSchema.Fields.GuideStep] = data.guideStep,
             [GameDataSchema.Fields.NewGame] = data.newGame,
             [GameDataSchema.Fields.SaveRevision] = data.saveRevision
@@ -258,6 +259,7 @@ public static class GameDataCodec
         ReadMap(TryGet(json, GameDataSchema.Fields.EmployeeData), data.employeeData, ReadFloat);
         ReadMap(TryGet(json, GameDataSchema.Fields.ObjectData), data.objectData, value => int.Parse(value, CultureInfo.InvariantCulture));
         ReadMap(TryGet(json, GameDataSchema.Fields.GameProgress), data.gameProgressBool, bool.Parse);
+        ReadMap(TryGet(json, GameDataSchema.Fields.FacilityInvestments), data.facilityInvestments, value => int.Parse(value, CultureInfo.InvariantCulture));
         var employeeList = TryGet(json, GameDataSchema.Fields.EmployeeList);
         if (employeeList != null && employeeList.IsArray)
             foreach (JsonData name in employeeList) data.employeeList.Add(name.ToString());
