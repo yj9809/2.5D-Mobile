@@ -5,6 +5,8 @@ public sealed class PackagingInteraction : WorkAction
 {
     [SerializeField] private BoxPackaging packaging;
 
+    public BoxPackaging Packaging => packaging;
+
     public override void Stay(GameObject actor)
     {
         if (packaging == null || !packaging.isActiveAndEnabled) return;

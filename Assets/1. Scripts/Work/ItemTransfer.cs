@@ -6,6 +6,8 @@ public sealed class ItemTransfer : WorkAction
     [SerializeField] private MonoBehaviour endpoint;
     [SerializeField] private bool playerOnly;
 
+    public MonoBehaviour Endpoint => endpoint;
+
     public override void Stay(GameObject actor)
     {
         if (endpoint == null || !endpoint.isActiveAndEnabled

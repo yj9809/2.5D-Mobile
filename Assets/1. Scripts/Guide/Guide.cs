@@ -9,6 +9,9 @@ using Churub.Core;
 
 public class Guide : MonoBehaviour
 {
+    private static readonly Color32 GuideCounterColor = new Color32(107, 63, 42, 255);
+    private static readonly Color32 GuideCompletedCounterColor = new Color32(217, 121, 95, 255);
+
     [Title("Guide")]
     [SerializeField] private GameObject guidePrefab;
     private GameObject curGuidePrefab;
@@ -47,6 +50,7 @@ public class Guide : MonoBehaviour
     private Player player;
 
     private bool _guideDone = false;
+    private readonly HashSet<int> invalidTargetWarnings = new HashSet<int>();
 
     private Button claimButton;
 
@@ -55,6 +59,71 @@ public class Guide : MonoBehaviour
         //UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
+        ResolveProductionTargets();
+    }
+
+    private void ResolveProductionTargets()
+    {
+        if (targets == null || targets.Length < 6) return;
+
+        var workPoints = FindObjectsByType<WorkPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int index = 0; index < 6; index++)
+        {
+            GameObject inactiveMatch = null;
+            foreach (var workPoint in workPoints)
+            {
+                if (!MatchesProductionTarget(index, workPoint)) continue;
+                if (workPoint.gameObject.activeInHierarchy)
+                {
+                    targets[index] = workPoint.gameObject;
+                    inactiveMatch = null;
+                    break;
+                }
+                if (inactiveMatch == null)
+                    inactiveMatch = workPoint.gameObject;
+            }
+            if (inactiveMatch != null)
+                targets[index] = inactiveMatch;
+        }
+    }
+
+    private bool MatchesProductionTarget(int index, WorkPoint workPoint)
+    {
+        if (workPoint == null) return false;
+
+        if (index == 4)
+            return workPoint.Action is PackagingInteraction packaging
+                && packaging.Packaging == boxPackaging;
+
+        if (!(workPoint.Action is ItemTransfer transfer)) return false;
+        switch (index)
+        {
+            case 0:
+                return transfer.Endpoint is IngredientMaker
+                    && !IsUnderAny(workPoint.transform, _ContainerObjects);
+            case 1:
+                return transfer.Endpoint is ConveyorBelt
+                    && !IsUnderAny(workPoint.transform, _MachineObjects);
+            case 2:
+                return transfer.Endpoint is BoxStorage churuStorage
+                    && churuStorage.bsType == BoxStorageType.ChuruStorage
+                    && !IsUnderAny(workPoint.transform, _MachineObjects);
+            case 3:
+                return transfer.Endpoint == boxPackaging;
+            case 5:
+                return transfer.Endpoint == boxStorage;
+            default:
+                return false;
+        }
+    }
+
+    private static bool IsUnderAny(Transform child, GameObject[] roots)
+    {
+        if (roots == null) return false;
+        foreach (var root in roots)
+            if (root != null && child.IsChildOf(root.transform))
+                return true;
+        return false;
     }
 
     void Start()
@@ -146,16 +215,18 @@ public class Guide : MonoBehaviour
     {
         for (int i = 7; i < targets.Length; i++)
         {
-            UnlockManager unlock = targets[i].GetComponent<UnlockManager>();
+            if (!TryGetTarget(i, out var target)) continue;
+
+            UnlockManager unlock = target.GetComponent<UnlockManager>();
             if (unlock != null)
             {
                 bool isNext = unlock.Type.ToString() == nextFacility;
-                targets[i].SetActive(isNext && !unlock.IsPurchased);
+                target.SetActive(isNext && !unlock.IsPurchased);
                 continue;
             }
 
             // The office interaction point is not a facility unlock pad.
-            targets[i].SetActive(baseCost.IsUnlocked(GameDataSchema.Progress.Office));
+            target.SetActive(baseCost.IsUnlocked(GameDataSchema.Progress.Office));
         }
     }
 
@@ -202,7 +273,8 @@ public class Guide : MonoBehaviour
         #region 타겟 위치 화살표
         if (baseCost.guideStep < targets.Length)
         {
-            Transform target = targets[baseCost.guideStep].transform;
+            if (!TryGetTarget(baseCost.guideStep, out var targetObject)) return;
+            Transform target = targetObject.transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
             guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine).OnComplete(() =>
@@ -279,7 +351,7 @@ public class Guide : MonoBehaviour
         {
             guideTitle.text = title;
             guideText.text = text;
-            guideTextNum.color = isCompleted ? Color.yellow : Color.black;
+            guideTextNum.color = isCompleted ? GuideCompletedCounterColor : GuideCounterColor;
             guideTextNum.text = numberText;
         }
 
@@ -295,26 +367,38 @@ public class Guide : MonoBehaviour
     {
         for (int i = 0; i <= baseCost.guideStep && i < targets.Length; i++)
         {
-            if (targets[i].GetComponent<WorkPoint>())
-                targets[i].SetActive(true);
+            if (!TryGetTarget(i, out var target)) continue;
+            if (target.GetComponent<WorkPoint>())
+                target.SetActive(true);
         }
     }
 
     private void SetTargetsActive(bool isActive)
     {
-        foreach (var target in targets)
+        for (int i = 0; i < targets.Length; i++)
         {
+            if (!TryGetTarget(i, out var target)) continue;
             target.SetActive(isActive);
         }
     }
 
     private void SetActiveTarget(int index)
     {
-        if (index >= 0 && index < targets.Length)
-        {
-            var unlock = targets[index].GetComponent<UnlockManager>();
-            if (unlock == null || !unlock.IsPurchased) targets[index].SetActive(true);
-        }
+        if (!TryGetTarget(index, out var target)) return;
+        var unlock = target.GetComponent<UnlockManager>();
+        if (unlock == null || !unlock.IsPurchased) target.SetActive(true);
+    }
+
+    private bool TryGetTarget(int index, out GameObject target)
+    {
+        target = null;
+        if (targets != null && index >= 0 && index < targets.Length)
+            target = targets[index];
+        if (target != null) return true;
+
+        if (invalidTargetWarnings.Add(index))
+            Debug.LogError($"Guide target at index {index} is missing or was destroyed. Check the Game scene reference.", this);
+        return false;
     }
 
     private void GiveReward(int step)

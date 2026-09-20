@@ -4,6 +4,7 @@ using UnityEngine;
 public class WorkPoint : MonoBehaviour
 {
     [SerializeField] private WorkAction action;
+    public WorkAction Action => action;
     private readonly Dictionary<Collider, GameObject> occupants = new Dictionary<Collider, GameObject>();
 
     private GameObject Track(Collider other)

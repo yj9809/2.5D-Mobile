@@ -71,12 +71,14 @@ def authored(path, blocks):
         action_block = blocks[action_id]
         action_name = script_name(action_block)
         assert action_name in ACTION_NAMES, ('Unknown action', path, action_id)
-        attached = re.search(r'm_AddedComponents:\n    - targetCorrespondingSourceObject: (\{[^}]+\})\n'
-                             r'      insertIndex: -1\n      addedObject: (\{[^}]+\})', block)
-        assert attached and ref_id(attached[1]) == GO and ref_id(attached[2]) == action_id
+        assert 'm_AddedComponents:' not in block, ('WorkAction must not be a prefab added-component override',
+                                                   path, instance_id)
+        assert ref_id(reference(action_block, 'm_PrefabInstance')) == 0, (
+            'WorkAction must remain a local object', path, action_id, instance_id)
         game_block = blocks[ref_id(reference(action_block, 'm_GameObject'))]
-        assert ref_id(reference(game_block, 'm_PrefabInstance')) == instance_id
-        assert ref_id(reference(game_block, 'm_CorrespondingSourceObject')) == GO
+        assert ref_id(reference(game_block, 'm_PrefabInstance')) == 0
+        assert f'  - component: {{fileID: {action_id}}}' in game_block, (
+            'WorkAction is not registered on its local GameObject', path, action_id)
         info = dict(name=action_name, player_only=False, endpoint=None)
         if action_name == 'ItemTransfer':
             info['player_only'] = bool(int(re.search(r'^  playerOnly: (\d+)', action_block, re.M)[1]))

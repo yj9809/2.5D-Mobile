@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2986155824567841955}
   - component: {fileID: 2986155824567841958}
+  - component: {fileID: 1113200670999587838}
   m_Layer: 0
   m_Name: IngredientSpawn
   m_TagString: Untagged
@@ -277,10 +278,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2944756444144404592, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
     - {fileID: 2944756444144404593, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2944756444144404595, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1113200670999587838}
   m_SourcePrefab: {fileID: 100100000, guid: 0b31801d45fcc514aa711763b19e2747, type: 3}
 --- !u!4 &5809088000862875893 stripped
 Transform:
@@ -299,7 +296,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1001694710982462105}
+  m_GameObject: {fileID: 2986155824567841954}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea6916179b1244db941f5028ef4f3f25, type: 3}

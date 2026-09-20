@@ -1,6 +1,8 @@
 """One-time, fail-closed YAML migration. Preview by default; --apply writes assets.
 
 Keeps existing object IDs, unrelated overrides, and the WorkPoint script GUID.
+WorkAction components are hosted by local endpoint objects instead of nested
+prefab added-component overrides, which Unity 6 cannot safely import here.
 Run from the Unity project root. Snapshots/report are written under Logs.
 """
 import argparse
@@ -78,29 +80,39 @@ def convert_direct(path, text):
         action_class = ('PackagingInteraction' if kind == 6 else 'UpgradeInteraction' if kind == 7
                         else 'StoreInteraction' if kind == 8 else 'ItemTransfer')
         action_id = fresh_id(path, instance, 'action', used)
-        game_id = None
-        for candidate in blocks:
-            if not candidate.startswith('--- !u!1 ') or ' stripped\n' not in candidate:
-                continue
-            if (f'm_PrefabInstance: {{fileID: {instance}}}' in candidate
-                    and f'm_CorrespondingSourceObject: {{fileID: {GO}, guid: {BASE}' in candidate):
-                game_id = int(re.search(r'&(-?\d+)', candidate)[1])
-                break
-        if game_id is None:
-            game_id = fresh_id(path, instance, 'gameObject', used)
-            extra.append(f'--- !u!1 &{game_id} stripped\nGameObject:\n'
-                         f'  m_CorrespondingSourceObject: {{fileID: {GO}, guid: {BASE}, type: 3}}\n'
-                         f'  m_PrefabInstance: {{fileID: {instance}}}\n  m_PrefabAsset: {{fileID: 0}}\n')
+        if endpoint is not None:
+            endpoint_id = ref_id(endpoint)
+            endpoint_block = next(candidate for candidate in blocks
+                                  if re.match(rf'--- !u!\d+ &{endpoint_id}(?: stripped)?\n', candidate))
+            game_id = ref_id(re.search(r'^  m_GameObject: (\{[^}]+\})', endpoint_block, re.M)[1])
+            game_index = next(i for i, candidate in enumerate(blocks)
+                              if candidate.startswith(f'--- !u!1 &{game_id}\n'))
+            assert f'  - component: {{fileID: {action_id}}}\n' not in blocks[game_index]
+            blocks[game_index] = blocks[game_index].replace(
+                '  m_Layer:', f'  - component: {{fileID: {action_id}}}\n  m_Layer:', 1)
+        else:
+            assert path.suffix == '.unity', ('Action without endpoint must be scene-local', path, kind)
+            game_id = fresh_id(path, instance, 'actionHost', used)
+            transform_id = fresh_id(path, instance, 'actionTransform', used)
+            extra.append(
+                f'--- !u!1 &{game_id}\nGameObject:\n  m_ObjectHideFlags: 0\n'
+                '  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n'
+                '  m_PrefabAsset: {fileID: 0}\n  serializedVersion: 6\n  m_Component:\n'
+                f'  - component: {{fileID: {transform_id}}}\n  - component: {{fileID: {action_id}}}\n'
+                f'  m_Layer: 0\n  m_Name: {action_class} Action\n  m_TagString: Untagged\n'
+                '  m_Icon: {fileID: 0}\n  m_NavMeshLayer: 0\n  m_StaticEditorFlags: 0\n  m_IsActive: 1\n'
+                f'--- !u!4 &{transform_id}\nTransform:\n  m_ObjectHideFlags: 0\n'
+                '  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n'
+                f'  m_PrefabAsset: {{fileID: 0}}\n  m_GameObject: {{fileID: {game_id}}}\n'
+                '  serializedVersion: 2\n  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}\n'
+                '  m_LocalPosition: {x: 0, y: 0, z: 0}\n  m_LocalScale: {x: 1, y: 1, z: 1}\n'
+                '  m_ConstrainProportionsScale: 0\n  m_Children: []\n  m_Father: {fileID: 0}\n'
+                '  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}\n')
         block = ENTRY.sub(lambda m: '' if m[2] in LEGACY and ref_guid(m[1]) == BASE
                           and ref_id(m[1]) in (WP, OLD_WP) else m[0], block)
         marker = '    m_RemovedComponents:'
         assert marker in block and 'm_AddedComponents:' not in block
         block = block.replace(marker, modification(WP, 'action', f'{{fileID: {action_id}}}') + marker, 1)
-        block = block.replace('  m_SourcePrefab:',
-                              '    m_AddedComponents:\n'
-                              f'    - targetCorrespondingSourceObject: {{fileID: {GO}, guid: {BASE}, type: 3}}\n'
-                              f'      insertIndex: -1\n      addedObject: {{fileID: {action_id}}}\n'
-                              '  m_SourcePrefab:', 1)
         fields = ''
         if action_class == 'ItemTransfer':
             fields = f'  endpoint: {endpoint}\n  playerOnly: {int(kind in (4, 5))}\n'
