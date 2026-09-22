@@ -53,6 +53,8 @@ public class ConveyorBelt : MonoBehaviour, IItemTransferEndpoint
 
     [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
     private readonly ItemBuffer input = new ItemBuffer(int.MaxValue, ItemType.Ingredient);
+    private readonly Dictionary<Rigidbody, Item> itemsOnBelt = new Dictionary<Rigidbody, Item>();
+    private readonly List<Rigidbody> itemsToRemove = new List<Rigidbody>();
 
     private void Start()
     {
@@ -156,17 +158,39 @@ public class ConveyorBelt : MonoBehaviour, IItemTransferEndpoint
         StartCoroutine(DisplayImgChange());
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void FixedUpdate()
     {
-        Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
-
-        // 스택이 가득 쌓였을 때를 대비해서 멈추는 코드 작성. (테스트)
-        speed = isOn && !isBreakDown ? 5 : 0;
-        // 스택이 가득 쌓이면 멈추고 스택이 없어졌을 경우 다시 작동 확인.
-
-        if (rb != null)
+        float currentSpeed = isOn && !isBreakDown ? speed : 0f;
+        itemsToRemove.Clear();
+        foreach (var pair in itemsOnBelt)
         {
-            rb.linearVelocity = speed * direction;
+            Rigidbody rb = pair.Key;
+            Item item = pair.Value;
+            if (rb == null || item == null || !item.isActiveAndEnabled || item.IsStored)
+            {
+                itemsToRemove.Add(rb);
+                continue;
+            }
+
+            if (currentSpeed > 0f && rb.IsSleeping())
+                rb.WakeUp();
+            rb.linearVelocity = currentSpeed * direction;
         }
+
+        foreach (var rb in itemsToRemove)
+            itemsOnBelt.Remove(rb);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Rigidbody rb = collision.rigidbody;
+        if (rb != null && rb.TryGetComponent<Item>(out var item) && !item.IsStored)
+            itemsOnBelt[rb] = item;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.rigidbody != null)
+            itemsOnBelt.Remove(collision.rigidbody);
     }
 }
