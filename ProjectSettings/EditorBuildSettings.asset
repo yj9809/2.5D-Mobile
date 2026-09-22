@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/2. Scene/Game.unity
     guid: ce8c8df3e2aad744593ab9fe094bcb2b
+  - enabled: 1
+    path: Assets/2. Scene/CompactFactory_Playtest.unity
+    guid: def7b7647c9583a48927153ebf7a5326
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 176b0cfd5ed4c594b9778efd21c66e41,
       type: 2}

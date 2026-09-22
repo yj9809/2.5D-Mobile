@@ -48,7 +48,13 @@ namespace Churub.Core
             { GameDataSchema.Objects.PackagingWaitCount, 0 },
             { GameDataSchema.Objects.PackagingCount, 0 },
             { GameDataSchema.Objects.PackagingStorageCount, 0 },
-            { GameDataSchema.Objects.TruckBoxCount, 0 }
+            { GameDataSchema.Objects.TruckBoxCount, 0 },
+            { GameDataSchema.Objects.CompactSupplyCount, 0 },
+            { GameDataSchema.Objects.CompactInputCount, 0 },
+            { GameDataSchema.Objects.CompactOutputCount, 0 },
+            { GameDataSchema.Objects.CompactSalesCount, 0 },
+            { GameDataSchema.Objects.CompactCarryType, -1 },
+            { GameDataSchema.Objects.CompactCarryCount, 0 }
         };
 
         public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>

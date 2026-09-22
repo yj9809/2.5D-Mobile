@@ -91,4 +91,19 @@ public sealed class GameDataStateTests
         Assert.That(GameDataSchema.Fields.GameProgress, Is.EqualTo("gameProgressBool"));
         Assert.That(GameDataSchema.Fields.FacilityInvestments, Is.EqualTo("facilityInvestments"));
     }
+
+    [Test]
+    public void CompactFactorySaveFields_DefaultToEmptyWithoutChangingLegacyCounts()
+    {
+        var state = new GameDataState();
+        state.objectData[GameDataSchema.Objects.PackagingWaitCount] = 4;
+
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactSupplyCount], Is.Zero);
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactInputCount], Is.Zero);
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactOutputCount], Is.Zero);
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactSalesCount], Is.Zero);
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactCarryCount], Is.Zero);
+        Assert.That(state.objectData[GameDataSchema.Objects.CompactCarryType], Is.EqualTo(-1));
+        Assert.That(state.PackagingWaitCount, Is.EqualTo(4));
+    }
 }

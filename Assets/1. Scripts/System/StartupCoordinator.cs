@@ -85,10 +85,15 @@ public class StartupCoordinator : MonoBehaviour, IStartupSteps
     public async Task<OperationResult> PrepareScene()
     {
         if (destroyed || DataManager.Instance.baseCost == null) return OperationResult.Error(FailureKind.InvalidData, "Player data not ready.");
-        GameManager.Instance.sceneName = "Game";
+        string targetScene = "Game";
+#if UNITY_EDITOR
+        if (UnityEditor.EditorPrefs.GetBool("Churub.CompactFactory.UsePlaytest", false))
+            targetScene = "CompactFactory_Playtest";
+#endif
+        GameManager.Instance.sceneName = targetScene;
         if (scene == null)
         {
-            scene = SceneManager.LoadSceneAsync("Game");
+            scene = SceneManager.LoadSceneAsync(targetScene);
             if (scene == null) return OperationResult.Error(FailureKind.InvalidData, "Game scene missing from build.");
             scene.allowSceneActivation = false;
         }

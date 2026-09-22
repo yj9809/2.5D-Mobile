@@ -18,6 +18,19 @@ public class SpawnPoint : MonoBehaviour
 
     private float spawnTime = 0;
     private float spawnTimer = 3f;
+    private CompactSalesCounter compactSales;
+    private Transform compactEntry;
+    private Transform compactQueue;
+    private Transform compactExit;
+
+    public void ConfigureCompactSales(CompactSalesCounter sales, Transform entry,
+        Transform queue, Transform exit)
+    {
+        compactSales = sales;
+        compactEntry = entry;
+        compactQueue = queue;
+        compactExit = exit;
+    }
 
     private void Awake()
     {
@@ -37,7 +50,14 @@ public class SpawnPoint : MonoBehaviour
         {
             int npcRandom = Random.Range(0, npc.Length);
             Npc newNpc = pool.GetObj(npc[npcRandom]).GetComponent<Npc>();
-            newNpc.transform.position = transform.position;
+            if (compactSales != null)
+            {
+                newNpc.transform.position = compactEntry.position;
+                newNpc.BeginCompactVisit(compactSales, compactQueue.position,
+                    compactExit.position);
+            }
+            else
+                newNpc.transform.position = transform.position;
             spawnTime = 0;
         }
     }
