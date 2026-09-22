@@ -166,6 +166,15 @@ public class Player : MonoBehaviour, IObjectDataSave
         animator.SetLayerWeight(1, 1);
     }
 
+    public void DoManualProcessingAnimation(Vector3 workPosition)
+    {
+        Vector3 direction = workPosition - transform.position;
+        direction.y = 0f;
+        if (direction.sqrMagnitude > .001f)
+            transform.rotation = Quaternion.LookRotation(direction);
+        animator.SetLayerWeight(1, 1);
+    }
+
     public void StopBoxPackagingAnimationPlayer()
     {
         animator.SetLayerWeight(1, 0);

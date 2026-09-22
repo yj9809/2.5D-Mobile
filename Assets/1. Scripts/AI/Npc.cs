@@ -24,18 +24,38 @@ public class Npc : MonoBehaviour
     private Vector3 compactExit;
     private int compactPhase;
     private float compactWait;
-    private float compactSpeed;
+    private ObstacleAvoidanceType originalAvoidance;
 
-    public void BeginCompactVisit(CompactSalesCounter sales, Vector3 queue, Vector3 exit)
+    public bool BeginCompactVisit(CompactSalesCounter sales, Vector3 entry, Vector3 queue, Vector3 exit)
     {
-        compactSales = sales;
-        compactQueue = queue;
-        compactExit = exit;
-        compactPhase = 0;
-        compactWait = 0;
         if (na == null) na = GetComponent<NavMeshAgent>();
-        compactSpeed = na != null ? na.speed : 1.8f;
-        if (na != null) na.enabled = false;
+        if (na == null || !na.isActiveAndEnabled
+            || !NavMesh.SamplePosition(entry, out var start, 1f, NavMesh.AllAreas)
+            || !NavMesh.SamplePosition(queue, out var purchase, 1f, NavMesh.AllAreas)
+            || !NavMesh.SamplePosition(exit, out var leave, 1f, NavMesh.AllAreas))
+            return false;
+        var path = new NavMeshPath();
+        if (!NavMesh.CalculatePath(start.position, purchase.position, NavMesh.AllAreas, path)
+            || path.status != NavMeshPathStatus.PathComplete
+            || !NavMesh.CalculatePath(purchase.position, leave.position, NavMesh.AllAreas, path)
+            || path.status != NavMeshPathStatus.PathComplete
+            || !na.Warp(start.position))
+            return false;
+        compactSales = sales;
+        compactQueue = purchase.position;
+        compactExit = leave.position;
+        compactPhase = sales.StockCount > 0 ? 0 : 2;
+        compactWait = 0;
+        originalAvoidance = na.obstacleAvoidanceType;
+        na.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        na.isStopped = false;
+        if (!na.SetDestination(compactPhase == 0 ? compactQueue : compactExit))
+        {
+            compactSales = null;
+            na.obstacleAvoidanceType = originalAvoidance;
+            return false;
+        }
+        return true;
     }
 
     private void OnEnable()
@@ -53,7 +73,11 @@ public class Npc : MonoBehaviour
         if (compactSales == null) return;
         compactSales = null;
         compactPhase = 0;
-        if (na != null) na.enabled = true;
+        if (na != null)
+        {
+            if (na.isActiveAndEnabled && na.isOnNavMesh) na.ResetPath();
+            na.obstacleAvoidanceType = originalAvoidance;
+        }
     }
 
     private void Start()
@@ -87,9 +111,17 @@ public class Npc : MonoBehaviour
     {
         if (compactPhase == 0)
         {
-            if (!WalkTo(compactQueue)) return;
-            compactPhase = compactSales.StockCount > 0 ? 1 : 2;
-            compactWait = .8f;
+            if (!ReachedCompactDestination()) return;
+            if (compactSales.StockCount > 0)
+            {
+                compactPhase = 1;
+                compactWait = .8f;
+            }
+            else
+            {
+                BeginCompactExit();
+                return;
+            }
         }
         if (compactPhase == 1)
         {
@@ -97,24 +129,28 @@ public class Npc : MonoBehaviour
             compactWait -= Time.deltaTime;
             if (compactWait > 0) return;
             compactSales.TrySellOne();
-            compactPhase = 2;
+            BeginCompactExit();
+            return;
         }
-        if (compactPhase == 2 && WalkTo(compactExit))
+        if (compactPhase == 2 && ReachedCompactDestination())
+        {
+            PoolingManager.Instance.ReturnObjecte(gameObject);
+            return;
+        }
+        if (anime != null && compactPhase != 1)
+            anime.SetBool("isMove", na.velocity.sqrMagnitude > .01f);
+    }
+
+    private void BeginCompactExit()
+    {
+        compactPhase = 2;
+        if (!na.SetDestination(compactExit))
             PoolingManager.Instance.ReturnObjecte(gameObject);
     }
 
-    private bool WalkTo(Vector3 destination)
-    {
-        Vector3 direction = destination - transform.position;
-        direction.y = 0;
-        if (direction.sqrMagnitude <= .01f) return true;
-        if (anime != null) anime.SetBool("isMove", true);
-        transform.rotation = Quaternion.LookRotation(direction);
-        transform.position = Vector3.MoveTowards(transform.position,
-            new Vector3(destination.x, transform.position.y, destination.z),
-            compactSpeed * Time.deltaTime);
-        return false;
-    }
+    private bool ReachedCompactDestination() => na.isOnNavMesh && !na.pathPending
+        && na.pathStatus == NavMeshPathStatus.PathComplete
+        && na.remainingDistance <= na.stoppingDistance + .1f;
 
     private void CheckPointMove()
     {

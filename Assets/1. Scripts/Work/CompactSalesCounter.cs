@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Churub.Core;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AI;
 
 // Customers buy only products that the player has placed on the display.
 public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, IObjectDataSave
@@ -45,11 +46,25 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
         var entry = GameObject.Find("Future Customer Entry");
         var queue = GameObject.Find("Customer Queue");
         var exit = GameObject.Find("Future Customer Exit");
+        if (spawner != null) spawner.enabled = false;
         if (spawner == null || entry == null || queue == null || exit == null)
         {
             Debug.LogError("Compact customer route is incomplete.", this);
             return;
         }
+        var sidewalk = GameObject.Find("Customer Sidewalk");
+        if (sidewalk == null || sidewalk.GetComponent<MeshFilter>() == null)
+        {
+            Debug.LogError("Compact customer sidewalk is missing.", this);
+            return;
+        }
+        var surface = sidewalk.GetComponent<NavMeshSurface>();
+        if (surface == null) surface = sidewalk.AddComponent<NavMeshSurface>();
+        surface.collectObjects = CollectObjects.Children;
+        surface.layerMask = 1 << sidewalk.layer;
+        surface.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+        surface.agentTypeID = 0;
+        surface.BuildNavMesh();
         spawner.ConfigureCompactSales(this, entry.transform, queue.transform, exit.transform);
     }
 
@@ -161,7 +176,9 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
         item.transform.DOKill();
         if (item.TryGetComponent<Rigidbody>(out var body)) Destroy(body);
         item.transform.SetParent(displaySlots[slot], false);
-        item.transform.localPosition = Vector3.zero;
+        float bottomOffset = item.TryGetComponent<BoxCollider>(out var box)
+            ? box.size.y * .5f - box.center.y : 0f;
+        item.transform.localPosition = Vector3.up * bottomOffset;
         item.transform.localRotation = Quaternion.identity;
         item.transform.localScale = Vector3.one;
     }

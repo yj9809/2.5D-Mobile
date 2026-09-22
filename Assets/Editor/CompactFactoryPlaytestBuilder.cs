@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 // Keeps the production scene intact while testing its serialized gameplay
@@ -97,7 +98,7 @@ public static class CompactFactoryPlaytestBuilder
         var gameplay = Root(scene, "Stage 0 Gameplay").transform;
         var supply = At(gameplay, "Container Supply/Pickup Tray");
         var input = At(gameplay, "Manual Processing/Ingredient Board");
-        var output = At(gameplay, "Manual Processing/Finished Product Tray");
+        var output = At(gameplay, "Manual Processing/Finished Product Placement");
         var sale = At(gameplay, "Front Sales Display");
         var salmon = AssetDatabase.LoadAssetAtPath<GameObject>(
             "Assets/3. Prefab/Churu/Salmon/Salmon.prefab");
@@ -106,10 +107,11 @@ public static class CompactFactoryPlaytestBuilder
         Require(salmon != null && product != null, "Display prefabs missing");
         UnityEngine.Object.Instantiate(salmon, supply).transform.localPosition = Vector3.zero;
         UnityEngine.Object.Instantiate(salmon, input).transform.localPosition = Vector3.zero;
-        UnityEngine.Object.Instantiate(product, output).transform.localPosition = Vector3.zero;
+        UnityEngine.Object.Instantiate(product, output).transform.localPosition =
+            new Vector3(-.23f, .04f, -.16f);
         for (int i = 1; i <= 6; i++)
             UnityEngine.Object.Instantiate(product, At(sale, "Display Slot " + i))
-                .transform.localPosition = Vector3.zero;
+                .transform.localPosition = Vector3.up * .04f;
 
         var cameraObject = Root(scene, "Layout Camera");
         cameraObject.SetActive(true);
@@ -149,6 +151,10 @@ public static class CompactFactoryPlaytestBuilder
     {
         var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
         Require(Root(scene, "[ Player ]").GetComponent<Player>() != null, "Player missing");
+        var playerAnimator = Root(scene, "[ Player ]").GetComponent<Animator>();
+        Require(playerAnimator != null && playerAnimator.layerCount > 1 &&
+            playerAnimator.GetLayerName(1) == "BoxPackaging Layer",
+            "Player packaging animation layer missing");
         Require(Root(scene, "Canvas").GetComponentInChildren<UIManager>(true) != null, "UI missing");
         Require(Root(scene, "_Store").GetComponent<Store>() != null, "Store missing");
         Require(!Root(scene, "Factory").activeSelf, "Offscreen factory must be disabled");
@@ -169,6 +175,16 @@ public static class CompactFactoryPlaytestBuilder
             "Customer queue missing");
         Require(routeMarkers.Any(t => t.name == "Future Customer Exit" && t.gameObject.activeInHierarchy),
             "Customer exit missing");
+        var sidewalk = routeMarkers.FirstOrDefault(t => t.name == "Customer Sidewalk" &&
+            t.gameObject.activeInHierarchy);
+        Require(sidewalk != null && sidewalk.GetComponent<MeshFilter>() != null &&
+            sidewalk.GetComponent<NavMeshSurface>() != null,
+            "Customer sidewalk NavMeshSurface missing");
+        var surface = sidewalk.GetComponent<NavMeshSurface>();
+        Require(surface.collectObjects == CollectObjects.Children &&
+            surface.layerMask.value == 1 << sidewalk.gameObject.layer &&
+            surface.useGeometry == NavMeshCollectGeometry.RenderMeshes &&
+            surface.agentTypeID == 0, "Customer NavMeshSurface settings are invalid");
         Require(ReferencePrefab(supply, "ingredientPrefab", ItemType.Ingredient),
             "Visible ingredient prefab missing");
         Require(ReferencePrefab(manual, "productPrefab", ItemType.Churu),
@@ -176,8 +192,39 @@ public static class CompactFactoryPlaytestBuilder
         var slots = new SerializedObject(sales).FindProperty("displaySlots");
         Require(slots.arraySize == 6, "Sales display must have six slots");
         for (int i = 0; i < slots.arraySize; i++)
-            Require(slots.GetArrayElementAtIndex(i).objectReferenceValue is Transform,
+        {
+            var slot = slots.GetArrayElementAtIndex(i).objectReferenceValue as Transform;
+            Require(slot != null,
                 "Sales display slot missing: " + i);
+            Require((slot.position - new Vector3(.55f + i * .34f, .66f, -5.38f))
+                .sqrMagnitude < .001f, "Sales display slot misplaced: " + i);
+        }
+        Require((At(gameplay.transform, "Container Supply/Pickup Tray").position -
+            new Vector3(-3.5f, .11f, 3.29f)).sqrMagnitude < .001f,
+            "Supply pickup tray misplaced");
+        Require((At(gameplay.transform, "Manual Processing/Ingredient Board").position -
+            new Vector3(.944f, .928f, 2.4f)).sqrMagnitude < .001f,
+            "Processing input tray misplaced");
+        Require((At(gameplay.transform, "Manual Processing/Finished Product Placement").position -
+            new Vector3(-.944f, .872f, 2.4f)).sqrMagnitude < .001f,
+            "Processing output placement misplaced");
+        var starter = Root(scene, "01 Starter Workshop - 10 x 10 m").transform;
+        var benchVisual = At(starter, "Manual Processing Station");
+        Require((benchVisual.localScale - Vector3.one * .8f).sqrMagnitude < .001f,
+            "Manual processing station scale must be 0.8");
+        var outputTrayParts = benchVisual.Cast<Transform>().Where(t =>
+            t.name.StartsWith("OutputTray_", StringComparison.Ordinal)).ToArray();
+        Require(outputTrayParts.Length == 5 && outputTrayParts.All(t => !t.gameObject.activeSelf),
+            "Finished product tray visuals must be hidden");
+        Require((At(starter, "Processing Interaction").position -
+            new Vector3(1.46f, .02f, 1.1f)).sqrMagnitude < .001f,
+            "Processing input marker misplaced");
+        Require((At(starter, "Finished Product Interaction").position -
+            new Vector3(-1.44f, .02f, 1.1f)).sqrMagnitude < .001f,
+            "Processing output marker misplaced");
+        Require((At(starter, "Processing Work Interaction").position -
+            new Vector3(0, .02f, 1.1f)).sqrMagnitude < .001f,
+            "Processing work marker misplaced");
         Require(!Root(scene, "Layout Camera").activeSelf, "Second camera active");
         Require(!At(Root(scene, "01 Starter Workshop - 10 x 10 m").transform,
             "Player Scale Reference").gameObject.activeSelf, "Scale reference must be hidden");
@@ -186,9 +233,16 @@ public static class CompactFactoryPlaytestBuilder
         Check(scene, "Stage 0 Gameplay", typeof(CompactSupplyStation),
             new Vector3(-3.5f, .1f, 2));
         Check(scene, "Stage 0 Gameplay", typeof(CompactManualStation),
-            new Vector3(-.9f, .1f, 1.1f));
+            new Vector3(1.18f, .1f, 1.1f));
         Check(scene, "Stage 0 Gameplay", typeof(CompactManualOutput),
-            new Vector3(.9f, .1f, 1.1f));
+            new Vector3(-1.18f, .1f, 1.1f));
+        var processPoint = gameplay.GetComponentsInChildren<WorkPoint>(true).FirstOrDefault(p =>
+            p.gameObject.activeInHierarchy &&
+            (p.transform.position - new Vector3(0, .1f, 1.1f)).sqrMagnitude < .01f);
+        Require(processPoint != null && processPoint.Action is CompactManualProcessAction process &&
+            process.Station == manual &&
+            processPoint.GetComponents<Collider>().Any(c => c.enabled && c.isTrigger),
+            "Manual processing WorkPoint missing or disconnected");
         Check(scene, "Stage 0 Gameplay", typeof(CompactSalesCounter),
             new Vector3(1.4f, .1f, -3.75f));
         Check(scene, "_Store/Common GameObjects", typeof(StoreInteraction),
@@ -231,6 +285,34 @@ public static class CompactFactoryPlaytestBuilder
 
     static void InstallStageZero(Scene scene)
     {
+        var starter = Root(scene, "01 Starter Workshop - 10 x 10 m").transform;
+        var inputMarker = At(starter, "Processing Interaction");
+        inputMarker.position = new Vector3(1.46f, .02f, 1.1f);
+        var outputMarker = UnityEngine.Object.Instantiate(inputMarker.gameObject, starter);
+        outputMarker.name = "Finished Product Interaction";
+        outputMarker.transform.position = new Vector3(-1.44f, .02f, 1.1f);
+        var processMarker = UnityEngine.Object.Instantiate(inputMarker.gameObject, starter);
+        processMarker.name = "Processing Work Interaction";
+        processMarker.transform.position = new Vector3(0, .02f, 1.1f);
+        var benchVisual = At(starter, "Manual Processing Station");
+        benchVisual.localScale = Vector3.one * .8f;
+        foreach (Transform part in benchVisual)
+            if (part.name.StartsWith("OutputTray_", StringComparison.Ordinal))
+                part.gameObject.SetActive(false);
+
+        var sidewalk = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<Transform>(true))
+            .FirstOrDefault(t => t.name == "Customer Sidewalk");
+        Require(sidewalk != null && sidewalk.GetComponent<MeshFilter>() != null,
+            "Customer sidewalk mesh missing");
+        var customerSurface = sidewalk.GetComponent<NavMeshSurface>();
+        if (customerSurface == null)
+            customerSurface = sidewalk.gameObject.AddComponent<NavMeshSurface>();
+        customerSurface.collectObjects = CollectObjects.Children;
+        customerSurface.layerMask = 1 << sidewalk.gameObject.layer;
+        customerSurface.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+        customerSurface.agentTypeID = 0;
+
         var factory = Root(scene, "Factory");
         var ingredientSource = At(factory.transform, "Container/IngredientSpawn")
             .GetComponent<IngredientMaker>();
@@ -254,24 +336,22 @@ public static class CompactFactoryPlaytestBuilder
         var supply = supplyObject.gameObject.AddComponent<CompactSupplyStation>();
         Assign(supply, "ingredientPrefab", ingredientPrefab);
         Assign(supply, "spawnPoint", Child(supplyObject, "Container Feed", new Vector3(-3.5f, .32f, 4.45f)));
-        Assign(supply, "pickupTray", Child(supplyObject, "Pickup Tray", new Vector3(-3.5f, .25f, 3.29f)));
+        Assign(supply, "pickupTray", Child(supplyObject, "Pickup Tray", new Vector3(-3.5f, .11f, 3.29f)));
 
         var benchObject = Child(group.transform, "Manual Processing");
         var manual = benchObject.gameObject.AddComponent<CompactManualStation>();
         Assign(manual, "productPrefab", productPrefab);
-        Assign(manual, "inputTray", Child(benchObject, "Ingredient Board", new Vector3(-.65f, 1.16f, 2.4f)));
-        Assign(manual, "outputTray", Child(benchObject, "Finished Product Tray", new Vector3(.75f, 1.16f, 2.4f)));
+        Assign(manual, "inputTray", Child(benchObject, "Ingredient Board", new Vector3(.944f, .928f, 2.4f)));
+        Assign(manual, "outputTray", Child(benchObject, "Finished Product Placement", new Vector3(-.944f, .872f, 2.4f)));
         var output = benchObject.gameObject.AddComponent<CompactManualOutput>();
         Assign(output, "station", manual);
 
         var counterObject = Child(group.transform, "Front Sales Display");
         var counter = counterObject.gameObject.AddComponent<CompactSalesCounter>();
         var slots = new Transform[6];
-        for (int row = 0; row < 2; row++)
-            for (int column = 0; column < 3; column++)
-                slots[row * 3 + column] = Child(counterObject,
-                    "Display Slot " + (row * 3 + column + 1),
-                    new Vector3(.95f + column * .45f, .88f, -5.16f - row * .32f));
+        for (int i = 0; i < slots.Length; i++)
+            slots[i] = Child(counterObject, "Display Slot " + (i + 1),
+                new Vector3(.55f + i * .34f, .66f, -5.38f));
         var serialized = new SerializedObject(counter);
         var display = serialized.FindProperty("displaySlots");
         display.arraySize = slots.Length;
@@ -280,8 +360,9 @@ public static class CompactFactoryPlaytestBuilder
         serialized.ApplyModifiedPropertiesWithoutUndo();
 
         Trigger(group.transform, "Take Salmon", new Vector3(-3.5f, .1f, 2), supply);
-        Trigger(group.transform, "Place Salmon", new Vector3(-.9f, .1f, 1.1f), manual);
-        Trigger(group.transform, "Take Churu", new Vector3(.9f, .1f, 1.1f), output);
+        Trigger(group.transform, "Place Salmon", new Vector3(1.18f, .1f, 1.1f), manual);
+        ProcessTrigger(group.transform, new Vector3(0, .1f, 1.1f), manual);
+        Trigger(group.transform, "Take Churu", new Vector3(-1.18f, .1f, 1.1f), output);
         Trigger(group.transform, "Stock Sales Display", new Vector3(1.4f, .1f, -3.75f), counter);
     }
 
@@ -302,6 +383,19 @@ public static class CompactFactoryPlaytestBuilder
         collider.size = new Vector3(1.1f, 1.8f, 1.1f);
         var action = target.AddComponent<ItemTransfer>();
         Assign(action, "endpoint", endpoint);
+        var point = target.AddComponent<WorkPoint>();
+        Assign(point, "action", action);
+    }
+
+    static void ProcessTrigger(Transform parent, Vector3 position, CompactManualStation station)
+    {
+        var target = Child(parent, "Process Salmon", position).gameObject;
+        var collider = target.AddComponent<BoxCollider>();
+        collider.isTrigger = true;
+        collider.center = new Vector3(0, .9f, 0);
+        collider.size = new Vector3(1.1f, 1.8f, 1.1f);
+        var action = target.AddComponent<CompactManualProcessAction>();
+        Assign(action, "station", station);
         var point = target.AddComponent<WorkPoint>();
         Assign(point, "action", action);
     }
