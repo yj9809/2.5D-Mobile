@@ -25,8 +25,12 @@ public class Npc : MonoBehaviour
     private int compactPhase;
     private float compactWait;
     private ObstacleAvoidanceType originalAvoidance;
+    private int originalAvoidancePriority;
+    private float originalSpeed;
+    private SpawnPoint compactSpawner;
 
-    public bool BeginCompactVisit(CompactSalesCounter sales, Vector3 entry, Vector3 queue, Vector3 exit)
+    public bool BeginCompactVisit(CompactSalesCounter sales, Vector3 entry, Vector3 queue,
+        Vector3 exit, bool willPurchase, SpawnPoint owner)
     {
         if (na == null) na = GetComponent<NavMeshAgent>();
         if (na == null || !na.isActiveAndEnabled
@@ -44,17 +48,24 @@ public class Npc : MonoBehaviour
         compactSales = sales;
         compactQueue = purchase.position;
         compactExit = leave.position;
-        compactPhase = sales.StockCount > 0 ? 0 : 2;
+        compactPhase = willPurchase ? 0 : 2;
         compactWait = 0;
         originalAvoidance = na.obstacleAvoidanceType;
+        originalAvoidancePriority = na.avoidancePriority;
+        originalSpeed = na.speed;
         na.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        na.avoidancePriority = Random.Range(20, 80);
+        na.speed = originalSpeed * Random.Range(.88f, 1.12f);
         na.isStopped = false;
         if (!na.SetDestination(compactPhase == 0 ? compactQueue : compactExit))
         {
             compactSales = null;
             na.obstacleAvoidanceType = originalAvoidance;
+            na.avoidancePriority = originalAvoidancePriority;
+            na.speed = originalSpeed;
             return false;
         }
+        compactSpawner = owner;
         return true;
     }
 
@@ -70,6 +81,11 @@ public class Npc : MonoBehaviour
 
     private void OnDisable()
     {
+        if (compactSpawner != null)
+        {
+            compactSpawner.NotifyCompactNpcReturned();
+            compactSpawner = null;
+        }
         if (compactSales == null) return;
         compactSales = null;
         compactPhase = 0;
@@ -77,6 +93,8 @@ public class Npc : MonoBehaviour
         {
             if (na.isActiveAndEnabled && na.isOnNavMesh) na.ResetPath();
             na.obstacleAvoidanceType = originalAvoidance;
+            na.avoidancePriority = originalAvoidancePriority;
+            na.speed = originalSpeed;
         }
     }
 
@@ -115,7 +133,7 @@ public class Npc : MonoBehaviour
             if (compactSales.StockCount > 0)
             {
                 compactPhase = 1;
-                compactWait = .8f;
+                compactWait = Random.Range(.35f, .9f);
             }
             else
             {
