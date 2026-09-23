@@ -6,6 +6,7 @@ using UnityEngine;
 public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
 {
     [SerializeField] private GameObject productPrefab;
+    [SerializeField] private Sprite workIcon;
     [SerializeField] private Transform inputTray;
     [SerializeField] private Transform outputTray;
     [SerializeField] private float processingSeconds = 2.5f;
@@ -90,6 +91,7 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
             progressView = animatedPlayer.GetComponent<CompactManualProgressView>();
             if (progressView == null)
                 progressView = animatedPlayer.gameObject.AddComponent<CompactManualProgressView>();
+            progressView.SetIcon(workIcon);
             workVisualsActive = true;
         }
         progressView.SetProgress(progress);

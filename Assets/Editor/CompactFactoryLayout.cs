@@ -10,6 +10,7 @@ public static class CompactFactoryLayout
 {
     private const string LayoutPath = "Assets/2. Scene/CompactFactory_Layout.unity";
     private const string MatFolder = "Assets/Art/CompactFactoryLayout";
+    private const float ContainerFeederLength = 3.2f;
     private static Material floorMat, wallMat, trimMat, shutterMat, accentMat;
 
     [MenuItem("Tools/Churub/Compact Factory/Create Layout Scene")]
@@ -212,8 +213,9 @@ public static class CompactFactoryLayout
         // Preserve the original width and height; shorten only its long supply belt.
         var bounds=feeder.GetComponent<Renderer>().bounds;
         // The source mesh has a rotated local axis; scale an identity parent along world Z.
-        feederRoot.transform.localScale=new Vector3(1,1,1.8f/bounds.size.z);
-        PlaceOnFloor(feederRoot,new Vector3(-3.5f,0,4.65f));
+        feederRoot.transform.localScale=new Vector3(1,1,ContainerFeederLength/bounds.size.z);
+        // Keep the workshop-side edge at z=3.75 and extend the belt into the container.
+        PlaceOnFloor(feederRoot,new Vector3(-3.5f,0,5.35f));
         var tray=LoadVisual("Assets/3. Prefab/Churu/Salmon/Salmon_Worktable.prefab",group.transform,"Container Pickup Tray");
         PlaceOnFloor(tray,new Vector3(-3.5f,.02f,3.29f));
         Block("Container Foundation",group.transform,new Vector3(-3.5f,-.12f,7.25f),new Vector3(2.6f,.24f,4.6f),floorMat);
@@ -251,7 +253,7 @@ public static class CompactFactoryLayout
         if(container.min.z<5) throw new InvalidOperationException("Container body intrudes into workshop.");
         if(GameObject.Find("Supply Pedestal")!=null) throw new InvalidOperationException("Old supply pedestal remains.");
         var feederBounds=GameObject.Find("Short Container Feeder").GetComponent<Renderer>().bounds;
-        if(Mathf.Abs(feederBounds.size.z-1.8f)>.01f) throw new InvalidOperationException("Feed belt length mismatch: "+feederBounds.size);
+        if(Mathf.Abs(feederBounds.size.z-ContainerFeederLength)>.01f) throw new InvalidOperationException("Feed belt length mismatch: "+feederBounds.size);
         File.WriteAllText("Logs/CompactFactory/container-validation.txt",
             "PASS: original container reused; body outside z=5 workshop edge; 2.2m rear opening; old pedestal removed; pickup marker inside workshop.\n"+
             "Container bounds: "+container+"\nFeeder bounds: "+feederBounds+"\nSupply anchor: (-3.5, 0.12, 3.29). Visual layout only.");

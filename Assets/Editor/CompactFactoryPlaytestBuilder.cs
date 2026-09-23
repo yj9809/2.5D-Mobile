@@ -17,6 +17,10 @@ public static class CompactFactoryPlaytestBuilder
     public const string EditorPrefKey = "Churub.CompactFactory.UsePlaytest";
     const string GamePath = "Assets/2. Scene/Game.unity";
     const string LayoutPath = "Assets/2. Scene/CompactFactory_Layout.unity";
+    const string WorkIconPath = "Assets/6. 2D Sprite/타이틀 화면/츄릅.png";
+    static readonly Vector3 SupplySpawnPosition = new Vector3(-3.5f, .49f, 6.45f);
+    static readonly Vector3 SupplyBeltAdapterPosition = new Vector3(-3f, 0f, 4.1375756f);
+    static readonly Vector3 SupplyBeltAdapterScale = new Vector3(1f, 1f, .40414142f);
 
     [MenuItem("Tools/Churub/Compact Factory/Build Stage 0 Playtest")]
     public static void Build()
@@ -187,8 +191,13 @@ public static class CompactFactoryPlaytestBuilder
             surface.agentTypeID == 0, "Customer NavMeshSurface settings are invalid");
         Require(ReferencePrefab(supply, "ingredientPrefab", ItemType.Ingredient),
             "Visible ingredient prefab missing");
+        Require(supply.StockCapacity >= 50, "Supply stock capacity must be at least 50");
         Require(ReferencePrefab(manual, "productPrefab", ItemType.Churu),
             "Visible product prefab missing");
+        var workIcon = new SerializedObject(manual).FindProperty("workIcon")
+            .objectReferenceValue as Sprite;
+        Require(workIcon != null && AssetDatabase.GetAssetPath(workIcon) == WorkIconPath,
+            "Manual processing product icon missing");
         var slots = new SerializedObject(sales).FindProperty("displaySlots");
         Require(slots.arraySize == 6, "Sales display must have six slots");
         for (int i = 0; i < slots.arraySize; i++)
@@ -202,6 +211,8 @@ public static class CompactFactoryPlaytestBuilder
         Require((At(gameplay.transform, "Container Supply/Pickup Tray").position -
             new Vector3(-3.5f, .11f, 3.29f)).sqrMagnitude < .001f,
             "Supply pickup tray misplaced");
+        Require((At(gameplay.transform, "Container Supply/Container Feed").position -
+            SupplySpawnPosition).sqrMagnitude < .001f, "Supply feed spawn misplaced");
         Require((At(gameplay.transform, "Manual Processing/Ingredient Board").position -
             new Vector3(.944f, .928f, 2.4f)).sqrMagnitude < .001f,
             "Processing input tray misplaced");
@@ -209,6 +220,18 @@ public static class CompactFactoryPlaytestBuilder
             new Vector3(-.944f, .872f, 2.4f)).sqrMagnitude < .001f,
             "Processing output placement misplaced");
         var starter = Root(scene, "01 Starter Workshop - 10 x 10 m").transform;
+        var feederAdapter = At(starter,
+            "Salmon Container Supply/Short Feeder Length Adapter");
+        Require((feederAdapter.localPosition - SupplyBeltAdapterPosition).sqrMagnitude < .001f &&
+            (feederAdapter.localScale - SupplyBeltAdapterScale).sqrMagnitude < .001f,
+            "Container feed belt length adapter misplaced");
+        var feederBounds = At(feederAdapter, "Short Container Feeder")
+            .GetComponent<Renderer>().bounds;
+        Require(Mathf.Abs(feederBounds.size.z - 3.2f) < .02f &&
+            feederBounds.min.z < SupplySpawnPosition.z &&
+            feederBounds.max.z > SupplySpawnPosition.z &&
+            Mathf.Abs(feederBounds.max.y + .01f - SupplySpawnPosition.y) < .02f,
+            "Supply spawn must sit on the extended conveyor");
         var benchVisual = At(starter, "Manual Processing Station");
         Require((benchVisual.localScale - Vector3.one * .8f).sqrMagnitude < .001f,
             "Manual processing station scale must be 0.8");
@@ -300,6 +323,11 @@ public static class CompactFactoryPlaytestBuilder
             if (part.name.StartsWith("OutputTray_", StringComparison.Ordinal))
                 part.gameObject.SetActive(false);
 
+        var feederAdapter = At(starter,
+            "Salmon Container Supply/Short Feeder Length Adapter");
+        feederAdapter.localPosition = SupplyBeltAdapterPosition;
+        feederAdapter.localScale = SupplyBeltAdapterScale;
+
         var sidewalk = scene.GetRootGameObjects().SelectMany(root =>
             root.GetComponentsInChildren<Transform>(true))
             .FirstOrDefault(t => t.name == "Customer Sidewalk");
@@ -322,10 +350,12 @@ public static class CompactFactoryPlaytestBuilder
             .FindProperty("objPrefab").objectReferenceValue as GameObject;
         var productPrefab = new SerializedObject(productSource)
             .FindProperty("churu").objectReferenceValue as GameObject;
+        var workIcon = AssetDatabase.LoadAssetAtPath<Sprite>(WorkIconPath);
         Require(ingredientPrefab != null && ingredientPrefab.GetComponent<Item>()?.Type == ItemType.Ingredient,
             "Ingredient prefab missing or invalid");
         Require(productPrefab != null && productPrefab.GetComponent<Item>()?.Type == ItemType.Churu,
             "Product prefab missing or invalid");
+        Require(workIcon != null, "Manual processing product icon missing");
 
         var store = Root(scene, "_Store").GetComponent<Store>();
         store.enabled = false; // Stage zero sales now depend on visible stocked products.
@@ -335,12 +365,13 @@ public static class CompactFactoryPlaytestBuilder
         var supplyObject = Child(group.transform, "Container Supply");
         var supply = supplyObject.gameObject.AddComponent<CompactSupplyStation>();
         Assign(supply, "ingredientPrefab", ingredientPrefab);
-        Assign(supply, "spawnPoint", Child(supplyObject, "Container Feed", new Vector3(-3.5f, .32f, 4.45f)));
+        Assign(supply, "spawnPoint", Child(supplyObject, "Container Feed", SupplySpawnPosition));
         Assign(supply, "pickupTray", Child(supplyObject, "Pickup Tray", new Vector3(-3.5f, .11f, 3.29f)));
 
         var benchObject = Child(group.transform, "Manual Processing");
         var manual = benchObject.gameObject.AddComponent<CompactManualStation>();
         Assign(manual, "productPrefab", productPrefab);
+        Assign(manual, "workIcon", workIcon);
         Assign(manual, "inputTray", Child(benchObject, "Ingredient Board", new Vector3(.944f, .928f, 2.4f)));
         Assign(manual, "outputTray", Child(benchObject, "Finished Product Placement", new Vector3(-.944f, .872f, 2.4f)));
         var output = benchObject.gameObject.AddComponent<CompactManualOutput>();

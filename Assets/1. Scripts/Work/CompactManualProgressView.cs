@@ -10,6 +10,7 @@ public sealed class CompactManualProgressView : MonoBehaviour
     private static Sprite circleSprite;
     private Canvas canvas;
     private Image fill;
+    private Image workIcon;
     private CharacterController controller;
     private Animator animator;
     private Transform head;
@@ -44,14 +45,15 @@ public sealed class CompactManualProgressView : MonoBehaviour
         fill.fillClockwise = true;
         fill.fillAmount = 0f;
         CreateCircle("Icon Backing", rect, 58f, new Color(.12f, .2f, .22f, 1f));
-
-        Color white = new Color(1f, .96f, .88f, 1f);
-        CreateBar("Package Outer", rect, new Vector2(28f, 24f), Vector2.zero, white);
-        CreateBar("Package Inner", rect, new Vector2(23f, 19f), Vector2.zero,
-            new Color(.12f, .2f, .22f, 1f));
-        CreateBar("Package Seam", rect, new Vector2(3f, 19f), Vector2.zero, white);
-        CreateBar("Package Top", rect, new Vector2(28f, 4f), new Vector2(0f, 10f), white);
+        workIcon = CreateBar("Churub Product Icon", rect, new Vector2(46f, 46f),
+            Vector2.zero, Color.white);
+        workIcon.preserveAspect = true;
         root.SetActive(false);
+    }
+
+    public void SetIcon(Sprite icon)
+    {
+        if (workIcon != null) workIcon.sprite = icon;
     }
 
     public void SetProgress(float progress)
