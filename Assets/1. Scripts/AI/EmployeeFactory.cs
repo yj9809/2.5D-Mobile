@@ -51,7 +51,9 @@ public sealed class EmployeeFactory
             return EmployeeCreationStatus.Success;
         }
 
-        return ResolvePackagingPoint(out _);
+        return UnityEngine.Object.FindObjectOfType<CompactManualStation>() != null
+            ? EmployeeCreationStatus.Success
+            : ResolvePackagingPoint(out _);
     }
 
     public EmployeeCreationResult TryCreate(bool createsPackagingEmployee)
@@ -63,7 +65,8 @@ public sealed class EmployeeFactory
         }
 
         Transform packagingPoint = null;
-        if (createsPackagingEmployee)
+        bool compactFlow = UnityEngine.Object.FindObjectOfType<CompactManualStation>() != null;
+        if (createsPackagingEmployee && !compactFlow)
         {
             EmployeeCreationStatus packagingStatus = ResolvePackagingPoint(out packagingPoint);
             if (packagingStatus != EmployeeCreationStatus.Success)
@@ -75,7 +78,9 @@ public sealed class EmployeeFactory
         int candidateIndex = UnityEngine.Random.Range(0, candidateIndices.Count);
         int prefabIndex = candidateIndices[candidateIndex];
         GameObject employeePrefab = availablePrefabs[prefabIndex];
-        GameObject instance = UnityEngine.Object.Instantiate(employeePrefab, Vector3.zero, Quaternion.identity);
+        Vector3 spawnPosition = compactFlow && GameManager.Instance.P != null
+            ? GameManager.Instance.P.transform.position : Vector3.zero;
+        GameObject instance = UnityEngine.Object.Instantiate(employeePrefab, spawnPosition, Quaternion.identity);
         Employee employee = instance.GetComponent<Employee>();
 
         if (employee == null)
@@ -84,7 +89,7 @@ public sealed class EmployeeFactory
             return new EmployeeCreationResult(EmployeeCreationStatus.MissingEmployeeComponent);
         }
 
-        if (createsPackagingEmployee)
+        if (createsPackagingEmployee && !compactFlow)
         {
             NavMeshAgent agent = employee.GetComponent<NavMeshAgent>();
             if (agent != null)
@@ -96,6 +101,7 @@ public sealed class EmployeeFactory
             employee.PackaingEmployee();
         }
 
+        employee.SetTransportRole(activeEmployees.Count);
         employee.name = employeePrefab.name;
         availablePrefabs.RemoveAt(prefabIndex);
         activeEmployees.Add(employee);

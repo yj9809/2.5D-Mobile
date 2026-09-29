@@ -5,9 +5,13 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 using Sirenix.OdinInspector;
+using Churub.Core;
 
 public class Guide : MonoBehaviour
 {
+    private static readonly Color32 GuideCounterColor = new Color32(107, 63, 42, 255);
+    private static readonly Color32 GuideCompletedCounterColor = new Color32(217, 121, 95, 255);
+
     [Title("Guide")]
     [SerializeField] private GameObject guidePrefab;
     private GameObject curGuidePrefab;
@@ -44,22 +48,164 @@ public class Guide : MonoBehaviour
     [HideIfGroup("_Scripts"), SerializeField] private InterstitialAdExample adExample;
     private BaseCost baseCost;
     private Player player;
+    private CompactSupplyStation compactSupply;
+    private CompactManualStation compactManual;
+    private CompactSalesCounter compactSales;
+    private bool compactFlow;
+    private Button skipButton;
+    private Button replayButton;
 
     private bool _guideDone = false;
+    private readonly HashSet<int> invalidTargetWarnings = new HashSet<int>();
 
-    private bool _ShowAd = false;
+    private Button claimButton;
 
     private void Awake()
     {
         //UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
+        compactSupply = FindObjectOfType<CompactSupplyStation>();
+        compactManual = FindObjectOfType<CompactManualStation>();
+        compactSales = FindObjectOfType<CompactSalesCounter>();
+        compactFlow = compactSupply != null && compactManual != null && compactSales != null;
+        ResolveProductionTargets();
+    }
+
+    private void ResolveProductionTargets()
+    {
+        if (targets == null || targets.Length < 6) return;
+
+        var workPoints = FindObjectsByType<WorkPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (compactFlow)
+        {
+            ResolveCompactTargets(workPoints);
+            return;
+        }
+
+        for (int index = 0; index < 6; index++)
+        {
+            GameObject inactiveMatch = null;
+            foreach (var workPoint in workPoints)
+            {
+                if (!MatchesProductionTarget(index, workPoint)) continue;
+                if (workPoint.gameObject.activeInHierarchy)
+                {
+                    targets[index] = workPoint.gameObject;
+                    inactiveMatch = null;
+                    break;
+                }
+                if (inactiveMatch == null)
+                    inactiveMatch = workPoint.gameObject;
+            }
+            if (inactiveMatch != null)
+                targets[index] = inactiveMatch;
+        }
+    }
+
+    private void ResolveCompactTargets(WorkPoint[] workPoints)
+    {
+        var markers = FindObjectsByType<OnboardingTargetMarker>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var marker in markers)
+        {
+            int index = CompactTargetIndex(marker.TargetType);
+            if (index < 0) continue;
+            targets[index] = marker.gameObject;
+            if (marker.TargetType == OnboardingTargetType.SalesPallet)
+                targets[5] = marker.gameObject;
+        }
+
+        foreach (var workPoint in workPoints)
+        {
+            if (workPoint == null) continue;
+
+            if (workPoint.Action is CompactManualProcessAction process
+                && process.Station == compactManual)
+            {
+                if (targets[2] == null) targets[2] = workPoint.gameObject;
+                continue;
+            }
+
+            if (!(workPoint.Action is ItemTransfer transfer)) continue;
+            if (transfer.Endpoint == compactSupply)
+                if (targets[0] == null) targets[0] = workPoint.gameObject;
+            else if (transfer.Endpoint == compactManual)
+                if (targets[1] == null) targets[1] = workPoint.gameObject;
+            else if (transfer.Endpoint is CompactManualOutput output
+                && output.Station == compactManual)
+                if (targets[3] == null) targets[3] = workPoint.gameObject;
+            else if (transfer.Endpoint == compactSales)
+            {
+                if (targets[4] == null) targets[4] = workPoint.gameObject;
+                if (targets[5] == null) targets[5] = workPoint.gameObject;
+            }
+        }
+    }
+
+    private static int CompactTargetIndex(OnboardingTargetType type)
+    {
+        switch (type)
+        {
+            case OnboardingTargetType.SupplyPickup: return 0;
+            case OnboardingTargetType.ManualInput: return 1;
+            case OnboardingTargetType.ManualWork: return 2;
+            case OnboardingTargetType.ManualOutput: return 3;
+            case OnboardingTargetType.SalesPallet: return 4;
+            default: return -1;
+        }
+    }
+
+    private void OnEnable() => CompactProgressEvents.ActionCompleted += OnCompactActionCompleted;
+
+    private void OnDisable()
+    {
+        CompactProgressEvents.ActionCompleted -= OnCompactActionCompleted;
+        if (guideLine != null) guideLine.DOKill();
+    }
+
+    private bool MatchesProductionTarget(int index, WorkPoint workPoint)
+    {
+        if (workPoint == null) return false;
+
+        if (index == 4)
+            return workPoint.Action is PackagingInteraction packaging
+                && packaging.Packaging == boxPackaging;
+
+        if (!(workPoint.Action is ItemTransfer transfer)) return false;
+        switch (index)
+        {
+            case 0:
+                return transfer.Endpoint is IngredientMaker
+                    && !IsUnderAny(workPoint.transform, _ContainerObjects);
+            case 1:
+                return transfer.Endpoint is ConveyorBelt
+                    && !IsUnderAny(workPoint.transform, _MachineObjects);
+            case 2:
+                return transfer.Endpoint is BoxStorage churuStorage
+                    && churuStorage.bsType == BoxStorageType.ChuruStorage
+                    && !IsUnderAny(workPoint.transform, _MachineObjects);
+            case 3:
+                return transfer.Endpoint == boxPackaging;
+            case 5:
+                return transfer.Endpoint == boxStorage;
+            default:
+                return false;
+        }
+    }
+
+    private static bool IsUnderAny(Transform child, GameObject[] roots)
+    {
+        if (roots == null) return false;
+        foreach (var root in roots)
+            if (root != null && child.IsChildOf(root.transform))
+                return true;
+        return false;
     }
 
     void Start()
     {
-        if (baseCost.guideStep > 14)
-            return;
+        BalanceTable.Synchronize(baseCost);
 
         guideButton.onClick.AddListener(GuideButton);
 
@@ -67,7 +213,7 @@ public class Guide : MonoBehaviour
         CreateGuidePrefab();
         SetWorkPoint();
 
-        if (baseCost.guideStep < 5)
+        if (!compactFlow && baseCost.guideStep < 5 && truck != null)
             truck.gameObject.SetActive(false);
 
         if (!_guideDone)
@@ -75,40 +221,215 @@ public class Guide : MonoBehaviour
             GuideLine();
         }
 
-        EmployeeActive();
+        CreateClaimButton();
+        if (compactFlow) CreateOnboardingControls();
     }
 
     void Update()
     {
         if (!_guideDone)
         {
-            GuideStep();
-        }
-
-        // 광고
-        if (!_ShowAd)
-        {
-            if (baseCost.guideStep == 6 && truck.BoxStack.Count == 1)
-            {
-                Ads();
-                _ShowAd = true;
-            }
-            else if (baseCost.guideStep == 10)
-            {
-                Ads();
-                _ShowAd = true;
-            }
-            else if (_guideDone)
-            {
-                Ads();
-                _ShowAd = true;
-            }
+            if (compactFlow && !baseCost.onboardingCompleted) CompactGuideStep();
+            else if (!compactFlow && baseCost.guideStep <= 6) GuideStep();
+            else ShowExpansionGoals();
         }
     }
 
-    private void Ads()
+    private void CreateClaimButton()
     {
-        adExample.ShowAd();
+        var go = new GameObject("First Employee Reward", typeof(RectTransform), typeof(Image), typeof(Button));
+        go.transform.SetParent(guideUI.transform, false);
+        var rect = (RectTransform)go.transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0f);
+        rect.pivot = new Vector2(.5f, 1f);
+        rect.anchoredPosition = new Vector2(0, -12);
+        rect.sizeDelta = new Vector2(360, 64);
+        go.GetComponent<Image>().color = new Color(.2f, .45f, .2f);
+        claimButton = go.GetComponent<Button>();
+        var label = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+        label.transform.SetParent(go.transform, false);
+        var text = label.GetComponent<TextMeshProUGUI>();
+        text.font = guideText.font;
+        text.text = "첫 직원 맞이하기 (무료)";
+        text.fontSize = 24;
+        text.alignment = TextAlignmentOptions.Center;
+        text.raycastTarget = false;
+        var labelRect = (RectTransform)label.transform;
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+        claimButton.onClick.AddListener(() => {
+            if (UIManager.Instance.ClaimFirstEmployee()) ShowExpansionGoals();
+        });
+        go.SetActive(false);
+    }
+
+    private void CreateOnboardingControls()
+    {
+        skipButton = CreateGuideControl("Skip Onboarding", "건너뛰기", new Vector2(115, -84));
+        replayButton = CreateGuideControl("Replay Onboarding", "처음 안내 다시 보기", new Vector2(0, -84));
+        skipButton.onClick.AddListener(SkipOnboarding);
+        replayButton.onClick.AddListener(RestartOnboarding);
+        RefreshOnboardingControls();
+    }
+
+    private Button CreateGuideControl(string name, string labelText, Vector2 position)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+        go.transform.SetParent(guideUI.transform, false);
+        var rect = (RectTransform)go.transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0f);
+        rect.pivot = new Vector2(.5f, 1f);
+        rect.anchoredPosition = position;
+        rect.sizeDelta = new Vector2(220, 54);
+        go.GetComponent<Image>().color = new Color(.16f, .16f, .16f, .88f);
+        var label = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+        label.transform.SetParent(go.transform, false);
+        var text = label.GetComponent<TextMeshProUGUI>();
+        text.font = guideText.font;
+        text.text = labelText;
+        text.fontSize = 18;
+        text.alignment = TextAlignmentOptions.Center;
+        text.raycastTarget = false;
+        var labelRect = (RectTransform)label.transform;
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+        return go.GetComponent<Button>();
+    }
+
+    public void SkipOnboarding()
+    {
+        if (!compactFlow || baseCost.onboardingCompleted) return;
+        IncrementalProgress.CompleteOnboarding(baseCost);
+        baseCost.guideStep = Mathf.Max(baseCost.guideStep, 7);
+        SaveProgress();
+        RefreshOnboardingControls();
+        ShowExpansionGoals();
+    }
+
+    public void RestartOnboarding()
+    {
+        if (!compactFlow) return;
+        IncrementalProgress.RestartOnboarding(baseCost);
+        _guideDone = false;
+        guideUI.SetActive(true);
+        isGuideActive = true;
+        RefreshOnboardingControls();
+        CompactGuideStep();
+        GuideLine();
+        SaveProgress();
+    }
+
+    private void RefreshOnboardingControls()
+    {
+        if (skipButton != null) skipButton.gameObject.SetActive(!baseCost.onboardingCompleted);
+        if (replayButton != null) replayButton.gameObject.SetActive(baseCost.onboardingCompleted);
+    }
+
+    private void OnCompactActionCompleted(CompactProgressAction action)
+    {
+        if (!compactFlow || baseCost == null || baseCost.onboardingCompleted) return;
+        CompactProgressAction expected;
+        switch (baseCost.onboardingStep)
+        {
+            case 0: expected = CompactProgressAction.IngredientCollected; break;
+            case 1: expected = CompactProgressAction.IngredientPlaced; break;
+            case 2: expected = CompactProgressAction.ProductCompleted; break;
+            case 3: expected = CompactProgressAction.ProductCollected; break;
+            case 4: expected = CompactProgressAction.ProductStocked; break;
+            case 5: expected = CompactProgressAction.ProductSold; break;
+            default: return;
+        }
+        if (action != expected) return;
+
+        GiveReward(baseCost.onboardingStep);
+        baseCost.onboardingStep++;
+        if (baseCost.onboardingStep >= IncrementalProgress.OnboardingStepCount)
+        {
+            IncrementalProgress.CompleteOnboarding(baseCost);
+            baseCost.guideStep = Mathf.Max(baseCost.guideStep, 7);
+            GiveReward(6);
+        }
+        SaveProgress();
+        CreateGuidePrefab();
+        RefreshOnboardingControls();
+        if (baseCost.onboardingCompleted) ShowExpansionGoals();
+        else
+        {
+            CompactGuideStep();
+            GuideLine();
+        }
+    }
+
+    private static void SaveProgress()
+    {
+        if (DataManager.Instance != null) DataManager.Instance.GameDataUpdate();
+    }
+
+    private void ShowExpansionGoals()
+    {
+        bool claim = BalanceTable.CanClaimEmployee(baseCost);
+        if (claimButton != null) claimButton.gameObject.SetActive(claim);
+        if (claim)
+        {
+            RefreshExpansionTargets(null);
+            UpdateGuide("첫 직원이 도착했어요", "무료 직원을 받고 원재료 운반을 맡겨보세요.", "", false);
+            guideLine.gameObject.SetActive(false);
+            return;
+        }
+
+        string nextFacility = BalanceTable.NextFacility(baseCost);
+        RefreshExpansionTargets(nextFacility);
+        guideLine.gameObject.SetActive(false);
+        if (nextFacility == null)
+        {
+            if (compactFlow)
+            {
+                UpdateGuide("다음 목표", "원하는 병목을 골라 공장을 확장하세요.", "", false);
+                RefreshOnboardingControls();
+            }
+            else _GuideDone();
+            return;
+        }
+
+        string facilityName = FacilityName(nextFacility);
+        UpdateGuide("다음 목표", facilityName + " 건설하기",
+            BalanceTable.FacilityCost(nextFacility) + " 골드", false);
+    }
+
+    private void RefreshExpansionTargets(string nextFacility)
+    {
+        for (int i = 7; i < targets.Length; i++)
+        {
+            if (!TryGetTarget(i, out var target)) continue;
+
+            UnlockManager unlock = target.GetComponent<UnlockManager>();
+            if (unlock != null)
+            {
+                bool isNext = unlock.Type.ToString() == nextFacility;
+                target.SetActive(isNext && !unlock.IsPurchased);
+                continue;
+            }
+
+            // The office interaction point is not a facility unlock pad.
+            target.SetActive(baseCost.IsUnlocked(GameDataSchema.Progress.Office));
+        }
+    }
+
+    private static string FacilityName(string key)
+    {
+        switch (key)
+        {
+            case "Office": return "사무실";
+            case "Container1": return "추가 컨테이너 1";
+            case "Machine1": return "추가 컨베이어 벨트 1";
+            case "Container2": return "추가 컨테이너 2";
+            case "Machine2": return "추가 컨베이어 벨트 2";
+            case "Stall": return "노점";
+            case "Store": return "상점";
+            default: return key;
+        }
     }
 
     private void GuideButton()
@@ -137,9 +458,11 @@ public class Guide : MonoBehaviour
         #endregion
 
         #region 타겟 위치 화살표
-        if (baseCost.guideStep < targets.Length)
+        int currentStep = compactFlow ? baseCost.onboardingStep : baseCost.guideStep;
+        if (currentStep < targets.Length)
         {
-            Transform target = targets[baseCost.guideStep].transform;
+            if (!TryGetTarget(currentStep, out var targetObject)) return;
+            Transform target = targetObject.transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
             guideLine.DOMove(targetPosition, 1f).SetEase(Ease.OutSine).OnComplete(() =>
@@ -182,15 +505,6 @@ public class Guide : MonoBehaviour
             case 4: _Step4(); break;
             case 5: _Step5(); break;
             case 6: _Step6(); break;
-            case 7: _Step7(); break;
-            case 8: _Step8(); break;
-            case 9: _Step9(); break;
-            case 10: _Step10(); break;
-            case 11: _Step11(); break;
-            case 12: _Step12(); break;
-            case 13: _Step13(); break;
-            case 14: _Step14(); break;
-            case 15: _GuideDone(); break;
         }
     }
 
@@ -214,9 +528,10 @@ public class Guide : MonoBehaviour
 
     public void ToNextStep()
     {
+        if (compactFlow) return;
         baseCost.guideStep++;
         GuideLine();
-        _ShowAd = false;
+
     }
 
     private void UpdateGuide(string title, string text, string numberText, bool isCompleted)
@@ -225,7 +540,7 @@ public class Guide : MonoBehaviour
         {
             guideTitle.text = title;
             guideText.text = text;
-            guideTextNum.color = isCompleted ? Color.yellow : Color.black;
+            guideTextNum.color = isCompleted ? GuideCompletedCounterColor : GuideCounterColor;
             guideTextNum.text = numberText;
         }
 
@@ -239,153 +554,129 @@ public class Guide : MonoBehaviour
 
     private void SetWorkPoint()
     {
-        for (int i = 0; i <= baseCost.guideStep; i++)
+        int currentStep = compactFlow ? baseCost.onboardingStep : baseCost.guideStep;
+        for (int i = 0; i <= currentStep && i < targets.Length; i++)
         {
-            if (targets[i].GetComponent<WorkPoint>())
-                targets[i].SetActive(true);
+            if (!TryGetTarget(i, out var target)) continue;
+            if (target.GetComponent<WorkPoint>())
+                target.SetActive(true);
         }
     }
 
     private void SetTargetsActive(bool isActive)
     {
-        foreach (var target in targets)
+        for (int i = 0; i < targets.Length; i++)
         {
+            if (!TryGetTarget(i, out var target)) continue;
             target.SetActive(isActive);
         }
     }
 
     private void SetActiveTarget(int index)
     {
-        if (index >= 0 && index < targets.Length)
-        {
-            targets[index].SetActive(true);
-        }
+        if (!TryGetTarget(index, out var target)) return;
+        var unlock = target.GetComponent<UnlockManager>();
+        if (unlock == null || !unlock.IsPurchased) target.SetActive(true);
+    }
+
+    private bool TryGetTarget(int index, out GameObject target)
+    {
+        target = null;
+        if (targets != null && index >= 0 && index < targets.Length)
+            target = targets[index];
+        if (target != null) return true;
+
+        if (invalidTargetWarnings.Add(index))
+            Debug.LogError($"Guide target at index {index} is missing or was destroyed. Check the Game scene reference.", this);
+        return false;
     }
 
     private void GiveReward(int step)
     {
-        int reward = 0;
-
-        switch (step)
-        {
-            case 0: reward = 100; break;
-            case 1: reward = 200; break;
-            case 2: reward = 200; break;
-            case 3: reward = 300; break;
-            case 4: reward = 300; break;
-            case 5: reward = 500; break;
-            case 6: reward = 500; break;
-            case 7: reward = 1000; break;
-            case 8: reward = 1000; break;
-            case 9: reward = 1000; break;
-            case 10: reward = 1000; break;
-            case 11: reward = 1000; break;
-            case 12: reward = 1000; break;
-            case 13: reward = 1000; break;
-            case 14: reward = 1000; break;
-        }
+        int reward = BalanceTable.TutorialReward(step);
 
         if (reward > 0)
         {
+            CompactTelemetryEvents.Record(CompactTelemetryMetric.GoldEarned, reward);
             player.Gold += reward;
             UIManager.Instance.UpdateGoldUI();
         }
     }
 
     #region GuideSteps
+    private void CompactGuideStep()
+    {
+        switch (baseCost.onboardingStep)
+        {
+            case 0:
+                SetActiveTarget(0);
+                UpdateGuide("첫 생산 1", "컨테이너 앞에서 연어를 가져오세요", "", false);
+                break;
+            case 1:
+                SetActiveTarget(1);
+                UpdateGuide("첫 생산 2", "연어를 작업대 입력판에 놓으세요", "", false);
+                break;
+            case 2:
+                SetActiveTarget(2);
+                UpdateGuide("첫 생산 3", "가운데 발판에서 가공을 완료하세요", "", false);
+                break;
+            case 3:
+                SetActiveTarget(3);
+                UpdateGuide("첫 생산 4", "완성된 츄릅을 가져오세요", "", false);
+                break;
+            case 4:
+                SetActiveTarget(4);
+                UpdateGuide("첫 판매 1", "츄릅을 판매 파레트에 진열하세요", "", false);
+                break;
+            case 5:
+                SetActiveTarget(5);
+                UpdateGuide("첫 판매 완료", "손님이 구매해 첫 수익을 낼 때까지 기다리세요", "", false);
+                break;
+        }
+    }
+
     private void _Step0()
     {
         SetActiveTarget(0);
         UpdateGuide("공장냥의 첫걸음 1", "원재료 창고로 이동", ""
-            , player.IngredientStack.Count > 0);
+            , player.Inventory.ContainsType(ItemType.Ingredient));
     }
     private void _Step1()
     {
         SetActiveTarget(1);
         UpdateGuide("공장냥의 첫걸음 2", "원재료를 컨베이어 벨트로 옮기기", ""
-            , player.IngredientStack.Count <= 0);
+            , !player.Inventory.ContainsType(ItemType.Ingredient));
     }
     private void _Step2()
     {
         SetActiveTarget(2);
         UpdateGuide("공장냥의 첫걸음 3", "완성된 츄릅을 박스 포장대로 옮기기", ""
-            , player.ChuruStack.Count > 0);
+            , player.Inventory.ContainsType(ItemType.Churu));
     }
     private void _Step3()
     {
         SetActiveTarget(3);
-        UpdateGuide("공장냥의 첫걸음 4", "츄룹 창고 이동 작업", boxPackaging.ChuruStorage.Count.ToString() + " / 5"
-            , player.ChuruStack.Count <= 0 && boxPackaging.ChuruStorage.Count >= 5);
+        UpdateGuide("공장냥의 첫걸음 4", "츄룹 창고 이동 작업", boxPackaging.WaitingCount.ToString() + " / 5"
+            , !player.Inventory.ContainsType(ItemType.Churu) && boxPackaging.WaitingCount >= 5);
     }
     private void _Step4()
     {
         SetActiveTarget(4);
         UpdateGuide("공장냥의 첫걸음 5", "박스 포장대에서 박스 포장하기", ""
-            , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.BoxStack.Count >= 1);
+            , boxStorage.bsType == BoxStorageType.BoxStorage && boxStorage.Count >= 1);
     }
     private void _Step5()
     {
         truck.gameObject.SetActive(true);
         SetActiveTarget(5);
         UpdateGuide("공장냥의 첫걸음 6", "츄릅박스를 트럭에 싣기", ""
-            , player.BoxStack.Count > 0);
+            , player.Inventory.ContainsType(ItemType.Box));
     }
     private void _Step6()
     {
         SetActiveTarget(6);
-        UpdateGuide("공장냥의 첫걸음 fin", "츄릅박스 5개를 트럭에 실어 판매하기", truck.BoxStack.Count.ToString() + " / 5"
-            , truck.BoxStack.Count >= 5);
-    }
-    private void _Step7()
-    {
-        SetActiveTarget(7);
-        UpdateGuide("공장 확장 1", "컨베이어 벨트 추가 건설하기", baseCost.PlayerGold.ToString() + " / 5000"
-            , _MachineObjects[0].activeSelf); 
-    }
-    private void _Step8()
-    {
-        SetActiveTarget(8);
-        UpdateGuide("공장엔 사무실이 필요하지", "사무실 건설하기", baseCost.PlayerGold.ToString() + " / 2500"
-            , _OfficeObject.activeSelf);
-    }
-    private void _Step9()
-    {
-        SetActiveTarget(9);
-        UpdateGuide("이젠 혼자하기 힘들어", "사무실에서 직원 고용하기", baseCost.PlayerGold.ToString() + " / 5000"
-            , baseCost.EmployeeAddCount > 0);
-        employeeAddButton.interactable = true;
-    }
-    private void _Step10()
-    {
-        SetActiveTarget(10);
-        UpdateGuide("공장 확장 2", "원재료 컨테니어 추가 건설하기", baseCost.PlayerGold.ToString() + " / 1000"
-            , _ContainerObjects[0].activeSelf);
-
-        EmployeeActive();
-    }
-    private void _Step11()
-    {
-        SetActiveTarget(11);
-        UpdateGuide("공장 확장 3", "컨베이어 벨트 추가 건설하기", baseCost.PlayerGold.ToString() + " / 10000"
-            , _MachineObjects[1].activeSelf);
-    }
-    private void _Step12()
-    {
-        SetActiveTarget(12);
-        UpdateGuide("공장 확장 4", "원재료 컨테니어 추가 건설하기", baseCost.PlayerGold.ToString() + " / 5000"
-            , _ContainerObjects[1].activeSelf);
-    }
-    private void _Step13()
-    {
-        SetActiveTarget(13);
-        UpdateGuide("츄릅 플리마켓 오픈 !", "상점 설치하기", baseCost.PlayerGold.ToString() + " / 10000"
-            , _StallObject.activeSelf);
-    }
-    private void _Step14()
-    {
-        SetActiveTarget(14);
-        UpdateGuide("츄릅 스토어 오픈 !", "상점 업그레이드 하기", baseCost.PlayerGold.ToString() + " / 20000"
-            , _StoreObject.activeSelf);
+        UpdateGuide("공장냥의 첫걸음 fin", "츄릅박스 5개를 트럭에 실어 판매하기", truck.LoadedCount.ToString() + " / 5"
+            , baseCost.IsUnlocked(BalanceTable.FirstSaleKey));
     }
     private void _GuideDone()
     {
@@ -396,8 +687,4 @@ public class Guide : MonoBehaviour
     }
     #endregion
 
-    private void EmployeeActive()
-    {
-        employeeAddButton.interactable = _ContainerObjects[0].activeSelf && _MachineObjects[0].activeSelf;
-    }
 }

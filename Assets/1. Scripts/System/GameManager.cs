@@ -43,6 +43,7 @@ public class GameManager : Singleton<GameManager>
 
     private NavMeshSurface nms;
     private DataManager data;
+    private Coroutine sceneInitialization;
 
     public List<IStackable> stackCount = new List<IStackable>();
     public List<Transform> cbTrans = new List<Transform>();
@@ -52,11 +53,7 @@ public class GameManager : Singleton<GameManager>
 
     public string sceneName;
 
-    //���� ���� �� ���� �ڵ�
-    private void OnApplicationQuit()
-    {
-        DataManager.Instance.GameDataUpdate();
-    }
+    //게임 종료 시 저장 코드
     protected override void Awake()
     {
         base.Awake();
@@ -77,34 +74,33 @@ public class GameManager : Singleton<GameManager>
         {
             workScheduler.Register(stackable);
         }
+
+        string activeScene = SceneManager.GetActiveScene().name;
+        if (activeScene == "CompactFactory_Playtest")
+        {
+            EnsureCompactGuideIsActive();
+            BeginCompactSceneInitialization();
+        }
+        else if (activeScene == "Game" && P != null && P.employee.Count == 0)
+        {
+            BakeLegacyNavMesh();
+            EmployeeAdd();
+        }
     }
 
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
     {
-        if(sceneName == "Game")
+        if(newScene.name == "Game" || newScene.name == "CompactFactory_Playtest")
         {
-            if (nms != null)
+            if (newScene.name == "CompactFactory_Playtest")
             {
-                try
-                {
-                    nms.BuildNavMesh();
-                }
-                catch (System.Exception err)
-                {
-                    Debug.LogError(err);
-                }
+                EnsureCompactGuideIsActive();
+                BeginCompactSceneInitialization();
             }
             else
             {
-                try
-                {
-                    nms = FindObjectOfType<NavMeshSurface>();
-                    nms.BuildNavMesh();
-                }
-                catch (System.Exception err)
-                {
-                    Debug.LogError(err);
-                }
+                BakeLegacyNavMesh();
+                EmployeeAdd();
             }
 #if !UNITY_EDITOR
             if(data.baseCost.newGame)
@@ -114,8 +110,70 @@ public class GameManager : Singleton<GameManager>
                 data.GameDataUpdate();
             }
 #endif
-            //직원 추가 후 적절히 초기화하여 관리
+        }
+    }
+
+    private void BeginCompactSceneInitialization()
+    {
+        if (sceneInitialization != null)
+            StopCoroutine(sceneInitialization);
+        sceneInitialization = StartCoroutine(InitializeCompactScene());
+    }
+
+    private IEnumerator InitializeCompactScene()
+    {
+        // Scene-loaded callbacks run before the new scene's Start methods. Wait until
+        // CompactSalesCounter has created both NavMeshes before restoring employees.
+        yield return null;
+
+        var sales = FindObjectOfType<CompactSalesCounter>();
+        if (sales == null)
+        {
+            Debug.LogError("Compact sales counter is missing. Employee initialization was cancelled.", this);
+            sceneInitialization = null;
+            yield break;
+        }
+
+        if (!sales.NavigationReady)
+            sales.BuildNavigation();
+        nms = sales.EmployeeNavigationSurface;
+        if (!sales.NavigationReady || nms == null)
+        {
+            Debug.LogError("Compact navigation is not ready. Employee initialization was cancelled.", sales);
+            sceneInitialization = null;
+            yield break;
+        }
+
+        if (P != null && P.employee.Count == 0)
             EmployeeAdd();
+        sceneInitialization = null;
+    }
+
+    private void BakeLegacyNavMesh()
+    {
+        try
+        {
+            nms = FindObjectOfType<NavMeshSurface>();
+            if (nms == null)
+            {
+                Debug.LogError("NavMeshSurface is missing from the loaded game scene.", this);
+                return;
+            }
+            nms.BuildNavMesh();
+        }
+        catch (System.Exception err)
+        {
+            Debug.LogError(err);
+        }
+    }
+
+    private static void EnsureCompactGuideIsActive()
+    {
+        foreach (var guide in FindObjectsByType<Guide>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (guide != null && !guide.gameObject.activeSelf)
+                guide.gameObject.SetActive(true);
         }
     }
 
@@ -123,14 +181,24 @@ public class GameManager : Singleton<GameManager>
     {
         List<GameObject> employeesToRemove = new List<GameObject>();
         int employeeNum = 0;
-        foreach (var item in employee)
+        var savedOrder = new List<GameObject>();
+        bool compactFlow = FindObjectOfType<CompactManualStation>() != null;
+        foreach (var name in data.baseCost.employeeList)
+        {
+            var prefab = employee.Find(candidate => candidate != null && candidate.name == name);
+            if (prefab != null) savedOrder.Add(prefab);
+        }
+        foreach (var item in savedOrder)
         {
             if (data.baseCost.employeeList.Contains(item.name))
             {
                 GameObject newEmployee;
-                if (employeeNum != 2)
+                if (employeeNum != 2 || compactFlow)
                 {
-                    newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
+                    Vector3 spawnPosition = compactFlow && P != null
+                        ? P.transform.position
+                        : new Vector3(employeeNum, 0, employeeNum);
+                    newEmployee = Instantiate(item.gameObject, spawnPosition, Quaternion.identity);
                     
                 }
                 else
@@ -143,19 +211,20 @@ public class GameManager : Singleton<GameManager>
                 }
                 DontDestroyOnLoad(newEmployee);
                 newEmployee.name = item.name;
+                newEmployee.GetComponent<Employee>().SetTransportRole(employeeNum);
                 P.employee.Add(newEmployee.GetComponent<Employee>());
                 employeesToRemove.Add(item);
                 employeeNum++;
             }
         }
-        // �ҷ����� ������ ����Ʈ ����
+        // 불러오기 끝나고 리스트 삭제
         foreach (var item in employeesToRemove)
         {
             employee.Remove(item);
         }
     }
 
-    // ���� �����ϱ� ���� �������̽��� Ȱ���Ͽ� ���� ���尪 ���
+    // 스택 저장하기 위해 인터페이스를 활용하여 스택 저장값 등록
     public void AddStackable(IStackable stackable)
     {
         if (!stackCount.Contains(stackable))
@@ -166,19 +235,19 @@ public class GameManager : Singleton<GameManager>
         workScheduler.Register(stackable);
     }
     
-    //�������� ã�� Ÿ�� �������̽��� Ȱ���Ͽ� Ÿ�� ���
+    //종업원이 찾을 타겟 인터페이스를 활용하여 타겟 등록
     public void AddTarget(IStackable stackable)
     {
         AddStackable(stackable);
     }
 
-    // �������� ���� �ִ� Ÿ�� Ȱ���� ��ġ�� �ʰ� �ϱ� ���� Bool���� ���� ����
+    // 종업원이 쓰고 있는 타겟 활용을 겹치지 않게 하기 위해 Bool값을 통해 조정
     public bool IsTargetBeingUsed(IStackable stackable)
     {
         return workScheduler.IsReserved(stackable);
     }
 
-    // �������� Ÿ���� ���� �ִ� ��� ��ųʸ� Bool �� ������ ���� ���� �ִ��� Ȯ��
+    // 종업원이 타겟을 쓰고 있는 경우 딕셔너리 Bool 값 변경을 통해 쓰고 있는지 확인
     public void SetTargetBeingUsed(IStackable stackable, bool isUsed)
     {
         if (!isUsed)
@@ -187,36 +256,46 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public bool TryReserveWork(out IStackable stackable)
+    public bool TryReserveWork(out IStackable stackable, int role = -1)
     {
         foreach (var target in stackCount)
         {
             workScheduler.Register(target);
         }
 
-        return workScheduler.TryReserveBest(out stackable);
+        return workScheduler.TryReserveBest(out stackable, candidate =>
+            candidate is Component component && component.gameObject.activeInHierarchy &&
+            (role < 0 || candidate.GetTypeNum() == role));
     }
 
-    // �������� Ÿ���� �ٸ� ���������� ����� �ٸ� Ÿ���� ã��
+    // 종업원이 타겟을 다른 종업원에게 뺏기면 다른 타겟을 찾기
     public void UpdateTargets()
     {
         foreach (var employee in employees)
         {
             if (employee != null)
             {
-                // ���� ��ǥ�� �ִ� ��� ���ο� ��ǥ�� ������Ʈ
+                // 현재 목표가 있는 경우 새로운 목표로 업데이트
                 employee.RequestWorkCheck();
             }
         }
     }
 
-    // �׺�Ž� ����
+    // 네비매쉬 빌드
     public void NowNavMeshBake()
     {
-        nms.BuildNavMesh();
+        if (SceneManager.GetActiveScene().name == "CompactFactory_Playtest")
+        {
+            var sales = FindObjectOfType<CompactSalesCounter>();
+            if (sales != null && sales.BuildNavigation())
+                nms = sales.EmployeeNavigationSurface;
+            return;
+        }
+
+        BakeLegacyNavMesh();
     }
 
-    // �����̾� ��Ʈ�� ���������� �湮�ϱ� ���� ���� �Լ�
+    // 컨베이어 벨트를 순차적으로 방문하기 위해 만든 함수
     public Transform ConveyorTransform(Employee employee)
     {
         employee.CbTransNum++;

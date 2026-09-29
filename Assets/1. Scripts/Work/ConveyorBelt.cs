@@ -7,8 +7,13 @@ using Sirenix.OdinInspector;
 
 public enum ConveyorBeltType { Ingredient, Churu }
 
-public class ConveyorBelt : MonoBehaviour
+public class ConveyorBelt : MonoBehaviour, IItemTransferEndpoint
 {
+    public bool TryTransfer(CarrierInventory inventory, Transform carryParent)
+    {
+        return ItemTransferUtility.TryMove(inventory, input, ingredientStorage);
+    }
+
     [TabGroup("Setting"), SerializeField] private float speed = 3f;
     [TabGroup("Setting"), SerializeField] private float placeObjectTime = 3f;
     [TabGroup("Setting"), SerializeField] private Vector3 direction = Vector3.forward;
@@ -33,30 +38,23 @@ public class ConveyorBelt : MonoBehaviour
         set { placeObjectTime = value; }
     }
 
-    private float breakDownProb = 0.03f;
+    private float breakDownProb = Churub.Core.BalanceTable.BreakdownProbability;
     public float BreakDownProb
     {
         get { return breakDownProb; }
         set { breakDownProb = value; }
     }
 
-    private float nonBreakDownTime = 300f;
+    private float nonBreakDownTime = Churub.Core.BalanceTable.BreakdownProtection;
+    private bool breakdownUnlocked;
 
     private bool isOn = true;
     private bool isBreakDown = false;
 
     [TabGroup("Transform"), SerializeField] private Transform ingredientStorage;
-    public Transform IngredientStorage
-    {
-        get { return ingredientStorage; }
-    }
-
-    private Stack<GameObject> cbStack = new Stack<GameObject>();
-    public Stack<GameObject> CbStack
-    {
-        get { return cbStack; }
-        set { cbStack = value; }
-    }
+    private readonly ItemBuffer input = new ItemBuffer(int.MaxValue, ItemType.Ingredient);
+    private readonly Dictionary<Rigidbody, Item> itemsOnBelt = new Dictionary<Rigidbody, Item>();
+    private readonly List<Rigidbody> itemsToRemove = new List<Rigidbody>();
 
     private void Start()
     {
@@ -72,7 +70,7 @@ public class ConveyorBelt : MonoBehaviour
 
     private void Update()
     {
-        if(boxStorage.BoxStack.Count >= 40)
+        if(boxStorage.IsFull)
         {
             isOn = false;
         }
@@ -81,8 +79,14 @@ public class ConveyorBelt : MonoBehaviour
             isOn = true;
         }
 
-        if (nonBreakDownTime >= 0)
-            nonBreakDownTime -= Time.deltaTime;
+        var state = DataManager.Instance.baseCost;
+        bool eligible = state.EmployeeAddCount >= 2 && Churub.Core.BalanceTable.Lines(state) >= 2;
+        if (!breakdownUnlocked && eligible)
+        {
+            breakdownUnlocked = true;
+            nonBreakDownTime = Churub.Core.BalanceTable.BreakdownProtection;
+        }
+        if (breakdownUnlocked && nonBreakDownTime >= 0) nonBreakDownTime -= Time.deltaTime;
     }
 
     private IEnumerator PlaceObject()
@@ -91,12 +95,12 @@ public class ConveyorBelt : MonoBehaviour
         {
             float randomValue = Random.value;
             yield return new WaitForSeconds(placeObjectTime);
-            if(cbStack.Count > 0 && randomValue < breakDownProb && nonBreakDownTime <=0)
+            if(breakdownUnlocked && input.Count > 0 && randomValue < breakDownProb && nonBreakDownTime <=0)
             {
                 BreakDownEvent();
             }
 
-            if (cbStack.Count > 0 && isOn && !isBreakDown)
+            if (input.Count > 0 && isOn && !isBreakDown)
             {
                 OnConveyorObj();
             }
@@ -115,11 +119,12 @@ public class ConveyorBelt : MonoBehaviour
         }
     }
 
-    // ∞°µ∂º∫¿ª ¿ß«ÿ µ˚∑Œ «‘ºˆ∑Œ ª©µ◊Ω¿¥œ¥Ÿ.
+    // Í∞ÄÎèÖÏÑ±ÏùÑ ÏúÑÌï¥ Îî∞Î°ú Ìï®ÏàòÎ°ú ÎπºÎíÄÏäµÎãàÎã§.
     private void OnConveyorObj()
     {
-        PushStack();
-        GameObject newChuru = cbStack.Pop();
+        if (onBelt == null || !input.TryPop(out var item)) return;
+        GameObject newChuru = item.gameObject;
+        newChuru.transform.DOKill();
         newChuru.transform.position = onBelt.position;
         newChuru.transform.SetParent(onBelt);
 
@@ -130,7 +135,7 @@ public class ConveyorBelt : MonoBehaviour
         }
     }
 
-    // ∞Ì¿Â ¿Ã∫•∆Æ∏¶ ¿ß«— ≈◊Ω∫∆Æ «‘ºˆµÈ¿‘¥œ¥Ÿ.
+    // Í≥†Ïû• Ïù¥Î≤§Ìä∏Î•º ÏúÑÌïú ÌÖåÏä§Ìä∏ Ìï®ÏàòÎì§ÏûÖÎãàÎã§.
     private void BreakDownEvent()
     {
         isBreakDown = true;
@@ -148,38 +153,44 @@ public class ConveyorBelt : MonoBehaviour
     {
         isBreakDown = false;
         eventGauge.gameObject.SetActive(false);
-        nonBreakDownTime = 300f;
+        nonBreakDownTime = Churub.Core.BalanceTable.BreakdownProtection;
         StartCoroutine(PlaceObject());
         StartCoroutine(DisplayImgChange());
     }
 
-    // ¿”Ω√∑Œ Ω∫≈√ ∞¸∑√ πˆ±◊ πﬂª˝ πÆ¡¶ «ÿ∞· ƒ⁄µÂ.
-    // ƒ¡∫£¿ÃæÓ ∫ß∆Æ ø≈±Ê ∂ß∏∂¥Ÿ Ω∫≈√ √ ±‚»≠ »ƒ ¿⁄Ωƒ ø¿∫Í¡ß∆ÆµÈ¿ª ¥ŸΩ√ «™Ω¨«œ¥¬ ƒ⁄µÂ∑Œ ∫Ø∞Ê, √ﬂ»ƒ ∏ﬁ∏∏Æ πÆ¡¶≥™ ¥Ÿ∏• πÆ¡¶ πﬂª˝ «“ ºˆ ¿÷¿ª≤® ∞∞¿Ω.
-    // √ﬂ»ƒ ¡¡¿∫ πÊπ˝ ª˝±‚∏È ¥ŸΩ√ ºˆ¡§ øπ¡§.
-    private void PushStack()
+    private void FixedUpdate()
     {
-        if(ingredientStorage.childCount != cbStack.Count)
+        float currentSpeed = isOn && !isBreakDown ? speed : 0f;
+        itemsToRemove.Clear();
+        foreach (var pair in itemsOnBelt)
         {
-            Debug.Log("Ω∫≈√ ºˆ¡§");
-            cbStack.Clear();
-            foreach (Transform item in ingredientStorage)
+            Rigidbody rb = pair.Key;
+            Item item = pair.Value;
+            if (rb == null || item == null || !item.isActiveAndEnabled || item.IsStored)
             {
-                cbStack.Push(item.gameObject);
+                itemsToRemove.Add(rb);
+                continue;
             }
+
+            if (currentSpeed > 0f && rb.IsSleeping())
+                rb.WakeUp();
+            rb.linearVelocity = currentSpeed * direction;
         }
+
+        foreach (var rb in itemsToRemove)
+            itemsOnBelt.Remove(rb);
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        Rigidbody rb = collision.gameObject.GetComponent<Rigidbody>();
+        Rigidbody rb = collision.rigidbody;
+        if (rb != null && rb.TryGetComponent<Item>(out var item) && !item.IsStored)
+            itemsOnBelt[rb] = item;
+    }
 
-        // Ω∫≈√¿Ã ∞°µÊ Ω◊ø¥¿ª ∂ß∏¶ ¥Î∫Ò«ÿº≠ ∏ÿ√ﬂ¥¬ ƒ⁄µÂ ¿€º∫. (≈◊Ω∫∆Æ)
-        speed = isOn && !isBreakDown ? 5 : 0;
-        // Ω∫≈√¿Ã ∞°µÊ Ω◊¿Ã∏È ∏ÿ√ﬂ∞Ì Ω∫≈√¿Ã æ¯æÓ¡≥¿ª ∞ÊøÏ ¥ŸΩ√ ¿€µø »Æ¿Œ.
-
-        if (rb != null)
-        {
-            rb.velocity = speed * direction;
-        }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.rigidbody != null)
+            itemsOnBelt.Remove(collision.rigidbody);
     }
 }

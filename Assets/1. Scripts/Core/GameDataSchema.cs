@@ -13,8 +13,16 @@ namespace Churub.Core
             public const string EmployeeData = "employeeData";
             public const string ObjectData = "objectData";
             public const string GameProgress = "gameProgressBool";
+            public const string FacilityInvestments = "facilityInvestments";
             public const string GuideStep = "guideStep";
             public const string NewGame = "newGame";
+            public const string SaveRevision = "saveRevision";
+            public const string OnboardingVersion = "onboardingVersion";
+            public const string OnboardingStep = "onboardingStep";
+            public const string OnboardingCompleted = "onboardingCompleted";
+            public const string UpgradeGraphVersion = "upgradeGraphVersion";
+            public const string UpgradeNodeLevels = "upgradeNodeLevels";
+            public const string RevealedUpgradeNodes = "revealedUpgradeNodes";
         }
 
         public static class Upgrades
@@ -58,6 +66,12 @@ namespace Churub.Core
             public const string PackagingCount = "boxPackagingCount";
             public const string PackagingStorageCount = "packagingBoxStorageStackCount";
             public const string TruckBoxCount = "truckBoxStackCount";
+            public const string CompactSupplyCount = "compactSupplyCount";
+            public const string CompactInputCount = "compactInputCount";
+            public const string CompactOutputCount = "compactOutputCount";
+            public const string CompactSalesCount = "compactSalesCount";
+            public const string CompactCarryType = "compactCarryType";
+            public const string CompactCarryCount = "compactCarryCount";
         }
 
         public static class Progress

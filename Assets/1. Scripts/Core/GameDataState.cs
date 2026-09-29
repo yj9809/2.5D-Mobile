@@ -8,12 +8,12 @@ namespace Churub.Core
 
         public Dictionary<string, int> upgradeCosts = new Dictionary<string, int>
         {
-            { GameDataSchema.Upgrades.SpeedCost, 500 },
-            { GameDataSchema.Upgrades.MaxStackCost, 500 },
-            { GameDataSchema.Upgrades.GoldPerBoxCost, 5000 },
-            { GameDataSchema.Upgrades.EmployeeSpeedCost, 500 },
-            { GameDataSchema.Upgrades.EmployeeMaxStackCost, 500 },
-            { GameDataSchema.Upgrades.EmployeeAddCost, 5000 },
+            { GameDataSchema.Upgrades.SpeedCost, BalanceTable.Cost(UpgradeType.PlayerSpeed, 0) },
+            { GameDataSchema.Upgrades.MaxStackCost, BalanceTable.Cost(UpgradeType.PlayerMaxStack, 0) },
+            { GameDataSchema.Upgrades.GoldPerBoxCost, BalanceTable.Cost(UpgradeType.GoldPerBox, 0) },
+            { GameDataSchema.Upgrades.EmployeeSpeedCost, BalanceTable.Cost(UpgradeType.EmployeeSpeed, 0) },
+            { GameDataSchema.Upgrades.EmployeeMaxStackCost, BalanceTable.Cost(UpgradeType.EmployeeMaxStack, 0) },
+            { GameDataSchema.Upgrades.EmployeeAddCost, BalanceTable.Cost(UpgradeType.EmployeeAdd, 0) },
             { GameDataSchema.Upgrades.MaxCount, 5 },
             { GameDataSchema.Upgrades.SpeedCount, 0 },
             { GameDataSchema.Upgrades.MaxStackCount, 0 },
@@ -48,7 +48,13 @@ namespace Churub.Core
             { GameDataSchema.Objects.PackagingWaitCount, 0 },
             { GameDataSchema.Objects.PackagingCount, 0 },
             { GameDataSchema.Objects.PackagingStorageCount, 0 },
-            { GameDataSchema.Objects.TruckBoxCount, 0 }
+            { GameDataSchema.Objects.TruckBoxCount, 0 },
+            { GameDataSchema.Objects.CompactSupplyCount, 0 },
+            { GameDataSchema.Objects.CompactInputCount, 0 },
+            { GameDataSchema.Objects.CompactOutputCount, 0 },
+            { GameDataSchema.Objects.CompactSalesCount, 0 },
+            { GameDataSchema.Objects.CompactCarryType, -1 },
+            { GameDataSchema.Objects.CompactCarryCount, 0 }
         };
 
         public Dictionary<string, bool> gameProgressBool = new Dictionary<string, bool>
@@ -62,8 +68,28 @@ namespace Churub.Core
             { GameDataSchema.Progress.Store, false }
         };
 
+        public Dictionary<string, int> facilityInvestments = new Dictionary<string, int>
+        {
+            { GameDataSchema.Progress.Office, 0 },
+            { GameDataSchema.Progress.Container1, 0 },
+            { GameDataSchema.Progress.Machine1, 0 },
+            { GameDataSchema.Progress.Container2, 0 },
+            { GameDataSchema.Progress.Machine2, 0 },
+            { GameDataSchema.Progress.Stall, 0 },
+            { GameDataSchema.Progress.Store, 0 }
+        };
+
         public int guideStep;
         public bool newGame = true;
+        public int onboardingVersion = IncrementalProgress.CurrentOnboardingVersion;
+        public int onboardingStep;
+        public bool onboardingCompleted;
+        public int upgradeGraphVersion = IncrementalProgress.CurrentUpgradeGraphVersion;
+        public Dictionary<string, int> upgradeNodeLevels = new Dictionary<string, int>();
+        public List<string> revealedUpgradeNodes = new List<string>();
+        // Bumped on every local capture. Lets Apply() tell an unsaved local snapshot
+        // apart from one made stale by another device or session.
+        public int saveRevision;
 
         public int UpgradeMaxCount => upgradeCosts[GameDataSchema.Upgrades.MaxCount];
 
@@ -231,6 +257,18 @@ namespace Churub.Core
         public void SetUnlocked(string progressKey, bool unlocked)
         {
             gameProgressBool[progressKey] = unlocked;
+        }
+
+        public int GetFacilityInvestment(string progressKey)
+        {
+            return facilityInvestments.TryGetValue(progressKey, out int amount)
+                ? System.Math.Max(0, amount)
+                : 0;
+        }
+
+        public void SetFacilityInvestment(string progressKey, int amount)
+        {
+            facilityInvestments[progressKey] = System.Math.Max(0, amount);
         }
     }
 }

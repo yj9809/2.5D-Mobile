@@ -37,6 +37,8 @@ public class UIManager : Singleton<UIManager>
     private AudioManager audioManager;
     private UpgradeService upgradeService;
     private EmployeeFactory employeeFactory;
+    private UpgradeGraphService upgradeGraphService;
+    private UpgradeGraphView upgradeGraphView;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +49,15 @@ public class UIManager : Singleton<UIManager>
         audioManager = AudioManager.Instance;
         upgradeService = new UpgradeService(baseCost);
         employeeFactory = new EmployeeFactory(gm.employee, p.employee);
+        upgradeGraphService = new UpgradeGraphService(baseCost);
+        upgradeGraphView = GetComponent<UpgradeGraphView>();
+        if (upgradeGraphView == null) upgradeGraphView = gameObject.AddComponent<UpgradeGraphView>();
+        upgradeGraphView.Initialize(this, upgradeGraphService);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (FindFirstObjectByType<CompactManualStation>() != null &&
+            GetComponent<CompactFactoryTelemetryPanel>() == null)
+            gameObject.AddComponent<CompactFactoryTelemetryPanel>();
+#endif
         upgradePanel.SetActive(false);
         storePanel.SetActive(false);
 
@@ -77,7 +88,7 @@ public class UIManager : Singleton<UIManager>
 
     public void UpdateGoldUI()
     {
-        goldTxt.text = ChangeNumbet(p.Gold.ToString());
+        goldTxt.text = NumberAbbreviator.Format(p.Gold);
     }
 
     private void ZoomScreen()
@@ -93,34 +104,6 @@ public class UIManager : Singleton<UIManager>
     }
 
     #region GoldUI
-    // 재화 단위 변경
-    private string ChangeNumbet(string number)
-    {
-        char[] unitAlphabet = new char[3] { 'K', 'M', 'B' };
-        int unit = 0;
-
-        // 입력된 number가 6자리보다 클 경우 단위 변환
-        while (number.Length > 6)
-        {
-            unit++;
-            number = number.Substring(0, number.Length - 3);
-        }
-
-        if (number.Length > 3)
-        {
-            // 숫자로 변환
-            double newInt = double.Parse(number);
-            // 소수점 이하를 두 자리까지 표시
-            return (newInt / 1000).ToString("0.##") + unitAlphabet[unit];
-        }
-        else
-        {
-            int newInt = int.Parse(number);
-            return newInt.ToString();
-        }
-    }
-
-
     public void SellItem()
     {
         //테스트용
@@ -130,6 +113,7 @@ public class UIManager : Singleton<UIManager>
     public void AddGold(int amount)
     {
         p.Gold += amount;
+        CompactTelemetryEvents.Record(CompactTelemetryMetric.GoldEarned, amount);
         UpdateGoldUI();
     }
 
@@ -160,9 +144,18 @@ public class UIManager : Singleton<UIManager>
         UpgradeType type = (UpgradeType)num;
         UpgradeProgress progress = upgradeService.GetProgress(type);
 
+        string locked = BalanceTable.UpgradeLock(baseCost, type, progress.Level);
+        Button button = upgradeCostText[num].GetComponentInParent<Button>();
+        if (button != null)
+        {
+            bool hidden = (type == UpgradeType.EmployeeSpeed || type == UpgradeType.EmployeeMaxStack) &&
+                progress.Level == 0 && locked != null;
+            button.gameObject.SetActive(!hidden);
+            button.interactable = !progress.IsMaxLevel && locked == null;
+        }
         upgradeCostText[num].text = progress.IsMaxLevel
             ? "Max"
-            : ChangeNumbet(progress.Cost.ToString());
+            : locked ?? NumberAbbreviator.Format(progress.Cost);
 
         if (upgradeStepSprite.Length <= 0)
         {
@@ -187,6 +180,14 @@ public class UIManager : Singleton<UIManager>
     // 오피스 강화 패널 여는 함수
     public void ShowUpgradeUI()
     {
+        if (upgradeGraphView != null && upgradeGraphView.IsReady)
+        {
+            upgradePanel.SetActive(false);
+            upgradeGraphView.Show();
+            Option graphOption = FindObjectOfType<Option>();
+            if (graphOption != null) graphOption.OptionButtonActive(false);
+            return;
+        }
         upgradePanel.SetActive(true);
         StartUpgradeTextUpdate();
 
@@ -200,6 +201,7 @@ public class UIManager : Singleton<UIManager>
     // 오피스 강화 패널 닫는 함수
     public void CloseUpgradeUI()
     {
+        if (upgradeGraphView != null) upgradeGraphView.Hide();
         upgradePanel.SetActive(false);
 
         // 옵션 버튼 활성화
@@ -212,11 +214,17 @@ public class UIManager : Singleton<UIManager>
     public void Upgrade(int num)
     {
         UpgradeType type = (UpgradeType)num;
+        TryPurchaseUpgrade(type, out _);
+    }
+
+    public bool TryPurchaseUpgrade(UpgradeType type, out UpgradePurchaseStatus finalStatus)
+    {
         UpgradePurchaseStatus purchaseStatus = upgradeService.EvaluatePurchase(type);
         if (purchaseStatus != UpgradePurchaseStatus.Success)
         {
             HandleUpgradeFailure(purchaseStatus);
-            return;
+            finalStatus = purchaseStatus;
+            return false;
         }
 
         if (type == UpgradeType.EmployeeAdd)
@@ -227,7 +235,8 @@ public class UIManager : Singleton<UIManager>
             if (creationStatus != EmployeeCreationStatus.Success)
             {
                 HandleEmployeeCreationFailure(creationStatus);
-                return;
+                finalStatus = UpgradePurchaseStatus.InvalidState;
+                return false;
             }
         }
 
@@ -235,7 +244,8 @@ public class UIManager : Singleton<UIManager>
         if (!result.Succeeded)
         {
             HandleUpgradeFailure(result.Status);
-            return;
+            finalStatus = result.Status;
+            return false;
         }
 
         if (result.RequiresEmployeeSpawn)
@@ -243,20 +253,54 @@ public class UIManager : Singleton<UIManager>
             EmployeeCreationResult creationResult = employeeFactory.TryCreate(result.CreatesPackagingEmployee);
             if (!creationResult.Succeeded)
             {
+                baseCost.PlayerGold += result.SpentGold;
+                baseCost.EmployeeAddCount = result.PreviousLevel;
+                BalanceTable.Synchronize(baseCost);
                 HandleEmployeeCreationFailure(creationResult.Status);
-                return;
+                finalStatus = UpgradePurchaseStatus.InvalidState;
+                return false;
             }
         }
 
+        p.ObjectDataSave();
         audioManager.PlayEffect(EffectType.Upgrade);
+        DataManager.Instance.GameDataUpdate();
         UpdateGoldUI();
-        UpgradeTextUpdate(num);
+        StartUpgradeTextUpdate();
+        finalStatus = UpgradePurchaseStatus.Success;
+        return true;
+    }
+
+    public void RefreshIncrementalUI()
+    {
+        UpdateGoldUI();
+        StartUpgradeTextUpdate();
+    }
+
+    public bool ClaimFirstEmployee()
+    {
+        if (employeeFactory == null || !BalanceTable.CanClaimEmployee(baseCost)) return false;
+        var created = employeeFactory.TryCreate(false);
+        if (!created.Succeeded)
+        {
+            HandleEmployeeCreationFailure(created.Status);
+            return false;
+        }
+        // No asynchronous operation between eligibility and commit.
+        BalanceTable.ClaimEmployee(baseCost);
+        p.ObjectDataSave();
+        DataManager.Instance.GameDataUpdate();
+        UpdateGoldUI();
+        return true;
     }
 
     private void HandleUpgradeFailure(UpgradePurchaseStatus status)
     {
         switch (status)
         {
+            case UpgradePurchaseStatus.Locked:
+                LogMessage("해금 조건을 먼저 달성해주세요.");
+                break;
             case UpgradePurchaseStatus.MaxLevel:
                 LogMessage("최대 업그레이드 입니다.");
                 break;
@@ -294,6 +338,10 @@ public class UIManager : Singleton<UIManager>
     public void ShowStoreUI()
     {
         storePanel.SetActive(true);
+        string reason = BalanceTable.FacilityLock(baseCost, "Store");
+        storeUpgradeButton.interactable = reason == null && !baseCost.IsUnlocked("Store");
+        var label = storeUpgradeButton.GetComponentInChildren<TMP_Text>();
+        if (label != null) label.text = reason ?? ("상점 " + BalanceTable.FacilityCost("Store") + " 골드");
     }
     public void CloseStoreUI()
     {
@@ -301,15 +349,16 @@ public class UIManager : Singleton<UIManager>
     }
     public void StoreUI()
     {
-        storeGoldTxt.text = ChangeNumbet(store.totalGold.ToString());
+        storeGoldTxt.text = NumberAbbreviator.Format(store.totalGold);
     }
     public void StoreUI(TextMeshProUGUI text)
     {
-        text.text = ChangeNumbet(store.totalGold.ToString());
+        text.text = NumberAbbreviator.Format(store.totalGold);
     }
 
     private void GetGold()
     {
+        CompactTelemetryEvents.Record(CompactTelemetryMetric.GoldEarned, store.totalGold);
         p.Gold += store.totalGold;
         UpdateGoldUI();
 
