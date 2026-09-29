@@ -43,6 +43,7 @@ public class GameManager : Singleton<GameManager>
 
     private NavMeshSurface nms;
     private DataManager data;
+    private Coroutine sceneInitialization;
 
     public List<IStackable> stackCount = new List<IStackable>();
     public List<Transform> cbTrans = new List<Transform>();
@@ -73,34 +74,33 @@ public class GameManager : Singleton<GameManager>
         {
             workScheduler.Register(stackable);
         }
+
+        string activeScene = SceneManager.GetActiveScene().name;
+        if (activeScene == "CompactFactory_Playtest")
+        {
+            EnsureCompactGuideIsActive();
+            BeginCompactSceneInitialization();
+        }
+        else if (activeScene == "Game" && P != null && P.employee.Count == 0)
+        {
+            BakeLegacyNavMesh();
+            EmployeeAdd();
+        }
     }
 
     private void OnSceneLoaded(Scene previousScene, Scene newScene)
     {
-        if(sceneName == "Game")
+        if(newScene.name == "Game" || newScene.name == "CompactFactory_Playtest")
         {
-            if (nms != null)
+            if (newScene.name == "CompactFactory_Playtest")
             {
-                try
-                {
-                    nms.BuildNavMesh();
-                }
-                catch (System.Exception err)
-                {
-                    Debug.LogError(err);
-                }
+                EnsureCompactGuideIsActive();
+                BeginCompactSceneInitialization();
             }
             else
             {
-                try
-                {
-                    nms = FindObjectOfType<NavMeshSurface>();
-                    nms.BuildNavMesh();
-                }
-                catch (System.Exception err)
-                {
-                    Debug.LogError(err);
-                }
+                BakeLegacyNavMesh();
+                EmployeeAdd();
             }
 #if !UNITY_EDITOR
             if(data.baseCost.newGame)
@@ -110,8 +110,70 @@ public class GameManager : Singleton<GameManager>
                 data.GameDataUpdate();
             }
 #endif
-            //직원 추가 후 적절히 초기화하여 관리
+        }
+    }
+
+    private void BeginCompactSceneInitialization()
+    {
+        if (sceneInitialization != null)
+            StopCoroutine(sceneInitialization);
+        sceneInitialization = StartCoroutine(InitializeCompactScene());
+    }
+
+    private IEnumerator InitializeCompactScene()
+    {
+        // Scene-loaded callbacks run before the new scene's Start methods. Wait until
+        // CompactSalesCounter has created both NavMeshes before restoring employees.
+        yield return null;
+
+        var sales = FindObjectOfType<CompactSalesCounter>();
+        if (sales == null)
+        {
+            Debug.LogError("Compact sales counter is missing. Employee initialization was cancelled.", this);
+            sceneInitialization = null;
+            yield break;
+        }
+
+        if (!sales.NavigationReady)
+            sales.BuildNavigation();
+        nms = sales.EmployeeNavigationSurface;
+        if (!sales.NavigationReady || nms == null)
+        {
+            Debug.LogError("Compact navigation is not ready. Employee initialization was cancelled.", sales);
+            sceneInitialization = null;
+            yield break;
+        }
+
+        if (P != null && P.employee.Count == 0)
             EmployeeAdd();
+        sceneInitialization = null;
+    }
+
+    private void BakeLegacyNavMesh()
+    {
+        try
+        {
+            nms = FindObjectOfType<NavMeshSurface>();
+            if (nms == null)
+            {
+                Debug.LogError("NavMeshSurface is missing from the loaded game scene.", this);
+                return;
+            }
+            nms.BuildNavMesh();
+        }
+        catch (System.Exception err)
+        {
+            Debug.LogError(err);
+        }
+    }
+
+    private static void EnsureCompactGuideIsActive()
+    {
+        foreach (var guide in FindObjectsByType<Guide>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (guide != null && !guide.gameObject.activeSelf)
+                guide.gameObject.SetActive(true);
         }
     }
 
@@ -120,6 +182,7 @@ public class GameManager : Singleton<GameManager>
         List<GameObject> employeesToRemove = new List<GameObject>();
         int employeeNum = 0;
         var savedOrder = new List<GameObject>();
+        bool compactFlow = FindObjectOfType<CompactManualStation>() != null;
         foreach (var name in data.baseCost.employeeList)
         {
             var prefab = employee.Find(candidate => candidate != null && candidate.name == name);
@@ -130,9 +193,12 @@ public class GameManager : Singleton<GameManager>
             if (data.baseCost.employeeList.Contains(item.name))
             {
                 GameObject newEmployee;
-                if (employeeNum != 2)
+                if (employeeNum != 2 || compactFlow)
                 {
-                    newEmployee = Instantiate(item.gameObject, new Vector3(employeeNum, 0, employeeNum), Quaternion.identity);
+                    Vector3 spawnPosition = compactFlow && P != null
+                        ? P.transform.position
+                        : new Vector3(employeeNum, 0, employeeNum);
+                    newEmployee = Instantiate(item.gameObject, spawnPosition, Quaternion.identity);
                     
                 }
                 else
@@ -218,7 +284,15 @@ public class GameManager : Singleton<GameManager>
     // 네비매쉬 빌드
     public void NowNavMeshBake()
     {
-        nms.BuildNavMesh();
+        if (SceneManager.GetActiveScene().name == "CompactFactory_Playtest")
+        {
+            var sales = FindObjectOfType<CompactSalesCounter>();
+            if (sales != null && sales.BuildNavigation())
+                nms = sales.EmployeeNavigationSurface;
+            return;
+        }
+
+        BakeLegacyNavMesh();
     }
 
     // 컨베이어 벨트를 순차적으로 방문하기 위해 만든 함수

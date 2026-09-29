@@ -30,6 +30,54 @@ public sealed class UpgradeServiceTests
         Assert.That(s.GoldPerBoxUpgradeCost, Is.EqualTo(600));
         Assert.That((s.PlayerGoldPerBox-50)*20, Is.EqualTo(result.SpentGold));
     }
+
+    [Test] public void ProductSale_UsesPerItemUpgradePriceAndGoldBuff()
+    {
+        var s = Funded();
+        BalanceTable.Synchronize(s);
+        Assert.That(BalanceTable.ProductSaleIncome(s), Is.EqualTo(10));
+
+        Assert.That(new UpgradeService(s).TryPurchase(UpgradeType.GoldPerBox).Succeeded, Is.True);
+        Assert.That(BalanceTable.ProductSaleIncome(s), Is.EqualTo(13));
+        Assert.That(BalanceTable.ProductSaleIncome(s, .5f), Is.EqualTo(20));
+    }
+
+    [Test] public void UpgradeGraph_RevealsOnlyRootsAndDirectChildren()
+    {
+        var state = Funded();
+        var graph = new UpgradeGraphService(state);
+
+        Assert.That(graph.GetState("manual.speed"), Is.EqualTo(UpgradeNodeState.Purchasable));
+        Assert.That(graph.GetState("manual.capacity"), Is.EqualTo(UpgradeNodeState.Hidden));
+        Assert.That(graph.GetState("automation.employee"), Is.EqualTo(UpgradeNodeState.Hidden));
+
+        Assert.That(new UpgradeService(state).TryPurchase(UpgradeType.PlayerSpeed).Succeeded, Is.True);
+        graph.NotifyPurchaseCommitted("manual.speed");
+
+        Assert.That(graph.GetState("manual.capacity"), Is.EqualTo(UpgradeNodeState.Purchasable));
+        Assert.That(graph.GetState("automation.employee"), Is.EqualTo(UpgradeNodeState.Hidden));
+    }
+
+    [Test] public void UpgradeGraph_MultiplePrerequisiteNodeRespectsFirstEmployeeClaim()
+    {
+        var state = Funded();
+        var upgrades = new UpgradeService(state);
+        var graph = new UpgradeGraphService(state);
+        Assert.That(upgrades.TryPurchase(UpgradeType.PlayerSpeed).Succeeded, Is.True);
+        graph.NotifyPurchaseCommitted("manual.speed");
+        Assert.That(upgrades.TryPurchase(UpgradeType.PlayerMaxStack).Succeeded, Is.True);
+        graph.NotifyPurchaseCommitted("manual.capacity");
+
+        Assert.That(graph.GetState("automation.employee"), Is.EqualTo(UpgradeNodeState.Locked));
+        Assert.That(upgrades.TryPurchase(UpgradeType.GoldPerBox).Succeeded, Is.True);
+        graph.NotifyPurchaseCommitted("sales.price");
+        state.SetUnlocked(BalanceTable.FirstSaleKey, true);
+        Assert.That(graph.GetState("automation.employee"), Is.EqualTo(UpgradeNodeState.Locked));
+        Assert.That(BalanceTable.ClaimEmployee(state), Is.True);
+        graph.Synchronize();
+        Assert.That(graph.GetState("automation.employee"), Is.EqualTo(UpgradeNodeState.Purchased));
+        Assert.That(graph.EvaluatePurchase("automation.employee"), Is.EqualTo(UpgradePurchaseStatus.Success));
+    }
     [Test] public void AllFiveTracks_ReachApprovedStatsAndCosts()
     {
         var s=Funded(); var service=new UpgradeService(s);

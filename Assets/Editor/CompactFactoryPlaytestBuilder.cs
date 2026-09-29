@@ -18,9 +18,32 @@ public static class CompactFactoryPlaytestBuilder
     const string GamePath = "Assets/2. Scene/Game.unity";
     const string LayoutPath = "Assets/2. Scene/CompactFactory_Layout.unity";
     const string WorkIconPath = "Assets/6. 2D Sprite/타이틀 화면/츄릅.png";
+    const string SalesPalletPrefabPath =
+        "Assets/3. Prefab/Worktable/Pallet/Plallet Mint.prefab";
     static readonly Vector3 SupplySpawnPosition = new Vector3(-3.5f, .49f, 6.45f);
     static readonly Vector3 SupplyBeltAdapterPosition = new Vector3(-3f, 0f, 4.1375756f);
     static readonly Vector3 SupplyBeltAdapterScale = new Vector3(1f, 1f, .40414142f);
+    static readonly Vector3 StoreCounterPosition = new Vector3(1.4f, 0f, -4.44f);
+    static readonly Vector3 SalesPalletPosition = new Vector3(1.55f, 0f, -3.25f);
+    static readonly Vector3 SalesPalletScale = Vector3.one * .65f;
+    static readonly Vector3 SalesWorkPointPosition = new Vector3(1.55f, .1f, -3.25f);
+    static readonly Vector3 SalesStockPilePosition = new Vector3(1.55f, .164f, -3.25f);
+    static readonly Vector3 CustomerQueuePosition = new Vector3(1.4f, .02f, -5.63f);
+    static readonly Vector3 CustomerEntryPosition = new Vector3(7.4f, 0f, -6.25f);
+    static readonly Vector3 CustomerExitPosition = new Vector3(-7.4f, 0f, -6.25f);
+    static readonly Vector3 ManualInputTrayPosition = new Vector3(-.944f, .928f, 2.4f);
+    static readonly Vector3 ManualOutputTrayPosition = new Vector3(.944f, .872f, 2.4f);
+    static readonly Vector3 ManualInputMarkerPosition = new Vector3(-1.75f, .02f, 1.45f);
+    static readonly Vector3 ManualOutputMarkerPosition = new Vector3(1.75f, .02f, 1.45f);
+    static readonly Vector3 ManualWorkMarkerPosition = new Vector3(0f, .02f, .85f);
+    static readonly Vector3 ManualInputPointPosition = new Vector3(-1.75f, .1f, 1.45f);
+    static readonly Vector3 ManualOutputPointPosition = new Vector3(1.75f, .1f, 1.45f);
+    static readonly Vector3 ManualWorkPointPosition = new Vector3(0f, .1f, .85f);
+    const float CustomerSidewalkLength = 16f;
+    const float ManualPointFootprint = .85f;
+    const float SalesPointFootprint = 1.5f;
+    static readonly Vector3 SalesPalletBlockerSize = new Vector3(1.1f, .9f, 1.1f);
+    static readonly Vector3 SalesPalletBlockerCenter = new Vector3(0f, .286f, 0f);
 
     [MenuItem("Tools/Churub/Compact Factory/Build Stage 0 Playtest")]
     public static void Build()
@@ -55,7 +78,7 @@ public static class CompactFactoryPlaytestBuilder
             }
             else if (root.name == "[ Player ]")
                 root.transform.position = new Vector3(-1.5f, 0, 0);
-            else if (!new[] {"Work Actions", "Main Camera", "Canvas", "EventSystem",
+            else if (!new[] {"Work Actions", "Main Camera", "Canvas", "EventSystem", "Guide",
                      "AudioManager", "InterstitialAdExample", "RewardedAdsButton"}.Contains(root.name))
                 root.SetActive(false);
         }
@@ -96,6 +119,59 @@ public static class CompactFactoryPlaytestBuilder
         Debug.Log("COMPACT_FACTORY_VISUAL_GAMEPLAY_READY");
     }
 
+    [MenuItem("Tools/Churub/Compact Factory/Install Incremental UX References")]
+    public static void InstallIncrementalUxReferences()
+    {
+        var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        var workPoints = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<WorkPoint>(true)).ToArray();
+        foreach (var point in workPoints)
+        {
+            OnboardingTargetType? type = TargetType(point);
+            if (!type.HasValue) continue;
+            var marker = point.GetComponent<OnboardingTargetMarker>();
+            if (marker == null) marker = point.gameObject.AddComponent<OnboardingTargetMarker>();
+            marker.Configure(type.Value);
+            EditorUtility.SetDirty(marker);
+        }
+
+        var ui = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<UIManager>(true)).SingleOrDefault();
+        Require(ui != null, "UIManager missing from compact playtest");
+        if (ui.GetComponent<UpgradeGraphView>() == null)
+            ui.gameObject.AddComponent<UpgradeGraphView>();
+        ConfigureEmployeeNavigationSurface(scene);
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene, ScenePath);
+        ValidateIncrementalUx(scene);
+        Debug.Log("COMPACT_FACTORY_INCREMENTAL_UX_REFERENCES_READY");
+    }
+
+    private static OnboardingTargetType? TargetType(WorkPoint point)
+    {
+        if (point.Action is CompactManualProcessAction)
+            return OnboardingTargetType.ManualWork;
+        if (!(point.Action is ItemTransfer transfer)) return null;
+        if (transfer.Endpoint is CompactSupplyStation) return OnboardingTargetType.SupplyPickup;
+        if (transfer.Endpoint is CompactManualStation) return OnboardingTargetType.ManualInput;
+        if (transfer.Endpoint is CompactManualOutput) return OnboardingTargetType.ManualOutput;
+        if (transfer.Endpoint is CompactSalesCounter) return OnboardingTargetType.SalesPallet;
+        return null;
+    }
+
+    private static void ValidateIncrementalUx(Scene scene)
+    {
+        var markers = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<OnboardingTargetMarker>(true)).ToArray();
+        foreach (OnboardingTargetType type in Enum.GetValues(typeof(OnboardingTargetType)))
+            Require(markers.Count(marker => marker.TargetType == type) == 1,
+                "Onboarding target missing or duplicated: " + type);
+        var graphViews = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<UpgradeGraphView>(true)).ToArray();
+        Require(graphViews.Length == 1, "Upgrade graph view must exist exactly once");
+    }
+
     public static void RenderVisualProof()
     {
         var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
@@ -103,7 +179,7 @@ public static class CompactFactoryPlaytestBuilder
         var supply = At(gameplay, "Container Supply/Pickup Tray");
         var input = At(gameplay, "Manual Processing/Ingredient Board");
         var output = At(gameplay, "Manual Processing/Finished Product Placement");
-        var sale = At(gameplay, "Front Sales Display");
+        var sale = At(gameplay, "Front Sales Display/Sales Stock Pile");
         var salmon = AssetDatabase.LoadAssetAtPath<GameObject>(
             "Assets/3. Prefab/Churu/Salmon/Salmon.prefab");
         var product = AssetDatabase.LoadAssetAtPath<GameObject>(
@@ -113,9 +189,12 @@ public static class CompactFactoryPlaytestBuilder
         UnityEngine.Object.Instantiate(salmon, input).transform.localPosition = Vector3.zero;
         UnityEngine.Object.Instantiate(product, output).transform.localPosition =
             new Vector3(-.23f, .04f, -.16f);
-        for (int i = 1; i <= 6; i++)
-            UnityEngine.Object.Instantiate(product, At(sale, "Display Slot " + i))
-                .transform.localPosition = Vector3.up * .04f;
+        for (int i = 0; i < 12; i++)
+        {
+            var preview = UnityEngine.Object.Instantiate(product, sale).transform;
+            preview.localPosition = new Vector3((i % 3 - 1) * .23f,
+                .04f + i / 6 * .08f, i % 6 / 3 == 0 ? -.16f : .16f);
+        }
 
         var cameraObject = Root(scene, "Layout Camera");
         cameraObject.SetActive(true);
@@ -154,12 +233,19 @@ public static class CompactFactoryPlaytestBuilder
     public static void Validate()
     {
         var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        ValidateScene(scene);
+    }
+
+    internal static void ValidateScene(Scene scene)
+    {
         Require(Root(scene, "[ Player ]").GetComponent<Player>() != null, "Player missing");
         var playerAnimator = Root(scene, "[ Player ]").GetComponent<Animator>();
         Require(playerAnimator != null && playerAnimator.layerCount > 1 &&
             playerAnimator.GetLayerName(1) == "BoxPackaging Layer",
             "Player packaging animation layer missing");
         Require(Root(scene, "Canvas").GetComponentInChildren<UIManager>(true) != null, "UI missing");
+        ValidateGuide(scene);
+        ValidateIncrementalUx(scene);
         Require(Root(scene, "_Store").GetComponent<Store>() != null, "Store missing");
         Require(!Root(scene, "Factory").activeSelf, "Offscreen factory must be disabled");
         Require(!Root(scene, "_Store").GetComponent<Store>().enabled, "Passive income must be disabled");
@@ -187,8 +273,14 @@ public static class CompactFactoryPlaytestBuilder
         var surface = sidewalk.GetComponent<NavMeshSurface>();
         Require(surface.collectObjects == CollectObjects.Children &&
             surface.layerMask.value == 1 << sidewalk.gameObject.layer &&
-            surface.useGeometry == NavMeshCollectGeometry.RenderMeshes &&
+            surface.useGeometry == NavMeshCollectGeometry.PhysicsColliders &&
             surface.agentTypeID == 0, "Customer NavMeshSurface settings are invalid");
+        Require(Mathf.Abs(sidewalk.localScale.x - CustomerSidewalkLength) < .001f,
+            "Customer sidewalk must extend beyond the play area");
+        Require((routeMarkers.First(t => t.name == "Future Customer Entry").position -
+            CustomerEntryPosition).sqrMagnitude < .001f, "Customer entry is too close");
+        Require((routeMarkers.First(t => t.name == "Future Customer Exit").position -
+            CustomerExitPosition).sqrMagnitude < .001f, "Customer exit is too close");
         Require(ReferencePrefab(supply, "ingredientPrefab", ItemType.Ingredient),
             "Visible ingredient prefab missing");
         Require(supply.StockCapacity >= 50, "Supply stock capacity must be at least 50");
@@ -198,28 +290,57 @@ public static class CompactFactoryPlaytestBuilder
             .objectReferenceValue as Sprite;
         Require(workIcon != null && AssetDatabase.GetAssetPath(workIcon) == WorkIconPath,
             "Manual processing product icon missing");
-        var slots = new SerializedObject(sales).FindProperty("displaySlots");
-        Require(slots.arraySize == 6, "Sales display must have six slots");
-        for (int i = 0; i < slots.arraySize; i++)
-        {
-            var slot = slots.GetArrayElementAtIndex(i).objectReferenceValue as Transform;
-            Require(slot != null,
-                "Sales display slot missing: " + i);
-            Require((slot.position - new Vector3(.55f + i * .34f, .66f, -5.38f))
-                .sqrMagnitude < .001f, "Sales display slot misplaced: " + i);
-        }
+        var salesData = new SerializedObject(sales);
+        var stockAnchor = salesData.FindProperty("stockAnchor").objectReferenceValue as Transform;
+        Require(stockAnchor != null &&
+            (stockAnchor.position - SalesStockPilePosition).sqrMagnitude < .001f,
+            "Sales stock pile misplaced");
+        var palletBlocker = stockAnchor.GetComponent<BoxCollider>();
+        Require(palletBlocker != null && palletBlocker.enabled && !palletBlocker.isTrigger &&
+            (palletBlocker.size - SalesPalletBlockerSize).sqrMagnitude < .001f &&
+            (palletBlocker.center - SalesPalletBlockerCenter).sqrMagnitude < .001f,
+            "Sales stock pallet blocker is missing");
+        Require(sales.StockCapacity >= 100, "Sales stock capacity must be at least 100");
         Require((At(gameplay.transform, "Container Supply/Pickup Tray").position -
             new Vector3(-3.5f, .11f, 3.29f)).sqrMagnitude < .001f,
             "Supply pickup tray misplaced");
         Require((At(gameplay.transform, "Container Supply/Container Feed").position -
             SupplySpawnPosition).sqrMagnitude < .001f, "Supply feed spawn misplaced");
         Require((At(gameplay.transform, "Manual Processing/Ingredient Board").position -
-            new Vector3(.944f, .928f, 2.4f)).sqrMagnitude < .001f,
+            ManualInputTrayPosition).sqrMagnitude < .001f,
             "Processing input tray misplaced");
         Require((At(gameplay.transform, "Manual Processing/Finished Product Placement").position -
-            new Vector3(-.944f, .872f, 2.4f)).sqrMagnitude < .001f,
+            ManualOutputTrayPosition).sqrMagnitude < .001f,
             "Processing output placement misplaced");
         var starter = Root(scene, "01 Starter Workshop - 10 x 10 m").transform;
+        var employeeSurface = starter.GetComponent<NavMeshSurface>();
+        Require(employeeSurface != null &&
+            employeeSurface.collectObjects == CollectObjects.Children &&
+            employeeSurface.layerMask.value == ~0 &&
+            employeeSurface.useGeometry == NavMeshCollectGeometry.PhysicsColliders &&
+            employeeSurface.agentTypeID == 0,
+            "Employee NavMeshSurface settings are invalid");
+        var salesCounterVisual = At(starter, "Starter Sales Counter");
+        Require((salesCounterVisual.position - StoreCounterPosition).sqrMagnitude < .001f,
+            "Sales counter misplaced");
+        var salesCounterCollider = salesCounterVisual.GetComponent<MeshCollider>();
+        Require(salesCounterVisual.gameObject.layer == 0 && salesCounterCollider != null &&
+            salesCounterCollider.enabled && !salesCounterCollider.isTrigger &&
+            salesCounterCollider.sharedMesh == salesCounterVisual.GetComponent<MeshFilter>()?.sharedMesh,
+            "Sales counter collision is missing");
+        Require(!At(starter, "Stocking Interaction").gameObject.activeSelf,
+            "Legacy sales stocking marker must be hidden");
+        var salesPallet = At(starter, "Sales Stock Pallet");
+        Require((salesPallet.position - SalesPalletPosition).sqrMagnitude < .001f &&
+            (salesPallet.localScale - SalesPalletScale).sqrMagnitude < .001f,
+            "Sales stock pallet misplaced");
+        var palletPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SalesPalletPrefabPath);
+        Require(palletPrefab != null &&
+            PrefabUtility.GetCorrespondingObjectFromOriginalSource(salesPallet.gameObject) ==
+                palletPrefab,
+            "Sales stock pallet prefab is disconnected");
+        Require((At(starter, "Customer Queue").position - CustomerQueuePosition)
+            .sqrMagnitude < .001f, "Customer queue misplaced");
         var feederAdapter = At(starter,
             "Salmon Container Supply/Short Feeder Length Adapter");
         Require((feederAdapter.localPosition - SupplyBeltAdapterPosition).sqrMagnitude < .001f &&
@@ -235,18 +356,22 @@ public static class CompactFactoryPlaytestBuilder
         var benchVisual = At(starter, "Manual Processing Station");
         Require((benchVisual.localScale - Vector3.one * .8f).sqrMagnitude < .001f,
             "Manual processing station scale must be 0.8");
+        var inputTrayParts = benchVisual.Cast<Transform>().Where(t =>
+            t.name.StartsWith("InputTray_", StringComparison.Ordinal)).ToArray();
+        Require(inputTrayParts.Length == 5 && inputTrayParts.All(t => t.localPosition.x < 0f),
+            "Salmon tray visuals must be placed on the input side");
         var outputTrayParts = benchVisual.Cast<Transform>().Where(t =>
             t.name.StartsWith("OutputTray_", StringComparison.Ordinal)).ToArray();
         Require(outputTrayParts.Length == 5 && outputTrayParts.All(t => !t.gameObject.activeSelf),
             "Finished product tray visuals must be hidden");
         Require((At(starter, "Processing Interaction").position -
-            new Vector3(1.46f, .02f, 1.1f)).sqrMagnitude < .001f,
+            ManualInputMarkerPosition).sqrMagnitude < .001f,
             "Processing input marker misplaced");
         Require((At(starter, "Finished Product Interaction").position -
-            new Vector3(-1.44f, .02f, 1.1f)).sqrMagnitude < .001f,
+            ManualOutputMarkerPosition).sqrMagnitude < .001f,
             "Processing output marker misplaced");
         Require((At(starter, "Processing Work Interaction").position -
-            new Vector3(0, .02f, 1.1f)).sqrMagnitude < .001f,
+            ManualWorkMarkerPosition).sqrMagnitude < .001f,
             "Processing work marker misplaced");
         Require(!Root(scene, "Layout Camera").activeSelf, "Second camera active");
         Require(!At(Root(scene, "01 Starter Workshop - 10 x 10 m").transform,
@@ -256,18 +381,20 @@ public static class CompactFactoryPlaytestBuilder
         Check(scene, "Stage 0 Gameplay", typeof(CompactSupplyStation),
             new Vector3(-3.5f, .1f, 2));
         Check(scene, "Stage 0 Gameplay", typeof(CompactManualStation),
-            new Vector3(1.18f, .1f, 1.1f));
+            ManualInputPointPosition, ManualPointFootprint);
         Check(scene, "Stage 0 Gameplay", typeof(CompactManualOutput),
-            new Vector3(-1.18f, .1f, 1.1f));
+            ManualOutputPointPosition, ManualPointFootprint);
         var processPoint = gameplay.GetComponentsInChildren<WorkPoint>(true).FirstOrDefault(p =>
             p.gameObject.activeInHierarchy &&
-            (p.transform.position - new Vector3(0, .1f, 1.1f)).sqrMagnitude < .01f);
+            (p.transform.position - ManualWorkPointPosition).sqrMagnitude < .01f);
         Require(processPoint != null && processPoint.Action is CompactManualProcessAction process &&
             process.Station == manual &&
-            processPoint.GetComponents<Collider>().Any(c => c.enabled && c.isTrigger),
+            processPoint.GetComponents<BoxCollider>().Any(c => c.enabled && c.isTrigger &&
+                Mathf.Abs(c.size.x - ManualPointFootprint) < .001f &&
+                Mathf.Abs(c.size.z - ManualPointFootprint) < .001f),
             "Manual processing WorkPoint missing or disconnected");
         Check(scene, "Stage 0 Gameplay", typeof(CompactSalesCounter),
-            new Vector3(1.4f, .1f, -3.75f));
+            SalesWorkPointPosition, SalesPointFootprint);
         Check(scene, "_Store/Common GameObjects", typeof(StoreInteraction),
             new Vector3(1.4f, .1f, -4.45f));
         foreach (var root in scene.GetRootGameObjects())
@@ -277,7 +404,54 @@ public static class CompactFactoryPlaytestBuilder
         Debug.Log("COMPACT_FACTORY_PLAYTEST_VALIDATION_PASS");
     }
 
-    static void Check(Scene scene, string path, Type endpointType, Vector3 expected)
+    static void ValidateGuide(Scene scene)
+    {
+        var guideObject = Root(scene, "Guide");
+        Require(guideObject.activeSelf, "Guide root must be active");
+        var guide = guideObject.GetComponent<Guide>();
+        Require(guide != null && guide.enabled, "Guide component missing or disabled");
+
+        var serializedGuide = new SerializedObject(guide);
+        foreach (var field in new[] { "guidePrefab", "guideButton", "guideUI", "guideLine" })
+            Require(serializedGuide.FindProperty(field)?.objectReferenceValue != null,
+                "Guide reference missing: " + field);
+
+        var targets = serializedGuide.FindProperty("targets");
+        Require(targets != null && targets.isArray && targets.arraySize >= 15,
+            "Guide expansion target list is incomplete");
+        var unlocks = guideObject.GetComponentsInChildren<UnlockManager>(true);
+        foreach (UnlockType type in Enum.GetValues(typeof(UnlockType)))
+            Require(unlocks.Count(unlock => unlock.Type == type) == 1,
+                "Guide unlock target missing or duplicated: " + type);
+        var ui = Root(scene, "Canvas").GetComponentInChildren<UIManager>(true);
+        var serializedUi = new SerializedObject(ui);
+        Require(serializedUi.FindProperty("upgradePanel")?.objectReferenceValue != null,
+            "Upgrade panel is disconnected");
+        Require(serializedUi.FindProperty("upgradeCostText")?.arraySize >= 6,
+            "Upgrade buttons are disconnected");
+
+        var gameplay = Root(scene, "Stage 0 Gameplay");
+        var supply = gameplay.GetComponentInChildren<CompactSupplyStation>(true);
+        var manual = gameplay.GetComponentInChildren<CompactManualStation>(true);
+        var sales = gameplay.GetComponentInChildren<CompactSalesCounter>(true);
+        var workPoints = scene.GetRootGameObjects().SelectMany(root =>
+            root.GetComponentsInChildren<WorkPoint>(true)).ToArray();
+
+        Require(workPoints.Any(point => point.Action is ItemTransfer transfer &&
+            transfer.Endpoint == supply), "Guide step 0 is disconnected from compact supply");
+        Require(workPoints.Any(point => point.Action is ItemTransfer transfer &&
+            transfer.Endpoint == manual), "Guide step 1 is disconnected from manual input");
+        Require(workPoints.Any(point => point.Action is CompactManualProcessAction process &&
+            process.Station == manual), "Guide step 2 is disconnected from manual processing");
+        Require(workPoints.Any(point => point.Action is ItemTransfer transfer &&
+            transfer.Endpoint is CompactManualOutput output && output.Station == manual),
+            "Guide step 3 is disconnected from manual output");
+        Require(workPoints.Any(point => point.Action is ItemTransfer transfer &&
+            transfer.Endpoint == sales), "Guide steps 4 and 5 are disconnected from sales stock");
+    }
+
+    static void Check(Scene scene, string path, Type endpointType, Vector3 expected,
+        float? footprint = null)
     {
         var slash = path.IndexOf('/');
         var parent = slash < 0 ? Root(scene, path).transform
@@ -288,6 +462,11 @@ public static class CompactFactoryPlaytestBuilder
         Require(point != null, "WorkPoint missing: " + path);
         Require(point.GetComponents<Collider>().Any(c => c.enabled && c.isTrigger),
             "Trigger collider missing: " + path);
+        if (footprint.HasValue)
+            Require(point.GetComponents<BoxCollider>().Any(c => c.enabled && c.isTrigger &&
+                Mathf.Abs(c.size.x - footprint.Value) < .001f &&
+                Mathf.Abs(c.size.z - footprint.Value) < .001f),
+                "Trigger footprint mismatch: " + path);
         Require(endpointType == typeof(StoreInteraction)
             ? point.Action is StoreInteraction
             : point.Action is ItemTransfer transfer && transfer.Endpoint != null &&
@@ -308,20 +487,57 @@ public static class CompactFactoryPlaytestBuilder
 
     static void InstallStageZero(Scene scene)
     {
+        var ui = Root(scene, "Canvas").GetComponentInChildren<UIManager>(true);
+        Require(ui != null, "UIManager missing");
+        if (ui.GetComponent<UpgradeGraphView>() == null)
+            ui.gameObject.AddComponent<UpgradeGraphView>();
         var starter = Root(scene, "01 Starter Workshop - 10 x 10 m").transform;
+        ConfigureEmployeeNavigationSurface(scene);
+        var salesCounterVisual = At(starter, "Starter Sales Counter");
+        salesCounterVisual.position = StoreCounterPosition;
+        salesCounterVisual.gameObject.layer = 0;
+        var salesCounterCollider = salesCounterVisual.GetComponent<MeshCollider>();
+        if (salesCounterCollider == null)
+            salesCounterCollider = salesCounterVisual.gameObject.AddComponent<MeshCollider>();
+        salesCounterCollider.sharedMesh = salesCounterVisual.GetComponent<MeshFilter>().sharedMesh;
+        salesCounterCollider.convex = false;
+        salesCounterCollider.isTrigger = false;
+        salesCounterCollider.enabled = true;
+        At(starter, "Stocking Interaction").gameObject.SetActive(false);
+        var palletPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SalesPalletPrefabPath);
+        Require(palletPrefab != null, "Sales stock pallet prefab missing");
+        var salesPallet = PrefabUtility.InstantiatePrefab(palletPrefab, starter) as GameObject;
+        Require(salesPallet != null, "Cannot instantiate sales stock pallet");
+        salesPallet.name = "Sales Stock Pallet";
+        salesPallet.transform.position = SalesPalletPosition;
+        salesPallet.transform.localScale = SalesPalletScale;
+        At(starter, "Customer Queue").position = CustomerQueuePosition;
+        var salesFrontage = At(starter, "Exterior Sales Frontage");
+        At(salesFrontage, "Future Customer Entry").position = CustomerEntryPosition;
+        At(salesFrontage, "Future Customer Exit").position = CustomerExitPosition;
+        At(salesFrontage, "Customer Sidewalk").localScale =
+            new Vector3(CustomerSidewalkLength, .24f, 2.5f);
         var inputMarker = At(starter, "Processing Interaction");
-        inputMarker.position = new Vector3(1.46f, .02f, 1.1f);
+        inputMarker.position = ManualInputMarkerPosition;
         var outputMarker = UnityEngine.Object.Instantiate(inputMarker.gameObject, starter);
         outputMarker.name = "Finished Product Interaction";
-        outputMarker.transform.position = new Vector3(-1.44f, .02f, 1.1f);
+        outputMarker.transform.position = ManualOutputMarkerPosition;
         var processMarker = UnityEngine.Object.Instantiate(inputMarker.gameObject, starter);
         processMarker.name = "Processing Work Interaction";
-        processMarker.transform.position = new Vector3(0, .02f, 1.1f);
+        processMarker.transform.position = ManualWorkMarkerPosition;
         var benchVisual = At(starter, "Manual Processing Station");
         benchVisual.localScale = Vector3.one * .8f;
         foreach (Transform part in benchVisual)
-            if (part.name.StartsWith("OutputTray_", StringComparison.Ordinal))
+        {
+            if (part.name.StartsWith("InputTray_", StringComparison.Ordinal))
+            {
+                var localPosition = part.localPosition;
+                localPosition.x = -Mathf.Abs(localPosition.x);
+                part.localPosition = localPosition;
+            }
+            else if (part.name.StartsWith("OutputTray_", StringComparison.Ordinal))
                 part.gameObject.SetActive(false);
+        }
 
         var feederAdapter = At(starter,
             "Salmon Container Supply/Short Feeder Length Adapter");
@@ -338,7 +554,7 @@ public static class CompactFactoryPlaytestBuilder
             customerSurface = sidewalk.gameObject.AddComponent<NavMeshSurface>();
         customerSurface.collectObjects = CollectObjects.Children;
         customerSurface.layerMask = 1 << sidewalk.gameObject.layer;
-        customerSurface.useGeometry = NavMeshCollectGeometry.RenderMeshes;
+        customerSurface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
         customerSurface.agentTypeID = 0;
 
         var factory = Root(scene, "Factory");
@@ -372,29 +588,45 @@ public static class CompactFactoryPlaytestBuilder
         var manual = benchObject.gameObject.AddComponent<CompactManualStation>();
         Assign(manual, "productPrefab", productPrefab);
         Assign(manual, "workIcon", workIcon);
-        Assign(manual, "inputTray", Child(benchObject, "Ingredient Board", new Vector3(.944f, .928f, 2.4f)));
-        Assign(manual, "outputTray", Child(benchObject, "Finished Product Placement", new Vector3(-.944f, .872f, 2.4f)));
+        Assign(manual, "inputTray", Child(benchObject, "Ingredient Board", ManualInputTrayPosition));
+        Assign(manual, "outputTray", Child(benchObject, "Finished Product Placement", ManualOutputTrayPosition));
         var output = benchObject.gameObject.AddComponent<CompactManualOutput>();
         Assign(output, "station", manual);
 
         var counterObject = Child(group.transform, "Front Sales Display");
         var counter = counterObject.gameObject.AddComponent<CompactSalesCounter>();
-        var slots = new Transform[6];
-        for (int i = 0; i < slots.Length; i++)
-            slots[i] = Child(counterObject, "Display Slot " + (i + 1),
-                new Vector3(.55f + i * .34f, .66f, -5.38f));
+        var stockAnchor = Child(counterObject, "Sales Stock Pile", SalesStockPilePosition);
+        var palletBlocker = stockAnchor.gameObject.AddComponent<BoxCollider>();
+        palletBlocker.isTrigger = false;
+        palletBlocker.center = SalesPalletBlockerCenter;
+        palletBlocker.size = SalesPalletBlockerSize;
         var serialized = new SerializedObject(counter);
-        var display = serialized.FindProperty("displaySlots");
-        display.arraySize = slots.Length;
-        for (int i = 0; i < slots.Length; i++)
-            display.GetArrayElementAtIndex(i).objectReferenceValue = slots[i];
+        serialized.FindProperty("stockAnchor").objectReferenceValue = stockAnchor;
+        serialized.FindProperty("capacity").intValue = 100;
         serialized.ApplyModifiedPropertiesWithoutUndo();
 
         Trigger(group.transform, "Take Salmon", new Vector3(-3.5f, .1f, 2), supply);
-        Trigger(group.transform, "Place Salmon", new Vector3(1.18f, .1f, 1.1f), manual);
-        ProcessTrigger(group.transform, new Vector3(0, .1f, 1.1f), manual);
-        Trigger(group.transform, "Take Churu", new Vector3(-1.18f, .1f, 1.1f), output);
-        Trigger(group.transform, "Stock Sales Display", new Vector3(1.4f, .1f, -3.75f), counter);
+        Trigger(group.transform, "Place Salmon", ManualInputPointPosition, manual,
+            ManualPointFootprint);
+        ProcessTrigger(group.transform, ManualWorkPointPosition, manual,
+            ManualPointFootprint);
+        Trigger(group.transform, "Take Churu", ManualOutputPointPosition, output,
+            ManualPointFootprint);
+        Trigger(group.transform, "Stock Sales Display", SalesWorkPointPosition, counter,
+            SalesPointFootprint);
+    }
+
+    private static void ConfigureEmployeeNavigationSurface(Scene scene)
+    {
+        var starter = Root(scene, "01 Starter Workshop - 10 x 10 m");
+        var surface = starter.GetComponent<NavMeshSurface>();
+        if (surface == null)
+            surface = starter.AddComponent<NavMeshSurface>();
+        surface.collectObjects = CollectObjects.Children;
+        surface.layerMask = ~0;
+        surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+        surface.agentTypeID = 0;
+        EditorUtility.SetDirty(surface);
     }
 
     static Transform Child(Transform parent, string name, Vector3? worldPosition = null)
@@ -405,30 +637,44 @@ public static class CompactFactoryPlaytestBuilder
         return child;
     }
 
-    static void Trigger(Transform parent, string name, Vector3 position, MonoBehaviour endpoint)
+    static void Trigger(Transform parent, string name, Vector3 position, MonoBehaviour endpoint,
+        float footprint = 1.1f)
     {
         var target = Child(parent, name, position).gameObject;
         var collider = target.AddComponent<BoxCollider>();
         collider.isTrigger = true;
         collider.center = new Vector3(0, .9f, 0);
-        collider.size = new Vector3(1.1f, 1.8f, 1.1f);
+        collider.size = new Vector3(footprint, 1.8f, footprint);
         var action = target.AddComponent<ItemTransfer>();
         Assign(action, "endpoint", endpoint);
         var point = target.AddComponent<WorkPoint>();
         Assign(point, "action", action);
+        OnboardingTargetType? targetType = endpoint is CompactSupplyStation
+            ? OnboardingTargetType.SupplyPickup
+            : endpoint is CompactManualStation
+                ? OnboardingTargetType.ManualInput
+                : endpoint is CompactManualOutput
+                    ? OnboardingTargetType.ManualOutput
+                    : endpoint is CompactSalesCounter
+                        ? OnboardingTargetType.SalesPallet
+                        : (OnboardingTargetType?)null;
+        if (targetType.HasValue)
+            target.AddComponent<OnboardingTargetMarker>().Configure(targetType.Value);
     }
 
-    static void ProcessTrigger(Transform parent, Vector3 position, CompactManualStation station)
+    static void ProcessTrigger(Transform parent, Vector3 position, CompactManualStation station,
+        float footprint = 1.1f)
     {
         var target = Child(parent, "Process Salmon", position).gameObject;
         var collider = target.AddComponent<BoxCollider>();
         collider.isTrigger = true;
         collider.center = new Vector3(0, .9f, 0);
-        collider.size = new Vector3(1.1f, 1.8f, 1.1f);
+        collider.size = new Vector3(footprint, 1.8f, footprint);
         var action = target.AddComponent<CompactManualProcessAction>();
         Assign(action, "station", station);
         var point = target.AddComponent<WorkPoint>();
         Assign(point, "action", action);
+        target.AddComponent<OnboardingTargetMarker>().Configure(OnboardingTargetType.ManualWork);
     }
 
     static void Assign(UnityEngine.Object target, string field, UnityEngine.Object value)

@@ -227,7 +227,13 @@ public static class GameDataCodec
             [GameDataSchema.Fields.FacilityInvestments] = data.facilityInvestments,
             [GameDataSchema.Fields.GuideStep] = data.guideStep,
             [GameDataSchema.Fields.NewGame] = data.newGame,
-            [GameDataSchema.Fields.SaveRevision] = data.saveRevision
+            [GameDataSchema.Fields.SaveRevision] = data.saveRevision,
+            [GameDataSchema.Fields.OnboardingVersion] = data.onboardingVersion,
+            [GameDataSchema.Fields.OnboardingStep] = data.onboardingStep,
+            [GameDataSchema.Fields.OnboardingCompleted] = data.onboardingCompleted,
+            [GameDataSchema.Fields.UpgradeGraphVersion] = data.upgradeGraphVersion,
+            [GameDataSchema.Fields.UpgradeNodeLevels] = data.upgradeNodeLevels,
+            [GameDataSchema.Fields.RevealedUpgradeNodes] = data.revealedUpgradeNodes
         };
         if (guest) fields[GameDataSchema.Fields.GuestId] = data.guestID ?? "";
         return fields;
@@ -254,15 +260,31 @@ public static class GameDataCodec
         data.guideStep = ReadInt(json, GameDataSchema.Fields.GuideStep, data.guideStep);
         data.newGame = ReadBool(json, GameDataSchema.Fields.NewGame, data.newGame);
         data.saveRevision = ReadInt(json, GameDataSchema.Fields.SaveRevision, data.saveRevision);
+        bool hasOnboarding = json.Keys.Contains(GameDataSchema.Fields.OnboardingVersion);
+        data.onboardingVersion = ReadInt(json, GameDataSchema.Fields.OnboardingVersion,
+            hasOnboarding ? data.onboardingVersion : IncrementalProgress.CurrentOnboardingVersion);
+        data.onboardingStep = ReadInt(json, GameDataSchema.Fields.OnboardingStep, data.onboardingStep);
+        data.onboardingCompleted = ReadBool(json, GameDataSchema.Fields.OnboardingCompleted,
+            !hasOnboarding);
+        data.upgradeGraphVersion = ReadInt(json, GameDataSchema.Fields.UpgradeGraphVersion,
+            data.upgradeGraphVersion);
         ReadMap(TryGet(json, GameDataSchema.Fields.UpgradeCosts), data.upgradeCosts, value => int.Parse(value, CultureInfo.InvariantCulture));
         ReadMap(TryGet(json, GameDataSchema.Fields.PlayerData), data.playerData, ReadFloat);
         ReadMap(TryGet(json, GameDataSchema.Fields.EmployeeData), data.employeeData, ReadFloat);
         ReadMap(TryGet(json, GameDataSchema.Fields.ObjectData), data.objectData, value => int.Parse(value, CultureInfo.InvariantCulture));
         ReadMap(TryGet(json, GameDataSchema.Fields.GameProgress), data.gameProgressBool, bool.Parse);
         ReadMap(TryGet(json, GameDataSchema.Fields.FacilityInvestments), data.facilityInvestments, value => int.Parse(value, CultureInfo.InvariantCulture));
+        ReadMap(TryGet(json, GameDataSchema.Fields.UpgradeNodeLevels), data.upgradeNodeLevels,
+            value => int.Parse(value, CultureInfo.InvariantCulture));
         var employeeList = TryGet(json, GameDataSchema.Fields.EmployeeList);
         if (employeeList != null && employeeList.IsArray)
             foreach (JsonData name in employeeList) data.employeeList.Add(name.ToString());
+        var revealedNodes = TryGet(json, GameDataSchema.Fields.RevealedUpgradeNodes);
+        if (revealedNodes != null && revealedNodes.IsArray)
+            foreach (JsonData id in revealedNodes)
+                if (id != null && !data.revealedUpgradeNodes.Contains(id.ToString()))
+                    data.revealedUpgradeNodes.Add(id.ToString());
+        IncrementalProgress.Migrate(data, hasOnboarding);
         return data;
     }
     private static float ReadFloat(string value)

@@ -13,12 +13,15 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
     private readonly ItemBuffer input = new ItemBuffer(100, ItemType.Ingredient);
     private readonly ItemBuffer output = new ItemBuffer(100, ItemType.Churu);
     private Coroutine processing;
-    private Player operatorPlayer;
+    private GameObject operatorActor;
     private Player animatedPlayer;
+    private Employee animatedEmployee;
     private CompactManualProgressView progressView;
     private bool workVisualsActive;
     public int InputCount => input.Count;
+    public int InputCapacity => input.Capacity;
     public int OutputCount => output.Count;
+    public int OutputCapacity => output.Capacity;
     public int SavedInputCount => input.Count;
     public GameObject ProductPrefab => productPrefab;
 
@@ -57,40 +60,62 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
 
     public void SetOperator(Player player, bool present)
     {
+        SetOperator(player != null ? player.gameObject : null, present);
+    }
+
+    public void SetOperator(Employee employee, bool present)
+    {
+        SetOperator(employee != null ? employee.gameObject : null, present);
+    }
+
+    private void SetOperator(GameObject actor, bool present)
+    {
         if (present)
         {
-            if (player == null) return;
-            if (operatorPlayer != player) StopWorkVisuals();
-            operatorPlayer = player;
+            if (actor == null) return;
+            if (operatorActor != null && operatorActor != actor)
+            {
+                bool incomingPlayer = actor.GetComponent<Player>() != null;
+                bool currentPlayer = operatorActor.GetComponent<Player>() != null;
+                if (!incomingPlayer || currentPlayer) return;
+                StopWorkVisuals();
+            }
+            operatorActor = actor;
             StartProcessingIfNeeded();
         }
-        else if (operatorPlayer == player)
+        else if (operatorActor == actor)
         {
             StopWorkVisuals();
-            operatorPlayer = null;
+            operatorActor = null;
         }
     }
 
     private void StartProcessingIfNeeded()
     {
-        if (operatorPlayer != null && processing == null && !input.IsEmpty)
+        if (operatorActor != null && processing == null && !input.IsEmpty)
             processing = StartCoroutine(Process());
     }
 
     private void SetWorkVisuals(float progress)
     {
-        if (operatorPlayer == null) return;
-        if (!workVisualsActive || animatedPlayer != operatorPlayer)
+        if (operatorActor == null) return;
+        Player player = operatorActor.GetComponent<Player>();
+        Employee employee = operatorActor.GetComponent<Employee>();
+        if (!workVisualsActive || animatedPlayer != player || animatedEmployee != employee)
         {
             StopWorkVisuals();
-            animatedPlayer = operatorPlayer;
+            animatedPlayer = player;
+            animatedEmployee = employee;
             Vector3 workPosition = inputTray != null && outputTray != null
                 ? (inputTray.position + outputTray.position) * .5f
                 : transform.position;
-            animatedPlayer.DoManualProcessingAnimation(workPosition);
-            progressView = animatedPlayer.GetComponent<CompactManualProgressView>();
+            if (animatedPlayer != null)
+                animatedPlayer.DoManualProcessingAnimation(workPosition);
+            else if (animatedEmployee != null)
+                animatedEmployee.DoManualProcessingAnimation(workPosition);
+            progressView = operatorActor.GetComponent<CompactManualProgressView>();
             if (progressView == null)
-                progressView = animatedPlayer.gameObject.AddComponent<CompactManualProgressView>();
+                progressView = operatorActor.AddComponent<CompactManualProgressView>();
             progressView.SetIcon(workIcon);
             workVisualsActive = true;
         }
@@ -101,9 +126,12 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
     {
         if (animatedPlayer != null)
             animatedPlayer.StopBoxPackagingAnimationPlayer();
+        if (animatedEmployee != null)
+            animatedEmployee.StopBoxPackagingAnimationEmployee();
         if (progressView != null)
             progressView.Hide();
         animatedPlayer = null;
+        animatedEmployee = null;
         workVisualsActive = false;
     }
 
@@ -116,9 +144,9 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
         {
             float duration = Mathf.Max(.01f, processingSeconds);
             float remaining = duration;
-            while (remaining > 0f || operatorPlayer == null || output.IsFull)
+            while (remaining > 0f || operatorActor == null || output.IsFull)
             {
-                bool canWork = operatorPlayer != null && !output.IsFull;
+                bool canWork = operatorActor != null && !output.IsFull;
                 if (canWork)
                     SetWorkVisuals(1f - Mathf.Clamp01(remaining / duration));
                 else
@@ -150,6 +178,9 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
                 break;
             }
             PlaceOutput(item, slot, true);
+            CompactTelemetryEvents.Record(CompactTelemetryMetric.ProductProcessed);
+            if (operatorActor != null && operatorActor.GetComponent<Player>() != null)
+                CompactProgressEvents.Raise(CompactProgressAction.ProductCompleted);
         }
         StopWorkVisuals();
         processing = null;
@@ -158,7 +189,7 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
     private void OnDisable()
     {
         StopWorkVisuals();
-        operatorPlayer = null;
+        operatorActor = null;
         if (processing != null) StopCoroutine(processing);
         processing = null;
     }
@@ -186,6 +217,7 @@ public sealed class CompactManualStation : MonoBehaviour, IItemTransferEndpoint
 public sealed class CompactManualOutput : MonoBehaviour, IItemTransferEndpoint
 {
     [SerializeField] private CompactManualStation station;
+    public CompactManualStation Station => station;
     public bool TryTransfer(CarrierInventory inventory, Transform carryParent) =>
         station != null && station.TryCollect(inventory, carryParent);
 }

@@ -106,4 +106,26 @@ public sealed class GameDataStateTests
         Assert.That(state.objectData[GameDataSchema.Objects.CompactCarryType], Is.EqualTo(-1));
         Assert.That(state.PackagingWaitCount, Is.EqualTo(4));
     }
+
+    [Test]
+    public void VersionedIncrementalProgress_DefaultsToFreshOnboarding()
+    {
+        var state = new GameDataState();
+
+        Assert.That(state.onboardingVersion, Is.EqualTo(IncrementalProgress.CurrentOnboardingVersion));
+        Assert.That(state.onboardingStep, Is.Zero);
+        Assert.That(state.onboardingCompleted, Is.False);
+        Assert.That(state.upgradeGraphVersion, Is.EqualTo(IncrementalProgress.CurrentUpgradeGraphVersion));
+    }
+
+    [Test]
+    public void LegacySaveMigration_DoesNotForceOnboardingOnExistingPlayer()
+    {
+        var state = new GameDataState { onboardingStep = 0, onboardingCompleted = false };
+
+        IncrementalProgress.Migrate(state, hadOnboardingFields: false);
+
+        Assert.That(state.onboardingCompleted, Is.True);
+        Assert.That(state.onboardingStep, Is.EqualTo(IncrementalProgress.OnboardingStepCount));
+    }
 }

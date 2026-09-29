@@ -17,6 +17,12 @@ namespace Churub.Core
             public const string GuideStep = "guideStep";
             public const string NewGame = "newGame";
             public const string SaveRevision = "saveRevision";
+            public const string OnboardingVersion = "onboardingVersion";
+            public const string OnboardingStep = "onboardingStep";
+            public const string OnboardingCompleted = "onboardingCompleted";
+            public const string UpgradeGraphVersion = "upgradeGraphVersion";
+            public const string UpgradeNodeLevels = "upgradeNodeLevels";
+            public const string RevealedUpgradeNodes = "revealedUpgradeNodes";
         }
 
         public static class Upgrades

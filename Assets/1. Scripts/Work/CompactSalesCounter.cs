@@ -7,21 +7,24 @@ using UnityEngine.AI;
 // Customers buy only products that the player has placed on the display.
 public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, IObjectDataSave
 {
-    [SerializeField] private Transform[] displaySlots;
+    private const int ItemsPerLayer = 6;
+    private const int ColumnsPerLayer = 3;
+
+    [SerializeField] private Transform stockAnchor;
+    [Min(1)] [SerializeField] private int capacity = 100;
     private ItemBuffer stock;
-    private bool[] occupiedSlots;
-    private readonly Dictionary<Item, int> itemSlots = new Dictionary<Item, int>();
     private CompactSupplyStation supply;
     private CompactManualStation station;
     private Player player;
     private BaseCost saveState;
     public int StockCount => stock == null ? 0 : stock.Count;
+    public int StockCapacity => stock == null ? Mathf.Max(1, capacity) : stock.Capacity;
+    public NavMeshSurface EmployeeNavigationSurface { get; private set; }
+    public bool NavigationReady { get; private set; }
 
     private void Awake()
     {
-        int capacity = displaySlots == null ? 0 : displaySlots.Length;
-        stock = new ItemBuffer(capacity, ItemType.Churu);
-        occupiedSlots = new bool[capacity];
+        stock = new ItemBuffer(Mathf.Max(1, capacity), ItemType.Churu);
     }
 
     private void Start()
@@ -58,14 +61,59 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
             Debug.LogError("Compact customer sidewalk is missing.", this);
             return;
         }
-        var surface = sidewalk.GetComponent<NavMeshSurface>();
-        if (surface == null) surface = sidewalk.AddComponent<NavMeshSurface>();
-        surface.collectObjects = CollectObjects.Children;
-        surface.layerMask = 1 << sidewalk.layer;
-        surface.useGeometry = NavMeshCollectGeometry.RenderMeshes;
-        surface.agentTypeID = 0;
-        surface.BuildNavMesh();
+
+        if (!BuildNavigation())
+        {
+            Debug.LogError("Compact navigation could not be built.", this);
+            return;
+        }
         spawner.ConfigureCompactSales(this, entry.transform, queue.transform, exit.transform);
+    }
+
+    public bool BuildNavigation()
+    {
+        var workshop = GameObject.Find("01 Starter Workshop - 10 x 10 m");
+        var sidewalk = GameObject.Find("Customer Sidewalk");
+        if (workshop == null)
+        {
+            Debug.LogError("Compact employee workshop is missing.", this);
+            NavigationReady = false;
+            return false;
+        }
+        if (sidewalk == null || sidewalk.GetComponent<MeshFilter>() == null)
+        {
+            Debug.LogError("Compact customer sidewalk is missing.", this);
+            NavigationReady = false;
+            return false;
+        }
+
+        EmployeeNavigationSurface = workshop.GetComponent<NavMeshSurface>();
+        if (EmployeeNavigationSurface == null)
+            EmployeeNavigationSurface = workshop.AddComponent<NavMeshSurface>();
+        ConfigureRuntimeSurface(EmployeeNavigationSurface, ~0);
+        EmployeeNavigationSurface.agentTypeID = 0;
+        EmployeeNavigationSurface.BuildNavMesh();
+
+        var customerSurface = sidewalk.GetComponent<NavMeshSurface>();
+        if (customerSurface == null) customerSurface = sidewalk.AddComponent<NavMeshSurface>();
+        ConfigureRuntimeSurface(customerSurface, 1 << sidewalk.layer);
+        customerSurface.agentTypeID = 0;
+        customerSurface.BuildNavMesh();
+
+        NavigationReady = NavMesh.SamplePosition(transform.position, out _, 12f, NavMesh.AllAreas);
+        if (!NavigationReady)
+            Debug.LogError("Compact employee NavMesh has no walkable area near the factory.", this);
+        return NavigationReady;
+    }
+
+    internal static void ConfigureRuntimeSurface(NavMeshSurface surface, int layerMask)
+    {
+        if (surface == null) return;
+        surface.collectObjects = CollectObjects.Children;
+        surface.layerMask = layerMask;
+        // Imported decoration meshes are not guaranteed to be CPU-readable in a Player.
+        // Navigation geometry is represented by the scene's non-trigger colliders.
+        surface.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
     }
 
     public void ObjectDataSave()
@@ -73,14 +121,32 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
         if (saveState == null || supply == null || station == null || player == null)
             return;
         var values = saveState.objectData;
-        values[GameDataSchema.Objects.CompactSupplyCount] = supply.SavedStockCount;
+        CountEmployeeTransit(out int ingredientTransit, out int productTransit);
+        values[GameDataSchema.Objects.CompactSupplyCount] =
+            Mathf.Min(supply.StockCapacity, supply.SavedStockCount + ingredientTransit);
         values[GameDataSchema.Objects.CompactInputCount] = station.SavedInputCount;
-        values[GameDataSchema.Objects.CompactOutputCount] = station.OutputCount;
+        values[GameDataSchema.Objects.CompactOutputCount] =
+            Mathf.Min(station.OutputCapacity, station.OutputCount + productTransit);
         values[GameDataSchema.Objects.CompactSalesCount] = StockCount;
         var carry = player.Inventory;
         values[GameDataSchema.Objects.CompactCarryCount] = carry.Count;
         values[GameDataSchema.Objects.CompactCarryType] = carry.TryPeek(out var item)
             && item != null ? (int)item.Type : -1;
+    }
+
+    private static void CountEmployeeTransit(out int ingredientCount, out int productCount)
+    {
+        ingredientCount = 0;
+        productCount = 0;
+        foreach (var employee in FindObjectsByType<Employee>(
+            FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        {
+            var inventory = employee.Inventory;
+            if (inventory.ContainsType(ItemType.Ingredient))
+                ingredientCount += inventory.Count;
+            else if (inventory.ContainsType(ItemType.Churu))
+                productCount += inventory.Count;
+        }
     }
 
     private void RestoreState()
@@ -101,7 +167,7 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
     {
         for (int i = 0; i < Mathf.Min(count, stock.Capacity); i++)
         {
-            if (displaySlots[i] == null) break;
+            if (stockAnchor == null) break;
             var spawned = PoolingManager.Instance.GetObj(station.ProductPrefab);
             if (spawned != null && spawned.TryGetComponent<Item>(out var item)
                 && stock.TryAdd(item))
@@ -138,13 +204,15 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
         if (stock == null || !stock.TryPop(out var item) || item == null)
             return false;
 
-        if (itemSlots.TryGetValue(item, out int slot))
-        {
-            occupiedSlots[slot] = false;
-            itemSlots.Remove(item);
-        }
         PoolingManager.Instance.ReturnObjecte(item.gameObject);
-        UIManager.Instance.AddGold(Mathf.RoundToInt(BalanceTable.StallIncome));
+        UIManager.Instance.AddGold(BalanceTable.ProductSaleIncome(saveState, player.buffGold));
+        CompactTelemetryEvents.Record(CompactTelemetryMetric.ProductSold);
+        CompactProgressEvents.Raise(CompactProgressAction.ProductSold);
+        if (!saveState.IsUnlocked(BalanceTable.FirstSaleKey))
+        {
+            saveState.SetUnlocked(BalanceTable.FirstSaleKey, true);
+            DataManager.Instance.GameDataUpdate();
+        }
         return true;
     }
 
@@ -153,16 +221,9 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
         if (inventory == null || stock == null || stock.IsFull)
             return false;
 
-        int slot = -1;
-        for (int i = 0; i < occupiedSlots.Length; i++)
-        {
-            if (!occupiedSlots[i] && displaySlots[i] != null)
-            {
-                slot = i;
-                break;
-            }
-        }
-        if (slot < 0 || !inventory.TryMoveTo(stock, out var item))
+        if (stockAnchor == null) return false;
+        int slot = stock.Count;
+        if (!inventory.TryMoveTo(stock, out var item))
             return false;
 
         PlaceItem(item, slot);
@@ -171,14 +232,18 @@ public sealed class CompactSalesCounter : MonoBehaviour, IItemTransferEndpoint, 
 
     private void PlaceItem(Item item, int slot)
     {
-        occupiedSlots[slot] = true;
-        itemSlots[item] = slot;
         item.transform.DOKill();
         if (item.TryGetComponent<Rigidbody>(out var body)) Destroy(body);
-        item.transform.SetParent(displaySlots[slot], false);
+        item.transform.SetParent(stockAnchor, false);
         float bottomOffset = item.TryGetComponent<BoxCollider>(out var box)
             ? box.size.y * .5f - box.center.y : 0f;
-        item.transform.localPosition = Vector3.up * bottomOffset;
+        int positionInLayer = slot % ItemsPerLayer;
+        int layer = slot / ItemsPerLayer;
+        float layerHeight = box != null ? box.size.y : .08f;
+        item.transform.localPosition = new Vector3(
+            (positionInLayer % ColumnsPerLayer - 1) * .23f,
+            bottomOffset + layer * layerHeight,
+            positionInLayer / ColumnsPerLayer == 0 ? -.16f : .16f);
         item.transform.localRotation = Quaternion.identity;
         item.transform.localScale = Vector3.one;
     }

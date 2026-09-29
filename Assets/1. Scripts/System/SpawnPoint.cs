@@ -30,9 +30,14 @@ public class SpawnPoint : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float compactPurchaseChance = .5f;
     [SerializeField, Range(0f, 1f)] private float compactReverseDirectionChance = .4f;
     [SerializeField, Min(1)] private int compactMaxActiveNpcs = 7;
-    [SerializeField, Range(0f, .75f)] private float compactLaneJitter = .35f;
+    [SerializeField, Range(0f, .75f)] private float compactLaneOffset = .55f;
+    [SerializeField, Range(0f, .25f)] private float compactLaneJitter = .04f;
+    [SerializeField, Min(.1f)] private float compactSameLaneSpawnGap = .9f;
     private int activeCompactNpcs;
     private float compactSpawnTimer;
+    private bool compactPurchaseReserved;
+    private float compactForwardLaneSpawnTime;
+    private float compactReverseLaneSpawnTime;
 
     public void ConfigureCompactSales(CompactSalesCounter sales, Transform entry,
         Transform queue, Transform exit)
@@ -45,14 +50,18 @@ public class SpawnPoint : MonoBehaviour
         if (!compactRouteReady)
             Debug.LogError("Compact customer NavMesh route is incomplete.", this);
         activeCompactNpcs = 0;
+        compactPurchaseReserved = false;
+        compactForwardLaneSpawnTime = float.NegativeInfinity;
+        compactReverseLaneSpawnTime = float.NegativeInfinity;
         spawnTime = 0f;
         ScheduleNextCompactSpawn(true);
         enabled = compactRouteReady;
     }
 
-    public void NotifyCompactNpcReturned()
+    public void NotifyCompactNpcReturned(bool hadPurchaseReservation)
     {
         activeCompactNpcs = Mathf.Max(0, activeCompactNpcs - 1);
+        if (hadPurchaseReservation) compactPurchaseReserved = false;
     }
 
     private static bool IsCompleteRoute(Vector3 entry, Vector3 queue, Vector3 exit)
@@ -95,6 +104,8 @@ public class SpawnPoint : MonoBehaviour
             if (activeCompactNpcs >= compactMaxActiveNpcs) return;
         }
 
+        bool reverse = false;
+        if (compactRouteReady && !TryChooseCompactDirection(out reverse)) return;
         if (pool == null || npc == null || npc.Length == 0) return;
         int npcRandom = Random.Range(0, npc.Length);
         GameObject spawned = pool.GetObj(npc[npcRandom]);
@@ -106,24 +117,50 @@ public class SpawnPoint : MonoBehaviour
 
         if (compactRouteReady)
         {
-            bool reverse = Random.value < compactReverseDirectionChance;
             Transform entryMarker = reverse ? compactExit : compactEntry;
             Transform exitMarker = reverse ? compactEntry : compactExit;
-            Vector3 entry = entryMarker.position + entryMarker.forward *
+            Vector3 travel = exitMarker.position - entryMarker.position;
+            Vector3 laneNormal = Vector3.Cross(Vector3.up, travel.normalized);
+            float laneDistance = compactLaneOffset +
                 Random.Range(-compactLaneJitter, compactLaneJitter);
-            Vector3 queue = compactQueue.position + compactQueue.right * Random.Range(-.28f, .28f);
-            Vector3 exit = exitMarker.position + exitMarker.forward *
-                Random.Range(-compactLaneJitter, compactLaneJitter);
-            bool willPurchase = compactSales.StockCount > 0 &&
+            Vector3 entry = entryMarker.position + laneNormal * laneDistance;
+            Vector3 queue = compactQueue.position + compactQueue.right * Random.Range(-.18f, .18f);
+            Vector3 exit = exitMarker.position + laneNormal * laneDistance;
+            bool willPurchase = !reverse && !compactPurchaseReserved &&
+                compactSales.StockCount > 0 &&
                 Random.value < compactPurchaseChance;
             if (newNpc.BeginCompactVisit(compactSales, entry, queue, exit,
                 willPurchase, this))
+            {
                 activeCompactNpcs++;
+                MarkCompactLaneSpawned(reverse);
+                if (willPurchase) compactPurchaseReserved = true;
+            }
             else
                 PoolingManager.Instance.ReturnObjecte(newNpc.gameObject);
         }
         else
             newNpc.transform.position = transform.position;
+    }
+
+    private bool TryChooseCompactDirection(out bool reverse)
+    {
+        reverse = Random.value < compactReverseDirectionChance;
+        if (IsCompactLaneReady(reverse)) return true;
+        reverse = !reverse;
+        return IsCompactLaneReady(reverse);
+    }
+
+    private bool IsCompactLaneReady(bool reverse)
+    {
+        float lastSpawn = reverse ? compactReverseLaneSpawnTime : compactForwardLaneSpawnTime;
+        return Time.time - lastSpawn >= compactSameLaneSpawnGap;
+    }
+
+    private void MarkCompactLaneSpawned(bool reverse)
+    {
+        if (reverse) compactReverseLaneSpawnTime = Time.time;
+        else compactForwardLaneSpawnTime = Time.time;
     }
 
     private void ScheduleNextCompactSpawn(bool initial)

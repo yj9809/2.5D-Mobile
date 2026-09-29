@@ -60,6 +60,20 @@ namespace Churub.Core
                 default: return level;
             }
         }
+
+        public static int ProductSaleIncome(GameDataState state, float goldBonus = 0f)
+        {
+            if (state == null) throw new ArgumentNullException(nameof(state));
+
+            double boxPrice = Math.Max(0d, state.PlayerGoldPerBox);
+            double bonus = double.IsNaN(goldBonus) || double.IsInfinity(goldBonus)
+                ? 0d : Math.Max(0d, goldBonus);
+            double income = boxPrice / Math.Max(1, ItemsPerBox) * (1d + bonus);
+            if (double.IsNaN(income) || income <= 1d) return 1;
+            if (income >= int.MaxValue) return int.MaxValue;
+            return Math.Max(1, (int)Math.Round(income, MidpointRounding.AwayFromZero));
+        }
+
         public static int TutorialReward(int step) => step >= 0 && step < Rewards.Length ? Rewards[step] : 0;
         public static int Lines(GameDataState s) => 1 +
             (s.IsUnlocked("Container1") && s.IsUnlocked("Machine1") ? 1 : 0) +
@@ -153,6 +167,7 @@ namespace Churub.Core
         public static bool Synchronize(GameDataState s)
         {
             bool migrated = s.objectData.TryGetValue(VersionKey, out int savedVersion) ? savedVersion < Version : true;
+            migrated |= IncrementalProgress.Migrate(s);
             s.EmployeeAddCount = Math.Max(s.EmployeeAddCount, Math.Min(EmployeeLimit, s.employeeList.Count));
             if (s.guideStep >= 7 || s.EmployeeAddCount > 0) s.SetUnlocked(FirstSaleKey, true);
             if (s.EmployeeAddCount > 0) s.SetUnlocked(FirstEmployeeKey, true);

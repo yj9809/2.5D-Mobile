@@ -48,6 +48,12 @@ public class Guide : MonoBehaviour
     [HideIfGroup("_Scripts"), SerializeField] private InterstitialAdExample adExample;
     private BaseCost baseCost;
     private Player player;
+    private CompactSupplyStation compactSupply;
+    private CompactManualStation compactManual;
+    private CompactSalesCounter compactSales;
+    private bool compactFlow;
+    private Button skipButton;
+    private Button replayButton;
 
     private bool _guideDone = false;
     private readonly HashSet<int> invalidTargetWarnings = new HashSet<int>();
@@ -59,6 +65,10 @@ public class Guide : MonoBehaviour
         //UIManager.Instance.SetGuideStep(this);
         baseCost = DataManager.Instance.baseCost;
         player = GameManager.Instance.P;
+        compactSupply = FindObjectOfType<CompactSupplyStation>();
+        compactManual = FindObjectOfType<CompactManualStation>();
+        compactSales = FindObjectOfType<CompactSalesCounter>();
+        compactFlow = compactSupply != null && compactManual != null && compactSales != null;
         ResolveProductionTargets();
     }
 
@@ -67,6 +77,12 @@ public class Guide : MonoBehaviour
         if (targets == null || targets.Length < 6) return;
 
         var workPoints = FindObjectsByType<WorkPoint>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        if (compactFlow)
+        {
+            ResolveCompactTargets(workPoints);
+            return;
+        }
+
         for (int index = 0; index < 6; index++)
         {
             GameObject inactiveMatch = null;
@@ -85,6 +101,67 @@ public class Guide : MonoBehaviour
             if (inactiveMatch != null)
                 targets[index] = inactiveMatch;
         }
+    }
+
+    private void ResolveCompactTargets(WorkPoint[] workPoints)
+    {
+        var markers = FindObjectsByType<OnboardingTargetMarker>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var marker in markers)
+        {
+            int index = CompactTargetIndex(marker.TargetType);
+            if (index < 0) continue;
+            targets[index] = marker.gameObject;
+            if (marker.TargetType == OnboardingTargetType.SalesPallet)
+                targets[5] = marker.gameObject;
+        }
+
+        foreach (var workPoint in workPoints)
+        {
+            if (workPoint == null) continue;
+
+            if (workPoint.Action is CompactManualProcessAction process
+                && process.Station == compactManual)
+            {
+                if (targets[2] == null) targets[2] = workPoint.gameObject;
+                continue;
+            }
+
+            if (!(workPoint.Action is ItemTransfer transfer)) continue;
+            if (transfer.Endpoint == compactSupply)
+                if (targets[0] == null) targets[0] = workPoint.gameObject;
+            else if (transfer.Endpoint == compactManual)
+                if (targets[1] == null) targets[1] = workPoint.gameObject;
+            else if (transfer.Endpoint is CompactManualOutput output
+                && output.Station == compactManual)
+                if (targets[3] == null) targets[3] = workPoint.gameObject;
+            else if (transfer.Endpoint == compactSales)
+            {
+                if (targets[4] == null) targets[4] = workPoint.gameObject;
+                if (targets[5] == null) targets[5] = workPoint.gameObject;
+            }
+        }
+    }
+
+    private static int CompactTargetIndex(OnboardingTargetType type)
+    {
+        switch (type)
+        {
+            case OnboardingTargetType.SupplyPickup: return 0;
+            case OnboardingTargetType.ManualInput: return 1;
+            case OnboardingTargetType.ManualWork: return 2;
+            case OnboardingTargetType.ManualOutput: return 3;
+            case OnboardingTargetType.SalesPallet: return 4;
+            default: return -1;
+        }
+    }
+
+    private void OnEnable() => CompactProgressEvents.ActionCompleted += OnCompactActionCompleted;
+
+    private void OnDisable()
+    {
+        CompactProgressEvents.ActionCompleted -= OnCompactActionCompleted;
+        if (guideLine != null) guideLine.DOKill();
     }
 
     private bool MatchesProductionTarget(int index, WorkPoint workPoint)
@@ -136,7 +213,7 @@ public class Guide : MonoBehaviour
         CreateGuidePrefab();
         SetWorkPoint();
 
-        if (baseCost.guideStep < 5)
+        if (!compactFlow && baseCost.guideStep < 5 && truck != null)
             truck.gameObject.SetActive(false);
 
         if (!_guideDone)
@@ -145,13 +222,15 @@ public class Guide : MonoBehaviour
         }
 
         CreateClaimButton();
+        if (compactFlow) CreateOnboardingControls();
     }
 
     void Update()
     {
         if (!_guideDone)
         {
-            if (baseCost.guideStep <= 6) GuideStep();
+            if (compactFlow && !baseCost.onboardingCompleted) CompactGuideStep();
+            else if (!compactFlow && baseCost.guideStep <= 6) GuideStep();
             else ShowExpansionGoals();
         }
     }
@@ -185,6 +264,109 @@ public class Guide : MonoBehaviour
         go.SetActive(false);
     }
 
+    private void CreateOnboardingControls()
+    {
+        skipButton = CreateGuideControl("Skip Onboarding", "건너뛰기", new Vector2(115, -84));
+        replayButton = CreateGuideControl("Replay Onboarding", "처음 안내 다시 보기", new Vector2(0, -84));
+        skipButton.onClick.AddListener(SkipOnboarding);
+        replayButton.onClick.AddListener(RestartOnboarding);
+        RefreshOnboardingControls();
+    }
+
+    private Button CreateGuideControl(string name, string labelText, Vector2 position)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+        go.transform.SetParent(guideUI.transform, false);
+        var rect = (RectTransform)go.transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0f);
+        rect.pivot = new Vector2(.5f, 1f);
+        rect.anchoredPosition = position;
+        rect.sizeDelta = new Vector2(220, 54);
+        go.GetComponent<Image>().color = new Color(.16f, .16f, .16f, .88f);
+        var label = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+        label.transform.SetParent(go.transform, false);
+        var text = label.GetComponent<TextMeshProUGUI>();
+        text.font = guideText.font;
+        text.text = labelText;
+        text.fontSize = 18;
+        text.alignment = TextAlignmentOptions.Center;
+        text.raycastTarget = false;
+        var labelRect = (RectTransform)label.transform;
+        labelRect.anchorMin = Vector2.zero;
+        labelRect.anchorMax = Vector2.one;
+        labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
+        return go.GetComponent<Button>();
+    }
+
+    public void SkipOnboarding()
+    {
+        if (!compactFlow || baseCost.onboardingCompleted) return;
+        IncrementalProgress.CompleteOnboarding(baseCost);
+        baseCost.guideStep = Mathf.Max(baseCost.guideStep, 7);
+        SaveProgress();
+        RefreshOnboardingControls();
+        ShowExpansionGoals();
+    }
+
+    public void RestartOnboarding()
+    {
+        if (!compactFlow) return;
+        IncrementalProgress.RestartOnboarding(baseCost);
+        _guideDone = false;
+        guideUI.SetActive(true);
+        isGuideActive = true;
+        RefreshOnboardingControls();
+        CompactGuideStep();
+        GuideLine();
+        SaveProgress();
+    }
+
+    private void RefreshOnboardingControls()
+    {
+        if (skipButton != null) skipButton.gameObject.SetActive(!baseCost.onboardingCompleted);
+        if (replayButton != null) replayButton.gameObject.SetActive(baseCost.onboardingCompleted);
+    }
+
+    private void OnCompactActionCompleted(CompactProgressAction action)
+    {
+        if (!compactFlow || baseCost == null || baseCost.onboardingCompleted) return;
+        CompactProgressAction expected;
+        switch (baseCost.onboardingStep)
+        {
+            case 0: expected = CompactProgressAction.IngredientCollected; break;
+            case 1: expected = CompactProgressAction.IngredientPlaced; break;
+            case 2: expected = CompactProgressAction.ProductCompleted; break;
+            case 3: expected = CompactProgressAction.ProductCollected; break;
+            case 4: expected = CompactProgressAction.ProductStocked; break;
+            case 5: expected = CompactProgressAction.ProductSold; break;
+            default: return;
+        }
+        if (action != expected) return;
+
+        GiveReward(baseCost.onboardingStep);
+        baseCost.onboardingStep++;
+        if (baseCost.onboardingStep >= IncrementalProgress.OnboardingStepCount)
+        {
+            IncrementalProgress.CompleteOnboarding(baseCost);
+            baseCost.guideStep = Mathf.Max(baseCost.guideStep, 7);
+            GiveReward(6);
+        }
+        SaveProgress();
+        CreateGuidePrefab();
+        RefreshOnboardingControls();
+        if (baseCost.onboardingCompleted) ShowExpansionGoals();
+        else
+        {
+            CompactGuideStep();
+            GuideLine();
+        }
+    }
+
+    private static void SaveProgress()
+    {
+        if (DataManager.Instance != null) DataManager.Instance.GameDataUpdate();
+    }
+
     private void ShowExpansionGoals()
     {
         bool claim = BalanceTable.CanClaimEmployee(baseCost);
@@ -202,12 +384,17 @@ public class Guide : MonoBehaviour
         guideLine.gameObject.SetActive(false);
         if (nextFacility == null)
         {
-            _GuideDone();
+            if (compactFlow)
+            {
+                UpdateGuide("다음 목표", "원하는 병목을 골라 공장을 확장하세요.", "", false);
+                RefreshOnboardingControls();
+            }
+            else _GuideDone();
             return;
         }
 
         string facilityName = FacilityName(nextFacility);
-        UpdateGuide(facilityName + " 해금", facilityName + " 건설하기",
+        UpdateGuide("다음 목표", facilityName + " 건설하기",
             BalanceTable.FacilityCost(nextFacility) + " 골드", false);
     }
 
@@ -271,9 +458,10 @@ public class Guide : MonoBehaviour
         #endregion
 
         #region 타겟 위치 화살표
-        if (baseCost.guideStep < targets.Length)
+        int currentStep = compactFlow ? baseCost.onboardingStep : baseCost.guideStep;
+        if (currentStep < targets.Length)
         {
-            if (!TryGetTarget(baseCost.guideStep, out var targetObject)) return;
+            if (!TryGetTarget(currentStep, out var targetObject)) return;
             Transform target = targetObject.transform;
             Vector3 targetPosition = new Vector3(target.position.x, guideLine.position.y, target.position.z);
 
@@ -340,6 +528,7 @@ public class Guide : MonoBehaviour
 
     public void ToNextStep()
     {
+        if (compactFlow) return;
         baseCost.guideStep++;
         GuideLine();
 
@@ -365,7 +554,8 @@ public class Guide : MonoBehaviour
 
     private void SetWorkPoint()
     {
-        for (int i = 0; i <= baseCost.guideStep && i < targets.Length; i++)
+        int currentStep = compactFlow ? baseCost.onboardingStep : baseCost.guideStep;
+        for (int i = 0; i <= currentStep && i < targets.Length; i++)
         {
             if (!TryGetTarget(i, out var target)) continue;
             if (target.GetComponent<WorkPoint>())
@@ -407,12 +597,44 @@ public class Guide : MonoBehaviour
 
         if (reward > 0)
         {
+            CompactTelemetryEvents.Record(CompactTelemetryMetric.GoldEarned, reward);
             player.Gold += reward;
             UIManager.Instance.UpdateGoldUI();
         }
     }
 
     #region GuideSteps
+    private void CompactGuideStep()
+    {
+        switch (baseCost.onboardingStep)
+        {
+            case 0:
+                SetActiveTarget(0);
+                UpdateGuide("첫 생산 1", "컨테이너 앞에서 연어를 가져오세요", "", false);
+                break;
+            case 1:
+                SetActiveTarget(1);
+                UpdateGuide("첫 생산 2", "연어를 작업대 입력판에 놓으세요", "", false);
+                break;
+            case 2:
+                SetActiveTarget(2);
+                UpdateGuide("첫 생산 3", "가운데 발판에서 가공을 완료하세요", "", false);
+                break;
+            case 3:
+                SetActiveTarget(3);
+                UpdateGuide("첫 생산 4", "완성된 츄릅을 가져오세요", "", false);
+                break;
+            case 4:
+                SetActiveTarget(4);
+                UpdateGuide("첫 판매 1", "츄릅을 판매 파레트에 진열하세요", "", false);
+                break;
+            case 5:
+                SetActiveTarget(5);
+                UpdateGuide("첫 판매 완료", "손님이 구매해 첫 수익을 낼 때까지 기다리세요", "", false);
+                break;
+        }
+    }
+
     private void _Step0()
     {
         SetActiveTarget(0);

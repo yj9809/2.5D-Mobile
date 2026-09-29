@@ -28,11 +28,17 @@ public class Npc : MonoBehaviour
     private int originalAvoidancePriority;
     private float originalSpeed;
     private SpawnPoint compactSpawner;
+    private bool compactPurchaseReservation;
+
+    private void Awake()
+    {
+        na = GetComponent<NavMeshAgent>();
+        anime = GetComponent<Animator>();
+    }
 
     public bool BeginCompactVisit(CompactSalesCounter sales, Vector3 entry, Vector3 queue,
         Vector3 exit, bool willPurchase, SpawnPoint owner)
     {
-        if (na == null) na = GetComponent<NavMeshAgent>();
         if (na == null || !na.isActiveAndEnabled
             || !NavMesh.SamplePosition(entry, out var start, 1f, NavMesh.AllAreas)
             || !NavMesh.SamplePosition(queue, out var purchase, 1f, NavMesh.AllAreas)
@@ -63,9 +69,12 @@ public class Npc : MonoBehaviour
             na.obstacleAvoidanceType = originalAvoidance;
             na.avoidancePriority = originalAvoidancePriority;
             na.speed = originalSpeed;
+            SetCompactMoving(false);
             return false;
         }
         compactSpawner = owner;
+        compactPurchaseReservation = willPurchase;
+        SetCompactMoving(true);
         return true;
     }
 
@@ -81,10 +90,12 @@ public class Npc : MonoBehaviour
 
     private void OnDisable()
     {
+        SetCompactMoving(false);
         if (compactSpawner != null)
         {
-            compactSpawner.NotifyCompactNpcReturned();
+            compactSpawner.NotifyCompactNpcReturned(compactPurchaseReservation);
             compactSpawner = null;
+            compactPurchaseReservation = false;
         }
         if (compactSales == null) return;
         compactSales = null;
@@ -100,8 +111,6 @@ public class Npc : MonoBehaviour
 
     private void Start()
     {
-        na = GetComponent<NavMeshAgent>();
-        anime = GetComponent<Animator>();
         if (compactSales != null) return;
         spawnPoint = FindObjectOfType<SpawnPoint>();
         na.SetDestination(spawnPoint.GetTarget[currentTargetNum].position);
@@ -127,6 +136,7 @@ public class Npc : MonoBehaviour
 
     private void UpdateCompactVisit()
     {
+        SetCompactMoving(compactPhase != 1);
         if (compactPhase == 0)
         {
             if (!ReachedCompactDestination()) return;
@@ -143,7 +153,7 @@ public class Npc : MonoBehaviour
         }
         if (compactPhase == 1)
         {
-            if (anime != null) anime.SetBool("isMove", false);
+            SetCompactMoving(false);
             compactWait -= Time.deltaTime;
             if (compactWait > 0) return;
             compactSales.TrySellOne();
@@ -155,15 +165,19 @@ public class Npc : MonoBehaviour
             PoolingManager.Instance.ReturnObjecte(gameObject);
             return;
         }
-        if (anime != null && compactPhase != 1)
-            anime.SetBool("isMove", na.velocity.sqrMagnitude > .01f);
     }
 
     private void BeginCompactExit()
     {
         compactPhase = 2;
+        SetCompactMoving(true);
         if (!na.SetDestination(compactExit))
             PoolingManager.Instance.ReturnObjecte(gameObject);
+    }
+
+    private void SetCompactMoving(bool moving)
+    {
+        if (anime != null) anime.SetBool("isMove", moving);
     }
 
     private bool ReachedCompactDestination() => na.isOnNavMesh && !na.pathPending

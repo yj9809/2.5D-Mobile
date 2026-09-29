@@ -17,7 +17,10 @@ public sealed class ItemTransfer : WorkAction
         if (actor.TryGetComponent<Player>(out var player))
         {
             if (transfer.TryTransfer(player.Inventory, player.CarryParent))
+            {
                 Vibration.VibratePop();
+                RaiseCompactProgress();
+            }
         }
         else if (!playerOnly && actor.TryGetComponent<Employee>(out var employee))
         {
@@ -26,6 +29,18 @@ public sealed class ItemTransfer : WorkAction
                 return;
             transfer.TryTransfer(employee.Inventory, employee.CarryParent);
         }
+    }
+
+    private void RaiseCompactProgress()
+    {
+        if (endpoint is CompactSupplyStation)
+            CompactProgressEvents.Raise(CompactProgressAction.IngredientCollected);
+        else if (endpoint is CompactManualStation)
+            CompactProgressEvents.Raise(CompactProgressAction.IngredientPlaced);
+        else if (endpoint is CompactManualOutput)
+            CompactProgressEvents.Raise(CompactProgressAction.ProductCollected);
+        else if (endpoint is CompactSalesCounter)
+            CompactProgressEvents.Raise(CompactProgressAction.ProductStocked);
     }
 
     private void OnValidate()

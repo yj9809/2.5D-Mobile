@@ -65,8 +65,6 @@ public sealed class CompactSupplyStation : MonoBehaviour, IItemTransferEndpoint
             spawned.transform.SetParent(transform, true);
             box.enabled = false;
 
-            int slot = stock.Count;
-            GetTrayPose(slot, box, out var trayPosition, out var trayRotation);
             Vector3 approachDirection = spawnPoint.position - pickupTray.position;
             approachDirection.y = 0f;
             if (approachDirection.sqrMagnitude < .001f) approachDirection = Vector3.forward;
@@ -77,20 +75,22 @@ public sealed class CompactSupplyStation : MonoBehaviour, IItemTransferEndpoint
                 Mathf.Max(.01f, feedSpeed);
 
             pendingSpawn = true;
-            var movement = DOTween.Sequence()
-                .Append(spawned.transform.DOMove(beltExit, beltSeconds).SetEase(Ease.Linear))
-                .Append(spawned.transform.DOMove(trayPosition,
-                    Mathf.Max(.01f, traySettleSeconds)).SetEase(Ease.OutQuad))
-                .Join(spawned.transform.DORotateQuaternion(trayRotation,
-                    Mathf.Max(.01f, traySettleSeconds)).SetEase(Ease.OutQuad));
-            yield return movement.WaitForCompletion();
-            pendingSpawn = false;
-            if (!TryStore(item, slot))
+            yield return spawned.transform.DOMove(beltExit, beltSeconds)
+                .SetEase(Ease.Linear).WaitForCompletion();
+
+            // Reserve the current top slot only after the belt trip. A player may
+            // remove stock while this item is travelling, so a spawn-time slot is stale.
+            int slot = stock.Count;
+            if (!stock.TryAdd(item))
             {
+                pendingSpawn = false;
                 PoolingManager.Instance.ReturnObjecte(spawned);
                 continue;
             }
+            pendingSpawn = false;
             box.enabled = true;
+            PlaceOnTray(item, slot, true);
+            CompactTelemetryEvents.Record(CompactTelemetryMetric.IngredientProduced);
         }
     }
 
@@ -99,28 +99,29 @@ public sealed class CompactSupplyStation : MonoBehaviour, IItemTransferEndpoint
         if (item == null || pickupTray == null || !stock.TryAdd(item)) return false;
         if (item.TryGetComponent<Rigidbody>(out var body)) Destroy(body);
         if (item.TryGetComponent<BoxCollider>(out var box)) box.enabled = true;
-        PlaceOnTray(item, slot);
+        PlaceOnTray(item, slot, false);
         return true;
     }
 
-    private void PlaceOnTray(Item item, int slot)
+    private void PlaceOnTray(Item item, int slot, bool animate)
     {
         var target = item.transform;
         target.DOKill();
-        target.SetParent(pickupTray, false);
         GetTrayLocalPose(slot, item.GetComponent<BoxCollider>(),
             out var localPosition, out var localRotation);
-        target.localPosition = localPosition;
-        target.localRotation = localRotation;
+        target.SetParent(pickupTray, animate);
         target.localScale = Vector3.one;
-    }
-
-    private void GetTrayPose(int slot, BoxCollider box, out Vector3 position,
-        out Quaternion rotation)
-    {
-        GetTrayLocalPose(slot, box, out var localPosition, out var localRotation);
-        position = pickupTray.TransformPoint(localPosition);
-        rotation = pickupTray.rotation * localRotation;
+        if (animate)
+        {
+            float duration = Mathf.Max(.01f, traySettleSeconds);
+            target.DOLocalMove(localPosition, duration).SetEase(Ease.OutQuad);
+            target.DOLocalRotateQuaternion(localRotation, duration).SetEase(Ease.OutQuad);
+        }
+        else
+        {
+            target.localPosition = localPosition;
+            target.localRotation = localRotation;
+        }
     }
 
     private static void GetTrayLocalPose(int slot, BoxCollider box,

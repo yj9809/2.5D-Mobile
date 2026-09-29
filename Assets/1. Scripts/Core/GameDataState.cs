@@ -81,6 +81,12 @@ namespace Churub.Core
 
         public int guideStep;
         public bool newGame = true;
+        public int onboardingVersion = IncrementalProgress.CurrentOnboardingVersion;
+        public int onboardingStep;
+        public bool onboardingCompleted;
+        public int upgradeGraphVersion = IncrementalProgress.CurrentUpgradeGraphVersion;
+        public Dictionary<string, int> upgradeNodeLevels = new Dictionary<string, int>();
+        public List<string> revealedUpgradeNodes = new List<string>();
         // Bumped on every local capture. Lets Apply() tell an unsaved local snapshot
         // apart from one made stale by another device or session.
         public int saveRevision;
